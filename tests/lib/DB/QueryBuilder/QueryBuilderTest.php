@@ -75,7 +75,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		while ($row = $query->fetch()) {
 			$rows[] = $row['configvalue'];
 		}
-		$query->closeCursor();
+		$query->free();
 
 		return $rows;
 	}
@@ -213,7 +213,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$query = $this->queryBuilder->execute();
 		$row = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 
 		foreach ($expected as $key => $value) {
 			$this->assertArrayHasKey($key, $row);
@@ -261,7 +261,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$query = $this->queryBuilder->execute();
 		$row = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 
 		$this->assertEquals(
 			$expected,
@@ -288,7 +288,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$query = $this->queryBuilder->execute();
 		$rows = $query->fetchAll();
-		$query->closeCursor();
+		$query->free();
 
 		$this->assertEquals(
 			[['appid' => 'testFirstResult2'], ['appid' => 'testFirstResult1']],
@@ -350,7 +350,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$query = $this->queryBuilder->execute();
 		$row = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 
 		foreach ($expected as $key => $value) {
 			$this->assertArrayHasKey($key, $row);

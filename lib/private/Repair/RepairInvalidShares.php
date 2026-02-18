@@ -146,7 +146,7 @@ class RepairInvalidShares implements IRepairStep {
 				$deletedEntries += $deleteQuery->setParameter('parent', (int) $row['parent'])
 					->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		if ($deletedEntries) {

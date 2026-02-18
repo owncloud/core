@@ -76,7 +76,7 @@ abstract class Mapper {
 	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
 		$stmt = $this->execute($sql, [$entity->getId()]);
-		$stmt->closeCursor();
+		$stmt->free();
 		return $entity;
 	}
 
@@ -120,7 +120,7 @@ abstract class Mapper {
 
 		$entity->setId((int) $this->db->lastInsertId($this->tableName));
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entity;
 	}
@@ -177,7 +177,7 @@ abstract class Mapper {
 		$params[] = $id;
 
 		$stmt = $this->execute($sql, $params);
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entity;
 	}
@@ -275,7 +275,7 @@ abstract class Mapper {
 		$row = $stmt->fetch();
 
 		if ($row === false || $row === null) {
-			$stmt->closeCursor();
+			$stmt->free();
 			$msg = $this->buildDebugMessage(
 				'Did expect one result but found none when executing',
 				$sql,
@@ -286,7 +286,7 @@ abstract class Mapper {
 			throw new DoesNotExistException($msg);
 		}
 		$row2 = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
@@ -351,7 +351,7 @@ abstract class Mapper {
 			$entities[] = $this->mapRowToEntity($row);
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entities;
 	}

@@ -510,7 +510,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$children[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $children;
 	}
@@ -657,7 +657,7 @@ class FederatedShareProvider implements IShareProvider {
 			while ($data = $cursor->fetch()) {
 				$shares[] = $this->createShareObject($data);
 			}
-			$cursor->closeCursor();
+			$cursor->free();
 		}
 
 		return $shares;
@@ -714,7 +714,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -723,7 +723,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @inheritdoc
 	 */
 	public function getShareById($id, $recipientId = null) {
-		if (!ctype_digit($id)) {
+		if (!ctype_digit((string)$id)) {
 			// share id is defined as a field of type integer
 			// if someone calls the API asking for a share id like "abc" or "42.1"
 			// then there is no point trying to query the database,
@@ -741,7 +741,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound();
@@ -775,7 +775,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -821,7 +821,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -890,7 +890,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -911,7 +911,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound;

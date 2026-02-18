@@ -21,50 +21,52 @@
 
 namespace Test\Memcache;
 
+use OC\Memcache\ArrayCache;
+use OC\Memcache\CasTrait;
 use Test\TestCase;
 
 class CasTraitTest extends TestCase {
 	/**
-	 * @return \OC\Memcache\CasTrait
+	 * @return CasTrait
 	 */
 	private function getCache() {
-		$sourceCache = new \OC\Memcache\ArrayCache();
+		$sourceCache = new ArrayCache();
 		$mock = $this->getMockForTrait('\OC\Memcache\CasTrait');
 
 		$mock->expects($this->any())
 			->method('set')
-			->will($this->returnCallback(function ($key, $value, $ttl) use ($sourceCache) {
+			->willReturnCallback(function ($key, $value, $ttl) use ($sourceCache) {
 				return $sourceCache->set($key, $value, $ttl);
-			}));
+			});
 
 		$mock->expects($this->any())
 			->method('get')
-			->will($this->returnCallback(function ($key) use ($sourceCache) {
+			->willReturnCallback(function ($key) use ($sourceCache) {
 				return $sourceCache->get($key);
-			}));
+			});
 
 		$mock->expects($this->any())
 			->method('add')
-			->will($this->returnCallback(function ($key, $value, $ttl) use ($sourceCache) {
+			->willReturnCallback(function ($key, $value, $ttl) use ($sourceCache) {
 				return $sourceCache->add($key, $value, $ttl);
-			}));
+			});
 
 		$mock->expects($this->any())
 			->method('remove')
-			->will($this->returnCallback(function ($key) use ($sourceCache) {
+			->willReturnCallback(function ($key) use ($sourceCache) {
 				return $sourceCache->remove($key);
-			}));
+			});
 		return $mock;
 	}
 
-	public function testCasNotChanged() {
+	public function testCasNotChanged(): void {
 		$cache = $this->getCache();
 		$cache->set('foo', 'bar');
 		$this->assertTrue($cache->cas('foo', 'bar', 'asd'));
 		$this->assertEquals('asd', $cache->get('foo'));
 	}
 
-	public function testCasChanged() {
+	public function testCasChanged(): void {
 		$cache = $this->getCache();
 		$cache->set('foo', 'bar1');
 		$this->assertFalse($cache->cas('foo', 'bar', 'asd'));

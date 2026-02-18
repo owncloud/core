@@ -187,10 +187,10 @@ class ConfigAdapter implements IMountProvider {
 	 * fill in the correct values for $user
 	 *
 	 * @param string $user user value
-	 * @param string|array $input
+	 * @param array|string $input
 	 * @return string
 	 */
-	private function setUserVars($user, $input) {
+	private function setUserVars(string $user, array|string $input): array|string {
 		if (\is_array($input)) {
 			foreach ($input as $key => $value) {
 				if (\is_string($value)) {

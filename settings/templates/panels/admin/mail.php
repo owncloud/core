@@ -1,15 +1,8 @@
 <?php
 script('settings', 'panels/mail');
-$mail_smtpauthtype = [
-	''	=> $l->t('None'),
-	'LOGIN'	=> $l->t('Login'),
-	'PLAIN'	=> $l->t('Plain'),
-	'NTLM'	=> $l->t('NT LAN Manager'),
-];
 $mail_smtpsecure = [
 	''		=> $l->t('None'),
 	'ssl'	=> $l->t('SSL/TLS'),
-	'tls'	=> $l->t('STARTTLS'),
 ];
 $mail_smtpmode = [
 	'php',
@@ -80,17 +73,6 @@ if ($_['mail_smtpmode'] == 'qmail') {
 			<p id="setting_smtpauth" <?php if ($_['mail_smtpmode'] != 'smtp') {
 				print_unescaped(' class="hidden"');
 			} ?>>
-				<label for="mail_smtpauthtype"><?php p($l->t('Authentication method')); ?></label>
-				<select name='mail_smtpauthtype' id='mail_smtpauthtype'>
-					<?php foreach ($mail_smtpauthtype as $authtype => $name):
-						$selected = '';
-						if ($authtype == $_['mail_smtpauthtype']):
-							$selected = 'selected="selected"';
-						endif; ?>
-						<option value='<?php p($authtype)?>' <?php p($selected) ?>><?php p($name) ?></option>
-					<?php endforeach;?>
-				</select>
-
 				<input type="checkbox" name="mail_smtpauth" id="mail_smtpauth" class="checkbox" value="1"
 					   <?php if ($_['mail_smtpauth']) {
 					   	print_unescaped('checked="checked"');

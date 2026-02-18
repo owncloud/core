@@ -54,7 +54,7 @@ class MySQL extends AbstractDatabase {
 		$query='select count(*) from information_schema.tables where table_schema=? AND table_name = ?';
 		$result = $connection->executeQuery($query, [$this->dbName, $this->tablePrefix.'users']);
 		$row = $result->fetch();
-		if (!$row or $row['count(*)'] === '0') {
+		if (!$row || $row['count(*)'] === 0) {
 			\OC_DB::createDbFromStructure($this->dbDefinitionFile);
 		}
 	}
@@ -69,7 +69,7 @@ class MySQL extends AbstractDatabase {
 			//we can't use OC_DB functions here because we need to connect as the administrative user.
 			$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
 			$query = "CREATE DATABASE IF NOT EXISTS `$name` CHARACTER SET $characterSet COLLATE {$characterSet}_bin;";
-			$connection->executeUpdate($query);
+			$connection->executeStatement($query);
 		} catch (\Exception $ex) {
 			$this->logger->error('Database creation failed: {error}', [
 				'app' => 'mysql.setup',
@@ -81,7 +81,7 @@ class MySQL extends AbstractDatabase {
 		try {
 			//this query will fail if there aren't the right permissions, ignore the error
 			$query="GRANT ALL PRIVILEGES ON `$name` . * TO '$user'";
-			$connection->executeUpdate($query);
+			$connection->executeStatement($query);
 		} catch (\Exception $ex) {
 			$this->logger->debug('Could not automatically grant privileges, this can be ignored if database user already had privileges: {error}', [
 				'app' => 'mysql.setup',
@@ -100,9 +100,9 @@ class MySQL extends AbstractDatabase {
 		// we need to create 2 accounts, one for global use and one for local user. if we don't specify the local one,
 		// the anonymous user would take precedence when there is one.
 		$query = "CREATE USER '$name'@'localhost' IDENTIFIED BY '$password'";
-		$connection->executeUpdate($query);
+		$connection->executeStatement($query);
 		$query = "CREATE USER '$name'@'%' IDENTIFIED BY '$password'";
-		$connection->executeUpdate($query);
+		$connection->executeStatement($query);
 	}
 
 	/**

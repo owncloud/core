@@ -988,9 +988,9 @@ class Encryption extends Wrapper {
 				$path = $realFile;
 			}
 		}
-		$firstBlock = $this->readFirstBlock($path);
+		$firstBlock = $this->readFirstBlock($path) ?? '';
 
-		if (\substr($firstBlock, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
+		if (str_starts_with($firstBlock, Util::HEADER_START)) {
 			$headerSize = $this->util->getHeaderSize();
 		}
 

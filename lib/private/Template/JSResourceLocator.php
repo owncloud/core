@@ -39,7 +39,7 @@ class JSResourceLocator extends ResourceLocator {
 			$webRoot = \substr($this->theme->getWebPath(), 0, -\strlen($themeDirectory));
 		}
 
-		if (\strpos($script, '/l10n/') !== false) {
+		if (str_contains($script, '/l10n/')) {
 			$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
 			$appFolderLocation = \explode('/', $this->appManager->getAppWebPath($app))[1] ?? 'apps';
 

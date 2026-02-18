@@ -167,7 +167,7 @@ class MigrationService {
 
 		$result = $qb->execute();
 		$rows = $result->fetchAll(\PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		$result->free();
 
 		return $rows;
 	}

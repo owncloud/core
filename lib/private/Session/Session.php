@@ -23,19 +23,17 @@
 
 namespace OC\Session;
 
+use ArrayAccess;
 use OCP\ISession;
 
-abstract class Session implements \ArrayAccess, ISession {
-	/**
-	 * @var bool
-	 */
-	protected $sessionClosed = false;
+abstract class Session implements ArrayAccess, ISession {
+	protected bool $sessionClosed = false;
 
 	/**
 	 * @param mixed $offset
 	 * @return bool
 	 */
-	public function offsetExists($offset) {
+	public function offsetExists(mixed $offset): bool {
 		return $this->exists($offset);
 	}
 
@@ -43,7 +41,7 @@ abstract class Session implements \ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	public function offsetGet($offset) {
+	public function offsetGet(mixed $offset): mixed {
 		return $this->get($offset);
 	}
 
@@ -51,21 +49,21 @@ abstract class Session implements \ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @param mixed $value
 	 */
-	public function offsetSet($offset, $value) {
+	public function offsetSet(mixed $offset, mixed $value): void {
 		$this->set($offset, $value);
 	}
 
 	/**
 	 * @param mixed $offset
 	 */
-	public function offsetUnset($offset) {
+	public function offsetUnset(mixed $offset): void {
 		$this->remove($offset);
 	}
 
 	/**
 	 * Close the session and release the lock
 	 */
-	public function close() {
+	public function close(): void {
 		$this->sessionClosed = true;
 	}
 }

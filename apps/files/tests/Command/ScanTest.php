@@ -91,7 +91,7 @@ class ScanTest extends TestCase {
 	private $commandTester;
 
 	/**
-	 * @var string[]
+	 * @var array
 	 */
 	private $groupsCreated = [];
 
@@ -118,8 +118,8 @@ class ScanTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 
-		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
-		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
+		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid('', true));
+		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid('', true));
 
 		$user1 = $this->createUser('user1');
 		$this->createUser('user2');
@@ -355,7 +355,7 @@ class ScanTest extends TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($storageStringId)));
 		$results = $qb->execute();
 		$result = $results->fetch();
-		$results->closeCursor();
+		$results->free();
 
 		if ($result) {
 			return (int)$result['numeric_id'];
@@ -379,7 +379,7 @@ class ScanTest extends TestCase {
 			->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
 		$results = $qb->execute();
 		$result = $results->fetch();
-		$results->closeCursor();
+		$results->free();
 
 		return $result;
 	}

@@ -39,6 +39,7 @@ class CSSResourceLocatorTest extends TestCase {
 		$themeInstance->method('getName')->willReturn($theme);
 		$themeInstance->method('getBaseDirectory')->willReturn($this->appRoot);
 		$themeInstance->method('getDirectory')->willReturn($this->themeAppDir);
+		$themeInstance->method('getWebPath')->willReturn('');
 
 		$this->appManager = $this->getMockBuilder(AppManager::class)
 			->disableOriginalConstructor()
@@ -50,7 +51,7 @@ class CSSResourceLocatorTest extends TestCase {
 			->getMock();
 	}
 
-	public function testFindCoreStyle() {
+	public function testFindCoreStyle(): void {
 		/** @var \OC\Template\CSSResourceLocator $locator */
 		$locator = $this->getResourceLocator(
 			'theme',

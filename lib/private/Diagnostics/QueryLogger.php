@@ -82,10 +82,10 @@ class QueryLogger implements IQueryLogger {
 		$this->queries = [];
 	}
 
-	private function getMicrotime(): float {
+	private function getMicrotime(): int {
 		if ($this->testNow) {
-			return $this->testNow;
+			return (int)$this->testNow;
 		}
-		return microtime(true);
+		return (int)microtime(true);
 	}
 }

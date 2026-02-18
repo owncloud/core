@@ -28,6 +28,7 @@
 namespace OC\DB;
 
 use \Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -134,8 +135,10 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName)  {
+			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+			return !str_starts_with($assetName, $prefix);
+		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
 
@@ -158,8 +161,10 @@ class Migrator {
 			}
 		}
 
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName)  {);
+			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+			return !str_starts_with($assetName, $prefix);
+		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -191,26 +196,18 @@ class Migrator {
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
-		$connection->beginTransaction();
+		if (!$connection->getDatabasePlatform() instanceof MySqlPlatform) {
+			$connection->beginTransaction();
+		}
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
 		foreach ($sqls as $sql) {
 			$this->emit($sql, $step++, \count($sqls));
-			$connection->query($sql);
+			$connection->executeQuery($sql);
 		}
-		$connection->commit();
-	}
-
-	/**
-	 * @param string $sourceName
-	 * @param string $targetName
-	 */
-	protected function copyTable($sourceName, $targetName) {
-		$quotedSource = $this->connection->quoteIdentifier($sourceName);
-		$quotedTarget = $this->connection->quoteIdentifier($targetName);
-
-		$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ')');
-		$this->connection->exec('INSERT INTO ' . $quotedTarget . ' SELECT * FROM ' . $quotedSource);
+		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
+			$connection->commit();
+		}
 	}
 
 	/**
@@ -229,10 +226,6 @@ class Migrator {
 		$script .= PHP_EOL;
 		$script .= PHP_EOL;
 		return $script;
-	}
-
-	protected function getFilterExpression() {
-		return '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 
 	protected function emit($sql, $step, $max) {

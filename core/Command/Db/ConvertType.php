@@ -374,7 +374,7 @@ class ConvertType extends Command {
 			->from($tableName);
 		$result = $query->execute();
 		$count = $result->fetchColumn();
-		$result->closeCursor();
+		$result->free();
 
 		$numChunks = \ceil($count/$chunkSize);
 		if ($numChunks > 1) {
@@ -430,7 +430,7 @@ class ConvertType extends Command {
 				}
 				$insertQuery->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 		$progress->finish();
 		$output->writeln("");

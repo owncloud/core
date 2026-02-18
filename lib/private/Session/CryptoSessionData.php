@@ -33,16 +33,11 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  * @package OC\Session
  */
 class CryptoSessionData implements \ArrayAccess, ISession {
-	/** @var ISession */
-	protected $session;
-	/** @var \OCP\Security\ICrypto */
-	protected $crypto;
-	/** @var string */
-	protected $passphrase;
-	/** @var array */
-	protected $sessionValues;
-	/** @var bool */
-	protected $isModified = false;
+	protected ISession $session;
+	protected ICrypto $crypto;
+	protected string $passphrase;
+	protected array $sessionValues;
+	protected bool $isModified = false;
 	public const encryptedSessionName = 'encrypted_session_data';
 
 	/**
@@ -67,20 +62,20 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	public function __destruct() {
 		try {
 			$this->close();
-		} catch (SessionNotAvailableException $e) {
+		} catch (SessionNotAvailableException) {
 			// This exception can occur if session is already closed
 			// So it is safe to ignore it and let the garbage collector to proceed
 		}
 	}
 
-	protected function initializeSession() {
-		$encryptedSessionData = $this->session->get(self::encryptedSessionName);
+	protected function initializeSession(): void {
+		$encryptedSessionData = $this->session->get(self::encryptedSessionName) ?? '';
 		try {
 			$this->sessionValues = \json_decode(
 				$this->crypto->decrypt($encryptedSessionData, $this->passphrase),
 				true
-			);
-		} catch (\Exception $e) {
+			) ?? [];
+		} catch (\Exception) {
 			$this->sessionValues = [];
 		}
 	}
@@ -91,23 +86,16 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set($key, $value) {
+	public function set($key, $value): void {
 		$this->sessionValues[$key] = $value;
 		$this->isModified = true;
 	}
 
 	/**
 	 * Get a value from the session
-	 *
-	 * @param string $key
-	 * @return string|null Either the value or null
 	 */
-	public function get($key) {
-		if (isset($this->sessionValues[$key])) {
-			return $this->sessionValues[$key];
-		}
-
-		return null;
+	public function get(string $key): mixed {
+		return $this->sessionValues[$key] ?? null;
 	}
 
 	/**
@@ -116,7 +104,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param string $key
 	 * @return bool
 	 */
-	public function exists($key) {
+	public function exists($key): bool {
 		return isset($this->sessionValues[$key]);
 	}
 
@@ -125,7 +113,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 *
 	 * @param string $key
 	 */
-	public function remove($key) {
+	public function remove($key): void {
 		$this->isModified = true;
 		unset($this->sessionValues[$key]);
 		$this->session->remove(self::encryptedSessionName);
@@ -134,7 +122,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	/**
 	 * Reset and recreate the session
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->sessionValues = [];
 		$this->isModified = true;
 		$this->session->clear();
@@ -146,7 +134,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param bool $deleteOldSession Whether to delete the old associated session file or not.
 	 * @return void
 	 */
-	public function regenerateId($deleteOldSession = true) {
+	public function regenerateId($deleteOldSession = true): void {
 		$this->session->regenerateId($deleteOldSession);
 	}
 
@@ -157,14 +145,14 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @throws SessionNotAvailableException
 	 * @since 9.1.0
 	 */
-	public function getId() {
+	public function getId(): string {
 		return $this->session->getId();
 	}
 
 	/**
 	 * Close the session and release the lock, also writes all changed data in batch
 	 */
-	public function close() {
+	public function close(): void {
 		if ($this->isModified) {
 			$encryptedValue = $this->crypto->encrypt(\json_encode($this->sessionValues), $this->passphrase);
 			$this->session->set(self::encryptedSessionName, $encryptedValue);
@@ -177,15 +165,15 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @return bool
 	 */
-	public function offsetExists($offset) {
+	public function offsetExists($offset): bool {
 		return $this->exists($offset);
 	}
 
 	/**
 	 * @param mixed $offset
-	 * @return mixed
+	 * @return string|null
 	 */
-	public function offsetGet($offset) {
+	public function offsetGet($offset): ?string {
 		return $this->get($offset);
 	}
 
@@ -193,14 +181,14 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @param mixed $value
 	 */
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, mixed $value): void {
 		$this->set($offset, $value);
 	}
 
 	/**
 	 * @param mixed $offset
 	 */
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset): void {
 		$this->remove($offset);
 	}
 }

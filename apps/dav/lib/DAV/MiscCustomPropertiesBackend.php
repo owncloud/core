@@ -58,7 +58,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 
 		$statement = $this->connection->prepare(self::DELETE_BY_PATH_STMT);
 		$statement->execute([$path]);
-		$statement->closeCursor();
+		$statement->free();
 		$this->offsetUnset($path);
 	}
 
@@ -78,7 +78,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 
 		$statement = $this->connection->prepare(self::UPDATE_BY_PATH_STMT);
 		$statement->execute([$destination, $source]);
-		$statement->closeCursor();
+		$statement->free();
 	}
 
 	/**

@@ -52,7 +52,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->from($table);
 		$result = $query->execute();
 		$mapping = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		return $mapping;
 	}

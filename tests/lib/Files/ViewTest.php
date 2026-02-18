@@ -59,7 +59,6 @@ class TemporaryNoLocal extends Temporary {
  * @package Test\Files
  */
 class ViewTest extends TestCase {
-	public $shallThrow;
 	/**
 	 * @var Storage[] $storages
 	 */
@@ -85,6 +84,7 @@ class ViewTest extends TestCase {
 
 	/** @var \OC\AllConfig */
 	private $config;
+	private bool $shallThrow;
 
 	protected function setUp(): void {
 		parent::setUp();

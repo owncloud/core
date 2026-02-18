@@ -388,15 +388,15 @@ class View {
 	 *
 	 * @return bool
 	 */
-	protected function isShareFolderOrShareFolderParent($path) {
-		$shareFolder = \trim($this->config->getSystemValue('share_folder', '/'), '/');
+	protected function isShareFolderOrShareFolderParent($path): bool {
+		$shareFolder = \trim($this->config->getSystemValue('share_folder', '/') ?? '', '/');
 		if ($shareFolder === '') {
 			return false;
 		}
 		$user = \OC_User::getUser();
 		$shareFolderAbsolutePath = "/$user/files/$shareFolder";
 		$trimmedAbsolutePath = $this->getAbsolutePath(\trim($path, '/'));
-		return $shareFolderAbsolutePath === $trimmedAbsolutePath || \strpos($shareFolderAbsolutePath, "$trimmedAbsolutePath/") === 0;
+		return $shareFolderAbsolutePath === $trimmedAbsolutePath || \str_starts_with($shareFolderAbsolutePath, "$trimmedAbsolutePath/");
 	}
 
 	/**
@@ -1439,7 +1439,7 @@ class View {
 		if (!Filesystem::isValidPath($path)) {
 			return false;
 		}
-		if (Cache\Scanner::isPartialFile($path)) {
+		if (Cache\Scanner::isPartialFile($path ?? '')) {
 			return $this->getPartFileInfo($path);
 		}
 		$relativePath = $path;
@@ -1972,7 +1972,7 @@ class View {
 	 * @return string[]
 	 */
 	private function getParents($path) {
-		$path = \trim($path, '/');
+		$path = \trim($path ?? '', '/');
 		if (!$path) {
 			return [];
 		}

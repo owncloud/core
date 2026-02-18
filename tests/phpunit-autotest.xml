@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="bootstrap.php" verbose="true" backupGlobals="false" backupStaticAttributes="false" failOnRisky="true" failOnWarning="true" timeoutForSmallTests="900" timeoutForMediumTests="900" timeoutForLargeTests="900" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
-    <include>
-      <directory suffix=".php">..</directory>
-    </include>
-    <exclude>
-      <directory suffix=".php">../apps/dav/tests</directory>
-      <directory suffix=".php">../apps/encryption/tests</directory>
-      <directory suffix=".php">../apps/federatedfilesharing/tests</directory>
-      <directory suffix=".php">../apps/federation/tests</directory>
-      <directory suffix=".php">../apps/files/tests</directory>
-      <directory suffix=".php">../apps/files_external</directory>
-      <directory suffix=".php">../apps/files_sharing/tests</directory>
-      <directory suffix=".php">../apps/files_trashbin/tests</directory>
-      <directory suffix=".php">../apps/files_versions/tests</directory>
-      <directory suffix=".php">../apps/provisioning_api/tests</directory>
-      <directory suffix=".php">../apps/updatenotification/tests</directory>
-      <directory suffix=".php">../tests</directory>
-      <directory suffix=".php">../build</directory>
-      <directory suffix=".php">../lib/composer</directory>
-      <file>../config/config.apps.sample.php</file>
-      <file>../config/config.sample.php</file>
-    </exclude>
-  </coverage>
-  <testsuites>
-    <testsuite name="ownCloud">
-      <directory suffix=".php">lib/</directory>
-      <directory suffix=".php">Settings/</directory>
-      <directory suffix=".php">Core/</directory>
-      <file>apps.php</file>
-    </testsuite>
-  </testsuites>
-  <listeners>
-    <listener class="StartSessionListener" file="startsessionlistener.php"/>
-  </listeners>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 bootstrap="bootstrap.php" verbose="true" failOnRisky="true"
+		 failOnWarning="true"
+		 timeoutForSmallTests="900" timeoutForMediumTests="900"
+		 timeoutForLargeTests="900"
+		 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
+	<coverage>
+		<include>
+			<directory suffix=".php">..</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">../apps/dav/tests</directory>
+			<directory suffix=".php">../apps/encryption/tests</directory>
+			<directory suffix=".php">../apps/federatedfilesharing/tests
+			</directory>
+			<directory suffix=".php">../apps/federation/tests</directory>
+			<directory suffix=".php">../apps/files/tests</directory>
+			<directory suffix=".php">../apps/files_external</directory>
+			<directory suffix=".php">../apps/files_sharing/tests</directory>
+			<directory suffix=".php">../apps/files_trashbin/tests</directory>
+			<directory suffix=".php">../apps/files_versions/tests</directory>
+			<directory suffix=".php">../apps/provisioning_api/tests</directory>
+			<directory suffix=".php">../apps/updatenotification/tests
+			</directory>
+			<directory suffix=".php">../tests</directory>
+			<directory suffix=".php">../build</directory>
+			<directory suffix=".php">../lib/composer</directory>
+			<file>../config/config.apps.sample.php</file>
+			<file>../config/config.sample.php</file>
+		</exclude>
+	</coverage>
+	<testsuites>
+		<testsuite name="ownCloud">
+			<directory suffix=".php">lib/</directory>
+			<directory suffix=".php">Settings/</directory>
+			<directory suffix=".php">Core/</directory>
+			<file>apps.php</file>
+		</testsuite>
+	</testsuites>
+	<listeners>
+		<listener class="StartSessionListener" file="startsessionlistener.php"/>
+	</listeners>
 </phpunit>

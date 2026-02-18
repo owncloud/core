@@ -11,46 +11,52 @@
 namespace Tests\Settings\Controller;
 
 use OC\Settings\Application;
+use OCP\AppFramework\IAppContainer;
+use PHPUnit\Framework\MockObject\MockObject;
+use Test\TestCase;
+use OC\User\User;
+use OCP\IConfig;
+use OCP\IL10N;
+use OC\User\Session;
+use OC\Mail\Mailer;
 
 /**
  * @package Tests\Settings\Controller
  */
-class MailSettingsControllerTest extends \Test\TestCase {
-	private $container;
+class MailSettingsControllerTest extends TestCase {
+	private IAppContainer $container;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$app = new Application();
 		$this->container = $app->getContainer();
-		$this->container['Config'] = $this->getMockBuilder('\OCP\IConfig')
+		$this->container['Config'] = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->container['L10N'] = $this->getMockBuilder('\OCP\IL10N')
+		$this->container['L10N'] = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['AppName'] = 'settings';
-		$this->container['UserSession'] = $this->getMockBuilder('\OC\User\Session')
+		$this->container['UserSession'] = $this->getMockBuilder(Session::class)
 			->disableOriginalConstructor()->getMock();
-		$this->container['MailMessage'] = $this->getMockBuilder('\OCP\Mail\IMessage')
-			->disableOriginalConstructor()->getMock();
-		$this->container['Mailer'] = $this->getMockBuilder('\OC\Mail\Mailer')
+		$this->container['Mailer'] = $this->getMockBuilder(Mailer::class)
 			->setMethods(['send', 'validateMailAddress'])
 			->disableOriginalConstructor()->getMock();
-		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
+		$this->container['Defaults'] = $this->getMockBuilder(\OC_Defaults::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['DefaultMailAddress'] = 'no-reply@owncloud.com';
 	}
 
-	public function testSetInvalidMail() {
+	public function testSetInvalidMail(): void {
 		$this->container['L10N']
 			->expects($this->exactly(2))
 			->method('t')
-			->will($this->returnValue('Invalid email address'));
+			->willReturn('Invalid email address');
 
 		$this->container['Mailer']
 			->expects($this->exactly(2))
 			->method('validateMailAddress')
 			->with('@@owncloud.com')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		// With authentication
 		$response = $this->container['MailSettingsController']->setMailSettings(
@@ -77,54 +83,26 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			0,
 			'25'
 		);
-		$expectedResponse = ['data' => ['message' =>'Invalid email address'], 'status' => 'error'];
+
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testSetMailSettings() {
+	public function testSetMailSettings(): void {
 		$this->container['L10N']
 			->expects($this->exactly(2))
 			->method('t')
-			->will($this->returnValue('Saved'));
-
-		/**
-		 * FIXME: Use the following block once Jenkins uses PHPUnit >= 4.1
-		 */
-		/*
-		$this->container['Config']
-			->expects($this->exactly(15))
-			->method('setSystemValue')
-			->withConsecutive(
-				array($this->equalTo('mail_domain'), $this->equalTo('owncloud.com')),
-				array($this->equalTo('mail_from_address'), $this->equalTo('demo')),
-				array($this->equalTo('mail_smtpmode'), $this->equalTo('smtp')),
-				array($this->equalTo('mail_smtpsecure'), $this->equalTo('ssl')),
-				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.com')),
-				array($this->equalTo('mail_smtpauthtype'), $this->equalTo('NTLM')),
-				array($this->equalTo('mail_smtpauth'), $this->equalTo(1)),
-				array($this->equalTo('mail_smtpport'), $this->equalTo('25')),
-				array($this->equalTo('mail_domain'), $this->equalTo('owncloud.com')),
-				array($this->equalTo('mail_from_address'), $this->equalTo('demo@owncloud.com')),
-				array($this->equalTo('mail_smtpmode'), $this->equalTo('smtp')),
-				array($this->equalTo('mail_smtpsecure'), $this->equalTo('ssl')),
-				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.com')),
-				array($this->equalTo('mail_smtpauthtype'), $this->equalTo('NTLM')),
-				array($this->equalTo('mail_smtpport'), $this->equalTo('25'))
-			);
-		 */
+			->willReturn('Saved');
 
 		$this->container['Mailer']
 			->expects($this->exactly(2))
 			->method('validateMailAddress')
 			->with('demo@owncloud.com')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
-		/** @var \PHPUnit\Framework\MockObject\MockObject $config */
+		/** @var MockObject $config */
 		$config = $this->container['Config'];
 		$config->expects($this->exactly(2))
-			->method('setSystemValues');
-		/**
-		 * FIXME: Use the following block once Jenkins uses PHPUnit >= 4.1
+			->method('setSystemValues')
 			->withConsecutive(
 				[[
 					'mail_domain' => 'owncloud.com',
@@ -132,7 +110,6 @@ class MailSettingsControllerTest extends \Test\TestCase {
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
 					'mail_smtphost' => 'mx.owncloud.com',
-					'mail_smtpauthtype' => 'NTLM',
 					'mail_smtpauth' => 1,
 					'mail_smtpport' => '25',
 				]],
@@ -142,14 +119,12 @@ class MailSettingsControllerTest extends \Test\TestCase {
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
 					'mail_smtphost' => 'mx.owncloud.com',
-					'mail_smtpauthtype' => 'NTLM',
 					'mail_smtpauth' => null,
-					'mail_smtpport' => '25',
+					'mail_smtpport' => '587',
 					'mail_smtpname' => null,
-					'mail_smtppassword' => null,
+					'mail_smtppassword' => null
 				]]
 			);
-		 */
 
 		// With authentication
 		$response = $this->container['MailSettingsController']->setMailSettings(
@@ -158,7 +133,6 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'smtp',
 			'ssl',
 			'mx.owncloud.com',
-			'NTLM',
 			1,
 			'25'
 		);
@@ -172,19 +146,17 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'smtp',
 			'ssl',
 			'mx.owncloud.com',
-			'NTLM',
 			0,
-			'25'
+			'587'
 		);
-		$expectedResponse = ['data' => ['message' =>'Saved'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testStoreCredentials() {
+	public function testStoreCredentials(): void {
 		$this->container['L10N']
 			->expects($this->once())
 			->method('t')
-			->will($this->returnValue('Saved'));
+			->willReturn('Saved');
 
 		$this->container['Config']
 			->expects($this->once())
@@ -200,47 +172,43 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testSendTestMail() {
-		$user = $this->getMockBuilder('\OC\User\User')
+	public function testSendTestMail(): void {
+		$user = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$user->expects($this->any())
+		$user
 			->method('getUID')
-			->will($this->returnValue('Werner'));
-		$user->expects($this->any())
+			->willReturn('Werner');
+		$user
 			->method('getDisplayName')
-			->will($this->returnValue('Werner Brösel'));
+			->willReturn('Werner Brösel');
 
 		$this->container['L10N']
-			->expects($this->any())
 			->method('t')
-			->will(
-				$this->returnValueMap(
-					[
-						['You need to set your user email before being able to send test emails.', [],
-							'You need to set your user email before being able to send test emails.'],
-						['A problem occurred while sending the e-mail. Please revisit your settings.', [],
-							'A problem occurred while sending the e-mail. Please revisit your settings.'],
-						['Email sent', [], 'Email sent'],
-						['test email settings', [], 'test email settings'],
-						['If you received this email, the settings seem to be correct.', [],
-							'If you received this email, the settings seem to be correct.']
-					]
-				)
+			->willReturnMap(
+				[
+					['You need to set your user email before being able to send test emails.', [],
+						'You need to set your user email before being able to send test emails.'],
+					['A problem occurred while sending the e-mail. Please revisit your settings.', [],
+						'A problem occurred while sending the e-mail. Please revisit your settings.'],
+					['Email sent', [], 'Email sent'],
+					['test email settings', [], 'test email settings'],
+					['If you received this email, the settings seem to be correct.', [],
+						'If you received this email, the settings seem to be correct.']
+				]
 			);
 		$this->container['UserSession']
-			->expects($this->any())
 			->method('getUser')
-			->will($this->returnValue($user));
+			->willReturn($user);
 
 		// Ensure that it fails when no mail address has been specified
 		$response = $this->container['MailSettingsController']->sendTestMail();
 		$expectedResponse = ['data' => ['message' =>'You need to set your user email before being able to send test emails.'], 'status' => 'error'];
 		$this->assertSame($expectedResponse, $response);
 
-		$user->expects($this->any())
+		$user
 			->method('getEMailAddress')
-			->will($this->returnValue('mail@example.invalid'));
+			->willReturn('mail@example.invalid');
 		$response = $this->container['MailSettingsController']->sendTestMail();
 		$expectedResponse = ['data' => ['message' =>'Email sent'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);

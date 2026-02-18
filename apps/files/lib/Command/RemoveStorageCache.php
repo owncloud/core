@@ -125,7 +125,7 @@ class RemoveStorageCache extends Command {
 			->execute();
 
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		return (int)$row['count'];
 	}
@@ -153,7 +153,7 @@ class RemoveStorageCache extends Command {
 			}
 		}
 
-		$result->closeCursor();
+		$result->free();
 		return $maxId;
 	}
 
@@ -188,6 +188,6 @@ class RemoveStorageCache extends Command {
 			$table->addRow([$row['storage'], $row['id'] ?? 'NULL', $row['count']]);
 		}
 		$table->render();
-		$result->closeCursor();
+		$result->free();
 	}
 }

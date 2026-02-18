@@ -58,7 +58,7 @@ class Disable extends Command {
 			->setMaxResults(1);
 		$results = $qb->execute();
 		$hasEncryptedFiles = (bool) $results->fetchColumn(0);
-		$results->closeCursor();
+		$results->free();
 		if ($hasEncryptedFiles !== false) {
 			$output->writeln('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>');
 			return 1;
