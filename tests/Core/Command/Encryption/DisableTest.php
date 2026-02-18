@@ -21,7 +21,7 @@
 
 namespace Tests\Core\Command\Encryption;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OC\Core\Command\Encryption\Disable;
 use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
 use OC\DB\QueryBuilder\QueryBuilder;
@@ -78,7 +78,7 @@ class DisableTest extends TestCase {
 	 * @param string $expectedString
 	 */
 	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $hasEncryptedFiles, $expectedString) {
-		$stmt = $this->createMock(Statement::class);
+		$stmt = $this->createMock(Result::class);
 		$stmt->method('fetchColumn')
 			->willReturn($hasEncryptedFiles);
 		$qbExpr = $this->createMock(ExpressionBuilder::class);

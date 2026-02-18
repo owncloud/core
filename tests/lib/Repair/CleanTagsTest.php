@@ -118,7 +118,7 @@ class CleanTagsTest extends \Test\TestCase {
 			->from($tableName)
 			->execute();
 
-		$this->assertEquals($expected, $result->fetchColumn(), $message);
+		$this->assertEquals($expected, $result->fetchOne(), $message);
 	}
 
 	/**

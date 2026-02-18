@@ -156,7 +156,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $statement The SQL statement to prepare.
 	 * @param int $limit
 	 * @param int $offset
-	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
+	 * @return \Doctrine\DBAL\Statement The prepared statement.
 	 */
 	public function prepare($statement, $limit=null, $offset=null) : \Doctrine\DBAL\Statement {
 		if ($limit === -1) {

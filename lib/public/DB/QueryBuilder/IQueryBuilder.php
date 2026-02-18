@@ -150,7 +150,7 @@ interface IQueryBuilder {
 	 *         ->select('u')
 	 *         ->from('users', 'u')
 	 *         ->where('u.id = :user_id')
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string|integer $key The parameter position or name.
@@ -336,7 +336,7 @@ interface IQueryBuilder {
 	 *     $qb = $conn->getQueryBuilder()
 	 *         ->delete('users', 'u')
 	 *         ->where('u.id = :user_id');
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string $delete The table whose rows are subject to the deletion.

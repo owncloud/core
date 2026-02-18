@@ -62,7 +62,7 @@ class PreviewCleanup {
 				$lastFileId = $row['fileid'];
 
 				if (!isset($lastStorageInfo[$storageId])) {
-					$query->setParameter(':sid', $storageId, IQueryBuilder::PARAM_INT);
+					$query->setParameter('sid', $storageId, IQueryBuilder::PARAM_INT);
 					$result = $query->execute();
 					$resultData = $result->fetchAll(); // only 1 result expected
 					if (empty($resultData)) {

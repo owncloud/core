@@ -86,7 +86,7 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 		);
 		$this->maxId = (int) $qb->select($maxFunction)
 			->from('dav_properties')
-			->execute()->fetchColumn();
+			->execute()->fetchOne();
 	}
 
 	public function tearDown(): void {

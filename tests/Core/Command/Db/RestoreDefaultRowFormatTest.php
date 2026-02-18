@@ -22,7 +22,7 @@
 
 namespace Tests\Core\Command\Db;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OC\Core\Command\Db\RestoreDefaultRowFormat;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -78,7 +78,7 @@ class RestoreDefaultRowFormatTest extends TestCase {
 				['dbtableprefix', 'oc_'],
 				['dbname', 'oc']
 			]));
-		$statement = $this->getMockBuilder(Statement::class)->getMock();
+		$statement = $this->getMockBuilder(Result::class)->getMock();
 		$statement->expects($this->once())->method('fetchColumn')->willReturn('dynamic');
 		$statement->expects($this->once())->method('fetchAll')->willReturn(
 			[

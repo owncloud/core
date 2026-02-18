@@ -61,7 +61,7 @@ class RestoreDefaultRowFormat extends Command {
 		$dbName = $this->config->getSystemValue("dbname");
 
 		$defaultRowFormatStatement = $this->connection->executeQuery("SELECT @@GLOBAL.innodb_default_row_format as 'default'");
-		$defaultFormat = $defaultRowFormatStatement->fetchColumn();
+		$defaultFormat = $defaultRowFormatStatement->fetchOne();
 
 		/**
 		 * Fetch tables with the row_format not matching default.
