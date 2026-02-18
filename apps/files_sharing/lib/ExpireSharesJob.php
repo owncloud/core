@@ -119,6 +119,6 @@ class ExpireSharesJob extends TimedJob {
 				$this->activityManager->restoreAgentAuthor();
 			}
 		}
-		$shares->closeCursor();
+		$shares->free();
 	}
 }

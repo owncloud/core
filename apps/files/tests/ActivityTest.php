@@ -402,7 +402,7 @@ class ActivityTest extends TestCase {
 		// does not exist in core
 		$result = $connection->executeQuery('SELECT * FROM `*PREFIX*privatedata` WHERE ' . $resultQuery, $resultParameters);
 		$rows = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 	}
 
 	protected function mockUserSession($user) {

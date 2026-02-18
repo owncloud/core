@@ -513,7 +513,7 @@ class AllConfig implements IConfig {
 			$userIDs[] = $row['userid'];
 		}
 
-		$query->closeCursor();
+		$query->free();
 
 		return $userIDs;
 	}

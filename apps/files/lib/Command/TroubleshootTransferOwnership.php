@@ -288,7 +288,7 @@ class TroubleshootTransferOwnership extends Command {
 
 		$cursor = $query->execute();
 		$resharers = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$entities = \array_map(function ($row) {
 			return $row['uid_initiator'];
@@ -325,7 +325,7 @@ class TroubleshootTransferOwnership extends Command {
 
 		$cursor = $query->execute();
 		$reshares = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $reshares;
 	}
@@ -382,7 +382,7 @@ class TroubleshootTransferOwnership extends Command {
 
 		$cursor = $query->execute();
 		$shareStorages = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shareStorages;
 	}

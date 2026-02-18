@@ -1327,7 +1327,7 @@ class Share extends Constants {
 				$dbresult = $qb->execute();
 
 				$result = $dbresult->fetchAssociative();
-				$dbresult->closeCursor();
+				$dbresult->free();
 				if (~(int)$result['permissions'] & $permissions) {
 					$message = 'Setting permissions for %s failed,'
 						.' because the permissions exceed permissions granted to %s';
@@ -1391,7 +1391,7 @@ class Share extends Constants {
 							$parents[] = $item['id'];
 						}
 					}
-					$result->closeCursor();
+					$result->free();
 				}
 
 				// Remove the permissions for all reshares of this item
@@ -1431,7 +1431,7 @@ class Share extends Constants {
 					$items[] = $item;
 					$ids[] = $item['id'];
 				}
-				$result->closeCursor();
+				$result->free();
 
 				// Add permissions for all USERGROUP shares of this item
 				if (!empty($ids)) {

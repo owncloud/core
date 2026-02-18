@@ -133,7 +133,7 @@ class PollIncomingShares extends Command {
 				}
 			}
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 		return 0;
 	}
 

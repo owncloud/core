@@ -34,7 +34,7 @@ class MySqlTools {
 		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
 			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");
 			$rows = $result->fetch();
-			$result->closeCursor();
+			$result->free();
 			if ($rows === false) {
 				return false;
 			}

@@ -100,7 +100,7 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 				$this->maxId,
 			]
 		);
-		$deleteStatement->closeCursor();
+		$deleteStatement->free();
 	}
 
 	/**
