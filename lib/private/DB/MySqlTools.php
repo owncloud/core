@@ -23,7 +23,7 @@
 namespace OC\DB;
 
 use OCP\IDBConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 
 /**

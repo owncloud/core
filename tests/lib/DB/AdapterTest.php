@@ -21,7 +21,7 @@
  */
 
 namespace Test\DB;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Driver\AbstractDriverException;
 use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;

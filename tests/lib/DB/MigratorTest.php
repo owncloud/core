@@ -9,7 +9,7 @@
 
 namespace Test\DB;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
@@ -62,12 +62,12 @@ class MigratorTest extends \Test\TestCase {
 		// Try to delete if exists (IF EXISTS NOT SUPPORTED IN ORACLE)
 		try {
 			$this->connection->exec('DROP TABLE ' . $this->connection->quoteIdentifier($this->tableNameTmp));
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (DBALException $e) {
 		}
 
 		try {
 			$this->connection->exec('DROP TABLE ' . $this->connection->quoteIdentifier($this->tableName));
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (DBALException $e) {
 		}
 		parent::tearDown();
 	}
