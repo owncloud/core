@@ -257,11 +257,12 @@ class Database extends \OC\Group\Backend {
 		}
 
 		$stmt = $this->dbConn->prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
-		$stmt->execute($parameters);
+		$result = $stmt->executeQuery($parameters);
 		$groups = [];
-		while ($row = $stmt->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$groups[] = $row['gid'];
 		}
+		$result->free();
 		return $groups;
 	}
 
@@ -316,11 +317,12 @@ class Database extends \OC\Group\Backend {
 			$limit,
 			$offset
 		);
-		$stmt->execute($parameters);
+		$result = $stmt->executeQuery($parameters);
 		$users = [];
-		while ($row = $stmt->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$users[] = $row['uid'];
 		}
+		$result->free();
 		return $users;
 	}
 

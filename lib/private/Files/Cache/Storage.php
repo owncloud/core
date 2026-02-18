@@ -154,8 +154,11 @@ class Storage {
 	private static function getStorageByIdFromDb($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
 		$connection = \OC::$server->getDatabaseConnection();
-		$resultSet = $connection->executeQuery($sql, [$storageId]);
-		return $resultSet->fetch();
+		$query = $connection->executeQuery($sql, [$storageId]);
+		$row = $query->fetchAssociative();
+		$query->free();
+
+		return $row;
 	}
 
 	private static function unsetCache($storageId) {
@@ -199,11 +202,13 @@ class Storage {
 		$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `numeric_id` = ?';
 		$connection = \OC::$server->getDatabaseConnection();
 		$result = $connection->executeQuery($sql, [$numericId]);
-		if ($row = $result->fetch()) {
+		$row = $result->fetchAssociative();
+		$result->free();
+		if ($row) {
 			return $row['id'];
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 
 	/**
