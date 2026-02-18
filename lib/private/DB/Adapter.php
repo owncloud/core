@@ -89,7 +89,7 @@ class Adapter {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		if (empty($compare)) {

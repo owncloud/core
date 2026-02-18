@@ -27,7 +27,6 @@
 
 namespace OC\DB;
 
-use \Doctrine\DBAL\DBALException;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -119,7 +118,7 @@ class Migrator {
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 * @return \Doctrine\DBAL\Schema\SchemaDiff
-	 * @throws DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	protected function getDiff(Schema $targetSchema, \Doctrine\DBAL\Connection $connection) {
 		// adjust varchar columns with a length higher then getVarcharMaxLength to clob
