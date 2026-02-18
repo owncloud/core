@@ -39,9 +39,9 @@ use OCP\Files\NotFoundException;
 use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\NotFound;
 
-$RUNTIME_APPTYPES = ['filesystem', 'authentication', 'logging'];
-
-OC_App::loadApps($RUNTIME_APPTYPES);
+OC_App::loadApps(['authentication']);
+OC_Util::tearDownFS();  // FS might have been prematurely initialized
+OC_App::loadApps(['filesystem', 'logging']);
 
 OC_Util::obEnd();
 \OC::$server->getSession()->close();

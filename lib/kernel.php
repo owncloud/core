@@ -886,6 +886,7 @@ class OC {
 		if (!self::checkUpgrade(false)
 			&& !$systemConfig->getValue('maintenance', false)) {
 			// For logged-in users: Load everything
+			OC_Util::tearDownFS();  // FS might have been prematurely initialized
 			$userSession = \OC::$server->getUserSession();
 			if ($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
 				OC_App::loadApps();

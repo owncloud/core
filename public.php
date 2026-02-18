@@ -63,6 +63,7 @@ try {
 	// Load all required applications
 	\OC::$REQUESTEDAPP = $app;
 	OC_App::loadApps(['authentication']);
+	OC_Util::tearDownFS();  // FS might have been prematurely initialized
 	OC_App::loadApps(['filesystem', 'logging']);
 
 	if (!\OC::$server->getAppManager()->isInstalled($app)) {
