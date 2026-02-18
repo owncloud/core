@@ -34,7 +34,7 @@ class MySqlMigrationTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->connection->getSchemaManager()->dropTable($this->tableName);
+		$this->connection->createSchemaManager()->dropTable($this->tableName);
 		parent::tearDown();
 	}
 

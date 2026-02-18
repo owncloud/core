@@ -66,7 +66,7 @@ class MDB2SchemaManager {
 	 */
 	public function createDbFromStructure($file) {
 		$schemaReader = new MDB2SchemaReader(\OC::$server->getConfig(), $this->conn->getDatabasePlatform());
-		$toSchema = new Schema([], [], $this->conn->getSchemaManager()->createSchemaConfig());
+		$toSchema = new Schema([], [], $this->conn->createSchemaManager()->createSchemaConfig());
 		$toSchema = $schemaReader->loadSchemaFromFile($file, $toSchema);
 		return $this->executeSchemaChange($toSchema);
 	}
@@ -101,7 +101,7 @@ class MDB2SchemaManager {
 	private function readSchemaFromFile($file) {
 		$platform = $this->conn->getDatabasePlatform();
 		$schemaReader = new MDB2SchemaReader(\OC::$server->getConfig(), $platform);
-		$toSchema = new Schema([], [], $this->conn->getSchemaManager()->createSchemaConfig());
+		$toSchema = new Schema([], [], $this->conn->createSchemaManager()->createSchemaConfig());
 		return $schemaReader->loadSchemaFromFile($file, $toSchema);
 	}
 
@@ -139,7 +139,7 @@ class MDB2SchemaManager {
 	 */
 	public function removeDBStructure($file) {
 		$schemaReader = new MDB2SchemaReader(\OC::$server->getConfig(), $this->conn->getDatabasePlatform());
-		$toSchema = new Schema([], [], $this->conn->getSchemaManager()->createSchemaConfig());
+		$toSchema = new Schema([], [], $this->conn->createSchemaManager()->createSchemaConfig());
 		$fromSchema = $schemaReader->loadSchemaFromFile($file, $toSchema);
 		$toSchema = clone $fromSchema;
 		/** @var $table \Doctrine\DBAL\Schema\Table */

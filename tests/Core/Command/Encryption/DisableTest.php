@@ -79,7 +79,7 @@ class DisableTest extends TestCase {
 	 */
 	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $hasEncryptedFiles, $expectedString) {
 		$stmt = $this->createMock(Result::class);
-		$stmt->method('fetchColumn')
+		$stmt->method('fetchOne')
 			->willReturn($hasEncryptedFiles);
 		$qbExpr = $this->createMock(ExpressionBuilder::class);
 		$qbMock = $this->createMock(QueryBuilder::class);

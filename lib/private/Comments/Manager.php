@@ -162,7 +162,7 @@ class Manager implements ICommentsManager {
 				->setParameter('id', $id);
 
 		$resultStatement = $query->execute();
-		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
+		$data = $resultStatement->fetchNumeric();
 		$resultStatement->free();
 		$children = \intval($data[0]);
 
@@ -443,7 +443,7 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
+		$data = $resultStatement->fetchNumeric();
 		$resultStatement->free();
 		return \intval($data[0]);
 	}

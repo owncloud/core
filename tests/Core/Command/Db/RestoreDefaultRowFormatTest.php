@@ -79,7 +79,7 @@ class RestoreDefaultRowFormatTest extends TestCase {
 				['dbname', 'oc']
 			]));
 		$statement = $this->getMockBuilder(Result::class)->getMock();
-		$statement->expects($this->once())->method('fetchColumn')->willReturn('dynamic');
+		$statement->expects($this->once())->method('fetchOne')->willReturn('dynamic');
 		$statement->expects($this->once())->method('fetchAll')->willReturn(
 			[
 				['name' => 'oc_users', 'format' => 'compressed'], ['name' => 'oc_accounts', 'format' => 'compressed']

@@ -38,10 +38,10 @@ class MDB2SchemaManagerTest extends \Test\TestCase {
 		$manager = new \OC\DB\MDB2SchemaManager($connection);
 
 		$manager->createDbFromStructure(__DIR__ . '/ts-autoincrement-before.xml');
-		$connection->executeUpdate('insert into `*PREFIX*table` values (?)', ['abc']);
-		$connection->executeUpdate('insert into `*PREFIX*table` values (?)', ['abc']);
-		$connection->executeUpdate('insert into `*PREFIX*table` values (?)', ['123']);
-		$connection->executeUpdate('insert into `*PREFIX*table` values (?)', ['123']);
+		$connection->executeStatement('insert into `*PREFIX*table` values (?)', ['abc']);
+		$connection->executeStatement('insert into `*PREFIX*table` values (?)', ['abc']);
+		$connection->executeStatement('insert into `*PREFIX*table` values (?)', ['123']);
+		$connection->executeStatement('insert into `*PREFIX*table` values (?)', ['123']);
 		$manager->updateDbFromStructure(__DIR__ . '/ts-autoincrement-after.xml');
 
 		$this->assertTrue(true);

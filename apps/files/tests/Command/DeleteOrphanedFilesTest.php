@@ -107,7 +107,7 @@ class DeleteOrphanedFilesTest extends TestCase {
 
 		$this->assertCount(1, $this->getFile($fileInfo->getId()), 'Asserts that file is still available');
 
-		$deletedRows = $this->connection->executeUpdate('DELETE FROM `*PREFIX*storages` WHERE `id` = ?', [$storageId]);
+		$deletedRows = $this->connection->executeStatement('DELETE FROM `*PREFIX*storages` WHERE `id` = ?', [$storageId]);
 		$this->assertNotNull($deletedRows, 'Asserts that storage got deleted');
 		$this->assertSame(1, $deletedRows, 'Asserts that storage got deleted');
 
