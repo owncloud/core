@@ -3,6 +3,7 @@ namespace OCA\DAV\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -17,13 +18,13 @@ class Version20170711193427 implements ISchemaMigration {
 
 			$idColumn = $table->getColumn('id');
 			if ($idColumn) {
-				$idColumn->setType(Type::getType(Type::BIGINT));
+				$idColumn->setType(Type::getType(Types::BIGINT));
 				$idColumn->setOptions(['length' => 20]);
 			}
 
 			$fileidColumn = $table->getColumn('fileid');
 			if ($fileidColumn) {
-				$fileidColumn->setType(Type::getType(Type::BIGINT));
+				$fileidColumn->setType(Type::getType(Types::BIGINT));
 				$fileidColumn->setOptions(['length' => 20]);
 			}
 		}

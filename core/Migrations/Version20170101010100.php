@@ -21,7 +21,6 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
@@ -47,7 +46,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBookChangesTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'notnull' => false,
 					'default' => null,
@@ -57,7 +56,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBookChangesTable->addColumn(
 				'synctoken',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'notnull' => true,
 					'default' => 1,
@@ -67,7 +66,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBookChangesTable->addColumn(
 				'addressbookid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'notnull' => true
 				]
@@ -75,7 +74,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBookChangesTable->addColumn(
 				'operation',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'notnull' => true
 				]
@@ -89,7 +88,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -99,7 +98,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'principaluri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'notnull' => false,
@@ -109,7 +108,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'displayname',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'notnull' => false,
@@ -119,7 +118,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'notnull' => false,
@@ -129,7 +128,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'description',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -139,7 +138,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBooksTable->addColumn(
 				'synctoken',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 1,
 					'unsigned' => true
@@ -155,7 +154,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarChangesTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -165,7 +164,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarChangesTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -175,7 +174,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarChangesTable->addColumn(
 				'synctoken',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 1,
 					'unsigned' => true
@@ -184,12 +183,12 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarChangesTable->addColumn(
 				'calendarid',
-				Type::INTEGER
+				Types::INTEGER
 			);
 
 			$calendarChangesTable->addColumn(
 				'operation',
-				Type::SMALLINT
+				Types::SMALLINT
 			);
 
 			$calendarChangesTable->setPrimaryKey(['id']);
@@ -201,7 +200,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -211,7 +210,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'calendardata',
-				Type::BLOB,
+				Types::BLOB,
 				[
 					'default' => null,
 					'notnull' => false
@@ -220,7 +219,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -230,7 +229,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'calendarid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true
 				]
@@ -238,7 +237,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'lastmodified',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -248,7 +247,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'etag',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 32,
@@ -258,7 +257,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'size',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'unsigned' => true
 				]
@@ -266,7 +265,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'componenttype',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -276,7 +275,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'firstoccurence',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -286,7 +285,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'lastoccurence',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -296,7 +295,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarObjectsTable->addColumn(
 				'uid',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -313,7 +312,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -323,7 +322,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'principaluri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -333,7 +332,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'displayname',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -343,7 +342,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -353,7 +352,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'synctoken',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 1,
 					'unsigned' => true
@@ -362,7 +361,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'description',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -372,7 +371,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'calendarorder',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -381,7 +380,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'calendarcolor',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -391,7 +390,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'timezone',
-				Type::TEXT,
+				Types::TEXT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -400,7 +399,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'components',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -410,7 +409,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarsTable->addColumn(
 				'transparent',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => 0,
 				]
@@ -425,7 +424,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -435,7 +434,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -445,7 +444,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'principaluri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -455,7 +454,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'source',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -465,7 +464,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'displayname',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 100,
@@ -475,7 +474,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'refreshrate',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 10,
@@ -485,7 +484,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'calendarorder',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -494,7 +493,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'calendarcolor',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -504,7 +503,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'striptodos',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -513,7 +512,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'stripalarms',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -522,7 +521,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'stripattachments',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -531,7 +530,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$calendarSubscriptionsTable->addColumn(
 				'lastmodified',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -548,7 +547,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -558,7 +557,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'addressbookid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0
 				]
@@ -566,7 +565,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'carddata',
-				Type::BLOB,
+				Types::BLOB,
 				[
 					'default' => null,
 					'notnull' => false
@@ -575,7 +574,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -585,7 +584,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'lastmodified',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -595,7 +594,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'etag',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 32,
@@ -605,7 +604,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsTable->addColumn(
 				'size',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'unsigned' => true
 				]
@@ -619,7 +618,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -629,7 +628,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'addressbookid',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'default' => 0
 				]
@@ -637,7 +636,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'cardid',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -646,7 +645,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'name',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 64,
@@ -656,7 +655,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'value',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -666,7 +665,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$cardsPropertiesTable->addColumn(
 				'preferred',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 1
 				]
@@ -683,7 +682,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -693,7 +692,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'parent_id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -702,7 +701,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'topmost_parent_id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -711,7 +710,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'children_count',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'unsigned' => true
@@ -720,7 +719,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'actor_type',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -729,7 +728,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'actor_id',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -738,7 +737,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'message',
-				Type::TEXT,
+				Types::TEXT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -747,7 +746,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'verb',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 64,
@@ -757,7 +756,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'creation_timestamp',
-				Type::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false
@@ -766,7 +765,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'latest_child_timestamp',
-				Type::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false
@@ -775,7 +774,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'object_type',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -784,7 +783,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'object_id',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -803,7 +802,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsReadMarkersTable->addColumn(
 				'user_id',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -812,7 +811,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsReadMarkersTable->addColumn(
 				'marker_datetime',
-				Type::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false
@@ -821,7 +820,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsReadMarkersTable->addColumn(
 				'object_type',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -830,7 +829,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsReadMarkersTable->addColumn(
 				'object_id',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -846,7 +845,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$credentialsTable->addColumn(
 				'user',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 64
 				]
@@ -854,7 +853,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$credentialsTable->addColumn(
 				'identifier',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 64
 				]
@@ -862,7 +861,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$credentialsTable->addColumn(
 				'credentials',
-				Type::TEXT,
+				Types::TEXT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -878,7 +877,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$davSharesTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'autoincrement' => true,
 					'unsigned' => true,
@@ -888,7 +887,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$davSharesTable->addColumn(
 				'principaluri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -898,7 +897,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$davSharesTable->addColumn(
 				'type',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -908,7 +907,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$davSharesTable->addColumn(
 				'access',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -917,7 +916,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$davSharesTable->addColumn(
 				'resourceid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true
 				]
@@ -932,7 +931,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$mountsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'autoincrement' => true,
 					'notnull' => true
@@ -941,17 +940,17 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$mountsTable->addColumn(
 				'storage_id',
-				Type::INTEGER
+				Types::INTEGER
 			);
 
 			$mountsTable->addColumn(
 				'root_id',
-				Type::INTEGER
+				Types::INTEGER
 			);
 
 			$mountsTable->addColumn(
 				'user_id',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 64
 				]
@@ -959,7 +958,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$mountsTable->addColumn(
 				'mount_point',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 4000
 				]
@@ -977,7 +976,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -987,7 +986,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'principaluri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -997,7 +996,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'calendardata',
-				Type::BLOB,
+				Types::BLOB,
 				[
 					'default' => null,
 					'notnull' => false
@@ -1006,7 +1005,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'uri',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 255,
@@ -1016,7 +1015,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'lastmodified',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => null,
 					'unsigned' => true,
@@ -1026,7 +1025,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'etag',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => null,
 					'length' => 32,
@@ -1036,7 +1035,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$schedulingObjectsTable->addColumn(
 				'size',
-				Type::BIGINT,
+				Types::BIGINT,
 				[
 					'unsigned' => true
 				]
@@ -1050,7 +1049,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'autoincrement' => true,
@@ -1060,7 +1059,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->addColumn(
 				'name',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -1069,7 +1068,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->addColumn(
 				'visibility',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => 1
 				]
@@ -1077,7 +1076,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->addColumn(
 				'editable',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'default' => 1
 				]
@@ -1092,7 +1091,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagObjectMappingTable->addColumn(
 				'objectid',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -1101,7 +1100,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagObjectMappingTable->addColumn(
 				'objecttype',
-				Type::STRING,
+				Types::STRING,
 				[
 					'default' => '',
 					'length' => 64
@@ -1110,7 +1109,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagObjectMappingTable->addColumn(
 				'systemtagid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'default' => 0,
 					'notnull' => true,
@@ -1131,7 +1130,7 @@ class Version20170101010100 implements ISchemaMigration {
 			if (!$fileCacheTable->hasColumn('checksum')) {
 				$fileCacheTable->addColumn(
 					'checksum',
-					Type::STRING,
+					Types::STRING,
 					[
 						'default' => null,
 						'length' => 255,
@@ -1147,7 +1146,7 @@ class Version20170101010100 implements ISchemaMigration {
 			if (!$shareTable->hasColumn('uid_initiator')) {
 				$shareTable->addColumn(
 					'uid_initiator',
-					Type::STRING,
+					Types::STRING,
 					[
 						'default' => null,
 						'length' => 64,

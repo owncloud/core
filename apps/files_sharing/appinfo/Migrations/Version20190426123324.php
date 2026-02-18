@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /** Updates remote_id to be string if required */
@@ -32,8 +33,8 @@ class Version20190426123324 implements ISchemaMigration {
 		if ($schema->hasTable("{$prefix}share_external")) {
 			$table = $schema->getTable("{$prefix}share_external");
 			$remoteIdColumn = $table->getColumn('remote_id');
-			if ($remoteIdColumn && $remoteIdColumn->getType()->getName() !== Type::STRING) {
-				$remoteIdColumn->setType(Type::getType(Type::STRING));
+			if ($remoteIdColumn && $remoteIdColumn->getType()->getName() !== Types::STRING) {
+				$remoteIdColumn->setType(Type::getType(Types::STRING));
 				$remoteIdColumn->setOptions(['length' => 255]);
 			}
 		}
