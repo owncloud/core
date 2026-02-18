@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 10.16.1](#changelog-for-owncloud-core-10161-2026-02-18)
 * [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
 * [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
@@ -26,6 +27,25 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.16.1...master
+
+## Summary
+
+* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+
+## Details
+
+* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+
+   With composer managing auto loading for a long time this is no longer necessary.
+
+   https://github.com/owncloud/core/pull/41376
+
 # Changelog for ownCloud Core [10.16.1] (2026-02-18)
 
 The following sections list the changes in ownCloud core 10.16.1 relevant to
@@ -37,7 +57,6 @@ ownCloud admins and users.
 
 * Bugfix - Apply SVG sanitization to all file content before using ImageMagick: [#41433](https://github.com/owncloud/core/pull/41433)
 * Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
-* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 * Enhancement - Add mimetype aliases/mapping for .toml and .ovpn: [#41431](https://github.com/owncloud/core/pull/41431)
 
@@ -55,12 +74,6 @@ ownCloud admins and users.
    An empty token could be used to pair trusted servers, which is not secure.
 
    https://github.com/owncloud/core/pull/41434
-
-* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
-
-   With composer managing auto loading for a long time this is no longer necessary.
-
-   https://github.com/owncloud/core/pull/41376
 
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 
