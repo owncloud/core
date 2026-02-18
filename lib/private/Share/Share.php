@@ -1323,7 +1323,7 @@ class Share extends Constants {
 				$qb->select('permissions')
 					->from('share')
 					->where($qb->expr()->eq('id', $qb->createParameter('id')))
-					->setParameter(':id', $rootItem['parent']);
+					->setParameter('id', $rootItem['parent']);
 				$dbresult = $qb->execute();
 
 				$result = $dbresult->fetchAssociative();
@@ -1340,8 +1340,8 @@ class Share extends Constants {
 			$qb->update('share')
 				->set('permissions', $qb->createParameter('permissions'))
 				->where($qb->expr()->eq('id', $qb->createParameter('id')))
-				->setParameter(':id', $rootItem['id'])
-				->setParameter(':permissions', $permissions);
+				->setParameter('id', $rootItem['id'])
+				->setParameter('permissions', $permissions);
 			$qb->execute();
 			if ($itemType === 'file' || $itemType === 'folder') {
 				\OC_Hook::emit('OCP\Share', 'post_update_permissions', [
@@ -1420,9 +1420,9 @@ class Share extends Constants {
 					->where($qb->expr()->eq('parent', $qb->createParameter('parent')))
 					->andWhere($qb->expr()->eq('share_type', $qb->createParameter('share_type')))
 					->andWhere($qb->expr()->neq('permissions', $qb->createParameter('shareDeleted')))
-					->setParameter(':parent', (int)$rootItem['id'])
-					->setParameter(':share_type', 2)
-					->setParameter(':shareDeleted', 0);
+					->setParameter('parent', (int)$rootItem['id'])
+					->setParameter('share_type', 2)
+					->setParameter('shareDeleted', 0);
 				$result = $qb->execute();
 
 				$ids = [];
@@ -1441,7 +1441,7 @@ class Share extends Constants {
 					$qb->update('share')
 						->set('permissions', $qb->createParameter('permissions'))
 						->where($qb->expr()->in('id', $ids))
-						->setParameter(':permissions', $permissions);
+						->setParameter('permissions', $permissions);
 					$qb->execute();
 				}
 			}
@@ -1565,7 +1565,7 @@ class Share extends Constants {
 		$qb->select('uid_owner')
 			->from('share')
 			->where($qb->expr()->eq('id', $qb->createParameter('shareId')))
-			->setParameter(':shareId', $shareId);
+			->setParameter('shareId', $shareId);
 		$result = $qb->execute();
 		$result = $result->fetchAssociative();
 
@@ -1620,8 +1620,8 @@ class Share extends Constants {
 		$qb->update('share')
 			->set('share_with', $qb->createParameter('pass'))
 			->where($qb->expr()->eq('id', $qb->createParameter('shareId')))
-			->setParameter(':pass', $password === null ? null : \OC::$server->getHasher()->hash($password))
-			->setParameter(':shareId', $shareId);
+			->setParameter('pass', $password === null ? null : \OC::$server->getHasher()->hash($password))
+			->setParameter('shareId', $shareId);
 
 		$qb->execute();
 

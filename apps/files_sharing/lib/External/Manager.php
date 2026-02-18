@@ -482,7 +482,7 @@ class Manager {
 		$result = $getShare->execute([$uid]);
 
 		if ($result) {
-			$shares = $getShare->fetchAll();
+			$shares = $result->fetchAll();
 			foreach ($shares as $share) {
 				$this->eventDispatcher->dispatch(
 					new DeclineShare($share),

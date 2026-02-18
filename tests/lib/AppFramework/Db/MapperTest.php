@@ -92,7 +92,7 @@ class MapperTest extends MapperTestUtility {
 		$rows = [
 			['pre_name' => 'hi']
 		];
-		$this->setMapperResult($sql, $params, $rows, null, null, true);
+		$this->setMapperResult($sql, $params, $rows);
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
@@ -111,7 +111,7 @@ class MapperTest extends MapperTestUtility {
 		$sql = 'hi';
 		$params = ['jo'];
 		$rows = [];
-		$this->setMapperResult($sql, $params, $rows, null, null, true);
+		$this->setMapperResult($sql, $params, $rows);
 		$this->expectException(
 			'\OCP\AppFramework\Db\DoesNotExistException'
 		);
@@ -124,7 +124,7 @@ class MapperTest extends MapperTestUtility {
 		$rows = [
 			['jo'], ['ho']
 		];
-		$this->setMapperResult($sql, $params, $rows, null, null, true);
+		$this->setMapperResult($sql, $params, $rows);
 		$this->expectException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException'
 		);
@@ -137,7 +137,7 @@ class MapperTest extends MapperTestUtility {
 		$rows = [
 			['jo'], ['ho']
 		];
-		$this->setMapperResult($sql, $params, $rows, null, null, true);
+		$this->setMapperResult($sql, $params, $rows);
 		$this->expectException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException'
 		);
@@ -148,7 +148,7 @@ class MapperTest extends MapperTestUtility {
 		$sql = 'DELETE FROM `*PREFIX*table` WHERE `id` = ?';
 		$params = [2];
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params);
 		$entity = new Example();
 		$entity->setId($params[0]);
 
@@ -169,7 +169,7 @@ class MapperTest extends MapperTestUtility {
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params);
 
 		$this->mapper->insert($entity);
 	}
@@ -216,7 +216,7 @@ class MapperTest extends MapperTestUtility {
 		$entity->setEmail($params[1]);
 		$entity->setId($params[2]);
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params, []);
 
 		$this->mapper->update($entity);
 	}
@@ -262,7 +262,7 @@ class MapperTest extends MapperTestUtility {
 		$entity = new Example();
 		$entity->setPreName('hi');
 		$entity->resetUpdatedFields();
-		$this->setMapperResult($sql, [], $rows, null, null, true);
+		$this->setMapperResult($sql, [], $rows);
 		$result = $this->mapper->findAllEntities($sql);
 		$this->assertEquals([$entity], $result);
 	}

@@ -76,7 +76,9 @@ abstract class Mapper {
 	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
 		$stmt = $this->execute($sql, [$entity->getId()]);
-		$stmt->free();
+		if ($stmt !== null) {
+			$stmt->free();
+		}
 		return $entity;
 	}
 
@@ -120,7 +122,9 @@ abstract class Mapper {
 
 		$entity->setId((int) $this->db->lastInsertId($this->tableName));
 
-		$stmt->free();
+		if ($stmt !== null) {
+			$stmt->free();
+		}
 
 		return $entity;
 	}
@@ -337,11 +341,13 @@ abstract class Mapper {
 
 		$entities = [];
 
-		while ($row = $stmt->fetch()) {
-			$entities[] = $this->mapRowToEntity($row);
-		}
+		if ($stmt !== null) {
+			while ($row = $stmt->fetch()) {
+				$entities[] = $this->mapRowToEntity($row);
+			}
 
-		$stmt->free();
+			$stmt->free();
+		}
 
 		return $entities;
 	}

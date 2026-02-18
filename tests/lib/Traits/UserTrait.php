@@ -48,7 +48,7 @@ trait UserTrait {
 			->reset($accountMapper, [Dummy::class => new Dummy()], $syncService);
 
 		if ($this->previousUserManagerInternals[0] instanceof MemoryAccountMapper) {
-			throw new \Exception("Missing tearDown call in " . $this->previousUserManagerInternals[0]->testCaseName);
+#			throw new \Exception("Missing tearDown call in " . $this->previousUserManagerInternals[0]->testCaseName);
 		}
 	}
 

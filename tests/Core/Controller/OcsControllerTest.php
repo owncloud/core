@@ -21,7 +21,7 @@
 
 namespace Tests\Core\Controller;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OC\AppFramework\Http\Request;
 use OC\Core\Controller\OcsController;
 use OCP\IDBConnection;
@@ -121,7 +121,7 @@ class OcsControllerTest extends TestCase {
 		$this->userSession->method('getUser')
 			->willReturn($user);
 
-		$stmt = $this->createMock(Statement::class);
+		$stmt = $this->createMock(Result::class);
 		$stmt->expects($this->once())
 			->method('execute');
 
@@ -173,7 +173,7 @@ class OcsControllerTest extends TestCase {
 		$this->userSession->method('getUser')
 			->willReturn($user);
 
-		$stmt = $this->createMock(Statement::class);
+		$stmt = $this->createMock(Result::class);
 		$stmt->expects($this->once())
 			->method('execute')
 			->with([$user->getUID(), $app, $key]);
