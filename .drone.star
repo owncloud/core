@@ -291,19 +291,6 @@ config = {
                 "chmod -R 0770 data/owncloud-keys",
             ],
         },
-        "cliDbConversion": {
-            "suites": [
-                "cliDbConversion",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "dbServices": [
-                "sqlite",
-                "mysql:8.0",
-                "postgres:10.21",
-            ],
-        },
         "cliExternalStorage": {
             "suites": [
                 "cliExternalStorage",

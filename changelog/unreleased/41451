@@ -1,0 +1,5 @@
+Change: Drop command db:convert-type
+
+This experimental command is untested and unsupported and therefore removed.
+
+https://github.com/owncloud/core/pull/41451

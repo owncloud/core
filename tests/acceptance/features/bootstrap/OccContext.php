@@ -3514,33 +3514,6 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator changes the database type to :dbType
-	 * @When the administrator tries to change the database type to :dbType
-	 *
-	 * @param string $dbType
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorChangesTheDatabaseType(string $dbType): void {
-		$dbUser = "owncloud";
-		$dbHost = $dbType;
-		$dbName = "owncloud";
-		$dbPass = "owncloud";
-
-		if ($dbType === "postgres") {
-			$dbType = "pgsql";
-		}
-		if ($dbType === "oracle") {
-			$dbUser = "autotest";
-			$dbType = "oci";
-		}
-
-		$this->invokingTheCommand("db:convert-type --password=$dbPass $dbType $dbUser $dbHost $dbName");
-		$this->featureContext->setDbConversionState(true);
-	}
-
-	/**
 	 * This will run after EVERY scenario.
 	 * It will set the properties for this object.
 	 *
