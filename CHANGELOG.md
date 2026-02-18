@@ -37,6 +37,7 @@ ownCloud admins and users.
 ## Summary
 
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+* Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
 ## Details
 
@@ -45,6 +46,12 @@ ownCloud admins and users.
    With composer managing auto loading for a long time this is no longer necessary.
 
    https://github.com/owncloud/core/pull/41376
+
+* Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
+
+   This experimental command is untested and unsupported and therefore removed.
+
+   https://github.com/owncloud/core/pull/41451
 
 # Changelog for ownCloud Core [10.16.1] (2026-02-18)
 
