@@ -23,6 +23,7 @@ namespace OCA\FederatedFileSharing\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /** Updates remote_id to be string if required */
@@ -33,8 +34,8 @@ class Version20190410160725 implements ISchemaMigration {
 		if ($schema->hasTable("{$prefix}federated_reshares")) {
 			$table = $schema->getTable("{$prefix}federated_reshares");
 			$remoteIdColumn = $table->getColumn('remote_id');
-			if ($remoteIdColumn && $remoteIdColumn->getType()->getName() !== Type::STRING) {
-				$remoteIdColumn->setType(Type::getType(Type::STRING));
+			if ($remoteIdColumn && $remoteIdColumn->getType()->getName() !== Types::STRING) {
+				$remoteIdColumn->setType(Type::getType(Types::STRING));
 				$remoteIdColumn->setOptions(['length' => 255]);
 			}
 		}
