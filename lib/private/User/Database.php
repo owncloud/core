@@ -195,10 +195,10 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 
 		$displayNames = [];
 		$connection = \OC::$server->getDatabaseConnection();
-		$result = $connection->prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
+		$query = $connection->prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
 			. $searchLike .' ORDER BY `uid` ASC', $limit, $offset);
-		$result->execute($parameters);
-		while ($row = $result->fetch()) {
+		$result = $query->executeQuery($parameters);
+		while ($row = $result->fetchAssociative()) {
 			$displayNames[$row['uid']] = $row['displayname'];
 		}
 

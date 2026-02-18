@@ -71,7 +71,7 @@ interface IDBConnection {
 	 * @param string $query The SQL query to execute.
 	 * @param string[] $params The parameters to bind to the query, if any.
 	 * @param array $types The types the previous parameters are in.
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return \Doctrine\DBAL\Result
 	 * @since 8.0.0
 	 */
 	public function executeQuery($query, array $params = [], $types = []);

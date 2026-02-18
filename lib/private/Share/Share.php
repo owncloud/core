@@ -219,7 +219,7 @@ class Share extends Constants {
 					$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
 				}
 			}
-			$query->free();
+			$result->free();
 
 			// We also need to take group shares into account
 			$qb = $connection->getQueryBuilder();
