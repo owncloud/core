@@ -35,7 +35,9 @@ use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -145,7 +147,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$this->adapter = new $params['adapter']($this);
 		$this->tablePrefix = $params['tablePrefix'];
 
-		parent::setTransactionIsolation(parent::TRANSACTION_READ_COMMITTED);
+		parent::setTransactionIsolation(TransactionIsolationLevel::READ_COMMITTED);
 	}
 
 	/**
@@ -156,7 +158,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param int $offset
 	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
 	 */
-	public function prepare($statement, $limit=null, $offset=null) {
+	public function prepare($statement, $limit=null, $offset=null) : \Doctrine\DBAL\Statement {
 		if ($limit === -1) {
 			$limit = null;
 		}
@@ -185,7 +187,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function executeQuery($query, array $params = [], $types = [], QueryCacheProfile $qcp = null) {
+	public function executeQuery($query, array $params = [], $types = [], QueryCacheProfile $qcp = null) : Result {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeQuery($query, $params, $types, $qcp);
@@ -210,7 +212,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @deprecated since 10.8.0
 	 */
-	public function executeUpdate($query, array $params = [], array $types = []) {
+	public function executeUpdate($query, array $params = [], array $types = []) : int {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeUpdate($query, $params, $types);
@@ -501,5 +503,13 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 
 		// Unable to detect platform version.
 		return null;
+	}
+
+	public function errorCode() {
+		// TODO: Implement errorCode() method.
+	}
+
+	public function errorInfo() {
+		// TODO: Implement errorInfo() method.
 	}
 }
