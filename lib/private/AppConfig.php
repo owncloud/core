@@ -312,7 +312,7 @@ class AppConfig implements IAppConfig {
 		$result = $sql->execute();
 
 		// we are going to store the result in memory anyway
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		foreach ($rows as $row) {
 			if (!isset($this->cache[$row['appid']])) {
 				$this->cache[$row['appid']] = [];
@@ -327,7 +327,7 @@ class AppConfig implements IAppConfig {
 			}
 			$this->cache[$row['appid']][$row['configkey']] = ($row['configvalue'] === null) ? '' : $row['configvalue'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		$this->configLoaded = true;
 	}

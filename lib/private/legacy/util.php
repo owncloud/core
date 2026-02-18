@@ -966,8 +966,9 @@ class OC_Util {
 		if ($dbType === 'pgsql') {
 			// check PostgreSQL version
 			try {
+				/** @var \Doctrine\DBAL\Result $result */
 				$result = \OC_DB::executeAudited('SHOW SERVER_VERSION');
-				$data = $result->fetchRow();
+				$data = $result->fetchOne();
 				if (isset($data['server_version'])) {
 					$version = $data['server_version'];
 					if (\version_compare($version, '9.0.0', '<')) {
