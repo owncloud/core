@@ -211,11 +211,12 @@ abstract class Mapper {
 
 	/**
 	 * Runs an sql query
+	 *
 	 * @param string $sql the prepare string
 	 * @param array $params the params which should replace the ? in the sql query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \PDOStatement the database query result
+	 * @return bool|\Doctrine\DBAL\Driver\Result|\Doctrine\DBAL\Result|int|\PDOStatement
 	 * @since 7.0.0
 	 */
 	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
@@ -239,18 +240,7 @@ abstract class Mapper {
 			}
 		}
 
-		$result = $query->execute();
-
-		// this is only for backwards compatibility reasons and can be removed
-		// in owncloud 10. IDb returns a StatementWrapper from execute, PDO,
-		// Doctrine and IDbConnection don't so this needs to be done in order
-		// to stay backwards compatible for the things that rely on the
-		// StatementWrapper being returned
-		if ($result instanceof \OC_DB_StatementWrapper) {
-			return $result;
-		}
-
-		return $query;
+		return $query->execute();
 	}
 
 	/**

@@ -218,7 +218,7 @@ abstract class TestCase extends \Test\TestCase {
 		$share = null;
 
 		if ($result) {
-			$share = $result->fetchRow();
+			$share = $result->fetch();
 		}
 
 		return $share;

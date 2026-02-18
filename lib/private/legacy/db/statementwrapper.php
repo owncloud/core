@@ -77,7 +77,7 @@ class OC_DB_StatementWrapper {
 			return false;
 		}
 		if ($this->isManipulation) {
-			return $this->statement->rowCount();
+			return $result->rowCount();
 		}
 
 		return $result;
