@@ -129,7 +129,7 @@ class Migrator {
 		}
 
 		// foreign keys are not supported so we just set it to an empty array
-		return new Table($newName, $table->getColumns(), $newIndexes, [], 0, $table->getOptions());
+		return new Table($newName, $table->getColumns(), $newIndexes, [], [], $table->getOptions());
 	}
 
 	public function createSchema() {

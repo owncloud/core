@@ -57,7 +57,7 @@ class Disable extends Command {
 			->where($qb->expr()->gte('fc.encrypted', $qb->expr()->literal('1')))
 			->setMaxResults(1);
 		$results = $qb->execute();
-		$hasEncryptedFiles = (bool) $results->fetchColumn(0);
+		$hasEncryptedFiles = (bool) $results->fetchOne();
 		$results->free();
 		if ($hasEncryptedFiles !== false) {
 			$output->writeln('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>');

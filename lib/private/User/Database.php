@@ -326,11 +326,11 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		$connection = \OC::$server->getDatabaseConnection();
 		try {
 			$result = $connection->executeQuery('SELECT COUNT(*) FROM `*PREFIX*users`');
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 			Util::writeLog('core', $connection->getError(), Util::ERROR);
 			return false;
 		}
-		return $result->fetchColumn();
+		return $result->fetchOne();
 	}
 
 	/**

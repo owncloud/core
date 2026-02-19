@@ -62,7 +62,7 @@ class InnoDB implements IRepairStep {
 	private function getAllMyIsamTables($connection) {
 		$dbPrefix = \OC::$server->getConfig()->getSystemValue("dbtableprefix");
 		$dbName = \OC::$server->getConfig()->getSystemValue("dbname");
-		$result = $connection->fetchArray(
+		$result = $connection->fetchNumeric(
 			"SELECT table_name FROM information_schema.tables WHERE table_schema = ? AND engine = ? AND TABLE_NAME LIKE ?",
 			[$dbName, 'MyISAM', $dbPrefix.'%']
 		);
