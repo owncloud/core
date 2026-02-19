@@ -13,7 +13,7 @@
 		<admin>admin-external-storage</admin>
 	</documentation>
 	<rememberlogin>false</rememberlogin>
-	<version>0.9.0</version>
+	<version>0.10.0</version>
 	<types>
 		<filesystem/>
 	</types>
@@ -22,7 +22,7 @@
 	<namespace>Files_External</namespace>
 	<default_enable/>
 	<dependencies>
-		<owncloud min-version="10" max-version="10" />
+		<owncloud min-version="10" max-version="11" />
 	</dependencies>
 
 	<commands>
