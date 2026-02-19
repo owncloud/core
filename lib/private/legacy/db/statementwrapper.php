@@ -100,7 +100,7 @@ class OC_DB_StatementWrapper {
 	 * @return string
 	 */
 	public function fetchOne($column = 0) {
-		return $this->statement->fetchColumn($column);
+		return $this->statement->fetchOne();
 	}
 
 	/**

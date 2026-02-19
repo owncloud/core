@@ -68,10 +68,9 @@ class RepairInnoDBTest extends \Test\TestCase {
 	private function countMyIsamTables() {
 		$dbName = \OC::$server->getConfig()->getSystemValue("dbname");
 
-		$result = $this->connection->fetchColumn(
+		return $this->connection->fetchOne(
 			"SELECT count(*) FROM information_schema.tables WHERE table_schema = ? and table_name = ? AND engine = 'MyISAM'",
 			[$dbName, $this->tableName]
 		);
-		return $result;
 	}
 }

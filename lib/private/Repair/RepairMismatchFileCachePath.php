@@ -212,7 +212,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsParentIdWrongPath($qb);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
+		$count = $results->fetchOne();
 		$results->free();
 		return $count;
 	}
@@ -222,7 +222,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsNonExistingParentIdEntry($qb, $storageNumericId);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
+		$count = $results->fetchOne();
 		$results->free();
 		return $count;
 	}
