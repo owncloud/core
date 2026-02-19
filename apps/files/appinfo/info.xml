@@ -6,12 +6,12 @@
 	<licence>AGPL</licence>
 	<author>Robin Appelman, Vincent Petry</author>
 	<default_enable/>
-	<version>1.6.0</version>
+	<version>1.7.0</version>
 	<types>
 		<filesystem/>
 	</types>
 	<dependencies>
-		<owncloud min-version="10" max-version="10" />
+		<owncloud min-version="10" max-version="11" />
 	</dependencies>
 	<documentation>
 		<user>user-files</user>
