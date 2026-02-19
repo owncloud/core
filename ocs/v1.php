@@ -54,6 +54,7 @@ if (\OCP\Util::needUpgrade()
 try {
 	OC_App::loadApps(['session']);
 	OC_App::loadApps(['authentication']);
+	OC_Util::tearDownFS();  // FS might have been prematurely initialized
 	// load all apps to get all api routes properly setup
 	OC_App::loadApps();
 
