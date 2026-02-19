@@ -1175,10 +1175,10 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			// No synctoken supplied, this is the initial sync.
 			$query = 'SELECT `uri` FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ?';
 			$stmt = $this->db->prepare($query);
-			$querRresult = $stmt->executeQuery([$calendarId]);
+			$queryResult = $stmt->executeQuery([$calendarId]);
 
-			$result['added'] = $querRresult->fetchAll(\PDO::FETCH_COLUMN);
-			$querRresult->free();
+			$result['added'] = $queryResult->fetchFirstColumn();
+			$queryResult->free();
 		}
 		return $result;
 	}
