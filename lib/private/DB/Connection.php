@@ -494,15 +494,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return null|string
 	 */
 	public function getDatabaseVersionString() {
-		// Automatic platform version detection.
-		if ($this->_conn instanceof ServerInfoAwareConnection &&
-			! $this->_conn->requiresQueryForServerVersion()
-		) {
-			return $this->_conn->getServerVersion();
-		}
-
-		// Unable to detect platform version.
-		return null;
+		return $this->_conn->getServerVersion();
 	}
 
 	public function errorCode() {
