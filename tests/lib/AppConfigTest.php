@@ -388,7 +388,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('appid', 'testapp')
 			->setParameter('configkey', 'deletethis');
 		$query = $sql->execute();
-		$result = $query->fetch();
+		$result = $query->fetchAssociative();
 		$query->free();
 		$this->assertFalse($result);
 	}
@@ -432,7 +432,7 @@ class AppConfigTest extends TestCase {
 			->where($sql->expr()->eq('appid', $sql->createParameter('appid')))
 			->setParameter('appid', 'someapp');
 		$query = $sql->execute();
-		$result = $query->fetch();
+		$result = $query->fetchAssociative();
 		$query->free();
 		$this->assertFalse($result);
 	}
@@ -455,7 +455,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('appid', 'testapp');
 		$query = $sql->execute();
 		$expected = [];
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$expected[$row['configkey']] = $row['configvalue'];
 		}
 		$query->free();
@@ -470,7 +470,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('configkey', 'enabled');
 		$query = $sql->execute();
 		$expected = [];
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$expected[$row['appid']] = $row['configvalue'];
 		}
 		$query->free();
@@ -506,7 +506,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('appid', $app)
 			->setParameter('configkey', $key);
 		$query = $sql->execute();
-		$actual = $query->fetch();
+		$actual = $query->fetchAssociative();
 		$query->free();
 
 		$this->assertSame($expected, $actual['configvalue']);

@@ -225,7 +225,7 @@ class Tags implements \OCP\ITags {
 					[$this->user, $this->type, $chunk],
 					[null, null, IQueryBuilder::PARAM_INT_ARRAY]
 				);
-				while ($row = $result->fetch()) {
+				while ($row = $result->fetchAssociative()) {
 					$objId = (int)$row['objid'];
 					if (!isset($entries[$objId])) {
 						$entries[$objId] = [];

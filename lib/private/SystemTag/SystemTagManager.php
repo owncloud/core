@@ -109,7 +109,7 @@ class SystemTagManager implements ISystemTagManager {
 			->setParameter('tagids', $tagIds, IQueryBuilder::PARAM_INT_ARRAY);
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$tags[$row['id']] = $this->createSystemTagFromRow($row);
 		}
 
@@ -157,7 +157,7 @@ class SystemTagManager implements ISystemTagManager {
 			->addOrderBy('assignable', 'ASC');
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$tags[$row['id']] = $this->createSystemTagFromRow($row);
 		}
 
@@ -190,7 +190,7 @@ class SystemTagManager implements ISystemTagManager {
 			->setParameter('assignable', $userAssignable)
 			->execute();
 
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		$result->free();
 		if (!$row) {
 			throw new TagNotFoundException(
@@ -484,7 +484,7 @@ class SystemTagManager implements ISystemTagManager {
 			->orderBy('gid');
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$groupIds[] = $row['gid'];
 		}
 

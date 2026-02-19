@@ -100,6 +100,6 @@ abstract class CommandTest extends TestCase {
 	protected function executeCommand(Command $command, Input $input) {
 		$output = new BufferedOutput();
 		self::invokePrivate($command, 'execute', [$input, $output]);
-		return $output->fetch();
+		return $output->fetchAssociative();
 	}
 }

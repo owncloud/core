@@ -185,7 +185,7 @@ class DefaultShareProvider implements IShareProvider {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		$cursor = $qb->execute();
-		$data = $cursor->fetch();
+		$data = $cursor->fetchAssociative();
 		$this->dbConn->commit();
 		$cursor->free();
 
@@ -319,7 +319,7 @@ class DefaultShareProvider implements IShareProvider {
 			->orderBy('id');
 
 		$cursor = $qb->execute();
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$children[] = $this->createShare($data);
 		}
 		$cursor->free();
@@ -490,7 +490,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$cursor = $qb->execute();
-			while ($data = $cursor->fetch()) {
+			while ($data = $cursor->fetchAssociative()) {
 				$shares[] = $this->createShare($data);
 			}
 			$cursor->free();
@@ -540,7 +540,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShare($data);
 		}
 		$cursor->free();
@@ -582,7 +582,7 @@ class DefaultShareProvider implements IShareProvider {
 			));
 
 		$cursor = $qb->execute();
-		$data = $cursor->fetch();
+		$data = $cursor->fetchAssociative();
 		$cursor->free();
 
 		if ($data === false) {
@@ -635,7 +635,7 @@ class DefaultShareProvider implements IShareProvider {
 			->execute();
 
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShare($data);
 		}
 		$cursor->free();
@@ -796,7 +796,7 @@ class DefaultShareProvider implements IShareProvider {
 
 			$cursor = $qb->execute();
 
-			while ($data = $cursor->fetch()) {
+			while ($data = $cursor->fetchAssociative()) {
 				if ($this->isAccessibleResult($data)) {
 					$shares[] = $this->createShare($data);
 				}
@@ -827,7 +827,7 @@ class DefaultShareProvider implements IShareProvider {
 				}
 
 				$cursor = $qb->execute();
-				while ($data = $cursor->fetch()) {
+				while ($data = $cursor->fetchAssociative()) {
 					if ($offset > 0) {
 						$offset--;
 						continue;
@@ -942,7 +942,7 @@ class DefaultShareProvider implements IShareProvider {
 			))
 			->execute();
 
-		$data = $cursor->fetch();
+		$data = $cursor->fetchAssociative();
 
 		if ($data === false) {
 			throw new ShareNotFound();
@@ -988,7 +988,7 @@ class DefaultShareProvider implements IShareProvider {
 		$cursor = $qb->execute();
 
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShare($data);
 		}
 		$cursor->free();
@@ -1114,7 +1114,7 @@ class DefaultShareProvider implements IShareProvider {
 
 			// Resolve $shareIdToShareMap array containing group shares
 			$shareParents = [];
-			while ($data = $stmt->fetch()) {
+			while ($data = $stmt->fetchAssociative()) {
 				// Get share parent
 				$shareParent = $data['parent'];
 
@@ -1224,7 +1224,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$ids = [];
-		while ($row = $cursor->fetch()) {
+		while ($row = $cursor->fetchAssociative()) {
 			$ids[] = (int)$row['id'];
 		}
 		$cursor->free();
@@ -1267,7 +1267,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$ids = [];
-		while ($row = $cursor->fetch()) {
+		while ($row = $cursor->fetchAssociative()) {
 			$ids[] = (int)$row['id'];
 		}
 		$cursor->free();

@@ -348,7 +348,7 @@ class MigrationTest extends TestCase {
 			->execute();
 
 		$i = 0;
-		while ($share = $stmt->fetch()) {
+		while ($share = $stmt->fetchAssociative()) {
 			$this->assertEquals('user'.($i+1), $share['share_with']);
 			$this->assertEquals('user' . ($i), $share['uid_initiator']);
 			$this->assertEquals('user0', $share['uid_owner']);

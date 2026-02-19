@@ -345,7 +345,7 @@ class LockMapperTest extends TestCase {
 			->from($this->mapper->getTableName())
 			->where($qb->expr()->eq('token', $qb->createNamedParameter($token0)))
 			->execute()
-			->fetch();
+			->fetchAssociative();
 
 		$this->assertEquals($exists ? 1 : 0, (int) $result['count']);
 	}

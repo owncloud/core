@@ -123,7 +123,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$addressBooks = [];
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$addressBooks[$row['id']] = [
 				'id' => $row['id'],
 				'uri' => $row['uri'],
@@ -180,7 +180,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->setParameter('principaluri', $principals, IQueryBuilder::PARAM_STR_ARRAY)
 			->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$displayName = $row['displayname'] . " ($name)";
@@ -213,7 +213,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->where($query->expr()->eq('id', $query->createNamedParameter($addressBookId)))
 			->execute();
 
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		$result->free();
 		if ($row === false) {
 			return null;
@@ -243,7 +243,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->setMaxResults(1)
 			->execute();
 
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		$result->free();
 		if ($row === false) {
 			return null;
@@ -420,7 +420,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$cards = [];
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$row['etag'] = '"' . $row['etag'] . '"';
 			$row['carddata'] = $this->readBlob($row['carddata']);
 			$cards[] = $row;
@@ -451,7 +451,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->setMaxResults(1);
 
 		$result = $query->execute();
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		if (!$row) {
 			return false;
 		}
@@ -486,7 +486,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$cards = [];
 
 			$result = $query->execute();
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$row['etag'] = '"' . $row['etag'] . '"';
 				$row['carddata'] = $this->readBlob($row['carddata']);
 				$cards[] = $row;
@@ -923,7 +923,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				->setParameter('id', $id);
 
 		$result = $query->execute();
-		$uri = $result->fetch();
+		$uri = $result->fetchAssociative();
 		$result->free();
 
 		if (!isset($uri['uri'])) {
@@ -947,7 +947,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				->where($query->expr()->eq('uri', $query->createNamedParameter($uri)))
 				->andWhere($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)));
 		$queryResult = $query->execute();
-		$contact = $queryResult->fetch();
+		$contact = $queryResult->fetchAssociative();
 		$queryResult->free();
 
 		if (\is_array($contact)) {
@@ -1060,7 +1060,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->andWhere($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)));
 
 		$result = $query->execute();
-		$cardIds = $result->fetch();
+		$cardIds = $result->fetchAssociative();
 		$result->free();
 
 		if (!isset($cardIds['id'])) {

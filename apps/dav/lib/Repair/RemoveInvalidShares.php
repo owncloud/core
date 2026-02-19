@@ -82,7 +82,7 @@ class RemoveInvalidShares implements IRepairStep {
 			->from('dav_shares')
 			->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$principaluri = $row['principaluri'];
 			$p = $this->principalBackend->getPrincipalByPath($principaluri);
 			if ($p === null) {

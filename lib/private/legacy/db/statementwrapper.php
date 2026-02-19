@@ -89,7 +89,7 @@ class OC_DB_StatementWrapper {
 	 * @return mixed
 	 */
 	public function fetchRow() {
-		return $this->statement->fetch();
+		return $this->statement->fetchAssociative();
 	}
 
 	/**

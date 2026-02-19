@@ -184,7 +184,7 @@ class DbHandler {
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetch();
+		$result = $query->execute()->fetchAssociative();
 
 		if (!isset($result['token'])) {
 			throw new \Exception('No token found for: ' . $url);
@@ -223,7 +223,7 @@ class DbHandler {
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetch();
+		$result = $query->execute()->fetchAssociative();
 		return $result['shared_secret'];
 	}
 
@@ -259,7 +259,7 @@ class DbHandler {
 				->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 				->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetch();
+		$result = $query->execute()->fetchAssociative();
 		return (int)$result['status'];
 	}
 
@@ -308,7 +308,7 @@ class DbHandler {
 		$query->select('url')->from($this->dbTable)
 				->where($query->expr()->eq('shared_secret', $query->createNamedParameter($password)));
 
-		$result = $query->execute()->fetch();
+		$result = $query->execute()->fetchAssociative();
 		return !empty($result);
 	}
 }

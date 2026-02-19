@@ -145,7 +145,7 @@ class Trashbin {
 		$result = $connection->executeQuery('SELECT `id`, `timestamp`, `location`'
 			. ' FROM `*PREFIX*files_trash` WHERE `user`=?', [$user]);
 		$array = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			if (isset($array[$row['id']])) {
 				$array[$row['id']][$row['timestamp']] = $row['location'];
 			} else {

@@ -266,7 +266,7 @@ abstract class Mapper {
 		} else {
 			$stmt = $this->execute($sql, $params, $limit, $offset);
 		}
-		$row = $stmt->fetch();
+		$row = $stmt->fetchAssociative();
 
 		if ($row === false || $row === null) {
 			$stmt->free();
@@ -279,7 +279,7 @@ abstract class Mapper {
 			);
 			throw new DoesNotExistException($msg);
 		}
-		$row2 = $stmt->fetch();
+		$row2 = $stmt->fetchAssociative();
 		$stmt->free();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
@@ -342,7 +342,7 @@ abstract class Mapper {
 		$entities = [];
 
 		if ($stmt !== null) {
-			while ($row = $stmt->fetch()) {
+			while ($row = $stmt->fetchAssociative()) {
 				$entities[] = $this->mapRowToEntity($row);
 			}
 

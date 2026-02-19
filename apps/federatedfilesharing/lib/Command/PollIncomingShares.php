@@ -88,7 +88,7 @@ class PollIncomingShares extends Command {
 			return 1;
 		}
 		$cursor = $this->getCursor();
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$user = $this->userManager->get($data['user']);
 			if ($user === null) {
 				$output->writeln(
@@ -186,7 +186,7 @@ class PollIncomingShares extends Command {
 			)
 		);
 		$result = $qb->execute();
-		$externalShare = $result->fetch();
+		$externalShare = $result->fetchAssociative();
 		return $externalShare;
 	}
 }

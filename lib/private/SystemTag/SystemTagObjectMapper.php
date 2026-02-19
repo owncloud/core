@@ -88,7 +88,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 				->addOrderBy('systemtagid', 'ASC');
 
 			$result = $query->execute();
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$objectId = $row['objectid'];
 				$mapping[$objectId][] = $row['systemtagid'];
 			}
@@ -131,7 +131,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 		$objectIds = [];
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$objectIds[] = $row['objectid'];
 		}
 

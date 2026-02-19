@@ -56,7 +56,7 @@ class AllConfigTest extends TestCase {
 		$result = $this->connection->executeQuery(
 			'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences` WHERE `userid` = ?',
 			['userDelete']
-		)->fetch();
+		)->fetchAssociative();
 		$actualCount = $result['count'];
 
 		$this->assertEquals(0, $actualCount, 'There was one value in the database and after the tests there should be no entry left.');
@@ -400,7 +400,7 @@ class AllConfigTest extends TestCase {
 
 		$result = $this->connection->executeQuery(
 			'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences`'
-		)->fetch();
+		)->fetchAssociative();
 		$actualCount = $result['count'];
 
 		$this->assertEquals(1, $actualCount, 'After removing `userFetch3` there should be exactly 1 entry left.');
@@ -443,7 +443,7 @@ class AllConfigTest extends TestCase {
 
 		$result = $this->connection->executeQuery(
 			'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences`'
-		)->fetch();
+		)->fetchAssociative();
 		$actualCount = $result['count'];
 
 		$this->assertEquals(4, $actualCount, 'After removing `appFetch1` there should be exactly 4 entries left.');
@@ -452,7 +452,7 @@ class AllConfigTest extends TestCase {
 
 		$result = $this->connection->executeQuery(
 			'SELECT COUNT(*) AS `count` FROM `*PREFIX*preferences`'
-		)->fetch();
+		)->fetchAssociative();
 		$actualCount = $result['count'];
 
 		$this->assertEquals(2, $actualCount, 'After removing `appFetch2` there should be exactly 2 entries left.');
