@@ -688,7 +688,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$result = [];
-		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+		foreach ($stmt->fetchAllAssociative() as $row) {
 			$result[] = [
 					'id'           => $row['id'],
 					'uri'          => $row['uri'],
@@ -1420,7 +1420,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				->execute();
 
 		$result = [];
-		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+		foreach ($stmt->fetchAllAssociative() as $row) {
 			$result[] = [
 					'calendardata' => $row['calendardata'],
 					'uri'          => $row['uri'],

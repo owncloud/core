@@ -498,7 +498,7 @@ class DefaultShareProviderTest extends TestCase {
 			->from('share');
 
 		$cursor = $qb->execute();
-		$result = $cursor->fetchAll();
+		$result = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertEmpty($result);
@@ -531,7 +531,7 @@ class DefaultShareProviderTest extends TestCase {
 			->from('share');
 
 		$cursor = $qb->execute();
-		$result = $cursor->fetchAll();
+		$result = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertEmpty($result);
@@ -588,7 +588,7 @@ class DefaultShareProviderTest extends TestCase {
 			->from('share');
 
 		$cursor = $qb->execute();
-		$result = $cursor->fetchAll();
+		$result = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertEmpty($result);
@@ -2084,7 +2084,7 @@ class DefaultShareProviderTest extends TestCase {
 			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(2)))
 			->execute();
 
-		$shares = $stmt->fetchAll();
+		$shares = $stmt->fetchAllAssociative();
 		$stmt->free();
 
 		$this->assertCount(1, $shares);
@@ -2158,7 +2158,7 @@ class DefaultShareProviderTest extends TestCase {
 			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(2)))
 			->execute();
 
-		$shares = $stmt->fetchAll();
+		$shares = $stmt->fetchAllAssociative();
 		$stmt->free();
 
 		$this->assertCount(1, $shares);
@@ -2299,7 +2299,7 @@ class DefaultShareProviderTest extends TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
 			->execute();
 
-		$shares = $stmt->fetchAll();
+		$shares = $stmt->fetchAllAssociative();
 		$stmt->free();
 
 		$this->assertCount(1, $shares);
@@ -2774,7 +2774,7 @@ class DefaultShareProviderTest extends TestCase {
 			->orderBy('id')
 			->execute();
 
-		$shares = $stmt->fetchAll();
+		$shares = $stmt->fetchAllAssociative();
 
 		$this->assertSame('user0', $shares[0]['share_with']);
 		$this->assertSame('user4', $shares[0]['uid_initiator']);
@@ -3037,7 +3037,7 @@ class DefaultShareProviderTest extends TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($id))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);
@@ -3096,7 +3096,7 @@ class DefaultShareProviderTest extends TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($userGroupId))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 		$this->assertCount($userGroupShareDeleted ? 0 : 1, $data);
 
@@ -3107,7 +3107,7 @@ class DefaultShareProviderTest extends TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($groupId))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 		$this->assertCount($groupShareDeleted ? 0 : 1, $data);
 	}
@@ -3200,7 +3200,7 @@ class DefaultShareProviderTest extends TestCase {
 			->from('share')
 			->where($qb->expr()->in('id', $qb->createNamedParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)))
 			->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertCount($shouldBeDeleted ? 0 : \count($ids), $data);
@@ -3258,7 +3258,7 @@ class DefaultShareProviderTest extends TestCase {
 			->from('share')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id2)));
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertCount($toDelete ? 0 : 1, $data);

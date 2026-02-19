@@ -97,7 +97,7 @@ class AllConfigTest extends TestCase {
 
 		$config->setUserValue('userSet', 'appSet', 'keySet', 'valueSet');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -110,7 +110,7 @@ class AllConfigTest extends TestCase {
 		// test if the method overwrites existing database entries
 		$config->setUserValue('userSet', 'appSet', 'keySet', 'valueSet2');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -131,7 +131,7 @@ class AllConfigTest extends TestCase {
 
 		$config->setUserValue('userPreCond', 'appPreCond', 'keyPreCond', 'valuePreCond');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -144,7 +144,7 @@ class AllConfigTest extends TestCase {
 		// test if the method overwrites existing database entries with valid precond
 		$config->setUserValue('userPreCond', 'appPreCond', 'keyPreCond', 'valuePreCond2', 'valuePreCond');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -189,7 +189,7 @@ class AllConfigTest extends TestCase {
 
 		$config->setUserValue('userPreCond1', 'appPreCond', 'keyPreCond', 'valuePreCond');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -202,7 +202,7 @@ class AllConfigTest extends TestCase {
 		// test if the method overwrites existing database entries with valid precond
 		$config->setUserValue('userPreCond1', 'appPreCond', 'keyPreCond', 'valuePreCond2', 'valuePreCond3');
 
-		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAll();
+		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -255,7 +255,7 @@ class AllConfigTest extends TestCase {
 		$result = $this->connection->executeQuery(
 			'SELECT `userid`, `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?',
 			['userGet']
-		)->fetchAll();
+		)->fetchAllAssociative();
 
 		$this->assertCount(1, $result);
 		$this->assertEquals([
@@ -276,7 +276,7 @@ class AllConfigTest extends TestCase {
 		$result = $this->connection->executeQuery(
 			'SELECT `userid`, `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?',
 			['userGet']
-		)->fetchAll();
+		)->fetchAllAssociative();
 
 		$this->assertCount(0, $result);
 	}

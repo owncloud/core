@@ -37,7 +37,7 @@ class AppConfigTest extends TestCase {
 		$sql->select('*')
 			->from('appconfig');
 		$result = $sql->execute();
-		$this->originalConfig = $result->fetchAll();
+		$this->originalConfig = $result->fetchAllAssociative();
 		$result->free();
 
 		$sql = $this->connection->getQueryBuilder();

@@ -3056,7 +3056,7 @@ class Share extends Constants {
 	public static function getAllSharesForOwner($owner) {
 		$query = 'SELECT * FROM `*PREFIX*share` WHERE `uid_owner` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($query, [$owner]);
-		return $result->fetchAll();
+		return $result->fetchAllAssociative();
 	}
 
 	/**
@@ -3068,7 +3068,7 @@ class Share extends Constants {
 	public static function getAllSharesForFileId($id) {
 		$query = 'SELECT * FROM `*PREFIX*share` WHERE `file_source` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($query, [$id]);
-		return $result->fetchAll();
+		return $result->fetchAllAssociative();
 	}
 
 	/**

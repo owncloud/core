@@ -191,7 +191,7 @@ class Migration {
 			->orderBy('id', 'asc')
 			->setMaxResults($n);
 		$result = $query->execute();
-		$shares = $result->fetchAll();
+		$shares = $result->fetchAllAssociative();
 		$result->free();
 
 		$ordered = [];
@@ -214,7 +214,7 @@ class Migration {
 			->from($this->table)
 			->where($query->expr()->eq('id', $query->createNamedParameter($id)));
 		$result = $query->execute();
-		$share = $result->fetchAll();
+		$share = $result->fetchAllAssociative();
 		$result->free();
 
 		return $share[0];

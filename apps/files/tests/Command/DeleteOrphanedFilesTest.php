@@ -78,7 +78,7 @@ class DeleteOrphanedFilesTest extends TestCase {
 
 	protected function getFile($fileId) {
 		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*filecache` WHERE `fileid` = ?', [$fileId]);
-		return $stmt->fetchAll();
+		return $stmt->fetchAllAssociative();
 	}
 
 	/**

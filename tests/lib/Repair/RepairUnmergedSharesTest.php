@@ -169,7 +169,7 @@ class RepairUnmergedSharesTest extends TestCase {
 			->from('share')
 			->where($query->expr()->eq('id', $query->expr()->literal($id)))
 			->execute()
-			->fetchAll();
+			->fetchAllAssociative();
 
 		if (!empty($results)) {
 			return $results[0];

@@ -239,7 +239,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		// TODO: join with oc_storages / oc_mounts to deliver user id ?
 
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
+		$rows = $results->fetchAllAssociative();
 		$results->free();
 
 		$storageIds = [];
@@ -268,7 +268,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		// TODO: join with oc_storages / oc_mounts to deliver user id ?
 
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
+		$rows = $results->fetchAllAssociative();
 		$results->free();
 
 		$storageIds = [];
@@ -311,7 +311,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$results = $qb->execute();
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
-			$rows = $results->fetchAll();
+			$rows = $results->fetchAllAssociative();
 			$results->free();
 
 			$this->connection->beginTransaction();
@@ -389,7 +389,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
 		}
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
+		$rows = $results->fetchAllAssociative();
 		$results->free();
 
 		if (!empty($rows)) {
@@ -509,7 +509,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$results = $qb->execute();
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
-			$rows = $results->fetchAll();
+			$rows = $results->fetchAllAssociative();
 			$results->free();
 
 			$lastResultsCount = 0;

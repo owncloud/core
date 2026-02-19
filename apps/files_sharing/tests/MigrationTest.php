@@ -265,7 +265,7 @@ class MigrationTest extends TestCase {
 	public function verifyResult() {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')->from($this->table)->orderBy('id');
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(10, $result);
 
 		// shares which shouldn't be modified

@@ -880,7 +880,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$query->orderBy('c.uri');
 
 		$result = $query->execute();
-		$cards = $result->fetchAll();
+		$cards = $result->fetchAllAssociative();
 
 		$result->free();
 

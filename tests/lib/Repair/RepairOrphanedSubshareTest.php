@@ -104,7 +104,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 					$getId = $this->connection->getQueryBuilder();
 					$grabIds = $getId->select('id')
 						->from('share')
-						->execute()->fetchAll();
+						->execute()->fetchAllAssociative();
 					$parentReshareCount = $grabIds[0]['id'];
 				}
 				$shareWithUser = $user2;
@@ -150,7 +150,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$results = $qb->select('parent')
 			->from('share')
 			->groupBy('parent')->orderBy('parent')->setMaxResults(1000)->setFirstResult(1)
-			->execute()->fetchAll();
+			->execute()->fetchAllAssociative();
 		//Total 10 rows where there, we deleted 3 and the repair deleted another
 		//3 rows. So total 6 rows were deleted and 4 rows were remaining
 		//Hence 2 is the expected result.
@@ -212,7 +212,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 						$getId = $this->connection->getQueryBuilder();
 						$grabIds = $getId->select('id')
 							->from('share')
-							->execute()->fetchAll();
+							->execute()->fetchAllAssociative();
 						$parentReshareCount = $grabIds[0]['id'];
 						$pareReshareCountRest = $parentReshareCount;
 						$firstIdSet = true;
@@ -256,7 +256,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			$result = $qb->select('id')
 				->from('share')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($rowId+ $pareReshareCountRest)))
-				->execute()->fetchAll();
+				->execute()->fetchAllAssociative();
 			if (\count($result) === 0) {
 				continue;
 			}
@@ -278,7 +278,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			$statement = $qb->select('parent')
 				->from('share')
 				->groupBy('parent')->orderBy('parent')->setMaxResults($pageLimit)->setFirstResult($offset)->execute();
-			$results = $statement->fetchAll();
+			$results = $statement->fetchAllAssociative();
 			$offset += $pageLimit;
 			$result += \count($results);
 		} while (\count($results) > 0);
@@ -384,7 +384,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			foreach ($missingEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
-					->execute()->fetchAll();
+					->execute()->fetchAllAssociative();
 				$this->assertCount(0, $row);
 			}
 		}
@@ -396,7 +396,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			foreach ($checkRandomAvailableEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
-					->execute()->fetchAll();
+					->execute()->fetchAllAssociative();
 				$this->assertCount(1, $row);
 			}
 		}
