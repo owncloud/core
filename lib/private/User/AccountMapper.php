@@ -284,7 +284,7 @@ class AccountMapper extends Mapper {
 		}
 
 		$stmt = $qb->execute();
-		$rows = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+		$rows = $stmt->fetchFirstColumn();
 		$stmt->free();
 		return $rows;
 	}
