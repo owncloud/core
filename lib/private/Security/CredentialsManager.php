@@ -80,7 +80,7 @@ class CredentialsManager implements ICredentialsManager {
 			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)))
 		;
-		$result = $qb->execute()->fetch();
+		$result = $qb->execute()->fetchAssociative();
 
 		if (!$result) {
 			return null;

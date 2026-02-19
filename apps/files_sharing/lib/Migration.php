@@ -58,7 +58,7 @@ class Migration {
 		$stmt = $this->getReShares();
 
 		$owners = [];
-		while ($share = $stmt->fetch()) {
+		while ($share = $stmt->fetchAssociative()) {
 			$this->shareCache[$share['id']] = $share;
 
 			$owners[$share['id']] = [

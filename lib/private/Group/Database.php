@@ -153,7 +153,7 @@ class Database extends \OC\Group\Backend {
 			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($uid)))
 			->execute();
 
-		$result = $cursor->fetch();
+		$result = $cursor->fetchAssociative();
 		$cursor->free();
 
 		return $result ? true : false;
@@ -222,7 +222,7 @@ class Database extends \OC\Group\Backend {
 			->execute();
 
 		$groups = [];
-		while ($row = $cursor->fetch()) {
+		while ($row = $cursor->fetchAssociative()) {
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
@@ -284,7 +284,7 @@ class Database extends \OC\Group\Backend {
 			->from('groups')
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
 			->execute();
-		$result = $cursor->fetch();
+		$result = $cursor->fetchAssociative();
 		$cursor->free();
 
 		if ($result !== false) {

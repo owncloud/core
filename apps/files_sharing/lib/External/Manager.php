@@ -183,7 +183,7 @@ class Manager {
 			WHERE `id` = ? AND `user` = ?');
 		$result = $getShare->execute([$id, $this->uid]);
 
-		return $result ? $getShare->fetch() : false;
+		return $result ? $getShare->fetchAssociative() : false;
 	}
 
 	/**
@@ -420,7 +420,7 @@ class Manager {
 		$result = $getShare->execute([$hash, $this->uid]);
 
 		if ($result) {
-			$share = $getShare->fetch();
+			$share = $getShare->fetchAssociative();
 			if ($share !== false) {
 				$this->eventDispatcher->dispatch(
 					new DeclineShare($share),

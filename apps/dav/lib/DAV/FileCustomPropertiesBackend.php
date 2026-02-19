@@ -258,7 +258,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 				[$chunk, $requestedProperties],
 				[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
 			);
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$props = $this->offsetGet($row['fileid']) ?? [];
 				$props[$row['propertyname']] = $this->decodeValue($row['propertyvalue'], (int) $row['propertytype']);
 				$this->offsetSet($row['fileid'], $props);

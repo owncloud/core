@@ -523,7 +523,7 @@ class Share extends Constants {
 					$types
 				);
 
-				while ($row = $result->fetch()) {
+				while ($row = $result->fetchAssociative()) {
 					$shares[] = $row;
 				}
 			}

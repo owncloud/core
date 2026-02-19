@@ -85,7 +85,7 @@ class ConfigCommandTest extends CommandTest {
 
 		$output = new BufferedOutput();
 		$result = self::invokePrivate($command, 'getOption', [$mount, 'filesystem_check_changes', $output]);
-		$this->assertEquals($value, \trim($output->fetch()));
+		$this->assertEquals($value, \trim($output->fetchAssociative()));
 	}
 	
 	public function optionsProvider() {

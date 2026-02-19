@@ -110,7 +110,7 @@ class Helper extends \OC\Share\Constants {
 			$result = $connection->executeQuery($queryString, $params);
 			// Reset parents array, only go through loop again if items are found
 			$parents = [];
-			while ($item = $result->fetch()) {
+			while ($item = $result->fetchAssociative()) {
 				$tmpItem = [
 					'id' => $item['id'],
 					'shareWith' => $item['share_with'],
