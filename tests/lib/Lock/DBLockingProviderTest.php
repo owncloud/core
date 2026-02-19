@@ -118,7 +118,7 @@ class DBLockingProviderTest extends LockingProvider {
 	private function getLockEntries() {
 		$query = $this->connection->prepare('SELECT * FROM `*PREFIX*file_locks`');
 		$query->execute();
-		$rows = $query->fetchAll();
+		$rows = $query->fetchAllAssociative();
 		$query->free();
 		return $rows;
 	}

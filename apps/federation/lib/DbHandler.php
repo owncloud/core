@@ -115,7 +115,7 @@ class DbHandler {
 			->where($query->expr()->eq('id', $query->createParameter('id')))
 			->setParameter('id', $id);
 		$query->execute();
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 
 		if (empty($result)) {
 			throw new \Exception('No Server found with ID: ' . $id);
@@ -132,7 +132,7 @@ class DbHandler {
 	public function getAllServer() {
 		$query = $this->connection->getQueryBuilder();
 		$query->select(['url', 'url_hash', 'id', 'status', 'shared_secret', 'sync_token'])->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		return $result;
 	}
 
@@ -148,7 +148,7 @@ class DbHandler {
 		$query->select('url')->from($this->dbTable)
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 
 		return !empty($result);
 	}

@@ -874,7 +874,7 @@ class DefaultShareProvider implements IShareProvider {
 			// There are no groups, query only for user
 			$qb = $this->getSharedWithUserQuery($userId, $node);
 			$cursor = $qb->execute();
-			$chunkedResults[] = $cursor->fetchAll();
+			$chunkedResults[] = $cursor->fetchAllAssociative();
 			$cursor->free();
 		} else {
 			// There are groups, query both for user and for groups
@@ -893,7 +893,7 @@ class DefaultShareProvider implements IShareProvider {
 					$qb = $this->getSharedWithGroupQuery($groups, $node);
 				}
 				$cursor = $qb->execute();
-				$chunkedResults[] = $cursor->fetchAll();
+				$chunkedResults[] = $cursor->fetchAllAssociative();
 				$cursor->free();
 			}
 		}

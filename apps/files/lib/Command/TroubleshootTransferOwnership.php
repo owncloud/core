@@ -287,7 +287,7 @@ class TroubleshootTransferOwnership extends Command {
 		$query->andWhere($query->expr()->neq('uid_initiator', 'uid_owner'));
 
 		$cursor = $query->execute();
-		$resharers = $cursor->fetchAll();
+		$resharers = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$entities = \array_map(function ($row) {
@@ -324,7 +324,7 @@ class TroubleshootTransferOwnership extends Command {
 		$query->andWhere($query->expr()->eq('uid_initiator', $query->createNamedParameter($userId)));
 
 		$cursor = $query->execute();
-		$reshares = $cursor->fetchAll();
+		$reshares = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		return $reshares;
@@ -381,7 +381,7 @@ class TroubleshootTransferOwnership extends Command {
 		}
 
 		$cursor = $query->execute();
-		$shareStorages = $cursor->fetchAll();
+		$shareStorages = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		return $shareStorages;

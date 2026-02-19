@@ -889,7 +889,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($id))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
+		$data = $cursor->fetchAllAssociative();
 		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);

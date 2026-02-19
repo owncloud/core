@@ -187,7 +187,7 @@ class AccountMapper extends Mapper {
 		}
 
 		$result = $qb->execute();
-		$data = $result->fetchAll();
+		$data = $result->fetchAllAssociative();
 		$result->free();
 
 		$return = [];
