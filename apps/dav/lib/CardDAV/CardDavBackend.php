@@ -764,7 +764,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$query = 'SELECT `uri` FROM `*PREFIX*cards` WHERE `addressbookid` = ?';
 			$stmt = $this->db->prepare($query);
 			$queryResult = $stmt->executeQuery([$addressBookId]);
-			$result['added'] = $queryResult->fetchAll(\PDO::FETCH_COLUMN);
+			$result['added'] = $queryResult->fetchFirstColumn();
 			$queryResult->free();
 		}
 		return $result;
