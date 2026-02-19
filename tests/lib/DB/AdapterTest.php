@@ -90,7 +90,7 @@ class AdapterTest extends \Test\TestCase {
 			->where($query->expr()->eq('configvalue', $query->createNamedParameter($value)))
 			->where($query->expr()->eq('configkey', $query->createNamedParameter($key)))
 			->execute();
-		$this->assertCount(1, $result->fetchAll());
+		$this->assertCount(1, $result->fetchAllAssociative());
 	}
 
 	/**

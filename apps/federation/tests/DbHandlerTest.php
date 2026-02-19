@@ -57,7 +57,7 @@ class DbHandlerTest extends TestCase {
 		);
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertEmpty($result, 'we need to start with a empty trusted_servers table');
 	}
 
@@ -78,7 +78,7 @@ class DbHandlerTest extends TestCase {
 		$id = $this->dbHandler->addServer($url);
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame($expectedUrl, $result[0]['url']);
 		$this->assertSame($id, (int)$result[0]['id']);
@@ -99,7 +99,7 @@ class DbHandlerTest extends TestCase {
 		$id2 = $this->dbHandler->addServer('server2');
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(2, $result);
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame('server2', $result[1]['url']);
@@ -108,7 +108,7 @@ class DbHandlerTest extends TestCase {
 
 		$this->dbHandler->removeServer($id2);
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
@@ -160,7 +160,7 @@ class DbHandlerTest extends TestCase {
 	public function testAddToken() {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$resultToken = $result[0]['token'];
 		// MySQL and sqLite support inline column comments in doctrine/dbal
 		// When the result is null, and the database has been created with column comments,
@@ -173,7 +173,7 @@ class DbHandlerTest extends TestCase {
 		$this->assertNull($resultToken);
 		$this->dbHandler->addToken('http://server1', 'token');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame('token', $result[0]['token']);
 	}
@@ -190,7 +190,7 @@ class DbHandlerTest extends TestCase {
 	public function testAddSharedSecret() {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$resultToken = $result[0]['shared_secret'];
 		// MySQL and sqLite support inline column comments in doctrine/dbal
 		// When the result is null, and the database has been created with column comments,
@@ -203,7 +203,7 @@ class DbHandlerTest extends TestCase {
 		$this->assertNull($resultToken);
 		$this->dbHandler->addSharedSecret('http://server1', 'secret');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame('secret', $result[0]['shared_secret']);
 	}
@@ -220,12 +220,12 @@ class DbHandlerTest extends TestCase {
 	public function testSetServerStatus() {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame(TrustedServers::STATUS_PENDING, (int)$result[0]['status']);
 		$this->dbHandler->setServerStatus('http://server1', TrustedServers::STATUS_OK);
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(1, $result);
 		$this->assertSame(TrustedServers::STATUS_OK, (int)$result[0]['status']);
 	}

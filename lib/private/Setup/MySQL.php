@@ -156,7 +156,7 @@ class MySQL extends AbstractDatabase {
 
 					//current dbuser has admin rights
 					if ($result) {
-						$data = $result->fetchAll();
+						$data = $result->fetchAllAssociative();
 						//new dbuser does not exist
 						if (\count($data) === 0) {
 							//use the admin login data for the new database user

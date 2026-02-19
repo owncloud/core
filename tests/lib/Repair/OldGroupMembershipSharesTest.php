@@ -78,7 +78,7 @@ class OldGroupMembershipSharesTest extends \Test\TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $group2], ['id' => $user1], ['id' => $member], ['id' => $notAMember]], $rows);
 		$result->free();
 
@@ -94,7 +94,7 @@ class OldGroupMembershipSharesTest extends \Test\TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $group2], ['id' => $user1], ['id' => $member]], $rows);
 		$result->free();
 	}

@@ -96,7 +96,7 @@ class RepairSubShares implements IRepairStep {
 		$selectDuplicates = $this->getSelectQueryToDetectDuplicatesBuilder();
 
 		$results = $selectDuplicates->execute();
-		$rows = $results->fetchAll();
+		$rows = $results->fetchAllAssociative();
 		$results->free();
 		$rowIds = [];
 		if (\count($rows) > 0) {

@@ -482,7 +482,7 @@ class Manager {
 		$result = $getShare->execute([$uid]);
 
 		if ($result) {
-			$shares = $result->fetchAll();
+			$shares = $result->fetchAllAssociative();
 			foreach ($shares as $share) {
 				$this->eventDispatcher->dispatch(
 					new DeclineShare($share),
@@ -538,7 +538,7 @@ class Manager {
 		$shares = $this->connection->prepare($query);
 		$result = $shares->execute($parameters);
 
-		return $result ? $shares->fetchAll() : [];
+		return $result ? $shares->fetchAllAssociative() : [];
 	}
 
 	/**

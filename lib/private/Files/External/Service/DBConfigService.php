@@ -331,7 +331,7 @@ class DBConfigService {
 
 	private function getMountsFromQuery(IQueryBuilder $query) {
 		$result = $query->execute();
-		$mounts = $result->fetchAll();
+		$mounts = $result->fetchAllAssociative();
 		$uniqueMounts = [];
 		foreach ($mounts as $mount) {
 			$id = $mount['mount_id'];
@@ -380,7 +380,7 @@ class DBConfigService {
 		$query = $builder->select($fields)
 			->from($table)
 			->where($builder->expr()->in('mount_id', $placeHolders));
-		$rows = $query->execute()->fetchAll();
+		$rows = $query->execute()->fetchAllAssociative();
 
 		$result = [];
 		foreach ($mountIds as $mountId) {

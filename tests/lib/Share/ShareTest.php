@@ -1226,7 +1226,7 @@ class ShareTest extends \Test\TestCase {
 		   ->setParameter('owner', $this->user1)
 		   ->setParameter('share_type', \OCP\Share::SHARE_TYPE_LINK);
 
-		$res = $qb->execute()->fetchAll();
+		$res = $qb->execute()->fetchAllAssociative();
 		$this->assertCount(1, $res);
 		$id = $res[0]['id'];
 

@@ -287,7 +287,7 @@ class QueryBuilderTest extends \Test\TestCase {
 			->orderBy('appid', 'DESC');
 
 		$query = $this->queryBuilder->execute();
-		$rows = $query->fetchAll();
+		$rows = $query->fetchAllAssociative();
 		$query->free();
 
 		$this->assertEquals(

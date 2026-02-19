@@ -100,7 +100,7 @@ class DefaultTokenMapper extends Mapper {
 			->where($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
 			->setMaxResults(1000);
 		$result = $qb->execute();
-		$data = $result->fetchAll();
+		$data = $result->fetchAllAssociative();
 		$result->free();
 
 		$entities = \array_map(function ($row) {

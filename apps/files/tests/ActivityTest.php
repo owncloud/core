@@ -401,7 +401,7 @@ class ActivityTest extends TestCase {
 		// Test the query on the privatedata table, because the activity table
 		// does not exist in core
 		$result = $connection->executeQuery('SELECT * FROM `*PREFIX*privatedata` WHERE ' . $resultQuery, $resultParameters);
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$result->free();
 	}
 

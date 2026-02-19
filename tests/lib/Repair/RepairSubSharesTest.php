@@ -127,7 +127,7 @@ class RepairSubSharesTest extends TestCase {
 		$this->repair->run($outputMock);
 
 		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		$this->assertCount(0, $results);
 
 		//There should be only one entry for share_with as 'user2'
@@ -135,13 +135,13 @@ class RepairSubSharesTest extends TestCase {
 		$qb->select($qb->createFunction('count(*)'))
 			->from('share')
 			->where($qb->expr()->eq('share_with', $qb->createNamedParameter('user2')));
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		$this->assertCount(1, $results);
 
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('id', 'share_with')
 			->from('share');
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		//Only 3 entries should be there
 		$this->assertCount(3, $results);
 
@@ -212,18 +212,18 @@ class RepairSubSharesTest extends TestCase {
 		}
 
 		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
-		$idsNotPresent = $qb->execute()->fetchAll();
+		$idsNotPresent = $qb->execute()->fetchAllAssociative();
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		$this->assertCount(0, $results);
 
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('id')
 			->from('share');
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		//Only 7 entries should be there
 		$this->assertCount(7, $results);
 
@@ -284,13 +284,13 @@ class RepairSubSharesTest extends TestCase {
 
 		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
 
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 		$this->assertCount(0, $results);
 
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('id')
 			->from('share');
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 
 		$this->assertCount(6, $results);
 

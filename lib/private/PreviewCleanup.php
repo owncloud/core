@@ -64,7 +64,7 @@ class PreviewCleanup {
 				if (!isset($lastStorageInfo[$storageId])) {
 					$query->setParameter('sid', $storageId, IQueryBuilder::PARAM_INT);
 					$result = $query->execute();
-					$resultData = $result->fetchAll(); // only 1 result expected
+					$resultData = $result->fetchAllAssociative(); // only 1 result expected
 					if (empty($resultData)) {
 						continue; // we can't do anything without the user_id
 					}
@@ -166,7 +166,7 @@ ORDER BY `storage`";
 			$sql .= " limit $chunkSize";
 		}
 
-		return $this->connection->executeQuery($sql, [$startFileId])->fetchAll(\PDO::FETCH_ASSOC);
+		return $this->connection->executeQuery($sql, [$startFileId])->fetchAllAssociative();
 	}
 
 	private function cleanFileCache($name, int $storageId): void {

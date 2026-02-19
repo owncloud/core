@@ -74,7 +74,7 @@ class RestoreDefaultRowFormat extends Command {
 			"	AND ROW_FORMAT != ?",
 			[$dbName, $dbPrefix.'%', $defaultFormat]
 		);
-		$tables = $tableSelectStatement->fetchAll();
+		$tables = $tableSelectStatement->fetchAllAssociative();
 		$tablesCount = \count($tables);
 
 		$output->writeln("<info>Found $tablesCount tables to convert</info>");

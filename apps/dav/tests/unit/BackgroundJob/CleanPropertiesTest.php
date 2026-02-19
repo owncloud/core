@@ -83,7 +83,7 @@ class CleanPropertiesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('fileid')
 			->from('properties');
-		$result = $qb->execute()->fetchAll();
+		$result = $qb->execute()->fetchAllAssociative();
 
 		/**
 		 * Only one result should be there.
@@ -135,7 +135,7 @@ class CleanPropertiesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('fileid')
 			->from('properties');
-		$results = $qb->execute()->fetchAll();
+		$results = $qb->execute()->fetchAllAssociative();
 
 		/**
 		 * 10 result should be there.

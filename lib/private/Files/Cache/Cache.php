@@ -244,7 +244,7 @@ class Cache implements ICache {
 			$qb->orderBy('name', 'ASC');
 
 			$result = $qb->execute();
-			$files = $result->fetchAll();
+			$files = $result->fetchAllAssociative();
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->mimetypeLoader->getMimetypeById($file['mimetype']);
 				$file['mimepart'] = $this->mimetypeLoader->getMimetypeById($file['mimepart']);
@@ -679,7 +679,7 @@ class Cache implements ICache {
 		// for other DBs (sqlite), we keep the old behaviour -> get the list and update one by one
 		$sql = 'SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?';
 		$result = $this->connection->executeQuery($sql, [$sourceStorageId, $this->connection->escapeLikeParameter($sourcePath) . '/%']);
-		$childEntries = $result->fetchAll();
+		$childEntries = $result->fetchAllAssociative();
 		$sourceLength = \strlen($sourcePath);
 		$query = $this->connection->prepare('UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
 
