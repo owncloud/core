@@ -110,7 +110,7 @@ class OccController extends Controller {
 			$input = new ArrayInput($inputArray);
 
 			$exitCode = $this->console->run($input, $output);
-			$response = $output->fetch();
+			$response = $output->fetchAssociative();
 
 			$json = [
 				'exitCode' => $exitCode,

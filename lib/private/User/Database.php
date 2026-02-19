@@ -218,7 +218,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		$connection = \OC::$server->getDatabaseConnection();
 		$result = $connection->executeQuery('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)', [$uid]);
 
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		if ($row) {
 			$storedHash = $row['password'];
 			$newHash = '';
@@ -251,7 +251,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 			}
 
 			// "uid" is primary key, so there can only be a single result
-			if ($row = $result->fetch()) {
+			if ($row = $result->fetchAssociative()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
@@ -285,7 +285,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		$result = $connection->prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
 		$result->execute($parameters);
 		$users = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$users[] = $row['uid'];
 		}
 		return $users;

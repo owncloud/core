@@ -1240,7 +1240,7 @@ class ShareTest extends \Test\TestCase {
 		   ->from('share')
 			->where($qb->expr()->eq('id', $qb->createParameter('id')))
 		   ->setParameter('id', $id);
-		$hash = $qb->execute()->fetch()['share_with'];
+		$hash = $qb->execute()->fetchAssociative()['share_with'];
 
 		$hasher = \OC::$server->getHasher();
 

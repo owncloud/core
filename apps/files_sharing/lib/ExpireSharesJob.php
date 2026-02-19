@@ -103,7 +103,7 @@ class ExpireSharesJob extends TimedJob {
 			);
 
 		$shares = $qb->execute();
-		while ($share = $shares->fetch()) {
+		while ($share = $shares->fetchAssociative()) {
 			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			try {
 				/*

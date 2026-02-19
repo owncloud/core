@@ -191,7 +191,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
+		$fetchedData = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$expectedSubset = [
@@ -267,7 +267,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
+		$fetchedData = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$this->assertEquals($fetchedData['id'], $share->getId());
@@ -333,7 +333,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
+		$fetchedData = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$expectedSubset = [
@@ -412,7 +412,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
+		$data = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$this->assertFalse($data);
@@ -451,7 +451,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
+		$data = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$this->assertFalse($data);
@@ -483,7 +483,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
+		$data = $stmt->fetchAssociative();
 		$stmt->free();
 
 		$this->assertFalse($data);

@@ -239,7 +239,7 @@ class Manager implements ICommentsManager {
 			->setParameter('id', $id, IQueryBuilder::PARAM_INT)
 			->execute();
 
-		$data = $resultStatement->fetch();
+		$data = $resultStatement->fetchAssociative();
 		$resultStatement->free();
 		if (!$data) {
 			throw new NotFoundException();
@@ -299,7 +299,7 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		while ($data = $resultStatement->fetch()) {
+		while ($data = $resultStatement->fetchAssociative()) {
 			$comment = new Comment($this->normalizeDatabaseData($data));
 			$this->cache($comment);
 			$tree['replies'][] = [
@@ -358,7 +358,7 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		while ($data = $resultStatement->fetch()) {
+		while ($data = $resultStatement->fetchAssociative()) {
 			$comment = new Comment($this->normalizeDatabaseData($data));
 			$this->cache($comment);
 			$comments[] = $comment;
@@ -410,7 +410,7 @@ class Manager implements ICommentsManager {
 
 			$cursor = $qbMain->execute();
 
-			while ($data = $cursor->fetch()) {
+			while ($data = $cursor->fetchAssociative()) {
 				$unreadCountsForNodes[$data['id']] = \intval($data['count']);
 			}
 			$cursor->free();
@@ -788,7 +788,7 @@ class Manager implements ICommentsManager {
 			->setParameter('object_id', $objectId, IQueryBuilder::PARAM_STR)
 			->execute();
 
-		$data = $resultStatement->fetch();
+		$data = $resultStatement->fetchAssociative();
 		$resultStatement->free();
 		if (!$data || $data['marker_datetime'] === null) {
 			return null;

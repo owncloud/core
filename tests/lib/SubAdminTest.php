@@ -145,7 +145,7 @@ class SubAdminTest extends TestCase {
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($this->groups[0]->getGID())))
 			->andWHere($qb->expr()->eq('uid', $qb->createNamedParameter($this->users[0]->getUID())))
 			->execute()
-			->fetch();
+			->fetchAssociative();
 		$this->assertEquals(
 			[
 				'gid' => $this->groups[0]->getGID(),
@@ -210,7 +210,7 @@ class SubAdminTest extends TestCase {
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($this->groups[0]->getGID())))
 			->andWHere($qb->expr()->eq('uid', $qb->createNamedParameter($this->users[0]->getUID())))
 			->execute()
-			->fetch();
+			->fetchAssociative();
 		$this->assertEmpty($result);
 	}
 

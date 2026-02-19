@@ -72,7 +72,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$query = $queryBuilder->execute();
 		$rows = [];
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$rows[] = $row['configvalue'];
 		}
 		$query->free();
@@ -212,7 +212,7 @@ class QueryBuilderTest extends \Test\TestCase {
 			->setMaxResults(1);
 
 		$query = $this->queryBuilder->execute();
-		$row = $query->fetch();
+		$row = $query->fetchAssociative();
 		$query->free();
 
 		foreach ($expected as $key => $value) {
@@ -260,7 +260,7 @@ class QueryBuilderTest extends \Test\TestCase {
 			->setMaxResults(1);
 
 		$query = $this->queryBuilder->execute();
-		$row = $query->fetch();
+		$row = $query->fetchAssociative();
 		$query->free();
 
 		$this->assertEquals(
@@ -349,7 +349,7 @@ class QueryBuilderTest extends \Test\TestCase {
 			->setMaxResults(1);
 
 		$query = $this->queryBuilder->execute();
-		$row = $query->fetch();
+		$row = $query->fetchAssociative();
 		$query->free();
 
 		foreach ($expected as $key => $value) {

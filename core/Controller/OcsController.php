@@ -158,7 +158,7 @@ class OcsController extends \OCP\AppFramework\OCSController {
 
 		$xml = [];
 		if ($result === true) {
-			while ($row = $q->fetch()) {
+			while ($row = $q->fetchAssociative()) {
 				$data= [];
 				$data['key']=$row['key'];
 				$data['app']=$row['app'];

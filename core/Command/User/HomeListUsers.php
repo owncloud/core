@@ -99,7 +99,7 @@ class HomeListUsers extends Base {
 				->where($query->expr()->like('home', $query->createNamedParameter("$path%")));
 			$result = $query->execute();
 			$outputData = [];
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$outputData[] = $row['user_id'];
 			}
 			$result->free();
