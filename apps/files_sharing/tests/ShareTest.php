@@ -59,8 +59,7 @@ class ShareTest extends TestCase {
 		$this->view->deleteAll($this->folder);
 
 		// clear database table
-		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share`');
-		$query->execute();
+		\OC::$server->getDatabaseConnection()->executeStatement('DELETE FROM `*PREFIX*share`');
 
 		parent::tearDown();
 	}
