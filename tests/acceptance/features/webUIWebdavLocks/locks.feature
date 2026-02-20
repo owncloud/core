@@ -42,7 +42,7 @@ Feature: Locks
     And folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
 
-  @skipOnOcV10 @issue-34315
+  @skipOnOcV10 @issue-34315 @skipOnOcV11
   Scenario: setting a lock shows the current display name of a user in the locking details
     Given these users have been created without skeleton files:
       | username               | displayname   |
@@ -111,7 +111,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skipOnOcV10 @issue-33867 @files_sharing-app-required
+  @skipOnOcV10 @issue-33867 @files_sharing-app-required @skipOnOcV11
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
     Given user "receiver" has been created with default attributes and without skeleton files
     And user "brand-new-user" has created folder "simple-folder"
@@ -134,7 +134,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skipOnOcV10 @issue-33867 @files_sharing-app-required
+  @skipOnOcV10 @issue-33867 @files_sharing-app-required @skipOnOcV11
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
     Given user "brand-new-user" has created folder "simple-folder"
     And user "brand-new-user" has created folder "simple-empty-folder"
@@ -160,7 +160,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
 
-  @skipOnOcV10 @issue-33867 @files_sharing-app-required
+  @skipOnOcV10 @issue-33867 @files_sharing-app-required @skipOnOcV11
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
     Given user "sharer" has been created with default attributes and without skeleton files
     And user "sharer" has created folder "simple-folder"

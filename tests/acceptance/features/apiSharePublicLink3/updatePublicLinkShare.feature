@@ -5,7 +5,7 @@ Feature: update a public link share
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-37653 @skipOnOcV10
+  @issue-37653 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"

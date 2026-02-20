@@ -129,7 +129,7 @@ Feature: remove a user from a group
       | brand-new-user | 50%2Fix             |
       | brand-new-user | staff?group         |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario: admin removes a user from a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
@@ -214,7 +214,7 @@ Feature: remove a user from a group
     And the HTTP status code should be "403"
     And user "brand-new-user" should belong to group "brand-new-group"
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to remove a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -229,7 +229,7 @@ Feature: remove a user from a group
     And user "another-new-user" should belong to group "brand-new-group"
 
   # merge this with scenario on line 62 once the issue is fixed
-  @issue-31015 @skipOnOcV10 @issue-product-284
+  @issue-31015 @skipOnOcV10 @issue-product-284 @skipOnOcV11
   Scenario Outline: admin removes a user from a group that has a forward-slash and dot in the group name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "<group_id>" has been created

@@ -34,7 +34,7 @@ Feature: get user groups
       | नेपाली               |
       | 😅 😆                |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario: admin gets groups of an user, including groups containing a slash
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created

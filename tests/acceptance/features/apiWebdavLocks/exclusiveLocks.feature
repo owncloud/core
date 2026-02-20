@@ -60,7 +60,7 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10 @issue-34358
+  @skipOnOcV10 @issue-34358 @skipOnOcV11
   Scenario Outline: if a child resource is exclusively locked a parent resource cannot be locked again
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"

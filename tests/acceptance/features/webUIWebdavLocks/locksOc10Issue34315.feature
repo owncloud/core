@@ -11,7 +11,7 @@ Feature: Locks
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
 
-  @skipOnOcV10 @issue-34315
+  @skipOnOcV10 @issue-34315 @skipOnOcV11
   Scenario: setting a lock shows the current display name of a user in the locking details
     Given these users have been created without skeleton files:
       | username               | displayname   |

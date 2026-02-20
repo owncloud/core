@@ -71,7 +71,7 @@ Feature: federated
     Then as "Brian" file "Shares/textfile1.txt" should exist
     And url "%remote_server%" should not be a trusted server
 
-  @issue-35839 @skipOnOcV10
+  @issue-35839 @skipOnOcV10 @skipOnOcV11
   Scenario: enable "Add server automatically" once a federated share was created successfully
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"

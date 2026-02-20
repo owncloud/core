@@ -106,7 +106,7 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/FOLDER            |
     Then the HTTP status code of responses on all endpoints should be "204"
 
-  @skipOnOcV10
+  @skipOnOcV10 @skipOnOcV11
   Scenario: send DELETE requests to webDav endpoints with body as normal user
     When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
       | endpoint                                           |

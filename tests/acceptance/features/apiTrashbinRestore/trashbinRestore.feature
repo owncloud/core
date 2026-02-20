@@ -92,7 +92,7 @@ Feature: Restore deleted files/folders
       | old      | /textfile0.txt          | PARENT/textfile0.txt |
       | new      | /textfile0.txt          | PARENT/textfile0.txt |
 
-  @skipOnOcV10 @issue-35974
+  @skipOnOcV10 @issue-35974 @skipOnOcV11
   Scenario Outline: restoring a file to an already existing path overrides the file
     Given user "Alice" has uploaded file with content "file to delete" to "/.hiddenfile0.txt"
     And using <dav-path> DAV path

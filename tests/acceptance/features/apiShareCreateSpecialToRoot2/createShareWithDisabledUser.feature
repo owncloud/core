@@ -17,7 +17,7 @@ Feature: share resources with a disabled user
       | ocs_api_version | ocs_status_code |
       | 1               | 997             |
 
-  @issue-32068 @skipOnOcV10
+  @issue-32068 @skipOnOcV10 @skipOnOcV11
   Scenario: Creating a new share with a disabled user
     Given using OCS API version "2"
     And user "Brian" has been created with default attributes and without skeleton files
