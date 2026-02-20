@@ -61,6 +61,11 @@ jobs:
           extensions: curl, gd, json, xml, zip
           ini-values: "memory_limit=2048M"
 
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Install Composer dependencies
         run: |
           make install-composer-deps
