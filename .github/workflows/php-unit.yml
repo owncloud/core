@@ -108,10 +108,8 @@ jobs:
           php occ app:enable federatedfilesharing
 
       - name: Run PHPUnit
-        env:
-          NOCOVERAGE: 1
         run: |
-          make test-php-unit
+          bash tests/drone/test-phpunit.sh
 
       - name: Tail logs
         if: failure()
