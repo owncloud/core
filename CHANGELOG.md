@@ -36,10 +36,17 @@ ownCloud admins and users.
 
 ## Summary
 
+* Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
 ## Details
+
+* Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
+
+   Icons have been updated according to the M$ cloud storage partner program
+
+   https://github.com/owncloud/core/pull/41347
 
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 
