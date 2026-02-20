@@ -169,7 +169,7 @@ class OCI extends AbstractDatabase {
 		\oci_close($connection);
 
 		if (!$result || $row[0] == 0) {
-			\OC_DB::createDbFromStructure($this->dbDefinitionFile);
+			(new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection()))->createDbFromStructure($this->dbDefinitionFile);
 		}
 	}
 

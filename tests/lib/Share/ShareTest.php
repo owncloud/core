@@ -99,8 +99,8 @@ class ShareTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `item_type` = ?');
-		$query->execute(['test']);
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->executeStatement('DELETE FROM `*PREFIX*share` WHERE `item_type` = ?', ['test']);
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_allow_resharing', $this->resharing);
 
 		$user = \OC::$server->getUserManager()->get($this->user1);
@@ -426,7 +426,8 @@ class ShareTest extends \Test\TestCase {
 		$this->shareUserTestFileAsLink();
 
 		// manipulate share table and set expire date to the past
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
+		$connection = \OC::$server->getDatabaseConnection();
+		$query = $connection->prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
 		$query->bindValue(1, new \DateTime($this->dateInPast), 'datetime');
 		$query->bindValue(2, 'test');
 		$query->bindValue(3, 'test.txt');
@@ -640,7 +641,8 @@ class ShareTest extends \Test\TestCase {
 		\OC_User::setUserId($this->user1);
 
 		//add dummy values to the share table
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share` ('
+		$connection = \OC::$server->getDatabaseConnection();
+		$query = $connection->prepare('INSERT INTO `*PREFIX*share` ('
 			.' `item_type`, `item_source`, `item_target`, `share_type`,'
 			.' `share_with`, `uid_owner`) VALUES (?,?,?,?,?,?)');
 		$args = ['test', 99, 'target1', \OCP\Share::SHARE_TYPE_USER, $this->user2, $this->user1];
@@ -679,7 +681,8 @@ class ShareTest extends \Test\TestCase {
 		\OC_User::setUserId($this->user1);
 
 		//add dummy values to the share table
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share` ('
+		$connection = \OC::$server->getDatabaseConnection();
+		$query = $connection->prepare('INSERT INTO `*PREFIX*share` ('
 			.' `item_type`, `item_source`, `item_target`, `share_type`,'
 			.' `share_with`, `uid_owner`) VALUES (?,?,?,?,?,?)');
 		$args = ['test', 99, 'target1', \OCP\Share::SHARE_TYPE_GROUP, $this->group1, $this->user1];
@@ -787,7 +790,8 @@ class ShareTest extends \Test\TestCase {
 		);
 
 		// manipulate share table and set expire date to the past
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
+		$connection = \OC::$server->getDatabaseConnection();
+		$query = $connection->prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
 		$query->bindValue(1, new \DateTime($this->dateInPast), 'datetime');
 		$query->bindValue(2, 'test');
 		$query->bindValue(3, 'test.txt');

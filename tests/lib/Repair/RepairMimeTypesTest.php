@@ -54,7 +54,7 @@ class RepairMimeTypesTest extends TestCase {
 	protected function tearDown(): void {
 		$this->storage->getCache()->clear();
 		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
-		\OC_DB::executeAudited($sql, [$this->storage->getId()]);
+		\OC::$server->getDatabaseConnection()->executeStatement($sql, [$this->storage->getId()]);
 		$this->clearMimeTypes();
 
 		parent::tearDown();
@@ -62,7 +62,7 @@ class RepairMimeTypesTest extends TestCase {
 
 	private function clearMimeTypes() {
 		$sql = 'DELETE FROM `*PREFIX*mimetypes`';
-		\OC_DB::executeAudited($sql);
+		\OC::$server->getDatabaseConnection()->executeStatement($sql);
 		$this->mimetypeLoader->reset();
 	}
 
@@ -94,8 +94,9 @@ class RepairMimeTypesTest extends TestCase {
 	 */
 	private function getMimeTypeIdFromDB($mimeType) {
 		$sql = 'SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?';
-		$results = \OC_DB::executeAudited($sql, [$mimeType]);
-		$result = $results->fetchOne();
+		$connection = \OC::$server->getDatabaseConnection();
+		$results = $connection->executeQuery($sql, [$mimeType]);
+		$result = $results->fetch();
 		if ($result) {
 			return $result['id'];
 		}

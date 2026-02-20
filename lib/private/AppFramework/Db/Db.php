@@ -60,9 +60,33 @@ class Db implements IDb {
 	 * @inheritdoc
 	 */
 	public function prepareQuery($sql, $limit = null, $offset = null) {
-		$isManipulation = \OC_DB::isManipulation($sql);
+		$isManipulation = $this->isManipulation($sql);
 		$statement = $this->connection->prepare($sql, $limit, $offset);
 		return new \OC_DB_StatementWrapper($statement, $isManipulation);
+	}
+
+	/**
+	 * @param string $sql
+	 * @return bool
+	 */
+	private function isManipulation($sql) {
+		$selectOccurrence = \stripos($sql, 'SELECT');
+		if ($selectOccurrence !== false && $selectOccurrence < 10) {
+			return false;
+		}
+		$insertOccurrence = \stripos($sql, 'INSERT');
+		if ($insertOccurrence !== false && $insertOccurrence < 10) {
+			return true;
+		}
+		$updateOccurrence = \stripos($sql, 'UPDATE');
+		if ($updateOccurrence !== false && $updateOccurrence < 10) {
+			return true;
+		}
+		$deleteOccurrence = \stripos($sql, 'DELETE');
+		if ($deleteOccurrence !== false && $deleteOccurrence < 10) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

@@ -594,9 +594,6 @@ class Share extends Constants {
 	public static function getShareByToken($token, $checkPasswordProtection = true) {
 		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT * FROM `*PREFIX*share` WHERE `token` = ?', 1);
 		$result = $query->executeQuery([$token]);
-		if ($result === false) {
-			\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage() . ', token=' . $token, \OCP\Util::ERROR);
-		}
 		$row = $result->fetchAssociative();
 		$result->free();
 
@@ -2006,13 +2003,6 @@ class Share extends Constants {
 		$root = \strlen($root);
 		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where, $queryLimit);
 		$result = $query->executeQuery($queryArgs);
-		if ($result === false) {
-			\OCP\Util::writeLog(
-				'OCP\Share',
-				\OC_DB::getErrorMessage() . ', select=' . $select . ' where=',
-				\OCP\Util::ERROR
-			);
-		}
 		$items = [];
 		$targets = [];
 		$switchedItems = [];
@@ -2071,25 +2061,17 @@ class Share extends Constants {
 				if (isset($row['parent'])) {
 					$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
 					$parentResult = $query->executeQuery([$row['parent']]);
-					if ($result === false) {
-						\OCP\Util::writeLog(
-							'OCP\Share',
-							'Can\'t select parent: ' .
-							\OC_DB::getErrorMessage() . ', select=' . $select . ' where=' . $where,
-							\OCP\Util::ERROR
-						);
-					} else {
-						$parentRow = $parentResult->fetchAssociative();
-						$tmpPath = $parentRow['file_target'];
-						// find the right position where the row path continues from the target path
-						$pos = \strrpos($row['path'], $parentRow['file_target']);
-						$subPath = \substr($row['path'], $pos);
-						$splitPath = \explode('/', $subPath);
-						foreach (\array_slice($splitPath, 2) as $pathPart) {
-							$tmpPath = $tmpPath . '/' . $pathPart;
-						}
-						$row['path'] = $tmpPath;
+					$parentRow = $parentResult->fetchAssociative();
+					$tmpPath = $parentRow['file_target'];
+					// find the right position where the row path continues from the target path
+					$pos = \strrpos($row['path'], $parentRow['file_target']);
+					$subPath = \substr($row['path'], $pos);
+					$splitPath = \explode('/', $subPath);
+					foreach (\array_slice($splitPath, 2) as $pathPart) {
+						$tmpPath = $tmpPath . '/' . $pathPart;
 					}
+					$row['path'] = $tmpPath;
+
 					$parentResult->free();
 				} else {
 					if (!isset($mounts[$row['storage']])) {

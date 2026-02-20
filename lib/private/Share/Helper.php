@@ -106,11 +106,11 @@ class Helper extends \OC\Share\Constants {
 				$queryString .= ' AND `share_type` != ?';
 				$params[] = self::$shareTypeGroupUserUnique;
 			}
-			$query = \OC_DB::prepare($queryString);
-			$result = $query->execute($params);
+			$connection = \OC::$server->getDatabaseConnection();
+			$result = $connection->executeQuery($queryString, $params);
 			// Reset parents array, only go through loop again if items are found
 			$parents = [];
-			while ($item = $result->fetchRow()) {
+			while ($item = $result->fetch()) {
 				$tmpItem = [
 					'id' => $item['id'],
 					'shareWith' => $item['share_with'],
@@ -139,14 +139,14 @@ class Helper extends \OC\Share\Constants {
 
 		if (!empty($changeParent)) {
 			$idList = "'".\implode("','", $changeParent)."'";
-			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `parent` = ? WHERE `id` IN ('.$idList.')');
-			$query->execute([$newParent]);
+			$connection = \OC::$server->getDatabaseConnection();
+			$connection->executeStatement('UPDATE `*PREFIX*share` SET `parent` = ? WHERE `id` IN ('.$idList.')', [$newParent]);
 		}
 
 		if (!empty($ids)) {
 			$idList = "'".\implode("','", $ids)."'";
-			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `id` IN ('.$idList.')');
-			$query->execute();
+			$connection = \OC::$server->getDatabaseConnection();
+			$connection->executeStatement('DELETE FROM `*PREFIX*share` WHERE `id` IN ('.$idList.')');
 		}
 
 		return $deletedItems;

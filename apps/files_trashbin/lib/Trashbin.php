@@ -141,11 +141,11 @@ class Trashbin {
 	 * @return array (filename => array (timestamp => original location))
 	 */
 	public static function getLocations($user) {
-		$query = \OC_DB::prepare('SELECT `id`, `timestamp`, `location`'
-			. ' FROM `*PREFIX*files_trash` WHERE `user`=?');
-		$result = $query->execute([$user]);
+		$connection = \OC::$server->getDatabaseConnection();
+		$result = $connection->executeQuery('SELECT `id`, `timestamp`, `location`'
+			. ' FROM `*PREFIX*files_trash` WHERE `user`=?', [$user]);
 		$array = [];
-		while ($row = $result->fetchRow()) {
+		while ($row = $result->fetch()) {
 			if (isset($array[$row['id']])) {
 				$array[$row['id']][$row['timestamp']] = $row['location'];
 			} else {
@@ -164,9 +164,9 @@ class Trashbin {
 	 * @return string original location
 	 */
 	public static function getLocation($user, $filename, $timestamp) {
-		$query = \OC_DB::prepare('SELECT `location` FROM `*PREFIX*files_trash`'
-			. ' WHERE `user`=? AND `id`=? AND `timestamp`=?');
-		$result = $query->execute([$user, $filename, $timestamp])->fetchAll();
+		$connection = \OC::$server->getDatabaseConnection();
+		$result = $connection->executeQuery('SELECT `location` FROM `*PREFIX*files_trash`'
+			. ' WHERE `user`=? AND `id`=? AND `timestamp`=?', [$user, $filename, $timestamp])->fetchAll();
 		if (isset($result[0]['location'])) {
 			return $result[0]['location'];
 		} else {
@@ -263,8 +263,8 @@ class Trashbin {
 	 *
 	 */
 	public static function insertTrashEntry($user, $targetFilename, $targetLocation, $timestamp) {
-		$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
-		$result = $query->execute([$targetFilename, $timestamp, $targetLocation, $user]);
+		$connection = \OC::$server->getDatabaseConnection();
+		$result = $connection->executeStatement("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)", [$targetFilename, $timestamp, $targetLocation, $user]);
 		if (!$result) {
 			\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated for the files owner', \OCP\Util::ERROR);
 		}
@@ -346,8 +346,8 @@ class Trashbin {
 		$trashStorage->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $trashInternalPath);
 
 		if ($moveSuccessful) {
-			$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
-			$result = $query->execute([$filename, $timestamp, $location, $owner]);
+			$connection = \OC::$server->getDatabaseConnection();
+			$result = $connection->executeStatement("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)", [$filename, $timestamp, $location, $owner]);
 			if (!$result) {
 				\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated', \OCP\Util::ERROR);
 			}
@@ -598,8 +598,8 @@ class Trashbin {
 			self::restoreVersionsFromTrashbin($view, $filename, $targetLocation);
 
 			if ($timestamp) {
-				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-				$query->execute([$user, $nameOfFileWithoutTimestamp, $timestamp]);
+				$connection = \OC::$server->getDatabaseConnection();
+				$connection->executeStatement('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?', [$user, $nameOfFileWithoutTimestamp, $timestamp]);
 			}
 
 			return true;
@@ -729,8 +729,8 @@ class Trashbin {
 
 		// actual file deletion
 		$view->deleteAll('files_trashbin');
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?');
-		$query->execute([$user]);
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->executeStatement('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?', [$user]);
 
 		// Bulk PostDelete-Hook
 		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', ['paths' => $filePaths]);
@@ -800,8 +800,8 @@ class Trashbin {
 			$delimiter = \strrpos($filename, '.d');
 			$filenameWithoutTimestamp = ltrim(\substr($filename, 0, $delimiter), '/');
 			$timestamp = \substr($filename, $delimiter+2);
-			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-			$query->execute([$user, $filenameWithoutTimestamp, $timestamp]);
+			$connection = \OC::$server->getDatabaseConnection();
+			$connection->executeStatement('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?', [$user, $filenameWithoutTimestamp, $timestamp]);
 		}
 
 		$size += self::deleteVersions($view, $filename, $user);
@@ -884,8 +884,8 @@ class Trashbin {
 	 * @return bool result of db delete operation
 	 */
 	public static function deleteUser($uid) {
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?');
-		return $query->execute([$uid]);
+		$connection = \OC::$server->getDatabaseConnection();
+		return (bool)$connection->executeStatement('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?', [$uid]);
 	}
 
 	/**

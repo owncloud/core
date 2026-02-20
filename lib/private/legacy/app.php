@@ -972,7 +972,7 @@ class OC_App {
 			$ms->migrate();
 		} else {
 			if (\file_exists($appPath . '/appinfo/database.xml')) {
-				OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
+				(new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection()))->updateDbFromStructure($appPath . '/appinfo/database.xml');
 			}
 		}
 		self::executeRepairSteps($appId, $appData['repair-steps']['post-migration']);

@@ -41,7 +41,6 @@ namespace OC;
 use Doctrine\DBAL\Exception\TableExistsException;
 use OC\DB\MigrationService;
 use OC_App;
-use OC_DB;
 use OC_Helper;
 use OCP\App\AppAlreadyInstalledException;
 
@@ -133,10 +132,11 @@ class Installer {
 			$ms->migrate();
 		} else {
 			if (\is_file($basedir.'/appinfo/database.xml')) {
+				$schemaManager = new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection());
 				if (\OC::$server->getAppConfig()->getValue($info['id'], 'installed_version') === null) {
-					OC_DB::createDbFromStructure($basedir . '/appinfo/database.xml');
+					$schemaManager->createDbFromStructure($basedir . '/appinfo/database.xml');
 				} else {
-					OC_DB::updateDbFromStructure($basedir . '/appinfo/database.xml');
+					$schemaManager->updateDbFromStructure($basedir . '/appinfo/database.xml');
 				}
 			}
 		}
@@ -527,7 +527,8 @@ class Installer {
 		} else {
 			if ($appPath !== false && \is_file($appPath.'/appinfo/database.xml')) {
 				\OC::$server->getLogger()->debug('Create app database from schema file');
-				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');
+				$schemaManager = new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection());
+				$schemaManager->createDbFromStructure($appPath . '/appinfo/database.xml');
 			}
 		}
 
