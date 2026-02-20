@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semantic-git-messages:
+    name: Commits
+    uses: owncloud/reusable-workflows/.github/workflows/semantic-git-message.yml@main
+
+  php-unit:
+    name: PHP Unit
+    uses: ./.github/workflows/php-unit.yml
+    with:
+      php-versions: '["7.4"]'
