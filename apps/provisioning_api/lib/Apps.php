@@ -27,7 +27,7 @@
 namespace OCA\Provisioning_API;
 
 use OC_App;
-use OC_OCS_Result;
+use \OC\OCS\Result;
 
 class Apps {
 	/** @var \OCP\App\IAppManager */
@@ -42,7 +42,7 @@ class Apps {
 
 	/**
 	 * @param array $parameters
-	 * @return OC_OCS_Result
+	 * @return \OC\OCS\Result
 	 */
 	public function getApps($parameters) {
 		$apps = OC_App::listAllApps(true);
@@ -54,53 +54,53 @@ class Apps {
 		if ($filter) {
 			switch ($filter) {
 				case 'enabled':
-					return new OC_OCS_Result(['apps' => \OC_App::getEnabledApps()]);
+					return new \OC\OCS\Result(['apps' => \OC_App::getEnabledApps()]);
 					break;
 				case 'disabled':
 					$enabled = OC_App::getEnabledApps();
-					return new OC_OCS_Result(['apps' => \array_diff($list, $enabled)]);
+					return new \OC\OCS\Result(['apps' => \array_diff($list, $enabled)]);
 					break;
 				default:
 					// Invalid filter variable
-					return new OC_OCS_Result(null, 101);
+					return new \OC\OCS\Result(null, 101);
 					break;
 			}
 		} else {
-			return new OC_OCS_Result(['apps' => $list]);
+			return new \OC\OCS\Result(['apps' => $list]);
 		}
 	}
 
 	/**
 	 * @param array $parameters
-	 * @return OC_OCS_Result
+	 * @return \OC\OCS\Result
 	 */
 	public function getAppInfo($parameters) {
 		$app = $parameters['appid'];
 		$info = \OCP\App::getAppInfo($app);
 		if ($info !== null) {
-			return new OC_OCS_Result(OC_App::getAppInfo($app));
+			return new \OC\OCS\Result(OC_App::getAppInfo($app));
 		} else {
-			return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The request app was not found');
+			return new \OC\OCS\Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The request app was not found');
 		}
 	}
 
 	/**
 	 * @param array $parameters
-	 * @return OC_OCS_Result
+	 * @return \OC\OCS\Result
 	 */
 	public function enable($parameters) {
 		$app = $parameters['appid'];
 		$this->appManager->enableApp($app);
-		return new OC_OCS_Result(null, 100);
+		return new \OC\OCS\Result(null, 100);
 	}
 
 	/**
 	 * @param array $parameters
-	 * @return OC_OCS_Result
+	 * @return \OC\OCS\Result
 	 */
 	public function disable($parameters) {
 		$app = $parameters['appid'];
 		$this->appManager->disableApp($app);
-		return new OC_OCS_Result(null, 100);
+		return new \OC\OCS\Result(null, 100);
 	}
 }

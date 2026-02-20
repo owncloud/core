@@ -165,7 +165,7 @@ class GroupsTest extends \Test\TestCase {
 			->willReturn($groups);
 
 		$result = $this->api->getGroups([]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertEquals(['group1', 'group2'], $result->getData()['groups']);
 	}
@@ -173,7 +173,7 @@ class GroupsTest extends \Test\TestCase {
 	public function testGetGroupAsUser() {
 		$result = $this->api->getGroup([]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
 	}
@@ -201,7 +201,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'group',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertCount(1, $result->getData(), 'Asserting the result data array only has the "users" key');
 		$this->assertArrayHasKey('users', $result->getData());
@@ -226,7 +226,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'group',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
 	}
@@ -254,7 +254,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'group',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertCount(1, $result->getData(), 'Asserting the result data array only has the "users" key');
 		$this->assertArrayHasKey('users', $result->getData());
@@ -268,7 +268,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => self::getUniqueID()
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_NOT_FOUND, $result->getStatusCode());
 		$this->assertEquals('The requested group could not be found', $result->getMeta()['message']);
@@ -279,7 +279,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'NonExistingGroup',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
 		$this->assertEquals('Group does not exist', $result->getMeta()['message']);
@@ -305,7 +305,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'GroupWithSubAdmins',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertEquals(['SubAdmin1', 'SubAdmin2'], $result->getData());
 	}
@@ -328,7 +328,7 @@ class GroupsTest extends \Test\TestCase {
 			'groupid' => 'GroupWithOutSubAdmins',
 		]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertEquals([], $result->getData());
 	}
@@ -356,7 +356,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$result = $this->api->addGroup([]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
 		$this->assertEquals('Invalid group name', $result->getMeta()['message']);
@@ -375,7 +375,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$result = $this->api->addGroup([]);
 
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(102, $result->getStatusCode());
 	}
@@ -397,7 +397,7 @@ class GroupsTest extends \Test\TestCase {
 			->willReturn(null);
 
 		$result = $this->api->addGroup([]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(102, $result->getStatusCode());
 	}
@@ -427,7 +427,7 @@ class GroupsTest extends \Test\TestCase {
 			->willReturn($iUser);
 
 		$result = $this->api->addGroup([]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(997, $result->getStatusCode());
 	}
@@ -462,7 +462,7 @@ class GroupsTest extends \Test\TestCase {
 			->willReturn($iUser);
 
 		$result = $this->api->addGroup([]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 	}
 
@@ -496,7 +496,7 @@ class GroupsTest extends \Test\TestCase {
 			->willReturn($iUser);
 
 		$result = $this->api->addGroup([]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 	}
 
@@ -504,7 +504,7 @@ class GroupsTest extends \Test\TestCase {
 		$result = $this->api->deleteGroup([
 			'groupid' => 'NonExistingGroup'
 		]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
 	}
@@ -518,7 +518,7 @@ class GroupsTest extends \Test\TestCase {
 		$result = $this->api->deleteGroup([
 			'groupid' => 'admin'
 		]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(102, $result->getStatusCode());
 	}
@@ -542,7 +542,7 @@ class GroupsTest extends \Test\TestCase {
 		$result = $this->api->deleteGroup([
 			'groupid' => 'ExistingGroup',
 		]);
-		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertInstanceOf('\OC\OCS\Result', $result);
 		$this->assertTrue($result->succeeded());
 		$this->assertEquals(100, $result->getStatusCode());
 	}
