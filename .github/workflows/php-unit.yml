@@ -58,7 +58,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, gd, json, xml, zip
+          extensions: curl, gd, json, xml, zip, imagick
           ini-values: "memory_limit=2048M"
 
       - name: Install ffmpeg
