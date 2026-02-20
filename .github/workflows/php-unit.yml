@@ -113,3 +113,7 @@ jobs:
         run: |
           make test-php-unit
 
+      - name: Tail logs
+        if: failure()
+        run: |
+          cat data/owncloud.log
