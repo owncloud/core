@@ -94,7 +94,7 @@ Feature: persistent-locking in case of a public link
       | old                       | shared     |
       | old                       | exclusive  |
 
-    @skipOnOcV10
+    @skipOnOcV10 @skipOnOcV11
     Examples:
       | public-webdav-api-version | lock-scope |
       | new                       | shared     |

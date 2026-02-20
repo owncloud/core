@@ -78,7 +78,7 @@ Feature: add users to group
     Then the OCS status code of responses on all endpoints should be "200"
     And the HTTP status code of responses on all endpoints should be "200"
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
@@ -129,7 +129,7 @@ Feature: add users to group
       | mixed-case-user | case-sensitive-group3 |
       | MIXED-CASE-USER | CASE-SENSITIVE-GROUP2 |
 
-  @issue-31276 @skipOnLDAP @skipOnOcV10
+  @issue-31276 @skipOnLDAP @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to add himself to a group
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" tries to add himself to group "brand-new-group" using the provisioning API

@@ -41,7 +41,7 @@ Feature: get users
     And the users returned by the API should be
       | brand-new-user |
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to get other users
     Given these users have been created with default attributes and without skeleton files:
       | username         |

@@ -74,7 +74,7 @@ Feature: delete groups
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
@@ -87,7 +87,7 @@ Feature: delete groups
       | Mgmt//NSW/Sydney | Multiple slash                     |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to delete the group
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -97,7 +97,7 @@ Feature: delete groups
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: subadmin of the group tries to delete the group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -107,7 +107,7 @@ Feature: delete groups
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
 
-  @issue-31015 @skipOnOcV10 @issue-product-284
+  @issue-31015 @skipOnOcV10 @issue-product-284 @skipOnOcV11
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API

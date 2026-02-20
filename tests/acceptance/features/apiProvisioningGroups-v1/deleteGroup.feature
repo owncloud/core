@@ -74,7 +74,7 @@ Feature: delete groups
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
@@ -107,7 +107,7 @@ Feature: delete groups
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API

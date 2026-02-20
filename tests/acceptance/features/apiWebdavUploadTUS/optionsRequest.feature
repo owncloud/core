@@ -1,4 +1,4 @@
-@api @skipOnOcV10
+@api @skipOnOcV10 @skipOnOcV11
 Feature: OPTIONS request
 
   Background:

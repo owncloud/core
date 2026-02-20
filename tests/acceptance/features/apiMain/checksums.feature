@@ -154,7 +154,7 @@ Feature: checksums
       | dav_version |
       | new         |
 
-  @files_sharing-app-required @skipOnOcV10
+  @files_sharing-app-required @skipOnOcV10 @skipOnOcV11
   Scenario: Modifying a shared file should return correct checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

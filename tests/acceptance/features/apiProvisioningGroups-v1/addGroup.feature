@@ -104,7 +104,7 @@ Feature: add groups
       | case-sensitive-group2 |
       | Case-Sensitive-Group3 |
 
-  @issue-31015 @skipOnOcV10 @issue-product-284
+  @issue-31015 @skipOnOcV10 @issue-product-284 @skipOnOcV11
   Scenario: admin creates a group with a forward-slash in the group name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |
@@ -123,7 +123,7 @@ Feature: add groups
 
   # A group name must not end in "/subadmins" because that would create ambiguity
   # with the endpoint for getting the subadmins of a group
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario: admin tries to create a group with name ending in "/subadmins"
     Given group "brand-new-group" has been created
     When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API

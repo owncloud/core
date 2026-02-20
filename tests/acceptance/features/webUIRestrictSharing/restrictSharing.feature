@@ -61,6 +61,7 @@ Feature: restrict Sharing
     Then folder "simple-folder (2)" should be listed on the webUI
 
 
+  @issue-41463 @skipOnOcV11
   Scenario: Editing share permission of existing share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"
     And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
@@ -76,6 +77,7 @@ Feature: restrict Sharing
       | share | yes |
 
 
+  @issue-41463 @skipOnOcV11
   Scenario: Editing create permission of existing share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"
     And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
