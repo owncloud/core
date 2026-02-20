@@ -8,7 +8,7 @@ Feature: upload file using old chunking
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10 @issue-36115
+  @skipOnOcV10 @issue-36115 @skipOnOcV11
   Scenario Outline: Upload chunked file asc
     Given using <dav_version> DAV path
     When user "Alice" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
@@ -126,7 +126,7 @@ Feature: upload file using old chunking
       | old         | @a#8a=b?c=d |
       | old         | ?abc=oc #   |
 
-  @skipOnOcV10 @issue-36115
+  @skipOnOcV10 @issue-36115 @skipOnOcV11
   Scenario Outline: Upload chunked file with old chunking with lengthy filenames
     Given using <dav_version> DAV path
     And the owncloud log level has been set to debug

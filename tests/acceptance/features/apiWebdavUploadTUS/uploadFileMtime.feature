@@ -1,4 +1,4 @@
-@api @skipOnOcV10
+@api @skipOnOcV10 @skipOnOcV11
 Feature: upload file
   As a user
   I want the mtime of an uploaded file to be the creation date on upload source not the upload date

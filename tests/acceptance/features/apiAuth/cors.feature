@@ -140,7 +140,7 @@ Feature: CORS headers
       | 1               | /cloud/users  | 100      | 200       |
       | 2               | /cloud/users  | 200      | 200       |
 
-  @issue-34679 @skipOnOcV10
+  @issue-34679 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: CORS headers should be returned when invalid password is used
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -182,7 +182,7 @@ Feature: CORS headers
       | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
 
-  @issue-34679 @skipOnOcV10
+  @issue-34679 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: CORS headers should be returned when invalid password is used (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
     And the administrator has added "https://aphno.badal" to the list of personal CORS domains

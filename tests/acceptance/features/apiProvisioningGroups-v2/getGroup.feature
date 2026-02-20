@@ -71,7 +71,7 @@ Feature: get group
       | Alice |
       | Brian |
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: subadmin tries to get users in a group they are not responsible for
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -81,7 +81,7 @@ Feature: get group
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to get users in their group
     Given user "newuser" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

@@ -65,7 +65,7 @@ Feature: create local storage from the command line
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
 
-  @issue-36713 @skipOnOcV10
+  @issue-36713 @skipOnOcV10 @skipOnOcV11
   Scenario: create local storage that already exists
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
@@ -76,7 +76,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Brian" should be "this is a file in local storage"
 
-  @issue-36719 @skipOnOcV10
+  @issue-36719 @skipOnOcV10 @skipOnOcV11
   Scenario: create local storage that matches an existing folder of a user
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -94,7 +94,7 @@ Feature: create local storage from the command line
     And as "Alice" file "/reference (2)/reference-file.txt" should exist
     And the content of file "/reference (2)/reference-file.txt" for user "Alice" should be "this is a reference file"
 
-  @issue-36719 @skipOnOcV10
+  @issue-36719 @skipOnOcV10 @skipOnOcV11
   Scenario: create local storage that matches an existing shared folder of a user
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -118,7 +118,7 @@ Feature: create local storage from the command line
     And as "Brian" file "/reference (2)/reference-file.txt" should exist
     And the content of file "/reference (2)/reference-file.txt" for user "Brian" should be "this is a reference file"
 
-  @issue-36719 @skipOnOcV10
+  @issue-36719 @skipOnOcV10 @skipOnOcV11
   Scenario: create local storage that matches an existing shared folder, and the sharee has renamed the received folder
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"

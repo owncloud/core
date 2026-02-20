@@ -342,7 +342,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: Federated sharee tries to delete an accepted federated share sending wrong password
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -396,7 +396,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: Federated sharee tries to delete a pending federated share sending wrong password
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"

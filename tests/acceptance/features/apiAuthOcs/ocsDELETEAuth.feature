@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "another-admin" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @issue-32068
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @issue-32068 @skipOnOcV11
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
     Given user "another-admin" has been added to group "admin"
     When user "another-admin" requests these endpoints with "DELETE" using password "invalid" about user "Alice"

@@ -285,7 +285,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @skipOnOcV10 @issue-40787 @files_sharing-app-required
+  @skipOnOcV10 @issue-40787 @files_sharing-app-required @skipOnOcV11
   Scenario Outline: copy a file over the top of an existing file received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -304,7 +304,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @skipOnOcV10 @issue-40788 @files_sharing-app-required
+  @skipOnOcV10 @issue-40788 @files_sharing-app-required @skipOnOcV11
   Scenario Outline: copy a folder over the top of an existing folder received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

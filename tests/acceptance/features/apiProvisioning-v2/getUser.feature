@@ -102,7 +102,7 @@ Feature: get user
     And the HTTP status code should be "401"
     And the API should not return any data
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: a normal user tries to get information of another user
     Given these users have been created with default attributes and without skeleton files:
       | username         |

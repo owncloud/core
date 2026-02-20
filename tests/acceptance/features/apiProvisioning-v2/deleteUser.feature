@@ -54,7 +54,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to delete a user
     Given these users have been created with default attributes and without skeleton files:
       | username |

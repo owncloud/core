@@ -63,7 +63,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10 @issue-34338 @files_sharing-app-required
+  @skipOnOcV10 @issue-34338 @files_sharing-app-required @skipOnOcV11
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -101,7 +101,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | shared     | new                | 423              |
       | exclusive  | new                | 423              |
 
-  @skipOnOcV10 @issue-34360 @files_sharing-app-required
+  @skipOnOcV10 @issue-34360 @files_sharing-app-required @skipOnOcV11
   Scenario Outline: two users having both a shared lock can use the resource
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

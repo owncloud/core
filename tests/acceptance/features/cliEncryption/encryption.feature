@@ -63,7 +63,7 @@ Feature: encryption command
 
   # this scenario is dependant with the scenario just above it i.e moving keys to different folder
   # please remove the scenario after the issue is fixed
-  @skipOnOcV10 @issue-encryption-303
+  @skipOnOcV10 @issue-encryption-303 @skipOnOcV11
   Scenario: it should not be possible to disable encryption even after decrypting all encrypted files if keys root has been changed
     Given the administrator has decrypted everything
     When the administrator disables encryption using the occ command

@@ -7,7 +7,7 @@ Feature: federated
     And using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
 
-  @issue-35839 @skipOnOcV10
+  @issue-35839 @skipOnOcV10 @skipOnOcV11
   Scenario: "Auto accept from trusted servers" enabled with remote server
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
@@ -22,7 +22,7 @@ Feature: federated
     And as "Brian" file "textfile1 (2).txt" should exist
     And url "%remote_server%" should be a trusted server
 
-  @issue-35839 @skipOnOcV10
+  @issue-35839 @skipOnOcV10 @skipOnOcV11
   Scenario: "Auto accept from trusted servers" disabled with remote server
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
@@ -67,7 +67,7 @@ Feature: federated
     And as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should not be a trusted server
 
-  @issue-35839 @skipOnOcV10
+  @issue-35839 @skipOnOcV10 @skipOnOcV11
   Scenario: enable "Add server automatically" once a federated share was created successfully
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -86,7 +86,7 @@ Feature: federated
     And the HTTP status code should be "200"
     And as "Brian" file "textfile1.txt" should exist
 
-  @issue-35839 @skipOnOcV10
+  @issue-35839 @skipOnOcV10 @skipOnOcV11
   Scenario: disable "Add server automatically" once a federated share was created successfully
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"

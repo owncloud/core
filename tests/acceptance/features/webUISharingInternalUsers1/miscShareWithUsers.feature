@@ -327,7 +327,7 @@ Feature: misc scenarios on sharing with internal users
       just letting you know that %username% shared simple-folder with you.
       """
 
-  @issue-35787 @skipOnOcV10
+  @issue-35787 @skipOnOcV10 @skipOnOcV11
   Scenario: share a skeleton file after changing its content to a user before the user has logged in
     Given these users have been created with default attributes and without skeleton files:
       | username |

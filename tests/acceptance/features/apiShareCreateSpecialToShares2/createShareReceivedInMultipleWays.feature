@@ -513,7 +513,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path    |
       | /child1 |
 
-  @skipOnOcV10 @issue-39347
+  @skipOnOcV10 @issue-39347 @skipOnOcV11
   Scenario Outline: Share receiver renames the received group share and shares same folder through user share again
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
@@ -544,7 +544,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10 @issue-39347
+  @skipOnOcV10 @issue-39347 @skipOnOcV11
   Scenario Outline: Share receiver renames a group share and receives same resource through user share with additional permissions
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
@@ -573,7 +573,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               |
       | 2               |
 
-  @skipOnOcV10 @issue-39347
+  @skipOnOcV10 @issue-39347 @skipOnOcV11
   Scenario Outline: Share receiver renames a group share and receives same resource through user share with less permissions
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created

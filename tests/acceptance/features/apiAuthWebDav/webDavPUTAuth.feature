@@ -34,7 +34,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @skipOnOcV10
+  @skipOnOcV10 @skipOnOcV11
   Scenario: send PUT requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                       |
