@@ -11,8 +11,8 @@ if (PHP_VERSION_ID < 70400) {
 	exit(1);
 }
 
-if (PHP_VERSION_ID >= 80000) {
-	echo 'This version of ownCloud is not compatible with PHP 8.0' . $eol;
+if (PHP_VERSION_ID >= 80600) {
+	echo 'This version of ownCloud is not compatible with PHP 8.6' . $eol;
 	echo 'You are currently running PHP ' . PHP_VERSION . '.' . $eol;
 	exit(1);
 }
