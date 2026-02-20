@@ -52,7 +52,7 @@ class RepairSqliteAutoincrementTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->connection->getSchemaManager()->dropTable($this->tableName);
+		$this->connection->createSchemaManager()->dropTable($this->tableName);
 		parent::tearDown();
 	}
 
@@ -62,12 +62,12 @@ class RepairSqliteAutoincrementTest extends \Test\TestCase {
 	 * @return boolean true if autoincrement works, false otherwise
 	 */
 	protected function checkAutoincrement() {
-		$this->connection->executeUpdate('INSERT INTO ' . $this->tableName . ' ("text") VALUES ("test")');
+		$this->connection->executeStatement('INSERT INTO ' . $this->tableName . ' ("text") VALUES ("test")');
 		$insertId = $this->connection->lastInsertId();
-		$this->connection->executeUpdate('DELETE FROM ' . $this->tableName . ' WHERE "someid" = ?', [$insertId]);
+		$this->connection->executeStatement('DELETE FROM ' . $this->tableName . ' WHERE "someid" = ?', [$insertId]);
 
 		// insert again
-		$this->connection->executeUpdate('INSERT INTO ' . $this->tableName . ' ("text") VALUES ("test2")');
+		$this->connection->executeStatement('INSERT INTO ' . $this->tableName . ' ("text") VALUES ("test2")');
 		$newInsertId = $this->connection->lastInsertId();
 
 		return ($insertId !== $newInsertId);

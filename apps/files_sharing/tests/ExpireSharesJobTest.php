@@ -78,7 +78,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		$this->shareManager =  \OC::$server->getShareManager();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		// clear occasional leftover shares from other tests
-		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
+		$this->connection->executeStatement('DELETE FROM `*PREFIX*share`');
 		$this->defaultShareProvider = $this->createMock(DefaultShareProvider::class);
 		$this->activityManager = $this->createMock(\OCP\Activity\IManager::class);
 
@@ -100,7 +100,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
+		$this->connection->executeStatement('DELETE FROM `*PREFIX*share`');
 
 		$userManager = \OC::$server->getUserManager();
 		$user1 = $userManager->get($this->user1);

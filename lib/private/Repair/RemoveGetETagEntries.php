@@ -49,7 +49,7 @@ class RemoveGetETagEntries implements IRepairStep {
 	public function run(IOutput $out) {
 		$sql = 'DELETE FROM `*PREFIX*properties`'
 			. ' WHERE `propertyname` = ?';
-		$deletedRows = $this->connection->executeUpdate($sql, ['{DAV:}getetag']);
+		$deletedRows = $this->connection->executeStatement($sql, ['{DAV:}getetag']);
 
 		$out->info('Removed ' . $deletedRows . ' unneeded "{DAV:}getetag" entries from properties table.');
 	}

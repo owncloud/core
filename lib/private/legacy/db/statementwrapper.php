@@ -28,7 +28,7 @@
 use Doctrine\DBAL\Result;
 
 /**
- * small wrapper around \Doctrine\DBAL\Driver\Statement to make it behave, more like an MDB2 Statement
+ * small wrapper around \Doctrine\DBAL\Statement to make it behave, more like an MDB2 Statement
  *
  * @method boolean bindValue(mixed $param, mixed $value, integer $type = null);
  * @method string errorCode();
@@ -41,10 +41,17 @@ class OC_DB_StatementWrapper {
 	 * @var \Doctrine\DBAL\Statement
 	 */
 	private $statement = null;
+
+	/**
+	 * @var Result
+	 */
+	private $result = null;
+
 	private $isManipulation = false;
 	private $lastArguments = [];
 
 	/**
+	 * @param \Doctrine\DBAL\Statement $statement
 	 * @param boolean $isManipulation
 	 */
 	public function __construct($statement, $isManipulation) {
@@ -53,10 +60,11 @@ class OC_DB_StatementWrapper {
 	}
 
 	/**
-	 * pass all other function directly to the \Doctrine\DBAL\Driver\Statement
+	 * pass all other function directly to the \Doctrine\DBAL\Statement
 	 */
 	public function __call($name, $arguments) {
-		return \call_user_func_array([$this->statement,$name], $arguments);
+		$target = $this->result ?: $this->statement;
+		return \call_user_func_array([$target, $name], $arguments);
 	}
 
 	/**
@@ -68,19 +76,22 @@ class OC_DB_StatementWrapper {
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
 		if (\count($input) > 0) {
-			$result = $this->statement->execute($input);
-		} else {
-			$result = $this->statement->execute();
+			foreach ($input as $key => $value) {
+				if (\is_int($key)) {
+					$this->statement->bindValue($key + 1, $value);
+				} else {
+					$this->statement->bindValue($key, $value);
+				}
+			}
 		}
 
-		if ($result === false) {
-			return false;
-		}
 		if ($this->isManipulation) {
-			return $result->rowCount();
+			return $this->statement->executeStatement();
 		}
 
-		return $result;
+		$this->result = $this->statement->executeQuery();
+
+		return $this->result;
 	}
 
 	/**
@@ -89,7 +100,7 @@ class OC_DB_StatementWrapper {
 	 * @return mixed
 	 */
 	public function fetchRow() {
-		return $this->statement->fetchAssociative();
+		return $this->result ? $this->result->fetchAssociative() : false;
 	}
 
 	/**
@@ -97,10 +108,20 @@ class OC_DB_StatementWrapper {
 	 *
 	 * fetch single column from the next row
 	 * @param int $column the column number to fetch
-	 * @return string
+	 * @return mixed
 	 */
 	public function fetchOne($column = 0) {
-		return $this->statement->fetchOne();
+		if (!$this->result) {
+			return false;
+		}
+		if ($column === 0) {
+			return $this->result->fetchOne();
+		}
+		$row = $this->result->fetchNumeric();
+		if (\is_array($row) && isset($row[$column])) {
+			return $row[$column];
+		}
+		return false;
 	}
 
 	/**

@@ -118,7 +118,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			// If it was null, we need to delete the property
 			if ($propertyValue === null) {
 				if ($propertyExists) {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::DELETE_BY_PATH_AND_NAME_STMT,
 						[
 							$path,
@@ -129,7 +129,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			} else {
 				$propertyData = $this->encodeValue($propertyValue);
 				if (!$propertyExists) {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::INSERT_BY_PATH_STMT,
 						[
 							$path,
@@ -139,7 +139,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 						]
 					);
 				} else {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::UPDATE_BY_PATH_AND_NAME_STMT,
 						[
 							$propertyData['value'],

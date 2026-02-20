@@ -137,7 +137,7 @@ class Migrator {
 			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
 			return str_starts_with($assetName, $prefix);
 		});
-		return $this->connection->getSchemaManager()->createSchema();
+		return $this->connection->createSchemaManager()->createSchema();
 	}
 
 	/**
@@ -163,7 +163,7 @@ class Migrator {
 			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
 			return str_starts_with($assetName, $prefix);
 		});
-		$sourceSchema = $connection->getSchemaManager()->createSchema();
+		$sourceSchema = $connection->createSchemaManager()->createSchema();
 
 		// remove tables we don't know about
 		/** @var $table \Doctrine\DBAL\Schema\Table */

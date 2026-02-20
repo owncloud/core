@@ -131,15 +131,34 @@ class QueryBuilder implements IQueryBuilder {
 	}
 
 	/**
+	 * @return Result
+	 */
+	public function executeQuery(): Result {
+		return $this->queryBuilder->executeQuery();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function executeStatement(): int {
+		return $this->queryBuilder->executeStatement();
+	}
+
+	/**
 	 * Executes this query using the bound parameters and their types.
 	 *
-	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
+	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeStatement}
 	 * for insert, update and delete statements.
 	 *
 	 * @return Result|int|string
+	 *
+	 * @deprecated use executeQuery() or executeStatement()
 	 */
 	public function execute() {
-		return $this->queryBuilder->execute();
+		if ($this->getType() === IQueryBuilder::SELECT) {
+			return $this->executeQuery();
+		}
+		return $this->executeStatement();
 	}
 
 	/**

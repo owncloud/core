@@ -59,7 +59,7 @@ class SqliteAutoincrement implements IRepairStep {
 			return;
 		}
 
-		$sourceSchema = $this->connection->getSchemaManager()->createSchema();
+		$sourceSchema = $this->connection->createSchemaManager()->createSchema();
 
 		$schemaDiff = new SchemaDiff();
 
