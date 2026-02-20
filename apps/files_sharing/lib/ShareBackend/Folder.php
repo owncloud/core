@@ -69,10 +69,11 @@ class Folder extends File implements \OCP\Share_Backend_Collection {
 	 * @return mixed parent ID or null
 	 */
 	private function getParentId($child) {
-		$query = \OCP\DB::prepare('SELECT `parent` FROM `*PREFIX*filecache` WHERE `fileid` = ?');
-		$result = $query->execute([$child]);
-		$row = $result->fetchRow();
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `parent` FROM `*PREFIX*filecache` WHERE `fileid` = ?');
+		$result = $query->executeQuery([$child]);
+		$row = $result->fetchAssociative();
 		$parent = ($row) ? $row['parent'] : null;
+		$result->free();
 
 		return $parent;
 	}
@@ -80,26 +81,29 @@ class Folder extends File implements \OCP\Share_Backend_Collection {
 	public function getChildren($itemSource) {
 		$children = [];
 		$parents = [$itemSource];
-		$query = \OCP\DB::prepare('SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?');
-		$result = $query->execute(['httpd/unix-directory']);
-		if ($row = $result->fetchRow()) {
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?');
+		$result = $query->executeQuery(['httpd/unix-directory']);
+		if ($row = $result->fetchAssociative()) {
 			$mimetype = $row['id'];
 		} else {
 			$mimetype = -1;
 		}
+		$result->free();
+
 		while (!empty($parents)) {
 			$parents = "'".\implode("','", $parents)."'";
-			$query = \OCP\DB::prepare('SELECT `fileid`, `name`, `mimetype` FROM `*PREFIX*filecache`'
+			$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `fileid`, `name`, `mimetype` FROM `*PREFIX*filecache`'
 				.' WHERE `parent` IN ('.$parents.')');
-			$result = $query->execute();
+			$result = $query->executeQuery();
 			$parents = [];
-			while ($file = $result->fetchRow()) {
+			while ($file = $result->fetchAssociative()) {
 				$children[] = ['source' => $file['fileid'], 'file_path' => $file['name']];
 				// If a child folder is found look inside it
 				if ($file['mimetype'] == $mimetype) {
 					$parents[] = $file['fileid'];
 				}
 			}
+			$result->free();
 		}
 		return $children;
 	}

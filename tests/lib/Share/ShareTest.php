@@ -21,9 +21,11 @@
 
 namespace Test\Share;
 
+use Doctrine\DBAL\Result;
 use Test\Traits\UserTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Doctrine\DBAL\Driver\ResultStatement;
 
 /**
  * Class Test_Share
@@ -1271,10 +1273,10 @@ class ShareTest extends \Test\TestCase {
 		$qb->method('setParameter')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
 
-		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		$ret = $this->getMockBuilder(Result::class)
 					->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetch')->willReturn(['uid_owner' => 'user']);
+		$ret->method('fetchAssociative')->willReturn(['uid_owner' => 'user']);
 		$qb->method('execute')->willReturn($ret);
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')
@@ -1332,10 +1334,10 @@ class ShareTest extends \Test\TestCase {
 		$qb->method('setParameter')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
 
-		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		$ret = $this->getMockBuilder(Result::class)
 					->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetch')->willReturn(['uid_owner' => 'user']);
+		$ret->method('fetchAssociative')->willReturn(['uid_owner' => 'user']);
 		$qb->method('execute')->willReturn($ret);
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')
@@ -1383,10 +1385,10 @@ class ShareTest extends \Test\TestCase {
 		$qb->method('setParameter')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
 
-		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		$ret = $this->getMockBuilder(Result::class)
 					->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetch')->willReturn([]);
+		$ret->method('fetchAssociative')->willReturn([]);
 		$qb->method('execute')->willReturn($ret);
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')
@@ -1433,10 +1435,10 @@ class ShareTest extends \Test\TestCase {
 		$qb->method('setParameter')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
 
-		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		$ret = $this->getMockBuilder(Result::class)
 					->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetch')->willReturn(['uid_owner' => 'user2']);
+		$ret->method('fetchAssociative')->willReturn(['uid_owner' => 'user2']);
 		$qb->method('execute')->willReturn($ret);
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')

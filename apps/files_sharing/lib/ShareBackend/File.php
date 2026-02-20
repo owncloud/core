@@ -194,48 +194,4 @@ class File implements \OCP\Share_Backend_File_Dependent {
 
 		return true;
 	}
-
-	/**
-	 * resolve reshares to return the correct source item
-	 * @param array $source
-	 * @return array source item
-	 */
-	protected static function resolveReshares($source) {
-		if (isset($source['parent'])) {
-			$parent = $source['parent'];
-			while (isset($parent)) {
-				$query = \OCP\DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
-				$item = $query->execute([$parent])->fetchRow();
-				if (isset($item['parent'])) {
-					$parent = $item['parent'];
-				} else {
-					$fileOwner = $item['uid_owner'];
-					break;
-				}
-			}
-		} else {
-			$fileOwner = $source['uid_owner'];
-		}
-		if (isset($fileOwner)) {
-			$source['fileOwner'] = $fileOwner;
-		} else {
-			\OCP\Util::writeLog('files_sharing', "No owner found for reshare", \OCP\Util::ERROR);
-		}
-
-		return $source;
-	}
-
-	/**
-	 * @param string $target
-	 * @param array $share
-	 * @return array|false source item
-	 */
-	public static function getSource($target, $share) {
-		if ($share['item_type'] === 'folder' && $target !== '') {
-			// note: in case of ext storage mount points the path might be empty
-			// which would cause a leading slash to appear
-			$share['path'] = \ltrim($share['path'] . '/' . $target, '/');
-		}
-		return self::resolveReshares($share);
-	}
 }

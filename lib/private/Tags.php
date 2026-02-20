@@ -232,10 +232,6 @@ class Tags implements \OCP\ITags {
 					}
 					$entries[$objId][] = $row['category'];
 				}
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
-					return false;
-				}
 			}
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
@@ -284,12 +280,8 @@ class Tags implements \OCP\ITags {
 			. '` WHERE `categoryid` = ?';
 
 		try {
-			$stmt = \OCP\DB::prepare($sql);
-			$result = $stmt->execute([$tagId]);
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
-				return false;
-			}
+			$stmt = \OC::$server->getDatabaseConnection()->prepare($sql);
+			$result = $stmt->executeQuery([$tagId]);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
 				'core',
@@ -299,26 +291,25 @@ class Tags implements \OCP\ITags {
 			return false;
 		}
 
-		if ($result !== null) {
-			while ($row = $result->fetchRow()) {
-				$id = (int)$row['objid'];
+		while ($row = $result->fetchAssociative()) {
+			$id = (int)$row['objid'];
 
-				if ($this->includeShared) {
-					// We have to check if we are really allowed to access the
-					// items that are tagged with $tag. To that end, we ask the
-					// corresponding sharing backend if the item identified by $id
-					// is owned by any of $this->owners.
-					foreach ($this->owners as $owner) {
-						if ($this->backend->isValidSource($id, $owner)) {
-							$ids[] = $id;
-							break;
-						}
+			if ($this->includeShared) {
+				// We have to check if we are really allowed to access the
+				// items that are tagged with $tag. To that end, we ask the
+				// corresponding sharing backend if the item identified by $id
+				// is owned by any of $this->owners.
+				foreach ($this->owners as $owner) {
+					if ($this->backend->isValidSource($id, $owner)) {
+						$ids[] = $id;
+						break;
 					}
-				} else {
-					$ids[] = $id;
 				}
+			} else {
+				$ids[] = $id;
 			}
 		}
+		$result->free();
 
 		return $ids;
 	}
@@ -495,7 +486,7 @@ class Tags implements \OCP\ITags {
 				\OCP\Util::writeLog('core', __METHOD__ . 'catid, ' . $relation['tag'] . ' ' . $tagId, \OCP\Util::DEBUG);
 				if ($tagId) {
 					try {
-						\OCP\DB::insertIfNotExist(
+						\OC::$server->getDatabaseConnection()->insertIfNotExist(
 							self::RELATION_TABLE,
 							[
 								'objid' => $relation['objid'],
@@ -530,12 +521,9 @@ class Tags implements \OCP\ITags {
 		// Find all objectid/tagId pairs.
 		$result = null;
 		try {
-			$stmt = \OCP\DB::prepare('SELECT `id` FROM `' . self::TAG_TABLE . '` '
+			$stmt = \OC::$server->getDatabaseConnection()->prepare('SELECT `id` FROM `' . self::TAG_TABLE . '` '
 				. 'WHERE `uid` = ?');
-			$result = $stmt->execute([$arguments['uid']]);
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
-			}
+			$result = $stmt->executeQuery([$arguments['uid']]);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
 				'core',
@@ -546,11 +534,11 @@ class Tags implements \OCP\ITags {
 
 		if ($result !== null) {
 			try {
-				$stmt = \OCP\DB::prepare('DELETE FROM `' . self::RELATION_TABLE . '` '
+				$stmt = \OC::$server->getDatabaseConnection()->prepare('DELETE FROM `' . self::RELATION_TABLE . '` '
 					. 'WHERE `categoryid` = ?');
-				while ($row = $result->fetchRow()) {
+				while ($row = $result->fetchAssociative()) {
 					try {
-						$stmt->execute([$row['id']]);
+						$stmt->executeStatement([$row['id']]);
 					} catch (\Exception $e) {
 						\OCP\Util::writeLog(
 							'core',
@@ -566,14 +554,12 @@ class Tags implements \OCP\ITags {
 					\OCP\Util::ERROR
 				);
 			}
+			$result->free();
 		}
 		try {
-			$stmt = \OCP\DB::prepare('DELETE FROM `' . self::TAG_TABLE . '` '
+			$stmt = \OC::$server->getDatabaseConnection()->prepare('DELETE FROM `' . self::TAG_TABLE . '` '
 				. 'WHERE `uid` = ?');
-			$result = $stmt->execute([$arguments['uid']]);
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. ', DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
-			}
+			$stmt->executeStatement([$arguments['uid']]);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__ . ', exception: '
 				. $e->getMessage(), \OCP\Util::ERROR);
@@ -597,12 +583,8 @@ class Tags implements \OCP\ITags {
 			$query .= 'WHERE `objid` IN (' . \str_repeat('?,', \count($ids)-1) . '?) ';
 			$query .= 'AND `type`= ?';
 			$updates[] = $this->type;
-			$stmt = \OCP\DB::prepare($query);
-			$result = $stmt->execute($updates);
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
-				return false;
-			}
+			$stmt = \OC::$server->getDatabaseConnection()->prepare($query);
+			$stmt->executeStatement($updates);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
 				'core',
@@ -677,7 +659,7 @@ class Tags implements \OCP\ITags {
 			$tagId = $tag;
 		}
 		try {
-			\OCP\DB::insertIfNotExist(
+			\OC::$server->getDatabaseConnection()->insertIfNotExist(
 				self::RELATION_TABLE,
 				[
 					'objid' => $objid,
@@ -718,7 +700,7 @@ class Tags implements \OCP\ITags {
 		try {
 			$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
 					. 'WHERE `objid` = ? AND `categoryid` = ? AND `type` = ?';
-			$stmt = \OCP\DB::prepare($sql);
+			$stmt = \OC::$server->getDatabaseConnection()->prepare($sql);
 			$stmt->execute([$objid, $tagId, $this->type]);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
@@ -768,16 +750,8 @@ class Tags implements \OCP\ITags {
 				try {
 					$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
 							. 'WHERE `categoryid` = ?';
-					$stmt = \OCP\DB::prepare($sql);
-					$result = $stmt->execute([$id]);
-					if (\OCP\DB::isError($result)) {
-						\OCP\Util::writeLog(
-							'core',
-							__METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(),
-							\OCP\Util::ERROR
-						);
-						return false;
-					}
+					$stmt = \OC::$server->getDatabaseConnection()->prepare($sql);
+					$stmt->executeStatement([$id]);
 				} catch (\Exception $e) {
 					\OCP\Util::writeLog(
 						'core',

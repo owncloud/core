@@ -1443,11 +1443,11 @@ class ApiTest extends TestCase {
 
 		//manipulate stime so that both shares are older then the default expire date
 		$statement = "UPDATE `*PREFIX*share` SET `stime` = ? WHERE `share_type` = ?";
-		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute([$shareCreated, Share::SHARE_TYPE_LINK]);
+		$query = \OC::$server->getDatabaseConnection()->prepare($statement);
+		$result = $query->executeStatement([$shareCreated, Share::SHARE_TYPE_LINK]);
 		$this->assertSame(1, $result);
-		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute([$shareCreated, Share::SHARE_TYPE_USER]);
+		$query = \OC::$server->getDatabaseConnection()->prepare($statement);
+		$result = $query->executeStatement([$shareCreated, Share::SHARE_TYPE_USER]);
 		$this->assertSame(1, $result);
 
 		// now the link share should expire because of enforced default expire date

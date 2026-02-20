@@ -190,39 +190,36 @@ class Share extends Constants {
 		while ($source !== -1) {
 			// Fetch all shares with another user
 			if (!$returnUserPaths) {
-				$query = \OC_DB::prepare(
+				$query = \OC::$server->getDatabaseConnection()->prepare(
 					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 					FROM
 					`*PREFIX*share`
 					WHERE
 					`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 				);
-				$result = $query->execute([$source, self::SHARE_TYPE_USER]);
+				$result = $query->executeQuery([$source, self::SHARE_TYPE_USER]);
 			} else {
-				$query = \OC_DB::prepare(
+				$query = \OC::$server->getDatabaseConnection()->prepare(
 					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 				FROM
 				`*PREFIX*share`
 				WHERE
 				`item_source` = ? AND `share_type` IN (?, ?) AND `item_type` IN (\'file\', \'folder\')'
 				);
-				$result = $query->execute([$source, self::SHARE_TYPE_USER, self::$shareTypeGroupUserUnique]);
+				$result = $query->executeQuery([$source, self::SHARE_TYPE_USER, self::$shareTypeGroupUserUnique]);
 			}
 
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-			} else {
-				while ($row = $result->fetchRow()) {
-					if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
-						$rejected[]= $row['parent'];
-						continue;
-					}
-					$shares[] = $row['share_with'];
-					if ($returnUserPaths) {
-						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
-					}
+			while ($row = $result->fetchAssociative()) {
+				if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
+					$rejected[]= $row['parent'];
+					continue;
+				}
+				$shares[] = $row['share_with'];
+				if ($returnUserPaths) {
+					$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
 				}
 			}
+			$query->free();
 
 			// We also need to take group shares into account
 			$qb = $connection->getQueryBuilder();
@@ -237,7 +234,7 @@ class Share extends Constants {
 			}
 			$result = $qb->execute();
 
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$usersInGroup = self::usersInGroup($row['share_with']);
 				$shares = \array_merge($shares, $usersInGroup);
 				if ($returnUserPaths) {
@@ -251,10 +248,11 @@ class Share extends Constants {
 					}
 				}
 			}
+			$result->free();
 
 			//check for public link shares
 			if (!$publicShare) {
-				$query = \OC_DB::prepare(
+				$query = \OC::$server->getDatabaseConnection()->prepare(
 					'
 					SELECT `share_with`
 					FROM `*PREFIX*share`
@@ -262,20 +260,16 @@ class Share extends Constants {
 					1
 				);
 
-				$result = $query->execute([$source, self::SHARE_TYPE_LINK]);
-
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				} else {
-					if ($result->fetchRow()) {
-						$publicShare = true;
-					}
+				$result = $query->executeQuery([$source, self::SHARE_TYPE_LINK]);
+				if ($result->fetchAssociative()) {
+					$publicShare = true;
 				}
+				$result->free();
 			}
 
 			//check for remote share
 			if (!$remoteShare) {
-				$query = \OC_DB::prepare(
+				$query = \OC::$server->getDatabaseConnection()->prepare(
 					'
 					SELECT `share_with`
 					FROM `*PREFIX*share`
@@ -283,15 +277,11 @@ class Share extends Constants {
 					1
 				);
 
-				$result = $query->execute([$source, self::SHARE_TYPE_REMOTE]);
-
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				} else {
-					if ($result->fetchRow()) {
-						$remoteShare = true;
-					}
+				$result = $query->executeQuery([$source, self::SHARE_TYPE_REMOTE]);
+				if ($result->fetchAssociative()) {
+					$remoteShare = true;
 				}
+				$result->free();
 			}
 
 			// let's get the parent for the next round
@@ -314,30 +304,26 @@ class Share extends Constants {
 			$fileTargetIDs = \array_unique($fileTargetIDs);
 
 			if (!empty($fileTargetIDs)) {
-				$query = \OC_DB::prepare(
+				$query = \OC::$server->getDatabaseConnection()->prepare(
 					'SELECT `fileid`, `path`
 					FROM `*PREFIX*filecache`
 					WHERE `fileid` IN (' . \implode(',', $fileTargetIDs) . ')'
 				);
-				$result = $query->execute();
-
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				} else {
-					while ($row = $result->fetchRow()) {
-						foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
-							if ($mountPath !== false) {
-								$sharedPath = $shareData['file_target'];
-								$sharedPath .= \substr($path, \strlen($mountPath) + \strlen($paths[$row['fileid']]));
-								$sharePaths[$uid] = $sharedPath;
-							} else {
-								$sharedPath = $shareData['file_target'];
-								$sharedPath .= \substr($path, \strlen($row['path']) -5);
-								$sharePaths[$uid] = $sharedPath;
-							}
+				$result = $query->executeQuery();
+				while ($row = $result->fetchAssociative()) {
+					foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
+						if ($mountPath !== false) {
+							$sharedPath = $shareData['file_target'];
+							$sharedPath .= \substr($path, \strlen($mountPath) + \strlen($paths[$row['fileid']]));
+							$sharePaths[$uid] = $sharedPath;
+						} else {
+							$sharedPath = $shareData['file_target'];
+							$sharedPath .= \substr($path, \strlen($row['path']) -5);
+							$sharePaths[$uid] = $sharedPath;
 						}
 					}
 				}
+				$result->free();
 			}
 
 			if ($includeOwner) {
@@ -485,11 +471,11 @@ class Share extends Constants {
 			$arguments[] = $owner;
 		}
 
-		$query = \OC_DB::prepare('SELECT ' . $select . ' FROM `*PREFIX*share` '. $fileDependentWhere . $where);
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT ' . $select . ' FROM `*PREFIX*share` '. $fileDependentWhere . $where);
 
-		$result = \OC_DB::executeAudited($query, $arguments);
+		$result = $query->executeQuery($arguments);
 
-		while ($row = $result->fetchRow()) {
+		while ($row = $result->fetchAssociative()) {
 			if ($fileDependent && !self::isFileReachable($row['path'], $row['storage_id'])) {
 				continue;
 			}
@@ -511,6 +497,7 @@ class Share extends Constants {
 			}
 			$shares[] = $row;
 		}
+		$result->free();
 
 		//if didn't found a result than let's look for a group share.
 		if (empty($shares) && $user !== null) {
@@ -605,12 +592,14 @@ class Share extends Constants {
 	 * @return array|boolean false will be returned in case the token is unknown or unauthorized
 	 */
 	public static function getShareByToken($token, $checkPasswordProtection = true) {
-		$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `token` = ?', 1);
-		$result = $query->execute([$token]);
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT * FROM `*PREFIX*share` WHERE `token` = ?', 1);
+		$result = $query->executeQuery([$token]);
 		if ($result === false) {
 			\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage() . ', token=' . $token, \OCP\Util::ERROR);
 		}
-		$row = $result->fetchRow();
+		$row = $result->fetchAssociative();
+		$result->free();
+
 		if ($row === false) {
 			return false;
 		}
@@ -635,8 +624,10 @@ class Share extends Constants {
 		if (isset($linkItem['parent'])) {
 			$parent = $linkItem['parent'];
 			while (isset($parent)) {
-				$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ?', 1);
-				$item = $query->execute([$parent])->fetchRow();
+				$query = \OC::$server->getDatabaseConnection()->prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ?', 1);
+				$result = $query->executeQuery([$parent]);
+				$item = $result->fetchAssociative();
+				$result->free();
 				if (isset($item['parent'])) {
 					$parent = $item['parent'];
 				} else {
@@ -1140,13 +1131,14 @@ class Share extends Constants {
 	 */
 	public static function unshareAll($itemType, $itemSource) {
 		// Get all of the owners of shares of this item.
-		$query = \OC_DB::prepare('SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?');
-		$result = $query->execute([$itemType, $itemSource]);
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?');
+		$result = $query->executeQuery([$itemType, $itemSource]);
 		$shares = [];
 		// Add each owner's shares to the array of all shares for this item.
-		while ($row = $result->fetchRow()) {
+		while ($row = $result->fetchAssociative()) {
 			$shares = \array_merge($shares, self::getItems($itemType, $itemSource, null, null, $row['uid_owner']));
 		}
+		$result->free();
 		if (!empty($shares)) {
 			// Pass all the vars we have for now, they may be useful
 			$hookParams = [
@@ -1183,10 +1175,11 @@ class Share extends Constants {
 			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `item_' . $originType . '` = ?';
 		}
 
-		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute([$itemType, $itemOrigin]);
+		$query = \OC::$server->getDatabaseConnection()->prepare($statement);
+		$result = $query->executeQuery([$itemType, $itemOrigin]);
 
-		$shares = $result->fetchAll();
+		$shares = $result->fetchAllAssociative();
+		$result->free();
 
 		$listOfUnsharedItems = [];
 
@@ -1219,11 +1212,11 @@ class Share extends Constants {
 		}
 
 		if (!$itemUnshared && isset($groupShare) && !isset($uniqueGroupShare)) {
-			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share`'
+			$query = \OC::$server->getDatabaseConnection()->prepare('INSERT INTO `*PREFIX*share`'
 				.' (`item_type`, `item_source`, `item_target`, `parent`, `share_type`,'
 				.' `share_with`, `uid_owner`, `permissions`, `stime`, `file_source`, `file_target`)'
 				.' VALUES (?,?,?,?,?,?,?,?,?,?,?)');
-			$query->execute([$groupShare['item_type'], $groupShare['item_source'], $groupShare['item_target'],
+			$query->executeStatement([$groupShare['item_type'], $groupShare['item_source'], $groupShare['item_target'],
 				$groupShare['id'], self::$shareTypeGroupUserUnique,
 				\OC_User::getUser(), $groupShare['uid_owner'], 0, $groupShare['stime'], $groupShare['file_source'],
 				$groupShare['file_target']]);
@@ -1240,8 +1233,8 @@ class Share extends Constants {
 			$listOfUnsharedItems = \array_merge($listOfUnsharedItems, [$shareTmp]);
 			$itemUnshared = true;
 		} elseif (!$itemUnshared && isset($uniqueGroupShare)) {
-			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `permissions` = ? WHERE `id` = ?');
-			$query->execute([0, $uniqueGroupShare['id']]);
+			$query = \OC::$server->getDatabaseConnection()->prepare('UPDATE `*PREFIX*share` SET `permissions` = ? WHERE `id` = ?');
+			$query->executeStatement([0, $uniqueGroupShare['id']]);
 			$shareTmp = [
 				'id' => $uniqueGroupShare['id'],
 				'shareWith' => $uniqueGroupShare['share_with'],
@@ -1277,13 +1270,13 @@ class Share extends Constants {
 	 */
 	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
 		$status = $status ? 1 : 0;
-		$query = \OC_DB::prepare(
+		$query = \OC::$server->getDatabaseConnection()->prepare(
 			'UPDATE `*PREFIX*share`
 					SET `mail_send` = ?
 					WHERE `item_type` = ? AND `item_source` = ? AND `share_type` = ? AND `share_with` = ?'
 		);
 
-		$result = $query->execute([$status, $itemType, $itemSource, $shareType, $recipient]);
+		$result = $query->executeStatement([$status, $itemType, $itemSource, $shareType, $recipient]);
 
 		if ($result === false) {
 			\OCP\Util::writeLog('OCP\Share', 'Couldn\'t set send mail status', \OCP\Util::ERROR);
@@ -1336,7 +1329,7 @@ class Share extends Constants {
 					->setParameter(':id', $rootItem['parent']);
 				$dbresult = $qb->execute();
 
-				$result = $dbresult->fetch();
+				$result = $dbresult->fetchAssociative();
 				$dbresult->closeCursor();
 				if (~(int)$result['permissions'] & $permissions) {
 					$message = 'Setting permissions for %s failed,'
@@ -1390,7 +1383,7 @@ class Share extends Constants {
 					// Reset parents array, only go through loop again if
 					// items are found that need permissions removed
 					$parents = [];
-					while ($item = $result->fetch()) {
+					while ($item = $result->fetchAssociative()) {
 						$item = $sanitizeItem($item);
 
 						$items[] = $item;
@@ -1413,9 +1406,9 @@ class Share extends Constants {
 					} else {
 						$andOp = '`permissions` & ?';
 					}
-					$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `permissions` = '.$andOp
+					$query = \OC::$server->getDatabaseConnection()->prepare('UPDATE `*PREFIX*share` SET `permissions` = '.$andOp
 						.' WHERE `id` IN ('.$ids.')');
-					$query->execute([$permissions]);
+					$query->executeStatement([$permissions]);
 				}
 			}
 
@@ -1436,7 +1429,7 @@ class Share extends Constants {
 				$result = $qb->execute();
 
 				$ids = [];
-				while ($item = $result->fetch()) {
+				while ($item = $result->fetchAssociative()) {
 					$item = $sanitizeItem($item);
 					$items[] = $item;
 					$ids[] = $item['id'];
@@ -1542,14 +1535,14 @@ class Share extends Constants {
 		} else {
 			$date = self::validateExpireDate($date, $shareTime, $itemType, $itemSource);
 		}
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
+		$query = \OC::$server->getDatabaseConnection()->prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
 		$query->bindValue(1, $date, 'datetime');
 		$query->bindValue(2, $itemType);
 		$query->bindValue(3, $itemSource);
 		$query->bindValue(4, $user);
 		$query->bindValue(5, \OCP\Share::SHARE_TYPE_LINK);
 
-		$query->execute();
+		$query->executeStatement();
 
 		\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', [
 			'itemType' => $itemType,
@@ -1577,7 +1570,7 @@ class Share extends Constants {
 			->where($qb->expr()->eq('id', $qb->createParameter('shareId')))
 			->setParameter(':shareId', $shareId);
 		$result = $qb->execute();
-		$result = $result->fetch();
+		$result = $result->fetchAssociative();
 
 		if (empty($result)) {
 			throw new \Exception('Share not found');
@@ -2011,8 +2004,8 @@ class Share extends Constants {
 		}
 		$select = self::createSelectStatement($format, $fileDependent, $uidOwner);
 		$root = \strlen($root);
-		$query = \OC_DB::prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where, $queryLimit);
-		$result = $query->execute($queryArgs);
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where, $queryLimit);
+		$result = $query->executeQuery($queryArgs);
 		if ($result === false) {
 			\OCP\Util::writeLog(
 				'OCP\Share',
@@ -2024,7 +2017,7 @@ class Share extends Constants {
 		$targets = [];
 		$switchedItems = [];
 		$mounts = [];
-		while ($row = $result->fetchRow()) {
+		while ($row = $result->fetchAssociative()) {
 			self::transformDBResults($row);
 			// Filter out duplicate group shares for users with unique targets
 			if ($fileDependent && !self::isFileReachable($row['path'], $row['storage_id'])) {
@@ -2076,8 +2069,8 @@ class Share extends Constants {
 			// Remove root from file source paths if retrieving own shared items
 			if (isset($uidOwner, $row['path'])) {
 				if (isset($row['parent'])) {
-					$query = \OC_DB::prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
-					$parentResult = $query->execute([$row['parent']]);
+					$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
+					$parentResult = $query->executeQuery([$row['parent']]);
 					if ($result === false) {
 						\OCP\Util::writeLog(
 							'OCP\Share',
@@ -2086,7 +2079,7 @@ class Share extends Constants {
 							\OCP\Util::ERROR
 						);
 					} else {
-						$parentRow = $parentResult->fetchRow();
+						$parentRow = $parentResult->fetchAssociative();
 						$tmpPath = $parentRow['file_target'];
 						// find the right position where the row path continues from the target path
 						$pos = \strrpos($row['path'], $parentRow['file_target']);
@@ -2097,6 +2090,7 @@ class Share extends Constants {
 						}
 						$row['path'] = $tmpPath;
 					}
+					$parentResult->free();
 				} else {
 					if (!isset($mounts[$row['storage']])) {
 						$mountPoints = \OC\Files\Filesystem::getMountByNumericId($row['storage']);
@@ -2145,6 +2139,7 @@ class Share extends Constants {
 				$items[$row['id']] = $row;
 			}
 		}
+		$result->free();
 
 		// group items if we are looking for items shared with the current user
 		if (isset($shareWith) && $shareWith === \OCP\User::getUser()) {
@@ -2689,7 +2684,7 @@ class Share extends Constants {
 	 * @return mixed false in case of a failure or the id of the new share
 	 */
 	private static function insertShare(array $shareData) {
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share` ('
+		$query = \OC::$server->getDatabaseConnection()->prepare('INSERT INTO `*PREFIX*share` ('
 			.' `item_type`, `item_source`, `item_target`, `share_type`,'
 			.' `share_with`, `uid_owner`, `permissions`, `stime`, `file_source`,'
 			.' `file_target`, `token`, `parent`, `expiration`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
@@ -2706,7 +2701,7 @@ class Share extends Constants {
 		$query->bindValue(11, $shareData['token']);
 		$query->bindValue(12, $shareData['parent']);
 		$query->bindValue(13, $shareData['expiration'], 'datetime');
-		$result = $query->execute();
+		$result = $query->executeStatement();
 
 		$id = false;
 		if ($result) {
@@ -2721,11 +2716,12 @@ class Share extends Constants {
 	 */
 	public static function removeAllLinkShares() {
 		// Delete any link shares
-		$query = \OC_DB::prepare('SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ?');
-		$result = $query->execute([self::SHARE_TYPE_LINK]);
-		while ($item = $result->fetchRow()) {
+		$query = \OC::$server->getDatabaseConnection()->prepare('SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ?');
+		$result = $query->executeQuery([self::SHARE_TYPE_LINK]);
+		while ($item = $result->fetchAssociative()) {
 			Helper::delete($item['id']);
 		}
+		$result->free();
 	}
 
 	/**

@@ -125,8 +125,7 @@ abstract class TestCase extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share`');
-		$query->execute();
+		\OC::$server->getDatabaseConnection()->executeStatement('DELETE FROM `*PREFIX*share`');
 
 		parent::tearDown();
 	}
