@@ -153,8 +153,8 @@ class Database extends \OC\Group\Backend {
 			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($uid)))
 			->execute();
 
-		$result = $cursor->fetch();
-		$cursor->closeCursor();
+		$result = $cursor->fetchAssociative();
+		$cursor->free();
 
 		return $result ? true : false;
 	}
@@ -222,11 +222,11 @@ class Database extends \OC\Group\Backend {
 			->execute();
 
 		$groups = [];
-		while ($row = $cursor->fetch()) {
+		while ($row = $cursor->fetchAssociative()) {
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $groups;
 	}
@@ -257,11 +257,12 @@ class Database extends \OC\Group\Backend {
 		}
 
 		$stmt = $this->dbConn->prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
-		$stmt->execute($parameters);
+		$result = $stmt->executeQuery($parameters);
 		$groups = [];
-		while ($row = $stmt->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$groups[] = $row['gid'];
 		}
+		$result->free();
 		return $groups;
 	}
 
@@ -283,8 +284,8 @@ class Database extends \OC\Group\Backend {
 			->from('groups')
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
 			->execute();
-		$result = $cursor->fetch();
-		$cursor->closeCursor();
+		$result = $cursor->fetchAssociative();
+		$cursor->free();
 
 		if ($result !== false) {
 			$this->groupCache[$gid] = $gid;
@@ -316,11 +317,12 @@ class Database extends \OC\Group\Backend {
 			$limit,
 			$offset
 		);
-		$stmt->execute($parameters);
+		$result = $stmt->executeQuery($parameters);
 		$users = [];
-		while ($row = $stmt->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$users[] = $row['uid'];
 		}
+		$result->free();
 		return $users;
 	}
 

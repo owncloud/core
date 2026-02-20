@@ -191,12 +191,12 @@ class ScanExternalSharesJobTest extends TestCase {
 			->from('share_external')
 			->where($qb->expr()->eq('remote', $qb->expr()->literal('https://hostname.tld/owncloud1')));
 
-		$res = $qb->execute()->fetchAll();
+		$res = $qb->execute()->fetchAllAssociative();
 		$this->assertNull($res[0]['lastscan']);
 
 		self::invokePrivate($scanShares, 'run', [[]]);
 
-		$res = $qb->execute()->fetchAll();
+		$res = $qb->execute()->fetchAllAssociative();
 		$this->assertNotNull($res[0]['lastscan']);
 	}
 

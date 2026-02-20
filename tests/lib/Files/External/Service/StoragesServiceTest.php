@@ -338,7 +338,7 @@ abstract class StoragesServiceTest extends TestCase {
 		$storageCheckQuery = $qb->select('*')
 			->from('storages')
 			->where($qb->expr()->eq('numeric_id', $qb->expr()->literal($numericId)));
-		$this->assertCount($expectedCountAfterDeletion, $storageCheckQuery->execute()->fetchAll());
+		$this->assertCount($expectedCountAfterDeletion, $storageCheckQuery->execute()->fetchAllAssociative());
 		Storage::remove($rustyStorageId);
 	}
 

@@ -140,10 +140,10 @@ class LockMapper extends Mapper {
 
 		$stmt = $query->execute();
 		$entities = [];
-		while ($row = $stmt->fetch()) {
+		while ($row = $stmt->fetchAssociative()) {
 			$entities[] = $this->mapRowToEntity($row);
 		}
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entities;
 	}

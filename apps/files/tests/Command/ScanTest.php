@@ -354,8 +354,8 @@ class ScanTest extends TestCase {
 			->from('storages')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($storageStringId)));
 		$results = $qb->execute();
-		$result = $results->fetch();
-		$results->closeCursor();
+		$result = $results->fetchAssociative();
+		$results->free();
 
 		if ($result) {
 			return (int)$result['numeric_id'];
@@ -378,8 +378,8 @@ class ScanTest extends TestCase {
 			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)))
 			->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
 		$results = $qb->execute();
-		$result = $results->fetch();
-		$results->closeCursor();
+		$result = $results->fetchAssociative();
+		$results->free();
 
 		return $result;
 	}

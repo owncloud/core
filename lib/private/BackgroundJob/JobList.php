@@ -141,8 +141,8 @@ class JobList implements IJobList {
 			->setMaxResults(1);
 
 		$result = $query->execute();
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 
 		return (bool) $row;
 	}
@@ -161,13 +161,13 @@ class JobList implements IJobList {
 		$result = $query->execute();
 
 		$jobs = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$job = $this->buildJob($row);
 			if ($job) {
 				$jobs[] = $job;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $jobs;
 	}
@@ -194,8 +194,8 @@ class JobList implements IJobList {
 			->andWhere($update->expr()->eq('last_checked', $update->createParameter('last_checked')));
 
 		$result = $query->execute();
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 
 		if ($row) {
 			$update->setParameter('jobid', $row['id']);
@@ -238,8 +238,8 @@ class JobList implements IJobList {
 			->from('jobs')
 			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 		$result = $query->execute();
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 
 		if ($row) {
 			return $this->buildJob($row);
@@ -258,8 +258,8 @@ class JobList implements IJobList {
 			->from('jobs')
 			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 		$result = $query->execute();
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 
 		if ($row) {
 			return true;
@@ -368,7 +368,7 @@ class JobList implements IJobList {
 			->from('jobs');
 		$result = $query->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$job = $this->buildJob($row);
 			if ($job) {
 				if ($callback($job) === false) {
@@ -376,7 +376,7 @@ class JobList implements IJobList {
 				}
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 	}
 
 	/**
@@ -391,7 +391,7 @@ class JobList implements IJobList {
 			->from('jobs');
 		$result = $query->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$job = $this->buildJob($row);
 			if ($job) {
 				if ($validJobCallback($job) === false) {
@@ -405,6 +405,6 @@ class JobList implements IJobList {
 				}
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 	}
 }

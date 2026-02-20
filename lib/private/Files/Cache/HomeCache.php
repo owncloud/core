@@ -56,8 +56,8 @@ class HomeCache extends Cache {
 				'WHERE `parent` = ? AND `storage` = ? AND `size` >= 0';
 			$connection = \OC::$server->getDatabaseConnection();
 			$result = $connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
-			if ($row = $result->fetch()) {
-				$result->closeCursor();
+			if ($row = $result->fetchAssociative()) {
+				$result->free();
 				list($sum) = \array_values($row);
 				$totalSize = 0 + $sum;
 				$entry['size'] += 0;

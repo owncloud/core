@@ -21,8 +21,8 @@
  */
 
 namespace Test\DB;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\AbstractDriverException;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\AbstractException;
 use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
@@ -90,7 +90,7 @@ class AdapterTest extends \Test\TestCase {
 			->where($query->expr()->eq('configvalue', $query->createNamedParameter($value)))
 			->where($query->expr()->eq('configkey', $query->createNamedParameter($key)))
 			->execute();
-		$this->assertCount(1, $result->fetchAll());
+		$this->assertCount(1, $result->fetchAllAssociative());
 	}
 
 	/**
@@ -133,10 +133,10 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(AbstractDriverException::class);
-		$ex->expects($this->exactly(5))->method('getErrorCode')->willReturn(1213);
+		$ex = $this->createMock(AbstractException::class);
+		#$ex->expects($this->exactly(5))->method('getErrorCode')->willReturn(1213);
 		// Wrap the exception in a doctrine exception
-		$e = new \Doctrine\DBAL\Exception\DriverException('1213', $ex);
+		$e = new DBALException\DeadlockException($ex, null);
 		// Should be called 5 times for maxTry then kick out the exception
 		$qb->expects($this->exactly(5))->method('execute')->willThrowException($e);
 		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);
@@ -172,11 +172,11 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(AbstractDriverException::class);
-		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
+		$ex = $this->createMock(AbstractException::class);
+		#$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
 		// Wrap the exception in a doctrine exception
 		/** @var  DriverException|\PHPUnit\Framework\MockObject\MockObject $ex */
-		$e = new \Doctrine\DBAL\Exception\DriverException('1214', $ex);
+		$e = new \Doctrine\DBAL\Exception\DriverException($ex, null);
 		// Should be called 5 times for maxTry then kick out the exception
 		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);
 		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);

@@ -76,7 +76,9 @@ abstract class Mapper {
 	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
 		$stmt = $this->execute($sql, [$entity->getId()]);
-		$stmt->closeCursor();
+		if ($stmt !== null) {
+			$stmt->free();
+		}
 		return $entity;
 	}
 
@@ -120,7 +122,9 @@ abstract class Mapper {
 
 		$entity->setId((int) $this->db->lastInsertId($this->tableName));
 
-		$stmt->closeCursor();
+		if ($stmt !== null) {
+			$stmt->free();
+		}
 
 		return $entity;
 	}
@@ -177,7 +181,7 @@ abstract class Mapper {
 		$params[] = $id;
 
 		$stmt = $this->execute($sql, $params);
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entity;
 	}
@@ -211,11 +215,12 @@ abstract class Mapper {
 
 	/**
 	 * Runs an sql query
+	 *
 	 * @param string $sql the prepare string
 	 * @param array $params the params which should replace the ? in the sql query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \PDOStatement the database query result
+	 * @return bool|\Doctrine\DBAL\Driver\Result|\Doctrine\DBAL\Result|int|\PDOStatement
 	 * @since 7.0.0
 	 */
 	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
@@ -239,18 +244,7 @@ abstract class Mapper {
 			}
 		}
 
-		$result = $query->execute();
-
-		// this is only for backwards compatibility reasons and can be removed
-		// in owncloud 10. IDb returns a StatementWrapper from execute, PDO,
-		// Doctrine and IDbConnection don't so this needs to be done in order
-		// to stay backwards compatible for the things that rely on the
-		// StatementWrapper being returned
-		if ($result instanceof \OC_DB_StatementWrapper) {
-			return $result;
-		}
-
-		return $query;
+		return $query->execute();
 	}
 
 	/**
@@ -272,10 +266,10 @@ abstract class Mapper {
 		} else {
 			$stmt = $this->execute($sql, $params, $limit, $offset);
 		}
-		$row = $stmt->fetch();
+		$row = $stmt->fetchAssociative();
 
 		if ($row === false || $row === null) {
-			$stmt->closeCursor();
+			$stmt->free();
 			$msg = $this->buildDebugMessage(
 				'Did expect one result but found none when executing',
 				$sql,
@@ -285,8 +279,8 @@ abstract class Mapper {
 			);
 			throw new DoesNotExistException($msg);
 		}
-		$row2 = $stmt->fetch();
-		$stmt->closeCursor();
+		$row2 = $stmt->fetchAssociative();
+		$stmt->free();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
@@ -347,11 +341,13 @@ abstract class Mapper {
 
 		$entities = [];
 
-		while ($row = $stmt->fetch()) {
-			$entities[] = $this->mapRowToEntity($row);
-		}
+		if ($stmt !== null) {
+			while ($row = $stmt->fetchAssociative()) {
+				$entities[] = $this->mapRowToEntity($row);
+			}
 
-		$stmt->closeCursor();
+			$stmt->free();
+		}
 
 		return $entities;
 	}

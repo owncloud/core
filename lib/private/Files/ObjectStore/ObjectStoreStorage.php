@@ -92,7 +92,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$numericStorageId = Storage::getNumericStorageId($storageId);
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($sql, [$numericStorageId]);
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$fileId = $row['fileid'];
 			$this->objectStore->deleteObject($this->getURN($fileId));
 		}

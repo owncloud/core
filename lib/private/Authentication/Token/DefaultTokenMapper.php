@@ -75,8 +75,8 @@ class DefaultTokenMapper extends Mapper {
 			->setParameter('token', $token)
 			->execute();
 
-		$data = $result->fetch();
-		$result->closeCursor();
+		$data = $result->fetchAssociative();
+		$result->free();
 		if ($data === false) {
 			throw new DoesNotExistException('token does not exist');
 		}
@@ -100,8 +100,8 @@ class DefaultTokenMapper extends Mapper {
 			->where($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
 			->setMaxResults(1000);
 		$result = $qb->execute();
-		$data = $result->fetchAll();
-		$result->closeCursor();
+		$data = $result->fetchAllAssociative();
+		$result->free();
 
 		$entities = \array_map(function ($row) {
 			return DefaultToken::fromRow($row);

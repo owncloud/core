@@ -219,7 +219,7 @@ class Share extends Constants {
 					$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
 				}
 			}
-			$query->free();
+			$result->free();
 
 			// We also need to take group shares into account
 			$qb = $connection->getQueryBuilder();
@@ -523,7 +523,7 @@ class Share extends Constants {
 					$types
 				);
 
-				while ($row = $result->fetch()) {
+				while ($row = $result->fetchAssociative()) {
 					$shares[] = $row;
 				}
 			}
@@ -1323,11 +1323,11 @@ class Share extends Constants {
 				$qb->select('permissions')
 					->from('share')
 					->where($qb->expr()->eq('id', $qb->createParameter('id')))
-					->setParameter(':id', $rootItem['parent']);
+					->setParameter('id', $rootItem['parent']);
 				$dbresult = $qb->execute();
 
 				$result = $dbresult->fetchAssociative();
-				$dbresult->closeCursor();
+				$dbresult->free();
 				if (~(int)$result['permissions'] & $permissions) {
 					$message = 'Setting permissions for %s failed,'
 						.' because the permissions exceed permissions granted to %s';
@@ -1340,8 +1340,8 @@ class Share extends Constants {
 			$qb->update('share')
 				->set('permissions', $qb->createParameter('permissions'))
 				->where($qb->expr()->eq('id', $qb->createParameter('id')))
-				->setParameter(':id', $rootItem['id'])
-				->setParameter(':permissions', $permissions);
+				->setParameter('id', $rootItem['id'])
+				->setParameter('permissions', $permissions);
 			$qb->execute();
 			if ($itemType === 'file' || $itemType === 'folder') {
 				\OC_Hook::emit('OCP\Share', 'post_update_permissions', [
@@ -1391,7 +1391,7 @@ class Share extends Constants {
 							$parents[] = $item['id'];
 						}
 					}
-					$result->closeCursor();
+					$result->free();
 				}
 
 				// Remove the permissions for all reshares of this item
@@ -1420,9 +1420,9 @@ class Share extends Constants {
 					->where($qb->expr()->eq('parent', $qb->createParameter('parent')))
 					->andWhere($qb->expr()->eq('share_type', $qb->createParameter('share_type')))
 					->andWhere($qb->expr()->neq('permissions', $qb->createParameter('shareDeleted')))
-					->setParameter(':parent', (int)$rootItem['id'])
-					->setParameter(':share_type', 2)
-					->setParameter(':shareDeleted', 0);
+					->setParameter('parent', (int)$rootItem['id'])
+					->setParameter('share_type', 2)
+					->setParameter('shareDeleted', 0);
 				$result = $qb->execute();
 
 				$ids = [];
@@ -1431,7 +1431,7 @@ class Share extends Constants {
 					$items[] = $item;
 					$ids[] = $item['id'];
 				}
-				$result->closeCursor();
+				$result->free();
 
 				// Add permissions for all USERGROUP shares of this item
 				if (!empty($ids)) {
@@ -1441,7 +1441,7 @@ class Share extends Constants {
 					$qb->update('share')
 						->set('permissions', $qb->createParameter('permissions'))
 						->where($qb->expr()->in('id', $ids))
-						->setParameter(':permissions', $permissions);
+						->setParameter('permissions', $permissions);
 					$qb->execute();
 				}
 			}
@@ -1565,7 +1565,7 @@ class Share extends Constants {
 		$qb->select('uid_owner')
 			->from('share')
 			->where($qb->expr()->eq('id', $qb->createParameter('shareId')))
-			->setParameter(':shareId', $shareId);
+			->setParameter('shareId', $shareId);
 		$result = $qb->execute();
 		$result = $result->fetchAssociative();
 
@@ -1620,8 +1620,8 @@ class Share extends Constants {
 		$qb->update('share')
 			->set('share_with', $qb->createParameter('pass'))
 			->where($qb->expr()->eq('id', $qb->createParameter('shareId')))
-			->setParameter(':pass', $password === null ? null : \OC::$server->getHasher()->hash($password))
-			->setParameter(':shareId', $shareId);
+			->setParameter('pass', $password === null ? null : \OC::$server->getHasher()->hash($password))
+			->setParameter('shareId', $shareId);
 
 		$qb->execute();
 
@@ -3056,7 +3056,7 @@ class Share extends Constants {
 	public static function getAllSharesForOwner($owner) {
 		$query = 'SELECT * FROM `*PREFIX*share` WHERE `uid_owner` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($query, [$owner]);
-		return $result->fetchAll();
+		return $result->fetchAllAssociative();
 	}
 
 	/**
@@ -3068,7 +3068,7 @@ class Share extends Constants {
 	public static function getAllSharesForFileId($id) {
 		$query = 'SELECT * FROM `*PREFIX*share` WHERE `file_source` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($query, [$id]);
-		return $result->fetchAll();
+		return $result->fetchAllAssociative();
 	}
 
 	/**

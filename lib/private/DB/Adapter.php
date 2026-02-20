@@ -26,6 +26,7 @@
  */
 
 namespace OC\DB;
+use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Platforms\OraclePlatform;
@@ -89,7 +90,7 @@ class Adapter {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		if (empty($compare)) {
@@ -178,17 +179,14 @@ class Adapter {
 			try {
 				// Try to update
 				$rows = $qbu->execute();
-			} catch (DriverException $e) {
+			} catch (DeadlockException $e) {
 				// Skip deadlock and retry
-				// @TODO when we update to DBAL 2.6 we can use DeadlockExceptions here
-				if ($e->getErrorCode() == 1213) {
-					$count++;
-					continue;
-				} else {
-					// We should catch other exceptions up the stack
-					$this->conn->rollBack();
-					throw $e;
-				}
+				$count++;
+				continue;
+			} catch (DriverException $e) {
+				// We should catch other exceptions up the stack
+				$this->conn->rollBack();
+				throw $e;
 			}
 			if ($rows > 0) {
 				// We altered some rows, return

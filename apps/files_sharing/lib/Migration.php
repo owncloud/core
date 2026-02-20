@@ -58,7 +58,7 @@ class Migration {
 		$stmt = $this->getReShares();
 
 		$owners = [];
-		while ($share = $stmt->fetch()) {
+		while ($share = $stmt->fetchAssociative()) {
 			$this->shareCache[$share['id']] = $share;
 
 			$owners[$share['id']] = [
@@ -73,7 +73,7 @@ class Migration {
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		if (\count($owners)) {
 			$this->updateOwners($owners);
@@ -191,8 +191,8 @@ class Migration {
 			->orderBy('id', 'asc')
 			->setMaxResults($n);
 		$result = $query->execute();
-		$shares = $result->fetchAll();
-		$result->closeCursor();
+		$shares = $result->fetchAllAssociative();
+		$result->free();
 
 		$ordered = [];
 		foreach ($shares as $share) {
@@ -214,8 +214,8 @@ class Migration {
 			->from($this->table)
 			->where($query->expr()->eq('id', $query->createNamedParameter($id)));
 		$result = $query->execute();
-		$share = $result->fetchAll();
-		$result->closeCursor();
+		$share = $result->fetchAllAssociative();
+		$result->free();
 
 		return $share[0];
 	}

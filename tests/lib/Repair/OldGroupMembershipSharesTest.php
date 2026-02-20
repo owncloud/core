@@ -78,9 +78,9 @@ class OldGroupMembershipSharesTest extends \Test\TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $group2], ['id' => $user1], ['id' => $member], ['id' => $notAMember]], $rows);
-		$result->closeCursor();
+		$result->free();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
@@ -94,9 +94,9 @@ class OldGroupMembershipSharesTest extends \Test\TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $group2], ['id' => $user1], ['id' => $member]], $rows);
-		$result->closeCursor();
+		$result->free();
 	}
 
 	/**

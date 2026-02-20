@@ -35,7 +35,7 @@ class Version20170526104128 implements ISchemaMigration {
 
 		// Now shorten these terms
 		$db->beginTransaction();
-		while ($longTerm = $results->fetch()) {
+		while ($longTerm = $results->fetchAssociative()) {
 			$qb->update('account_terms')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($longTerm['id'])))
 				->set('term', $qb->createNamedParameter($this->trimTerm($longTerm['term'])))

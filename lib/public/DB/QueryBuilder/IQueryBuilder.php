@@ -23,8 +23,7 @@
 namespace OCP\DB\QueryBuilder;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
-use Doctrine\DBAL\ForwardCompatibility\DriverResultStatement;
+use Doctrine\DBAL\Result;
 
 /**
  * This class provides a wrapper around Doctrine's QueryBuilder
@@ -123,7 +122,7 @@ interface IQueryBuilder {
 	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
 	 * for insert, update and delete statements.
 	 *
-	 * @return DriverStatement|DriverResultStatement|int
+	 * @return Result|int|string
 	 * @since 8.2.0
 	 */
 	public function execute();
@@ -151,7 +150,7 @@ interface IQueryBuilder {
 	 *         ->select('u')
 	 *         ->from('users', 'u')
 	 *         ->where('u.id = :user_id')
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string|integer $key The parameter position or name.
@@ -337,7 +336,7 @@ interface IQueryBuilder {
 	 *     $qb = $conn->getQueryBuilder()
 	 *         ->delete('users', 'u')
 	 *         ->where('u.id = :user_id');
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string $delete The table whose rows are subject to the deletion.

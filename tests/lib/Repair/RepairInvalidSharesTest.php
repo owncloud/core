@@ -110,7 +110,7 @@ class RepairInvalidSharesTest extends TestCase {
 			->from('share')
 			->orderBy('share_type', 'ASC')
 			->execute()
-			->fetchAll();
+			->fetchAllAssociative();
 
 		$this->assertCount(2, $results);
 
@@ -195,7 +195,7 @@ class RepairInvalidSharesTest extends TestCase {
 			->from('share')
 			->orderBy('permissions', 'ASC')
 			->execute()
-			->fetchAll();
+			->fetchAllAssociative();
 
 		$this->assertCount(3, $results);
 
@@ -255,9 +255,9 @@ class RepairInvalidSharesTest extends TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $validChild], ['id' => $invalidChild]], $rows);
-		$result->closeCursor();
+		$result->free();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
@@ -271,9 +271,9 @@ class RepairInvalidSharesTest extends TestCase {
 			->from('share')
 			->orderBy('id', 'ASC')
 			->execute();
-		$rows = $result->fetchAll();
+		$rows = $result->fetchAllAssociative();
 		$this->assertEquals([['id' => $parent], ['id' => $validChild]], $rows);
-		$result->closeCursor();
+		$result->free();
 	}
 
 	public function fileSharePermissionsProvider() {
@@ -334,7 +334,7 @@ class RepairInvalidSharesTest extends TestCase {
 			->from('share')
 			->orderBy('permissions', 'ASC')
 			->execute()
-			->fetchAll();
+			->fetchAllAssociative();
 
 		$this->assertCount(1, $results);
 

@@ -71,7 +71,7 @@ interface IDBConnection {
 	 * @param string $query The SQL query to execute.
 	 * @param string[] $params The parameters to bind to the query, if any.
 	 * @param array $types The types the previous parameters are in.
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return \Doctrine\DBAL\Result
 	 * @since 8.0.0
 	 */
 	public function executeQuery($query, array $params = [], $types = []);
@@ -128,7 +128,7 @@ interface IDBConnection {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 * @since 6.0.0 - parameter $compare was added in 8.1.0, return type changed from boolean in 8.1.0
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null);
@@ -142,7 +142,7 @@ interface IDBConnection {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of affected rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 * @since 10.0.3
 	 */
 	public function upsert($table, $input, array $compare = null);
@@ -155,7 +155,7 @@ interface IDBConnection {
 	 * @param array $values (column name => value)
 	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
 	 * @return int number of new rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 * @throws PreconditionNotMetException
 	 * @since 9.0.0
 	 */

@@ -533,13 +533,13 @@ class OC_Helper {
 			$exeSniffer = new ExecutableFinder();
 			// Returns null if nothing is found
 			$result = $exeSniffer->find($program);
-			if (empty($result)) {
-				$command = 'find ' . self::getCleanedPath(\getenv('PATH')) . ' -name ' . \escapeshellarg($program) . ' 2> /dev/null';
-				\exec($command, $output, $returnCode);
-				if (\count($output) > 0) {
-					$result = \escapeshellcmd($output[0]);
-				}
-			}
+			#if (empty($result)) {
+			#	$command = 'find ' . self::getCleanedPath(\getenv('PATH')) . ' -name ' . \escapeshellarg($program) . ' 2> /dev/null';
+			#	\exec($command, $output, $returnCode);
+			#	if (\count($output) > 0) {
+			#		$result = \escapeshellcmd($output[0]);
+			#	}
+			#}
 		}
 		// store the value for 5 minutes
 		$memcache->set($program, $result, 300);

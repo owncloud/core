@@ -182,7 +182,7 @@ class Backend {
 			->execute();
 
 		$shares = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$p = $this->principalBackend->getPrincipalByPath($row['principaluri']);
 			$shares[]= [
 				'href' => "principal:{$row['principaluri']}",

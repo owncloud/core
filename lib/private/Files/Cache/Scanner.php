@@ -445,7 +445,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$size += $data['size'];
 					}
 				}
-			} catch (\Doctrine\DBAL\DBALException $ex) {
+			} catch (\Doctrine\DBAL\Exception $ex) {
 				// might happen if inserting duplicate while a scanning
 				// process is running in parallel
 				// log and ignore

@@ -89,8 +89,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$arguments= [],
 		$returnRows= [],
 		$limit=null,
-		$offset=null,
-		$expectClose=false
+		$offset=null
 	) {
 		if ($limit === null && $offset === null) {
 			$this->db->expects($this->any())
@@ -182,13 +181,6 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				);
 		}
 
-		if ($expectClose) {
-			$closing = $this->once();
-		} else {
-			$closing = $this->any();
-		}
-		$this->query->expects($closing)->method('closeCursor');
-		
 		$this->fetchAt++;
 	}
 }

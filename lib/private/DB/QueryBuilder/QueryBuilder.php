@@ -25,6 +25,7 @@ namespace OC\DB\QueryBuilder;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use OC\DB\OracleConnection;
 use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
@@ -135,7 +136,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
 	 * for insert, update and delete statements.
 	 *
-	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 * @return Result|int|string
 	 */
 	public function execute() {
 		return $this->queryBuilder->execute();
@@ -165,7 +166,7 @@ class QueryBuilder implements IQueryBuilder {
 	 *         ->select('u')
 	 *         ->from('users', 'u')
 	 *         ->where('u.id = :user_id')
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string|integer $key The parameter position or name.
@@ -397,7 +398,7 @@ class QueryBuilder implements IQueryBuilder {
 	 *     $qb = $conn->getQueryBuilder()
 	 *         ->delete('users', 'u')
 	 *         ->where('u.id = :user_id');
-	 *         ->setParameter(':user_id', 1);
+	 *         ->setParameter('user_id', 1);
 	 * </code>
 	 *
 	 * @param string $delete The table whose rows are subject to the deletion.

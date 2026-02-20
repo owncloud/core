@@ -118,10 +118,10 @@ class OracleMigrator extends Migrator {
 				\array_map(function (Index $index) {
 					return $this->quoteIndex($index);
 				}, $table->getIndexes()),
+				[],
 				\array_map(function (ForeignKeyConstraint $fck) {
 					return $this->quoteForeignKeyConstraint($fck);
 				}, $table->getForeignKeys()),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->newTables);
@@ -131,8 +131,8 @@ class OracleMigrator extends Migrator {
 				$this->connection->quoteIdentifier($table->getName()),
 				$table->getColumns(),
 				$table->getIndexes(),
+				$table->getUniqueConstraints(),
 				$table->getForeignKeys(),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->removedTables);
@@ -214,9 +214,5 @@ class OracleMigrator extends Migrator {
 		$script .= PHP_EOL;
 		$script .= PHP_EOL;
 		return $script;
-	}
-
-	protected function getFilterExpression() {
-		return '/^"' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 }

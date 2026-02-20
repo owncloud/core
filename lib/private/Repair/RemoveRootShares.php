@@ -129,8 +129,8 @@ class RemoveRootShares implements IRepairStep {
 			->setMaxResults(1);
 
 		$cursor = $qb2->execute();
-		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAssociative();
+		$cursor->free();
 
 		if ($data === false) {
 			return false;

@@ -109,11 +109,11 @@ class SystemTagManager implements ISystemTagManager {
 			->setParameter('tagids', $tagIds, IQueryBuilder::PARAM_INT_ARRAY);
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$tags[$row['id']] = $this->createSystemTagFromRow($row);
 		}
 
-		$result->closeCursor();
+		$result->free();
 
 		if (\count($tags) !== \count($tagIds)) {
 			throw new TagNotFoundException(
@@ -157,11 +157,11 @@ class SystemTagManager implements ISystemTagManager {
 			->addOrderBy('assignable', 'ASC');
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$tags[$row['id']] = $this->createSystemTagFromRow($row);
 		}
 
-		$result->closeCursor();
+		$result->free();
 
 		return $tags;
 	}
@@ -190,8 +190,8 @@ class SystemTagManager implements ISystemTagManager {
 			->setParameter('assignable', $userAssignable)
 			->execute();
 
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 		if (!$row) {
 			throw new TagNotFoundException(
 				'Tag ("' . $tagName . '", '. $userVisible . ', ' . $userAssignable . ') does not exist'
@@ -484,11 +484,11 @@ class SystemTagManager implements ISystemTagManager {
 			->orderBy('gid');
 
 		$result = $query->execute();
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$groupIds[] = $row['gid'];
 		}
 
-		$result->closeCursor();
+		$result->free();
 
 		return $groupIds;
 	}

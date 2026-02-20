@@ -61,7 +61,7 @@ class RestoreDefaultRowFormat extends Command {
 		$dbName = $this->config->getSystemValue("dbname");
 
 		$defaultRowFormatStatement = $this->connection->executeQuery("SELECT @@GLOBAL.innodb_default_row_format as 'default'");
-		$defaultFormat = $defaultRowFormatStatement->fetchColumn();
+		$defaultFormat = $defaultRowFormatStatement->fetchOne();
 
 		/**
 		 * Fetch tables with the row_format not matching default.
@@ -74,7 +74,7 @@ class RestoreDefaultRowFormat extends Command {
 			"	AND ROW_FORMAT != ?",
 			[$dbName, $dbPrefix.'%', $defaultFormat]
 		);
-		$tables = $tableSelectStatement->fetchAll();
+		$tables = $tableSelectStatement->fetchAllAssociative();
 		$tablesCount = \count($tables);
 
 		$output->writeln("<info>Found $tablesCount tables to convert</info>");

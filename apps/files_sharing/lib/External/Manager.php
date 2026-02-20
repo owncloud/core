@@ -183,7 +183,7 @@ class Manager {
 			WHERE `id` = ? AND `user` = ?');
 		$result = $getShare->execute([$id, $this->uid]);
 
-		return $result ? $getShare->fetch() : false;
+		return $result ? $getShare->fetchAssociative() : false;
 	}
 
 	/**
@@ -420,7 +420,7 @@ class Manager {
 		$result = $getShare->execute([$hash, $this->uid]);
 
 		if ($result) {
-			$share = $getShare->fetch();
+			$share = $getShare->fetchAssociative();
 			if ($share !== false) {
 				$this->eventDispatcher->dispatch(
 					new DeclineShare($share),
@@ -428,7 +428,7 @@ class Manager {
 				);
 			}
 		}
-		$getShare->closeCursor();
+		$getShare->free();
 
 		$query = $this->connection->prepare('
 			DELETE FROM `*PREFIX*share_external`
@@ -482,7 +482,7 @@ class Manager {
 		$result = $getShare->execute([$uid]);
 
 		if ($result) {
-			$shares = $getShare->fetchAll();
+			$shares = $result->fetchAllAssociative();
 			foreach ($shares as $share) {
 				$this->eventDispatcher->dispatch(
 					new DeclineShare($share),
@@ -538,7 +538,7 @@ class Manager {
 		$shares = $this->connection->prepare($query);
 		$result = $shares->execute($parameters);
 
-		return $result ? $shares->fetchAll() : [];
+		return $result ? $shares->fetchAllAssociative() : [];
 	}
 
 	/**

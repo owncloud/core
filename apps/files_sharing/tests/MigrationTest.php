@@ -265,7 +265,7 @@ class MigrationTest extends TestCase {
 	public function verifyResult() {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')->from($this->table)->orderBy('id');
-		$result = $query->execute()->fetchAll();
+		$result = $query->execute()->fetchAllAssociative();
 		$this->assertCount(10, $result);
 
 		// shares which shouldn't be modified
@@ -348,14 +348,14 @@ class MigrationTest extends TestCase {
 			->execute();
 
 		$i = 0;
-		while ($share = $stmt->fetch()) {
+		while ($share = $stmt->fetchAssociative()) {
 			$this->assertEquals('user'.($i+1), $share['share_with']);
 			$this->assertEquals('user' . ($i), $share['uid_initiator']);
 			$this->assertEquals('user0', $share['uid_owner']);
 			$this->assertNull($share['parent']);
 			$i++;
 		}
-		$stmt->closeCursor();
+		$stmt->free();
 		$this->assertEquals(1001, $i);
 	}
 }

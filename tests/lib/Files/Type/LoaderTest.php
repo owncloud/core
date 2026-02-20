@@ -86,7 +86,7 @@ class LoaderTest extends \Test\TestCase {
 			->from('mimetypes')
 			->where($qb->expr()->eq('id', $qb->createPositionalParameter($mimetypeId)));
 
-		$mimetype = $qb->execute()->fetch();
+		$mimetype = $qb->execute()->fetchAssociative();
 		$this->assertEquals('testing/mymimetype', $mimetype['mimetype']);
 
 		$this->assertEquals('testing/mymimetype', $this->loader->getMimetypeById($mimetypeId));

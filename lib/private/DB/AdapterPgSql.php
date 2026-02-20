@@ -24,7 +24,7 @@ namespace OC\DB;
 
 class AdapterPgSql extends Adapter {
 	public function lastInsertId($table) {
-		return $this->conn->fetchColumn('SELECT lastval()');
+		return $this->conn->fetchOne('SELECT lastval()');
 	}
 
 	public const UNIX_TIMESTAMP_REPLACEMENT = 'cast(extract(epoch from current_timestamp) as integer)';

@@ -67,12 +67,12 @@ class DeleteOrphanedFiles extends Command {
 		while ($deletedInLastChunk === self::CHUNK_SIZE) {
 			$deletedInLastChunk = 0;
 			$result = $query->execute();
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$deletedInLastChunk++;
 				$deletedEntries += $deleteQuery->setParameter('objectid', (int) $row['fileid'])
 					->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		$output->writeln("$deletedEntries orphaned file cache entries deleted");

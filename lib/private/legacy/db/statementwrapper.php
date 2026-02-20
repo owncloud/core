@@ -25,6 +25,8 @@
  *
  */
 
+use Doctrine\DBAL\Result;
+
 /**
  * small wrapper around \Doctrine\DBAL\Driver\Statement to make it behave, more like an MDB2 Statement
  *
@@ -36,7 +38,7 @@
  */
 class OC_DB_StatementWrapper {
 	/**
-	 * @var \Doctrine\DBAL\Driver\Statement
+	 * @var \Doctrine\DBAL\Statement
 	 */
 	private $statement = null;
 	private $isManipulation = false;
@@ -61,7 +63,7 @@ class OC_DB_StatementWrapper {
 	 * make execute return the result instead of a bool
 	 *
 	 * @param array $input
-	 * @return \OC_DB_StatementWrapper|int|boolean
+	 * @return Result|int|boolean
 	 */
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
@@ -75,11 +77,10 @@ class OC_DB_StatementWrapper {
 			return false;
 		}
 		if ($this->isManipulation) {
-			$count = $this->statement->rowCount();
-			return $count;
-		} else {
-			return $this;
+			return $result->rowCount();
 		}
+
+		return $result;
 	}
 
 	/**
@@ -88,7 +89,7 @@ class OC_DB_StatementWrapper {
 	 * @return mixed
 	 */
 	public function fetchRow() {
-		return $this->statement->fetch();
+		return $this->statement->fetchAssociative();
 	}
 
 	/**
@@ -99,7 +100,7 @@ class OC_DB_StatementWrapper {
 	 * @return string
 	 */
 	public function fetchOne($column = 0) {
-		return $this->statement->fetchColumn($column);
+		return $this->statement->fetchOne();
 	}
 
 	/**

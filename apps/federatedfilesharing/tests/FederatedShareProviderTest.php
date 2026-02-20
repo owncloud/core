@@ -191,8 +191,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -267,8 +267,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertEquals($fetchedData['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
@@ -333,8 +333,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -412,8 +412,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -451,8 +451,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -483,8 +483,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -889,8 +889,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($id))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAllAssociative();
+		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);
 	}
