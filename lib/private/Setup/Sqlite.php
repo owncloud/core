@@ -41,6 +41,6 @@ class Sqlite extends AbstractDatabase {
 		}
 		//in case of sqlite, we can always fill the database
 		\error_log("creating sqlite db");
-		\OC_DB::createDbFromStructure($this->dbDefinitionFile);
+		(new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection()))->createDbFromStructure($this->dbDefinitionFile);
 	}
 }

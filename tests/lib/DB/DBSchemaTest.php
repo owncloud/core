@@ -9,7 +9,6 @@
 namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use OC_DB;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
@@ -62,26 +61,30 @@ class DBSchemaTest extends TestCase {
 	}
 
 	public function doTestSchemaCreating() {
-		OC_DB::createDbFromStructure($this->schema_file);
+		$connection = \OC::$server->getDatabaseConnection();
+		(new \OC\DB\MDB2SchemaManager($connection))->createDbFromStructure($this->schema_file);
 		$this->assertTableExist($this->table1);
 		$this->assertTableExist($this->table2);
 	}
 
 	public function doTestSchemaChanging() {
-		OC_DB::updateDbFromStructure($this->schema_file2);
+		$connection = \OC::$server->getDatabaseConnection();
+		(new \OC\DB\MDB2SchemaManager($connection))->updateDbFromStructure($this->schema_file2);
 		$this->assertTableExist($this->table2);
 	}
 
 	public function doTestSchemaDumping() {
 		$outfile = 'static://db_out.xml';
-		OC_DB::getDbStructure($outfile);
+		$connection = \OC::$server->getDatabaseConnection();
+		(new \OC\DB\MDB2SchemaManager($connection))->getDbStructure($outfile);
 		$content = \file_get_contents($outfile);
 		$this->assertStringContainsString($this->table1, $content);
 		$this->assertStringContainsString($this->table2, $content);
 	}
 
 	public function doTestSchemaRemoving() {
-		OC_DB::removeDBStructure($this->schema_file);
+		$connection = \OC::$server->getDatabaseConnection();
+		(new \OC\DB\MDB2SchemaManager($connection))->removeDBStructure($this->schema_file);
 		$this->assertTableNotExist($this->table1);
 		$this->assertTableNotExist($this->table2);
 	}
@@ -90,19 +93,21 @@ class DBSchemaTest extends TestCase {
 	 * @param string $table
 	 */
 	public function assertTableExist($table) {
-		$this->assertTrue(OC_DB::tableExists($table), 'Table ' . $table . ' does not exist');
+		$connection = \OC::$server->getDatabaseConnection();
+		$this->assertTrue($connection->tableExists($table), 'Table ' . $table . ' does not exist');
 	}
 
 	/**
 	 * @param string $table
 	 */
 	public function assertTableNotExist($table) {
-		$platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
+		$connection = \OC::$server->getDatabaseConnection();
+		$platform = $connection->getDatabasePlatform();
 		if ($platform instanceof SqlitePlatform) {
 			// sqlite removes the tables after closing the DB
 			$this->assertTrue(true);
 		} else {
-			$this->assertFalse(OC_DB::tableExists($table), 'Table ' . $table . ' exists.');
+			$this->assertFalse($connection->tableExists($table), 'Table ' . $table . ' exists.');
 		}
 	}
 }

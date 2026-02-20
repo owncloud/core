@@ -153,8 +153,9 @@ class Storage {
 	 */
 	private static function getStorageByIdFromDb($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
-		$resultSet = \OC_DB::executeAudited($sql, [$storageId]);
-		return $resultSet->fetchRow();
+		$connection = \OC::$server->getDatabaseConnection();
+		$resultSet = $connection->executeQuery($sql, [$storageId]);
+		return $resultSet->fetch();
 	}
 
 	private static function unsetCache($storageId) {
@@ -196,8 +197,9 @@ class Storage {
 	 */
 	public static function getStorageId($numericId) {
 		$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `numeric_id` = ?';
-		$result = \OC_DB::executeAudited($sql, [$numericId]);
-		if ($row = $result->fetchRow()) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$result = $connection->executeQuery($sql, [$numericId]);
+		if ($row = $result->fetch()) {
 			return $row['id'];
 		} else {
 			return null;
@@ -242,7 +244,8 @@ class Storage {
 		self::unsetCache($this->storageId);
 		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
 		$available = $isAvailable ? 1 : 0;
-		\OC_DB::executeAudited($sql, [$available, \time(), $this->storageId]);
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->executeStatement($sql, [$available, \time(), $this->storageId]);
 	}
 
 	/**
@@ -264,14 +267,15 @@ class Storage {
 		$storageId = self::adjustStorageId($storageId);
 		$numericId = self::getNumericStorageId($storageId);
 		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
-		\OC_DB::executeAudited($sql, [$storageId]);
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->executeStatement($sql, [$storageId]);
 
 		// delete from local cache
 		self::unsetCache($storageId);
 		// delete from db
 		if ($numericId !== null) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
-			\OC_DB::executeAudited($sql, [$numericId]);
+			$connection->executeStatement($sql, [$numericId]);
 		}
 	}
 }

@@ -54,8 +54,9 @@ class HomeCache extends Cache {
 			$sql = 'SELECT SUM(`size`) AS f1 ' .
 			   'FROM `*PREFIX*filecache` ' .
 				'WHERE `parent` = ? AND `storage` = ? AND `size` >= 0';
-			$result = \OC_DB::executeAudited($sql, [$id, $this->getNumericStorageId()]);
-			if ($row = $result->fetchRow()) {
+			$connection = \OC::$server->getDatabaseConnection();
+			$result = $connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
+			if ($row = $result->fetch()) {
 				$result->closeCursor();
 				list($sum) = \array_values($row);
 				$totalSize = 0 + $sum;

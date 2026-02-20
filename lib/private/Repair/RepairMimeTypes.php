@@ -54,103 +54,105 @@ class RepairMimeTypes implements IRepairStep {
 		return 'Repair mime types';
 	}
 
-	private static function existsStmt() {
-		return \OC_DB::prepare('
+	private static function existsSql() {
+		return '
 			SELECT count(`mimetype`)
 			FROM   `*PREFIX*mimetypes`
 			WHERE  `mimetype` = ?
-		');
+		';
 	}
 
-	private static function getIdStmt() {
-		return \OC_DB::prepare('
+	private static function getIdSql() {
+		return '
 			SELECT `id`
 			FROM   `*PREFIX*mimetypes`
 			WHERE  `mimetype` = ?
-		');
+		';
 	}
 
-	private static function insertStmt() {
-		return \OC_DB::prepare('
+	private static function insertSql() {
+		return '
 			INSERT INTO `*PREFIX*mimetypes` ( `mimetype` )
 			VALUES ( ? )
-		');
+		';
 	}
 
-	private static function updateWrongStmt() {
-		return \OC_DB::prepare('
+	private static function updateWrongSql() {
+		return '
 			UPDATE `*PREFIX*filecache`
 			SET `mimetype` = (
 				SELECT `id`
 				FROM `*PREFIX*mimetypes`
 				WHERE `mimetype` = ?
 			) WHERE `mimetype` = ?
-		');
+		';
 	}
 
-	private static function deleteStmt() {
-		return \OC_DB::prepare('
+	private static function deleteSql() {
+		return '
 			DELETE FROM `*PREFIX*mimetypes`
 			WHERE `id` = ?
-		');
+		';
 	}
 
-	private static function updateByNameStmt() {
-		return \OC_DB::prepare('
+	private static function updateByNameSql() {
+		return '
 			UPDATE `*PREFIX*filecache`
 			SET `mimetype` = ?
 			WHERE `mimetype` <> ? AND `mimetype` <> ? AND `name` ILIKE ?
-		');
+		';
 	}
 
 	private function repairMimetypes($wrongMimetypes) {
+		$connection = \OC::$server->getDatabaseConnection();
 		foreach ($wrongMimetypes as $wrong => $correct) {
 			// do we need to remove a wrong mimetype?
-			$result = \OC_DB::executeAudited(self::getIdStmt(), [$wrong]);
-			$wrongId = $result->fetchOne();
+			$result = $connection->executeQuery(self::getIdSql(), [$wrong]);
+			$wrongId = $result->fetchColumn();
 
 			if ($wrongId !== false) {
 				// do we need to insert the correct mimetype?
-				$result = \OC_DB::executeAudited(self::existsStmt(), [$correct]);
-				$exists = $result->fetchOne();
+				$result = $connection->executeQuery(self::existsSql(), [$correct]);
+				$exists = $result->fetchColumn();
 
 				if ($correct !== null) {
 					if (!$exists) {
 						// insert mimetype
-						\OC_DB::executeAudited(self::insertStmt(), [$correct]);
+						$connection->executeStatement(self::insertSql(), [$correct]);
 					}
 
 					// change wrong mimetype to correct mimetype in filecache
-					\OC_DB::executeAudited(self::updateWrongStmt(), [$correct, $wrongId]);
+					$connection->executeStatement(self::updateWrongSql(), [$correct, $wrongId]);
 				}
 
 				// delete wrong mimetype
-				\OC_DB::executeAudited(self::deleteStmt(), [$wrongId]);
+				$connection->executeStatement(self::deleteSql(), [$wrongId]);
 			}
 		}
 	}
 
 	private function updateMimetypes($updatedMimetypes) {
+		$connection = \OC::$server->getDatabaseConnection();
 		if (empty($this->folderMimeTypeId)) {
-			$result = \OC_DB::executeAudited(self::getIdStmt(), ['httpd/unix-directory']);
-			$this->folderMimeTypeId = (int)$result->fetchOne();
+			$result = $connection->executeQuery(self::getIdSql(), ['httpd/unix-directory']);
+			$this->folderMimeTypeId = (int)$result->fetchColumn();
 		}
 
 		foreach ($updatedMimetypes as $extension => $mimetype) {
-			$result = \OC_DB::executeAudited(self::existsStmt(), [$mimetype]);
-			$exists = $result->fetchOne();
+			$result = $connection->executeQuery(self::existsSql(), [$mimetype]);
+			$exists = $result->fetchColumn();
 
 			if (!$exists) {
 				// insert mimetype
-				\OC_DB::executeAudited(self::insertStmt(), [$mimetype]);
+				$connection->executeStatement(self::insertSql(), [$mimetype]);
 			}
 
 			// get target mimetype id
-			$result = \OC_DB::executeAudited(self::getIdStmt(), [$mimetype]);
-			$mimetypeId = $result->fetchOne();
+			$result = $connection->executeQuery(self::getIdSql(), [$mimetype]);
+			$mimetypeId = $result->fetchColumn();
 
 			// change mimetype for files with x extension
-			\OC_DB::executeAudited(self::updateByNameStmt(), [$mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension]);
+			$connection->executeStatement(self::updateByNameSql(), [$mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension]);
 		}
 	}
 

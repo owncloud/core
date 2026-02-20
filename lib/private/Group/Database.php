@@ -256,10 +256,10 @@ class Database extends \OC\Group\Backend {
 			$searchLike = ' WHERE LOWER(`gid`) LIKE LOWER(?)';
 		}
 
-		$stmt = \OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
-		$result = $stmt->execute($parameters);
+		$stmt = $this->dbConn->prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
+		$stmt->execute($parameters);
 		$groups = [];
-		while ($row = $result->fetchRow()) {
+		while ($row = $stmt->fetch()) {
 			$groups[] = $row['gid'];
 		}
 		return $groups;
@@ -311,14 +311,14 @@ class Database extends \OC\Group\Backend {
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 
-		$stmt = \OC_DB::prepare(
+		$stmt = $this->dbConn->prepare(
 			'SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike . ' ORDER BY `uid` ASC',
 			$limit,
 			$offset
 		);
-		$result = $stmt->execute($parameters);
+		$stmt->execute($parameters);
 		$users = [];
-		while ($row = $result->fetchRow()) {
+		while ($row = $stmt->fetch()) {
 			$users[] = $row['uid'];
 		}
 		return $users;
@@ -341,9 +341,9 @@ class Database extends \OC\Group\Backend {
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 
-		$stmt = \OC_DB::prepare('SELECT COUNT(`uid`) AS `count` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike);
-		$result = $stmt->execute($parameters);
-		$count = $result->fetchOne();
+		$stmt = $this->dbConn->prepare('SELECT COUNT(`uid`) AS `count` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike);
+		$stmt->execute($parameters);
+		$count = $stmt->fetchColumn();
 		if ($count !== false) {
 			$count = \intval($count);
 		}

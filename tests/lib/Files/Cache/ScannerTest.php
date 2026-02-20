@@ -294,7 +294,7 @@ class ScannerTest extends \Test\TestCase {
 
 		// delete the folder without removing the children
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		\OC_DB::executeAudited($sql, [$oldFolderId]);
+		\OC::$server->getDatabaseConnection()->executeStatement($sql, [$oldFolderId]);
 
 		$cachedData = $this->cache->get('folder/bar.txt');
 		$this->assertEquals($oldFolderId, $cachedData['parent']);
@@ -318,7 +318,7 @@ class ScannerTest extends \Test\TestCase {
 
 		// delete the folder without removing the children
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		\OC_DB::executeAudited($sql, [$oldFolderId]);
+		\OC::$server->getDatabaseConnection()->executeStatement($sql, [$oldFolderId]);
 
 		$cachedData = $this->cache->get('folder/bar.txt');
 		$this->assertEquals($oldFolderId, $cachedData['parent']);
