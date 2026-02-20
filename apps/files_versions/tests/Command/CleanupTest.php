@@ -25,6 +25,7 @@ namespace OCA\Files_Versions\Tests\Command;
 use OC\User\Manager;
 use OCA\Files_Versions\Command\CleanUp;
 use OCP\Files\IRootFolder;
+use OCP\UserInterface;
 use Test\TestCase;
 
 /**
@@ -132,7 +133,7 @@ class CleanupTest extends TestCase {
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
 
-		$backend = $this->getMockBuilder('OC_User_Interface')
+		$backend = $this->getMockBuilder(UserInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$backend->expects($this->once())->method('getUsers')
 			->with('', 500, 0)
