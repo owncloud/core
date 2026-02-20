@@ -61,3 +61,7 @@ updates:
   - dependency-name: sinon
     versions:
     - 9.2.4
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly

@@ -1,0 +1,166 @@
+name: PHPUnit
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phpunit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit-sqlite:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, gd, json, xml, zip, pdo_sqlite
+          ini-values: "memory_limit=1024M"
+          tools: composer
+      - name: Install dependencies
+        run: make install-composer-deps
+      - name: Install Server
+        env:
+          DB_TYPE: sqlite
+        run: bash tests/drone/install-server.sh
+      - name: Run PHPUnit tests
+        run: make test-php-unit TEST_DATABASE=sqlite
+
+  phpunit-mysql:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: owncloud
+          MYSQL_USER: owncloud
+          MYSQL_PASSWORD: owncloud
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, gd, json, xml, zip, pdo_mysql
+          ini-values: "memory_limit=1024M"
+          tools: composer
+      - name: Install dependencies
+        run: make install-composer-deps
+      - name: Install Server
+        env:
+          DB_TYPE: mysql
+          DB_NAME: owncloud
+          DB_USERNAME: owncloud
+          DB_PASSWORD: owncloud
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+        run: bash tests/drone/install-server.sh
+      - name: Run PHPUnit tests
+        run: make test-php-unit TEST_DATABASE=mysql
+
+  phpunit-mariadb:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: owncloud
+          MYSQL_USER: owncloud
+          MYSQL_PASSWORD: owncloud
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, gd, json, xml, zip, pdo_mysql
+          ini-values: "memory_limit=1024M"
+          tools: composer
+      - name: Install dependencies
+        run: make install-composer-deps
+      - name: Install Server
+        env:
+          DB_TYPE: mariadb
+          DB_NAME: owncloud
+          DB_USERNAME: owncloud
+          DB_PASSWORD: owncloud
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+        run: bash tests/drone/install-server.sh
+      - name: Run PHPUnit tests
+        run: make test-php-unit TEST_DATABASE=mariadb
+
+  phpunit-postgres:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: owncloud
+          POSTGRES_USER: owncloud
+          POSTGRES_PASSWORD: owncloud
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, gd, json, xml, zip, pdo_pgsql
+          ini-values: "memory_limit=1024M"
+          tools: composer
+      - name: Install dependencies
+        run: make install-composer-deps
+      - name: Install Server
+        env:
+          DB_TYPE: pgsql
+          DB_NAME: owncloud
+          DB_USERNAME: owncloud
+          DB_PASSWORD: owncloud
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+        run: bash tests/drone/install-server.sh
+      - name: Run PHPUnit tests
+        run: make test-php-unit TEST_DATABASE=pgsql
