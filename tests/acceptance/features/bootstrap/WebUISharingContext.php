@@ -20,17 +20,19 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Psr\Http\Message\ResponseInterface;
-use Page\FilesPage;
-use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
-use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
-use Page\GeneralErrorPage;
-use Page\PublicLinkFilesPage;
-use Page\SharedWithYouPage;
+use Tests\Acceptance\Page\FilesPage;
+use Tests\Acceptance\Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
+use Tests\Acceptance\Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
+use Tests\Acceptance\Page\GeneralErrorPage;
+use Tests\Acceptance\Page\PublicLinkFilesPage;
+use Tests\Acceptance\Page\SharedWithYouPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;

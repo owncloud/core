@@ -20,22 +20,24 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\GuzzleException;
-use Page\LoginPage;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\LoginPage;
+use Tests\Acceptance\Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
-use Page\GeneralErrorPage;
-use Page\GeneralExceptionPage;
+use Tests\Acceptance\Page\GeneralErrorPage;
+use Tests\Acceptance\Page\GeneralExceptionPage;
 
 require_once 'bootstrap.php';
 

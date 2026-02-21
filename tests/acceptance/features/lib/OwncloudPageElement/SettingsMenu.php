@@ -21,11 +21,11 @@
  *
  */
 
-namespace Page\OwncloudPageElement;
+namespace Tests\Acceptance\Page\OwncloudPageElement;
 
 use Behat\Mink\Session;
 use Exception;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\OwncloudPage;
 
 /**
  * The Settings Menu

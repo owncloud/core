@@ -19,6 +19,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+namespace Tests\Acceptance;
+
 require_once 'bootstrap.php';
 
 use Behat\Behat\Context\Context;
@@ -26,9 +29,9 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\Notification;
-use Page\NotificationsEnabledOwncloudPage;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\Notification;
+use Tests\Acceptance\Page\NotificationsEnabledOwncloudPage;
 
 /**
  * Context for Notifications App

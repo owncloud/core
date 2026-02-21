@@ -20,15 +20,17 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\GuzzleException;
-use Page\LoginPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Tests\Acceptance\Page\LoginPage;
 
 require_once 'bootstrap.php';
 

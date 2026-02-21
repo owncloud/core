@@ -21,6 +21,8 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Hook\Scope\BeforeStepScope;
 use GuzzleHttp\Exception\GuzzleException;
 use Helmich\JsonAssert\JsonAssertions;
