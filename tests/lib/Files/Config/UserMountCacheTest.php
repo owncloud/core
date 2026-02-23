@@ -480,7 +480,7 @@ class UserMountCacheTest extends TestCase {
 
 		$conn = $this->createMock(IDBConnection::class);
 		$conn->method('insertIfNotExist')->will($this->throwException(
-			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+			new UniqueConstraintViolationException($driverExceptionMock, null)
 		));
 
 		$mountInfo = $this->createMock(ICachedMountInfo::class);

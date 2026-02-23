@@ -21,7 +21,8 @@
 
 namespace OCA\Files_Sharing\Tests\External;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use OCA\Files_Sharing\External\Mount;
 use OCA\Files_Sharing\External\MountProvider;
 use OCP\Files\Storage\IStorageFactory;
@@ -53,8 +54,8 @@ class MountProviderTest extends TestCase {
 	public function testCreateMountWithNoProto() {
 		$user = $this->createMock(IUser::class);
 		$storageFactory = $this->createMock(IStorageFactory::class);
-		$statement = $this->createMock(Statement::class);
-		$statement->method('fetch')->willReturnOnConsecutiveCalls(
+		$result = $this->createMock(Result::class);
+		$result->method('fetchAssociative')->willReturnOnConsecutiveCalls(
 			[
 				'remote' => 'domain.tld',
 				'share_token' => 'secret',
@@ -62,6 +63,8 @@ class MountProviderTest extends TestCase {
 			],
 			false
 		);
+		$statement = $this->createMock(Statement::class);
+		$statement->method('executeQuery')->willReturn($result);
 		$this->dbConnection->method('prepare')->willReturn($statement);
 
 		$mounts = $this->mountProvider->getMountsForUser($user, $storageFactory);

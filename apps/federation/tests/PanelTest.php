@@ -22,6 +22,7 @@
 namespace OCA\Federation\Tests;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OCA\Federation\Panels\Admin;
 use OCP\BackgroundJob\IJobList;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -93,9 +94,9 @@ class PanelTest extends \Test\TestCase {
 		$queryBuilder = $this->getMockBuilder(IQueryBuilder::class)->getMock();
 		$queryBuilder->expects($this->once())->method('select')->willReturn($queryBuilder);
 		$queryBuilder->expects($this->once())->method('from')->willReturn($queryBuilder);
-		$statement = $this->getMockBuilder(Statement::class)->getMock();
+		$statement = $this->createMock(Result::class);
 		$queryBuilder->expects($this->once())->method('execute')->willReturn($statement);
-		$statement->expects($this->once())->method('fetchAll')->willReturn([]);
+		$statement->expects($this->once())->method('fetchAllAssociative')->willReturn([]);
 		$this->connection->expects($this->once())->method('getQueryBuilder')->willReturn($queryBuilder);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertStringContainsString(

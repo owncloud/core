@@ -470,7 +470,10 @@ class FederatedShareProvider implements IShareProvider {
 		$query = $this->dbConnection->getQueryBuilder();
 		$query->select('remote_id')->from('federated_reshares')
 			->where($query->expr()->eq('share_id', $query->createNamedParameter((int)$share->getId())));
-		$data = $query->execute()->fetchAssociative();
+		$result = $query->execute();
+
+		$data = $result->fetchAssociative();
+		$result->free();
 
 		if (!\is_array($data) || !isset($data['remote_id'])) {
 			throw new ShareNotFound();

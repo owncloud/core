@@ -106,7 +106,7 @@ class DBLockingProviderTest extends LockingProvider {
 
 		$conn = $this->createMock(IDBConnection::class);
 		$conn->method('insertIfNotExist')->will($this->throwException(
-			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+			new UniqueConstraintViolationException($driverExceptionMock, null)
 		));
 
 		$dbLockProv = new DBLockingProvider($conn, $logger, $this->timeFactory, 3600);

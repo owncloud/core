@@ -83,7 +83,7 @@ class HomeListUsersTest extends TestCase {
 		$uid = 'user1';
 
 		$resultMock = $this->createMock(Result::class);
-		$resultMock->method('fetch')->willReturnOnConsecutiveCalls(['user_id' => $uid], false);
+		$resultMock->method('fetchAssociative')->willReturnOnConsecutiveCalls(['user_id' => $uid], false);
 		$queryMock = $this->getMockBuilder('\OC\DB\QueryBuilder\QueryBuilder')
 			->setConstructorArgs([$this->connection])
 			->setMethods(['execute'])

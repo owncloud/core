@@ -22,6 +22,7 @@
 namespace OCA\FederatedFileSharing\Tests\Command;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OC\User\NoUserException;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCA\FederatedFileSharing\Command\PollIncomingShares;
@@ -80,8 +81,8 @@ class PollIncomingSharesTest extends TestCase {
 	public function testNoSharesPoll() {
 		$uid = 'foo';
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$statementMock = $this->createMock(Result::class);
+		$statementMock->method('fetchAssociative')->willReturnOnConsecutiveCalls(['user' => $uid], false);
 		$qbMock = $this->createMock(IQueryBuilder::class);
 		$qbMock->method('selectDistinct')->willReturnSelf();
 		$qbMock->method('from')->willReturnSelf();
@@ -116,8 +117,8 @@ class PollIncomingSharesTest extends TestCase {
 	public function testUnavailableStorage() {
 		$uid = 'foo';
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(
+		$statementMock = $this->createMock(Result::class);
+		$statementMock->method('fetchAssociative')->willReturnOnConsecutiveCalls(
 			['user' => $uid],
 			['id' => 50, 'remote' => 'example.org'],
 			false
@@ -156,8 +157,8 @@ class PollIncomingSharesTest extends TestCase {
 	public function testNotExistingUser() {
 		$uid = 'foo';
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(['user' => $uid], false);
+		$statementMock = $this->createMock(Result::class);
+		$statementMock->method('fetchAssociative')->willReturnOnConsecutiveCalls(['user' => $uid], false);
 		$qbMock = $this->createMock(IQueryBuilder::class);
 		$qbMock->method('selectDistinct')->willReturnSelf();
 		$qbMock->method('from')->willReturnSelf();
@@ -179,8 +180,8 @@ class PollIncomingSharesTest extends TestCase {
 	public function testPollingUnsharedMount() {
 		$uid = 'foo';
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturnOnConsecutiveCalls(
+		$statementMock = $this->createMock(Result::class);
+		$statementMock->method('fetchAssociative')->willReturnOnConsecutiveCalls(
 			['user' => $uid],
 			['id' => 50, 'remote' => 'example.org'],
 			false
