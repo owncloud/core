@@ -132,8 +132,10 @@ class DbHandler {
 	public function getAllServer() {
 		$query = $this->connection->getQueryBuilder();
 		$query->select(['url', 'url_hash', 'id', 'status', 'shared_secret', 'sync_token'])->from($this->dbTable);
-		$result = $query->execute()->fetchAllAssociative();
-		return $result;
+		$result = $query->execute();
+		$data = $result->fetchAllAssociative();
+		$result->free();
+		return $data;
 	}
 
 	/**

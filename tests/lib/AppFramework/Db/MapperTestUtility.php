@@ -23,7 +23,7 @@
 
 namespace Test\AppFramework\Db;
 
-use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use OCP\IDBConnection;
 use PHPUnit\Framework\MockObject\MockObject;

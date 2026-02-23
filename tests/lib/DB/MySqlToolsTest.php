@@ -22,6 +22,7 @@
 
 namespace Test\DB;
 
+use Doctrine\DBAL\Result;
 use OCP\IDBConnection;
 use Doctrine\DBAL\Driver\Statement;
 use OC\DB\MySqlTools;
@@ -64,21 +65,21 @@ class MySqlToolsTest extends TestCase {
 	private function mockDatabaseVars($vars) {
 		$map = [];
 		foreach ($vars as $key => $value) {
-			$statementMock = $this->createMock(Statement::class);
-			$statementMock->expects($this->once())->method('fetch')->willReturn(['Value' => $value]);
+			$statementMock = $this->createMock(Result::class);
+			$statementMock->expects($this->once())->method('fetchAssociative')->willReturn(['Value' => $value]);
 			$map[] = ["SHOW VARIABLES LIKE '$key'", [], [], null, $statementMock];
 		}
 		// mock vars
-		$this->db->expects($this->any())
+		$this->db
 			->method('executeQuery')
-			->will($this->returnValueMap($map));
+			->willReturnMap($map);
 	}
 
 	private function mockDatabaseEmptyVars() {
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->expects($this->any())->method('fetch')->willReturn(false);
+		$statementMock = $this->createMock(Result::class);
+		$statementMock->method('fetchAssociative')->willReturn(false);
 
-		$this->db->expects($this->any())
+		$this->db
 			->method('executeQuery')
 			->willReturn($statementMock);
 	}

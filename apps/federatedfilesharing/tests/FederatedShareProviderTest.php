@@ -25,6 +25,7 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
@@ -1011,15 +1012,16 @@ class FederatedShareProviderTest extends \Test\TestCase {
 
 	public function testGetRemoteId() {
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturn(['remote_id' => 'a0b0c0']);
+
+		$result = $this->createMock(Result::class);
+		$result->method('fetchAssociative')->willReturn(['remote_id' => 'a0b0c0']);
 
 		$qbMock = $this->createMock(IQueryBuilder::class);
 		$qbMock->method('select')->willReturnSelf();
 		$qbMock->method('from')->willReturnSelf();
 		$qbMock->method('where')->willReturnSelf();
 		$qbMock->method('expr')->willReturn($exprBuilder);
-		$qbMock->method('execute')->willReturn($statementMock);
+		$qbMock->method('execute')->willReturn($result);
 		$connectionMock = $this->createMock(IDBConnection::class);
 		$connectionMock->method('getQueryBuilder')->willReturn($qbMock);
 

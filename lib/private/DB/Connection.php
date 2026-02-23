@@ -33,7 +33,6 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Schema;
@@ -494,7 +493,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return null|string
 	 */
 	public function getDatabaseVersionString() {
-		return $this->_conn->getNativeConnection()->getServerVersion();
+		return $this->_conn->getServerVersion();
 	}
 
 	public function errorCode() {

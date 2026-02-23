@@ -422,6 +422,7 @@ class Manager {
 		$result = $getShare->executeQuery([$hash, $this->uid]);
 
 		$share = $result->fetchAssociative();
+		$result->free();
 		if ($share !== false) {
 			$this->eventDispatcher->dispatch(
 				new DeclineShare($share),

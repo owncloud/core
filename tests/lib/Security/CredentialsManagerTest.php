@@ -21,6 +21,7 @@
 
 namespace Test\Security;
 
+use Doctrine\DBAL\Result;
 use OC\Security\CredentialsManager;
 use OCP\IDBConnection;
 use OCP\Security\ICrypto;
@@ -45,13 +46,13 @@ class CredentialsManagerTest extends \Test\TestCase {
 	}
 
 	private function getQueryResult($row) {
-		$result = $this->getMockBuilder('\Doctrine\DBAL\Driver\Statement')
+		$result = $this->getMockBuilder(Result::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result->expects($this->any())
-			->method('fetch')
-			->will($this->returnValue($row));
+		$result
+			->method('fetchAssociative')
+			->willReturn($row);
 
 		return $result;
 	}

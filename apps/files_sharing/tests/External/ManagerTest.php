@@ -24,6 +24,7 @@
 
 namespace OCA\Files_Sharing\Tests\External;
 
+use Doctrine\DBAL\Result;
 use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
@@ -371,11 +372,12 @@ class ManagerTest extends TestCase {
 
 		$this->mountManager = $this->createMock(\OC\Files\Mount\Manager::class);
 		$idbConnection = $this->createMock(\OCP\IDBConnection::class);
-		$prepare = $this->createMock(\Doctrine\DBAL\Driver\Statement::class);
-		$prepare->method('execute')
-			->willReturn(true);
-		$idbConnection->method('prepare')
-			->willReturn($prepare);
+		$prepare = $this->createMock(\Doctrine\DBAL\Statement::class);
+		$result = $this->createMock(Result::class);
+		$result->method('fetchAssociative')->willReturn(false);
+		$prepare->method('executeQuery')->willReturn($result);
+		$prepare->method('executeStatement')->willReturn(1);
+		$idbConnection->method('prepare')->willReturn($prepare);
 		$storageFactory = $this->createMock(\OCP\Files\Storage\IStorageFactory::class);
 		$this->manager = new Manager(
 			$idbConnection,
