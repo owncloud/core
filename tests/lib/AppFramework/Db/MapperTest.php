@@ -56,9 +56,6 @@ class ExampleMapper extends Mapper {
 	public function mapRow($row) {
 		return $this->mapRowToEntity($row);
 	}
-	public function execSql($sql, $params) {
-		return $this->execute($sql, $params);
-	}
 }
 
 class MapperTest extends MapperTestUtility {
@@ -148,7 +145,7 @@ class MapperTest extends MapperTestUtility {
 		$sql = 'DELETE FROM `*PREFIX*table` WHERE `id` = ?';
 		$params = [2];
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params, [], null, null, false, false);
 		$entity = new Example();
 		$entity->setId($params[0]);
 
@@ -169,7 +166,7 @@ class MapperTest extends MapperTestUtility {
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params, [], null, null, false, false);
 
 		$this->mapper->insert($entity);
 	}
@@ -188,19 +185,11 @@ class MapperTest extends MapperTestUtility {
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
 
-		$this->setMapperResult($sql, $params);
+		$this->setMapperResult($sql, $params, [], null, null, false, false);
 
 		$result = $this->mapper->insert($entity);
 
 		$this->assertEquals(3, $result->getId());
-	}
-
-	public function testAssocParameters() {
-		$sql = 'test';
-		$params = [':test' => 1, ':a' => 2];
-
-		$this->setMapperResult($sql, $params);
-		$this->mapper->execSql($sql, $params);
 	}
 
 	public function testUpdate() {
@@ -216,7 +205,7 @@ class MapperTest extends MapperTestUtility {
 		$entity->setEmail($params[1]);
 		$entity->setId($params[2]);
 
-		$this->setMapperResult($sql, $params, [], null, null, true);
+		$this->setMapperResult($sql, $params, [], null, null, false, false);
 
 		$this->mapper->update($entity);
 	}
