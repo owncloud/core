@@ -69,7 +69,6 @@ jobs:
       - name: Install Composer dependencies
         run: |
           make install-composer-deps
-          make vendor-bin-deps
 
       - name: Install Server
         env:
