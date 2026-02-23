@@ -34,7 +34,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\TransactionIsolationLevel;
@@ -474,7 +474,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @since 10.0
 	 */
 	public function allows4ByteCharacters() {
-		if (!$this->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$this->getDatabasePlatform() instanceof MySQLPlatform) {
 			return true;
 		}
 		if ($this->getParams()['charset'] === 'utf8mb4') {

@@ -25,7 +25,7 @@ namespace Tests\Core\Command\Db;
 use Doctrine\DBAL\Result;
 use OC\Core\Command\Db\RestoreDefaultRowFormat;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OC\DB\ConnectionFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -71,7 +71,7 @@ class RestoreDefaultRowFormatTest extends TestCase {
 	}
 
 	public function testConversion() {
-		$platform = $this->getMockBuilder(MySqlPlatform::class)->getMock();
+		$platform = $this->getMockBuilder(MySQLPlatform::class)->getMock();
 		$this->connection->expects($this->once())->method('getDatabasePlatform')->willReturn($platform);
 		$this->config->expects($this->exactly(2))->method('getSystemValue')
 			->will($this->returnValueMap([

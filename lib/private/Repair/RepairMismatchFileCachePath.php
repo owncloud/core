@@ -25,7 +25,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
@@ -141,7 +141,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 	private function addQueryConditionsParentIdWrongPath($qb) {
 		// thanks, VicDeo!
-		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$concatFunction = $qb->createFunction("CONCAT(fcp.path, '/', fc.name)");
 		} else {
 			$concatFunction = $qb->createFunction("(fcp.`path` || '/' || fc.`name`)");

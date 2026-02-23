@@ -21,7 +21,7 @@
 
 namespace OCA\Files\Command;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OC\Share20\Exception\ProviderException;
 use OC\Share20\ProviderFactory;
 use OCP\IDBConnection;
@@ -340,7 +340,7 @@ class TroubleshootTransferOwnership extends Command {
 	protected function getAllInvalidShareStorages($storageType, $scopeUid) {
 		$query = $this->connection->getQueryBuilder();
 
-		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$concatFunction = $query->createFunction("CONCAT('$storageType', s.uid_owner)");
 		} else {
 			$concatFunction = $query->createFunction("('$storageType' || s.`uid_owner`)");

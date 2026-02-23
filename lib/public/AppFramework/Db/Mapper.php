@@ -26,7 +26,7 @@
 namespace OCP\AppFramework\Db;
 
 use Doctrine\DBAL\Driver\Exception;
-use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Result;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
@@ -214,7 +214,7 @@ abstract class Mapper {
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @return Result the result of the query
-	 * @throws Exception
+	 * @throws Exception|\Doctrine\DBAL\Exception
 	 * @since 11.0.0
 	 */
 	private function executeQuery($sql, array $params=[], $limit=null, $offset=null): Result {
@@ -245,7 +245,7 @@ abstract class Mapper {
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @return int the number of affected rows
-	 * @throws Exception
+	 * @throws Exception|\Doctrine\DBAL\Exception
 	 * @since 11.0.0
 	 */
 	private function executeStatement($sql, array $params=[], $limit=null, $offset=null): int {
