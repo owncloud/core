@@ -23,7 +23,7 @@
 
 namespace OC\Repair;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -39,7 +39,7 @@ class InnoDB implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$connection = \OC::$server->getDatabaseConnection();
-		if (!$connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$output->info('Not a mysql database -> nothing to do');
 			return;
 		}
@@ -47,7 +47,7 @@ class InnoDB implements IRepairStep {
 		$tables = $this->getAllMyIsamTables($connection);
 		if (\is_array($tables)) {
 			foreach ($tables as $table) {
-				// On a MySqlPlatform we should have an exec method
+				// On a MySQLPlatform we should have an exec method
 				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$connection->exec("ALTER TABLE $table ENGINE=InnoDB;");
 				$output->info("Fixed $table");

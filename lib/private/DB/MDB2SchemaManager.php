@@ -28,9 +28,9 @@
 
 namespace OC\DB;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OCP\IDBConnection;
@@ -72,7 +72,7 @@ class MDB2SchemaManager {
 			return new SQLiteMigrator($this->conn, $random, $config, $dispatcher);
 		} elseif ($platform instanceof OraclePlatform) {
 			return new OracleMigrator($this->conn, $random, $config, $dispatcher);
-		} elseif ($platform instanceof MySqlPlatform) {
+		} elseif ($platform instanceof MySQLPlatform) {
 			return new MySQLMigrator($this->conn, $random, $config, $dispatcher);
 		} elseif ($platform instanceof PostgreSqlPlatform) {
 			return new PostgreSqlMigrator($this->conn, $random, $config, $dispatcher);

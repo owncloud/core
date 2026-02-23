@@ -21,7 +21,7 @@
 
 namespace OC\Core\Command\Db;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
@@ -52,7 +52,7 @@ class RestoreDefaultRowFormat extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		if (!$this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$output->writeln("<error>This command is only valid for MySQL/MariaDB databases.</error>");
 			return 1;
 		}
