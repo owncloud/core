@@ -493,7 +493,10 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return null|string
 	 */
 	public function getDatabaseVersionString() {
-		return $this->_conn->getServerVersion();
+		if ($this->_conn instanceof Driver\ServerInfoAwareConnection) {
+			return $this->_conn->getServerVersion();
+		}
+		return null;
 	}
 
 	public function errorCode() {

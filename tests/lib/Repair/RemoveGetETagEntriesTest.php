@@ -57,7 +57,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 		// check if test data is written to DB
 		$sqlToFetchProperties = 'SELECT `fileid`, `propertyname`, `propertyvalue` FROM `*PREFIX*properties` WHERE `fileid` = ?';
 		$stmt = $this->connection->executeQuery($sqlToFetchProperties, ['100500']);
-		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
+		$entries = $stmt->fetchAllNumeric();
 
 		$this->assertCount(2, $entries, 'Asserts that two entries are returned as we have inserted two');
 		foreach ($entries as $entry) {
@@ -75,7 +75,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 
 		// check if test data is correctly modified in DB
 		$stmt = $this->connection->executeQuery($sqlToFetchProperties, ['100500']);
-		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
+		$entries = $stmt->fetchAllNumeric();
 
 		$this->assertCount(1, $entries, 'Asserts that only one entry is returned after the repair step - the other one has to be removed');
 		//cast int to string to prevent failure on postgre
