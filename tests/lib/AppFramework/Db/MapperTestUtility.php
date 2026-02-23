@@ -23,12 +23,21 @@
 
 namespace Test\AppFramework\Db;
 
+use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Statement;
+use OCP\IDBConnection;
+use PHPUnit\Framework\MockObject\MockObject;
+
 /**
  * Simple utility class for testing mappers
  */
 abstract class MapperTestUtility extends \Test\TestCase {
+	/** @var IDBConnection|MockObject */
 	protected $db;
+	/** @var Statement|MockObject  */
 	private $query;
+	/** @var Result|MockObject */
+	private $result;
 	private $fetchAt;
 	private $iterators;
 
@@ -40,12 +49,13 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		parent::setUp();
 
 		$this->db = $this->getMockBuilder(
-			'\OCP\IDBConnection'
+			IDBConnection::class
 		)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->query = $this->createMock('\PDOStatement');
+		$this->query = $this->createMock(Statement::class);
+		$this->result = $this->createMock(Result::class);
 		$this->iterators = [];
 		$this->fetchAt = 0;
 	}
@@ -86,24 +96,25 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	 */
 	protected function setMapperResult(
 		$sql,
-		$arguments= [],
-		$returnRows= [],
-		$limit=null,
-		$offset=null,
-		$expectClose=false
+		$arguments = [],
+		$returnRows = [],
+		$limit = null,
+		$offset = null,
+		$expectClose = false,
+		$statementIsQuery = true
 	) {
 		if ($limit === null && $offset === null) {
-			$this->db->expects($this->any())
+			$this->db
 				->method('prepare')
 				->with($this->equalTo($sql))
 				->will(($this->returnValue($this->query)));
 		} elseif ($limit !== null && $offset === null) {
-			$this->db->expects($this->any())
+			$this->db
 				->method('prepare')
 				->with($this->equalTo($sql), $this->equalTo($limit))
 				->will(($this->returnValue($this->query)));
 		} elseif ($limit === null && $offset !== null) {
-			$this->db->expects($this->any())
+			$this->db
 				->method('prepare')
 				->with(
 					$this->equalTo($sql),
@@ -112,7 +123,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				)
 				->will(($this->returnValue($this->query)));
 		} else {
-			$this->db->expects($this->any())
+			$this->db
 				->method('prepare')
 				->with(
 					$this->equalTo($sql),
@@ -127,8 +138,12 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$iterators = $this->iterators;
 		$fetchAt = $this->fetchAt;
 
-		$this->query->expects($this->any())
-			->method('fetch')
+		if ($statementIsQuery) {
+			$this->query->method('executeQuery')->willReturn($this->result);
+		}
+
+		$this->result
+			->method('fetchAssociative')
 			->will($this->returnCallback(
 				function () use ($iterators, $fetchAt) {
 					$iterator = $iterators[$fetchAt];
@@ -173,11 +188,13 @@ abstract class MapperTestUtility extends \Test\TestCase {
 			->withConsecutive(...$bindArgs);
 
 		if ($argsCount > 0) {
+			$method = $statementIsQuery ? 'executeQuery' : 'executeStatement';
 			$this->query
 				->expects($this->once())
-				->method('execute')
+				->method($method)
 				->willReturnOnConsecutiveCalls(
 					$this->returnCallback(function ($sql, $p=null, $o=null, $s=null) {
+						return 1;
 					})
 				);
 		}
@@ -187,7 +204,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		} else {
 			$closing = $this->any();
 		}
-		$this->query->expects($closing)->method('closeCursor');
+		$this->result->expects($closing)->method('free');
 		
 		$this->fetchAt++;
 	}

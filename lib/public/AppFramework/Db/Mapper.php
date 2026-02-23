@@ -25,9 +25,10 @@
 
 namespace OCP\AppFramework\Db;
 
+use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
-use OCP\IDb;
 
 /**
  * Simple parent class for inheriting your data access layer from. This class
@@ -42,8 +43,8 @@ abstract class Mapper {
 	/**
 	 * @param IDBConnection $db Instance of the Db abstraction layer
 	 * @param string $tableName the name of the table. set this to allow entity
-	 * @param string $entityClass the name of the entity that the sql should be
-	 * mapped to queries without using sql
+	 * @param string $entityClass the name of the entity that the SQL should be
+	 * mapped to queries without using SQL
 	 * @since 7.0.0
 	 */
 	public function __construct(IDBConnection $db, $tableName, $entityClass=null) {
@@ -75,8 +76,7 @@ abstract class Mapper {
 	 */
 	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
-		$stmt = $this->execute($sql, [$entity->getId()]);
-		$stmt->closeCursor();
+		$this->executeStatement($sql, [$entity->getId()]);
 		return $entity;
 	}
 
@@ -116,11 +116,9 @@ abstract class Mapper {
 		$sql = 'INSERT INTO `' . $this->tableName . '`(' .
 				$columns . ') VALUES(' . $values . ')';
 
-		$stmt = $this->execute($sql, $params);
+		$this->executeStatement($sql, $params);
 
 		$entity->setId((int) $this->db->lastInsertId($this->tableName));
-
-		$stmt->closeCursor();
 
 		return $entity;
 	}
@@ -176,8 +174,7 @@ abstract class Mapper {
 				$columns . ' WHERE `id` = ?';
 		$params[] = $id;
 
-		$stmt = $this->execute($sql, $params);
-		$stmt->closeCursor();
+		$this->executeStatement($sql, $params);
 
 		return $entity;
 	}
@@ -210,20 +207,18 @@ abstract class Mapper {
 	}
 
 	/**
-	 * Runs an sql query
-	 * @param string $sql the prepare string
-	 * @param array $params the params which should replace the ? in the sql query
+	 * Executes a query and binds the parameters
+	 *
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \PDOStatement the database query result
-	 * @since 7.0.0
+	 * @return Result the result of the query
+	 * @throws Exception
+	 * @since 11.0.0
 	 */
-	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
-		if ($this->db instanceof IDb) {
-			$query = $this->db->prepareQuery($sql, $limit, $offset);
-		} else {
-			$query = $this->db->prepare($sql, $limit, $offset);
-		}
+	private function executeQuery($sql, array $params=[], $limit=null, $offset=null): Result {
+		$query = $this->db->prepare($sql, $limit, $offset);
 
 		if ($this->isAssocArray($params)) {
 			foreach ($params as $key => $param) {
@@ -239,26 +234,46 @@ abstract class Mapper {
 			}
 		}
 
-		$result = $query->execute();
-
-		// this is only for backwards compatibility reasons and can be removed
-		// in owncloud 10. IDb returns a StatementWrapper from execute, PDO,
-		// Doctrine and IDbConnection don't so this needs to be done in order
-		// to stay backwards compatible for the things that rely on the
-		// StatementWrapper being returned
-		if ($result instanceof \OC_DB_StatementWrapper) {
-			return $result;
-		}
-
-		return $query;
+		return $query->executeQuery();
 	}
 
 	/**
-	 * Returns an db result and throws exceptions when there are more or less
+	 * Executes a statement and binds the parameters
+	 *
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
+	 * @param int $limit the maximum number of rows
+	 * @param int $offset from which row we want to start
+	 * @return int the number of affected rows
+	 * @throws Exception
+	 * @since 11.0.0
+	 */
+	private function executeStatement($sql, array $params=[], $limit=null, $offset=null): int {
+		$query = $this->db->prepare($sql, $limit, $offset);
+
+		if ($this->isAssocArray($params)) {
+			foreach ($params as $key => $param) {
+				$pdoConstant = $this->getPDOType($param);
+				$query->bindValue($key, $param, $pdoConstant);
+			}
+		} else {
+			$index = 1;  // bindParam is 1 indexed
+			foreach ($params as $param) {
+				$pdoConstant = $this->getPDOType($param);
+				$query->bindValue($index, $param, $pdoConstant);
+				$index++;
+			}
+		}
+
+		return $query->executeStatement();
+	}
+
+	/**
+	 * Returns a db result and throws exceptions when there are more or less
 	 * results
 	 * @see findEntity
-	 * @param string $sql the sql query
-	 * @param array $params the parameters of the sql query
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @throws DoesNotExistException if the item does not exist
@@ -270,12 +285,12 @@ abstract class Mapper {
 		if ($sql instanceof IQueryBuilder) {
 			$stmt = $sql->execute();
 		} else {
-			$stmt = $this->execute($sql, $params, $limit, $offset);
+			$stmt = $this->executeQuery($sql, $params, $limit, $offset);
 		}
-		$row = $stmt->fetch();
+		$row = $stmt->fetchAssociative();
 
 		if ($row === false || $row === null) {
-			$stmt->closeCursor();
+			$stmt->free();
 			$msg = $this->buildDebugMessage(
 				'Did expect one result but found none when executing',
 				$sql,
@@ -285,8 +300,8 @@ abstract class Mapper {
 			);
 			throw new DoesNotExistException($msg);
 		}
-		$row2 = $stmt->fetch();
-		$stmt->closeCursor();
+		$row2 = $stmt->fetchAssociative();
+		$stmt->free();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
@@ -297,17 +312,17 @@ abstract class Mapper {
 				$offset
 			);
 			throw new MultipleObjectsReturnedException($msg);
-		} else {
-			return $row;
 		}
+
+		return $row;
 	}
 
 	/**
 	 * Builds an error message by prepending the $msg to an error message which
 	 * has the parameters
 	 * @see findEntity
-	 * @param string $sql the sql query
-	 * @param array $params the parameters of the sql query
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @return string formatted error message string
@@ -334,33 +349,33 @@ abstract class Mapper {
 	}
 
 	/**
-	 * Runs a sql query and returns an array of entities
+	 * Runs a SQL query and returns an array of entities
 	 * @param string $sql the prepare string
-	 * @param array $params the params which should replace the ? in the sql query
+	 * @param array $params the params which should replace the ? in the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @return array all fetched entities
 	 * @since 7.0.0
 	 */
 	protected function findEntities($sql, array $params=[], $limit=null, $offset=null) {
-		$stmt = $this->execute($sql, $params, $limit, $offset);
+		$stmt = $this->executeQuery($sql, $params, $limit, $offset);
 
 		$entities = [];
 
-		while ($row = $stmt->fetch()) {
+		while ($row = $stmt->fetchAssociative()) {
 			$entities[] = $this->mapRowToEntity($row);
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entities;
 	}
 
 	/**
-	 * Returns an db result and throws exceptions when there are more or less
+	 * Returns a db result and throws exceptions when there are more or less
 	 * results
-	 * @param string $sql the sql query
-	 * @param array $params the parameters of the sql query
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @throws DoesNotExistException if the item does not exist

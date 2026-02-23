@@ -22,8 +22,11 @@
 
 namespace OCP;
 
+use Doctrine\DBAL\Statement;
+
 /**
  * Small Facade for being able to inject the database connection for tests
+ *
  * @since 7.0.0 - extends IDBConnection was added in 8.1.0
  */
 interface IDb extends IDBConnection {
@@ -32,7 +35,7 @@ interface IDb extends IDBConnection {
 	 * @param string $sql the sql query with ? placeholder for params
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \OC_DB_StatementWrapper prepared SQL query
+	 * @return Statement prepared SQL query
 	 * @since 7.0.0
 	 */
 	public function prepareQuery($sql, $limit=null, $offset=null);
