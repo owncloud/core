@@ -29,13 +29,13 @@ class APITest extends \Test\TestCase {
 	// Validate details of the result
 
 	/**
-	 * @param \OC_OCS_Result $result
+	 * @param \OC\OCS\Result $result
 	 */
 	public function checkResult($result, $success) {
 		// Check response is of correct type
 		$this->assertInstanceOf(Result::class, $result);
 		// Check if it succeeded
-		/** @var $result \OC_OCS_Result */
+		/** @var $result \OC\OCS\Result */
 		$this->assertEquals($success, $result->succeeded());
 	}
 
