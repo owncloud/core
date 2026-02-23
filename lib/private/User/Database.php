@@ -282,12 +282,14 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		}
 
 		$connection = \OC::$server->getDatabaseConnection();
-		$result = $connection->prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
-		$result->execute($parameters);
+		$query = $connection->prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
+		$result = $query->executeQuery($parameters);
 		$users = [];
 		while ($row = $result->fetchAssociative()) {
 			$users[] = $row['uid'];
 		}
+		$result->free();
+
 		return $users;
 	}
 

@@ -115,12 +115,11 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			'DELETE FROM `*PREFIX*properties`' .
 			' WHERE `id` > ?'
 		);
-		$deleteStatement->execute(
+		$deleteStatement->executeStatement(
 			[
 				$this->maxId,
 			]
 		);
-		$deleteStatement->free();
 	}
 
 	private function createTestNode($class) {

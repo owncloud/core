@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing\Command;
 
+use Doctrine\DBAL\Result;
 use OC\ServerNotAvailableException;
 use OC\User\NoUserException;
 use OCA\Files_Sharing\External\Manager;
@@ -153,10 +154,7 @@ class PollIncomingShares extends Command {
 		}
 	}
 
-	/**
-	 * @return \Doctrine\DBAL\Driver\Statement
-	 */
-	protected function getCursor() {
+	protected function getCursor(): Result {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->selectDistinct('user')
 			->from('share_external')

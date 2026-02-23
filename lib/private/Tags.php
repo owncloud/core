@@ -701,7 +701,7 @@ class Tags implements \OCP\ITags {
 			$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
 					. 'WHERE `objid` = ? AND `categoryid` = ? AND `type` = ?';
 			$stmt = \OC::$server->getDatabaseConnection()->prepare($sql);
-			$stmt->execute([$objid, $tagId, $this->type]);
+			$stmt->executeStatement([$objid, $tagId, $this->type]);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
 				'core',
