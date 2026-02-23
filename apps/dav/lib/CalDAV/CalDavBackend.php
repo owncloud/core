@@ -628,13 +628,13 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	public function deleteCalendar($calendarId) {
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarchanges` WHERE `calendarid` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$this->sharingBackend->deleteAllShares($calendarId);
 	}
@@ -913,7 +913,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	public function deleteCalendarObject($calendarId, $objectUri) {
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ? AND `uri` = ?');
-		$stmt->execute([$calendarId, $objectUri]);
+		$stmt->executeStatement([$calendarId, $objectUri]);
 
 		$this->addChange($calendarId, $objectUri, 3);
 	}
@@ -1480,14 +1480,14 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	protected function addChange($calendarId, $objectUri, $operation) {
 		$stmt = $this->db->prepare('INSERT INTO `*PREFIX*calendarchanges` (`uri`, `synctoken`, `calendarid`, `operation`) SELECT ?, `synctoken`, ?, ? FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$objectUri,
 			$calendarId,
 			$operation,
 			$calendarId
 		]);
 		$stmt = $this->db->prepare('UPDATE `*PREFIX*calendars` SET `synctoken` = `synctoken` + 1 WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$calendarId
 		]);
 	}

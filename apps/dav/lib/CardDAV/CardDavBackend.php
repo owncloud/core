@@ -781,14 +781,14 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	protected function addChange($addressBookId, $objectUri, $operation) {
 		$sql = 'INSERT INTO `*PREFIX*addressbookchanges`(`uri`, `synctoken`, `addressbookid`, `operation`) SELECT ?, `synctoken`, ?, ? FROM `*PREFIX*addressbooks` WHERE `id` = ?';
 		$stmt = $this->db->prepare($sql);
-		$stmt->execute([
+		$stmt->executeStatement([
 			$objectUri,
 			$addressBookId,
 			$operation,
 			$addressBookId
 		]);
 		$stmt = $this->db->prepare('UPDATE `*PREFIX*addressbooks` SET `synctoken` = `synctoken` + 1 WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$addressBookId
 		]);
 	}

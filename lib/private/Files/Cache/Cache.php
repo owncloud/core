@@ -685,7 +685,7 @@ class Cache implements ICache {
 
 		foreach ($childEntries as $child) {
 			$newTargetPath = $targetPath . \substr($child['path'], $sourceLength);
-			$query->execute([$targetStorageId, $newTargetPath, \md5($newTargetPath), $child['fileid']]);
+			$query->executeStatement([$targetStorageId, $newTargetPath, \md5($newTargetPath), $child['fileid']]);
 		}
 	}
 
@@ -943,12 +943,15 @@ class Cache implements ICache {
 	public function getIncomplete() {
 		$query = $this->connection->prepare('SELECT `path` FROM `*PREFIX*filecache`'
 			. ' WHERE `storage` = ? AND `size` = ? ORDER BY `fileid` DESC', 1);
-		$query->execute([$this->getNumericStorageId(), IScanner::SIZE_NEEDS_SCAN]);
-		if ($row = $query->fetchAssociative()) {
+		$result = $query->executeQuery([$this->getNumericStorageId(), IScanner::SIZE_NEEDS_SCAN]);
+		$row = $result->fetchAssociative();
+		$result->free();
+
+		if ($row) {
 			return $row['path'];
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**

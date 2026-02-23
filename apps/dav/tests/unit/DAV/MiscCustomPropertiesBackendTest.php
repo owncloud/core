@@ -95,12 +95,11 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 			'DELETE FROM `*PREFIX*dav_properties`' .
 			' WHERE `id` > ?'
 		);
-		$deleteStatement->execute(
+		$deleteStatement->executeStatement(
 			[
 				$this->maxId,
 			]
 		);
-		$deleteStatement->free();
 	}
 
 	/**

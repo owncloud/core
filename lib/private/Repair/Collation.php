@@ -66,7 +66,7 @@ class Collation implements IRepairStep {
 		foreach ($tables as $table) {
 			$output->info("Change collation for $table ...");
 			$query = $this->connection->prepare('ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET ' . $characterSet . ' COLLATE ' . $characterSet . '_bin;');
-			$query->execute();
+			$query->executeStatement();
 		}
 		if (empty($tables)) {
 			$output->info('All tables already have the correct collation -> nothing to do');

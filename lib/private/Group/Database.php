@@ -344,11 +344,12 @@ class Database extends \OC\Group\Backend {
 		}
 
 		$stmt = $this->dbConn->prepare('SELECT COUNT(`uid`) AS `count` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike);
-		$stmt->execute($parameters);
-		$count = $stmt->fetchColumn();
+		$result = $stmt->executeQuery($parameters);
+		$count = $result->fetchOne();
 		if ($count !== false) {
-			$count = \intval($count);
+			$count = (int)$count;
 		}
+		$result->free();
 		return $count;
 	}
 }

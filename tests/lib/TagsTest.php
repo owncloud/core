@@ -212,7 +212,7 @@ class TagsTest extends TestCase {
 		// insert lots of entries
 		$idsArray = [];
 		for ($i = 1; $i <= 1500; $i++) {
-			$statement->execute([$i, $tagId, $tagType]);
+			$statement->executeStatement([$i, $tagId, $tagType]);
 			$idsArray[] = $i;
 		}
 

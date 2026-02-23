@@ -68,7 +68,7 @@ class SearchLuceneTables implements IRepairStep {
 						HAVING count(`fileid`) > 1
 					) AS `mysqlerr1093hack`
 				)');
-			$query->execute();
+			$query->executeStatement();
 		} else {
 			$out->info('lucene_status table does not exist -> nothing to do');
 		}

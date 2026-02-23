@@ -86,7 +86,7 @@ class RestoreDefaultRowFormat extends Command {
 			$output->writeln("<info>Converting table '$tableName' with row format '$tableRowFormat' to default value '$defaultFormat'</info>");
 
 			$alterTableQuery = $this->connection->prepare('ALTER TABLE `' . $tableName . '` ROW_FORMAT=DEFAULT;');
-			$alterTableQuery->execute();
+			$alterTableQuery->executeStatement();
 		}
 
 		$output->writeln("<info>Conversion done</info>");

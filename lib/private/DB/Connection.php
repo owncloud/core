@@ -494,14 +494,14 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return null|string
 	 */
 	public function getDatabaseVersionString() {
-		return $this->_conn->getServerVersion();
+		return $this->_conn->getNativeConnection()->getServerVersion();
 	}
 
 	public function errorCode() {
-		return $this->_conn->getWrappedConnection()->errorCode();
+		return $this->_conn->getNativeConnection()->errorCode();
 	}
 
 	public function errorInfo() {
-		return $this->_conn->getWrappedConnection()->errorInfo();
+		return $this->_conn->getNativeConnection()->errorInfo();
 	}
 }

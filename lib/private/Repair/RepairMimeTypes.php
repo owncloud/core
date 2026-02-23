@@ -108,12 +108,12 @@ class RepairMimeTypes implements IRepairStep {
 		foreach ($wrongMimetypes as $wrong => $correct) {
 			// do we need to remove a wrong mimetype?
 			$result = $connection->executeQuery(self::getIdSql(), [$wrong]);
-			$wrongId = $result->fetchColumn();
+			$wrongId = $result->fetchOne();
 
 			if ($wrongId !== false) {
 				// do we need to insert the correct mimetype?
 				$result = $connection->executeQuery(self::existsSql(), [$correct]);
-				$exists = $result->fetchColumn();
+				$exists = $result->fetchOne();
 
 				if ($correct !== null) {
 					if (!$exists) {
@@ -135,12 +135,12 @@ class RepairMimeTypes implements IRepairStep {
 		$connection = \OC::$server->getDatabaseConnection();
 		if (empty($this->folderMimeTypeId)) {
 			$result = $connection->executeQuery(self::getIdSql(), ['httpd/unix-directory']);
-			$this->folderMimeTypeId = (int)$result->fetchColumn();
+			$this->folderMimeTypeId = (int)$result->fetchOne();
 		}
 
 		foreach ($updatedMimetypes as $extension => $mimetype) {
 			$result = $connection->executeQuery(self::existsSql(), [$mimetype]);
-			$exists = $result->fetchColumn();
+			$exists = $result->fetchOne();
 
 			if (!$exists) {
 				// insert mimetype
@@ -149,7 +149,7 @@ class RepairMimeTypes implements IRepairStep {
 
 			// get target mimetype id
 			$result = $connection->executeQuery(self::getIdSql(), [$mimetype]);
-			$mimetypeId = $result->fetchColumn();
+			$mimetypeId = $result->fetchOne();
 
 			// change mimetype for files with x extension
 			$connection->executeStatement(self::updateByNameSql(), [$mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension]);

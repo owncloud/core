@@ -114,9 +114,8 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			}
 
 			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
-			$statement->execute([$fileId]);
+			$statement->executeStatement([$fileId]);
 			$this->offsetUnset($fileId);
-			$statement->free();
 		}
 	}
 
