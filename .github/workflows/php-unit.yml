@@ -61,10 +61,10 @@ jobs:
           extensions: curl, gd, json, xml, zip, imagick
           ini-values: "memory_limit=2048M"
 
-      - name: Install ffmpeg
+      - name: Install ffmpeg & imagemagick
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg imagemagick
 
       - name: Install Composer dependencies
         run: |
