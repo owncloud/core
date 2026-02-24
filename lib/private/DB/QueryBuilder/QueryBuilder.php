@@ -139,6 +139,12 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return Result|int|string
 	 */
 	public function execute() {
+		$params = $this->queryBuilder->getParameters();
+		if ($params) {
+			ksort($params);
+			$this->queryBuilder->setParameters($params, $this->queryBuilder->getParameterTypes());
+		}
+
 		return $this->queryBuilder->execute();
 	}
 
