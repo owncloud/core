@@ -47,17 +47,6 @@ class MDB2SchemaManager {
 	}
 
 	/**
-	 * saves database scheme to xml file
-	 * @param string $file name of file
-	 * @return bool
-	 *
-	 * TODO: write more documentation
-	 */
-	public function getDbStructure($file) {
-		return \OC\DB\MDB2SchemaWriter::saveSchemaToFile($file, $this->conn);
-	}
-
-	/**
 	 * Creates tables from XML file
 	 * @param string $file file to read structure from
 	 * @return bool
@@ -121,34 +110,6 @@ class MDB2SchemaManager {
 			$migrator->migrate($toSchema);
 			return true;
 		}
-	}
-
-	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
-	 * @return string
-	 */
-	public function generateChangeScript($schema) {
-		$migrator = $this->getMigrator();
-		return $migrator->generateChangeScript($schema);
-	}
-
-	/**
-	 * remove all tables defined in a database structure xml file
-	 *
-	 * @param string $file the xml file describing the tables
-	 */
-	public function removeDBStructure($file) {
-		$schemaReader = new MDB2SchemaReader(\OC::$server->getConfig(), $this->conn->getDatabasePlatform());
-		$toSchema = new Schema([], [], $this->conn->getSchemaManager()->createSchemaConfig());
-		$fromSchema = $schemaReader->loadSchemaFromFile($file, $toSchema);
-		$toSchema = clone $fromSchema;
-		/** @var $table \Doctrine\DBAL\Schema\Table */
-		foreach ($toSchema->getTables() as $table) {
-			$toSchema->dropTable($table->getName());
-		}
-		$comparator = new \Doctrine\DBAL\Schema\Comparator();
-		$schemaDiff = $comparator->compare($fromSchema, $toSchema);
-		$this->executeSchemaChange($schemaDiff);
 	}
 
 	/**
