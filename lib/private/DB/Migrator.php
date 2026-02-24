@@ -27,6 +27,7 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\AbstractAsset;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -107,9 +108,12 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
-			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-			return str_starts_with($assetName, $prefix);
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) use ($prefix) {
+			if ($asset instanceof AbstractAsset) {
+				$asset = $asset->getName();
+			}
+			return str_starts_with($asset, $prefix);
 		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
@@ -133,9 +137,12 @@ class Migrator {
 			}
 		}
 
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
-			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-			return str_starts_with($assetName, $prefix);
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) use ($prefix) {
+			if ($asset instanceof AbstractAsset) {
+				$asset = $asset->getName();
+			}
+			return str_starts_with($asset, $prefix);
 		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
