@@ -182,7 +182,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param array                                       $types  The types the previous parameters are in.
 	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp    The query cache profile, optional.
 	 *
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return Result The executed statement.
 	 *
 	 * @throws \Doctrine\DBAL\Exception
 	 */

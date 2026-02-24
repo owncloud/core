@@ -237,14 +237,14 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			->setParameter('objecttype', $objectType);
 
 		$result = $query->execute();
-		$row = $result->fetch(\PDO::FETCH_NUM);
+		$row = $result->fetchNumeric();
 		$result->free();
 
 		if ($all) {
 			return ((int)$row[0] === \count($objIds));
-		} else {
-			return (bool) $row;
 		}
+
+		return (bool) $row;
 	}
 
 	/**
