@@ -27,6 +27,7 @@ namespace OC\DB;
 
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
@@ -49,9 +50,9 @@ class MDB2SchemaWriter {
 			$xml->addChild('charset', 'utf8');
 		}
 
-		$conn->getConfiguration()->setSchemaAssetsFilter(function ($assetName) use ($conn) {
+		$conn->getConfiguration()->setSchemaAssetsFilter(function (Sequence $asset) use ($conn) {
 			$prefix = $conn->getPrefix();
-			return str_starts_with($assetName, $prefix);
+			return str_starts_with($asset->getName(), $prefix);
 		});
 
 		foreach ($conn->getSchemaManager()->listTables() as $table) {

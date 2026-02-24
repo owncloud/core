@@ -28,6 +28,7 @@
 namespace OC\DB;
 
 use \Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Sequence;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\Comparator;
@@ -133,9 +134,9 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (Sequence $asset) {
 			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-			return str_starts_with($assetName, $prefix);
+			return str_starts_with($asset->getName(), $prefix);
 		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
@@ -159,9 +160,9 @@ class Migrator {
 			}
 		}
 
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (Sequence $asset) {
 			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-			return str_starts_with($assetName, $prefix);
+			return str_starts_with($asset->getName(), $prefix);
 		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
