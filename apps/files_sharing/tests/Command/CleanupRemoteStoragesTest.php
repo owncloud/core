@@ -66,11 +66,11 @@ class CleanupRemoteStoragesTest extends TestCase {
 		$shareExternalQuery->insert('share_external')
 			->setValue('share_token', '?')
 			->setValue('remote', '?')
-			->setValue('name', '?')->setParameter(2, 'irrelevant')
-			->setValue('owner', '?')->setParameter(3, 'irrelevant')
+			->setValue('name', '?')
+			->setValue('owner', '?')
 			->setValue('user', '?')
-			->setValue('mountpoint', '?')->setParameter(5, 'irrelevant')
-			->setValue('mountpoint_hash', '?')->setParameter(6, 'irrelevant');
+			->setValue('mountpoint', '?')
+			->setValue('mountpoint_hash', '?');
 
 		$filesQuery = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 		$filesQuery->insert('filecache')
@@ -89,7 +89,12 @@ class CleanupRemoteStoragesTest extends TestCase {
 				$shareExternalQuery
 					->setParameter(0, $storage['share_token'])
 					->setParameter(1, $storage['remote'])
-					->setParameter(4, $storage['user']);
+					->setParameter(2, 'irrelevant')
+					->setParameter(3, 'irrelevant')
+					->setParameter(4, $storage['user'])
+					->setParameter(5, 'irrelevant')
+					->setParameter(6, 'irrelevant')
+				;
 				$shareExternalQuery->execute();
 			}
 

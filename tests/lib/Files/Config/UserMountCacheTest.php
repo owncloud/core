@@ -449,7 +449,7 @@ class UserMountCacheTest extends TestCase {
 	 */
 	public function testEmptyPathCacheInfoFromFileId() {
 		$statement = $this->createMock(Result::class);
-		$statement->method('fetch')->willReturn([ 'storage' => 55, 'path' => null]);
+		$statement->method('fetchAssociative')->willReturn([ 'storage' => 55, 'path' => null]);
 
 		$eb = $this->createMock(IExpressionBuilder::class);
 		$qb = $this->createMock(IQueryBuilder::class);
