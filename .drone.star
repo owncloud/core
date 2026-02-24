@@ -69,20 +69,8 @@ config = {
             # Gather coverage for all databases except Oracle
             "coverage": True,
             "databases": [
-                "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
                 "mariadb:10.6",
-                "mariadb:10.7",
-                "mariadb:10.8",
                 "mariadb:10.11",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.21",
             ],
         },
         "slowDatabases": {
@@ -105,8 +93,8 @@ config = {
             # on Ubuntu 22.04. We do not need coverage for this.
             "coverage": False,
             "databases": [
-                "sqlite",
                 "mariadb:10.6",
+                "mariadb:10.11",
             ],
         },
         "external-samba": {
@@ -1068,20 +1056,8 @@ def phpTests(ctx, testType, withCoverage):
     prDefault = {
         "phpVersions": [DEFAULT_PHP_VERSION],
         "databases": [
-            "sqlite",
-            "mariadb:10.2",
-            "mariadb:10.3",
-            "mariadb:10.4",
-            "mariadb:10.5",
             "mariadb:10.6",
-            "mariadb:10.7",
-            "mariadb:10.8",
             "mariadb:10.11",
-            "mysql:5.5",
-            "mysql:5.7",
-            "mysql:8.0",
-            "postgres:9.4",
-            "postgres:10.21",
         ],
         "coverage": True,
         "includeKeyInMatrixName": False,

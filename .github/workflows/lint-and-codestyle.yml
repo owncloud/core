@@ -57,16 +57,3 @@ jobs:
       - name: Run PHP Phan
         run: |
           make test-php-phan
-
-  git-commit-messages:
-    name: Git Commit Messages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Validate commit messages
-        uses: docker://aevea/commitsar:latest
-

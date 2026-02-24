@@ -1,0 +1,116 @@
+on:
+  workflow_call:
+    inputs:
+      php-versions:
+        description: JSON array of PHP versions
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  php-unit:
+    name: PHP Unit
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ${{ fromJSON(inputs.php-versions) }}
+        database: [sqlite]
+        include:
+          - php: "7.4"
+            database: "mysql:8.0"
+          - php: "7.4"
+            database: "postgres:10.21"
+
+    services:
+      mysql:
+        image: ${{ startsWith(matrix.database,'mysql:') && matrix.database || '' }}
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: owncloud
+          MYSQL_USER: owncloud
+          MYSQL_PASSWORD: owncloud
+        options: >-
+          --health-cmd="mysqladmin ping -u root -ppassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+      postgres:
+        image: ${{ startsWith(matrix.database,'postgres:') && matrix.database || '' }}
+        env:
+          POSTGRES_DB: owncloud
+          POSTGRES_USER: owncloud
+          POSTGRES_PASSWORD: owncloud
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Clone owncloud/core
+        uses: actions/checkout@v4
+        with:
+          repository: owncloud/core
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, gd, json, xml, zip, imagick
+          ini-values: "memory_limit=2048M"
+
+      - name: Install ffmpeg & imagemagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg imagemagick
+
+      - name: Install Composer dependencies
+        run: |
+          make install-composer-deps
+
+      - name: Install Server
+        env:
+          DATA_DIRECTORY: ${{ github.workspace }}/data
+          DB: ${{ matrix.database }}
+          DB_NAME: owncloud
+          ADMIN_LOGIN: admin
+          ADMIN_PASSWORD: admin
+          DB_HOST: 127.0.0.1
+          DB_USERNAME: owncloud
+          DB_PASSWORD: owncloud
+
+        run: |
+          DB_TYPE=${DB%:*}
+          if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
+          install_cmd="maintenance:install -vvv \
+            --database=${DB_TYPE} \
+            --database-name=${DB_NAME} \
+            --admin-user=${ADMIN_LOGIN} \
+            --admin-pass=${ADMIN_PASSWORD} \
+            --data-dir=${DATA_DIRECTORY} "
+          
+          if [[ "${DB_TYPE}" != "sqlite" ]]; then
+            install_cmd+=" --database-host=${DB_HOST} \
+              --database-user=${DB_USERNAME} \
+              --database-pass=${DB_PASSWORD}"
+          fi
+          
+          php occ ${install_cmd}
+          echo "enabling apps"
+          php occ app:enable files_sharing
+          php occ app:enable files_trashbin
+          php occ app:enable files_versions
+          php occ app:enable provisioning_api
+          php occ app:enable federation
+          php occ app:enable federatedfilesharing
+
+      - name: Run PHPUnit
+        run: |
+          bash tests/drone/test-phpunit.sh
+
+      - name: Tail logs
+        if: failure()
+        run: |
+          cat data/owncloud.log
