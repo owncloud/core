@@ -67,7 +67,7 @@ class ListCommandTest extends CommandTest {
 		$output = new BufferedOutput();
 
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
-		$output = \json_decode($output->fetchAssociative(), true);
+		$output = \json_decode($output->fetch(), true);
 
 		$this->assertNotEquals($output[0]['authentication_type'], $output[1]['authentication_type']);
 	}
@@ -88,7 +88,7 @@ class ListCommandTest extends CommandTest {
 		$output = new BufferedOutput();
 
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
-		$output = $output->fetchAssociative();
+		$output = $output->fetch();
 
 		$this->assertMatchesRegularExpression('/Number of invalid storages found/', $output);
 	}
@@ -154,7 +154,7 @@ EOS
 		$output = new BufferedOutput();
 
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
-		$output = $output->fetchAssociative();
+		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
 			$results = \json_decode($output, true);
 			$countResults = \count($results);
@@ -229,7 +229,7 @@ EOS
 		$output = new BufferedOutput();
 
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
-		$output = $output->fetchAssociative();
+		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
 			$results = \json_decode($output, true);
 			$countResults = \count($results);
@@ -302,7 +302,7 @@ EOS
 		$output = new BufferedOutput();
 
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
-		$output = $output->fetchAssociative();
+		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
 			$results = \json_decode($output, true);
 			$countResults = \count($results);
