@@ -25,6 +25,7 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Sequence;
@@ -50,9 +51,12 @@ class MDB2SchemaWriter {
 			$xml->addChild('charset', 'utf8');
 		}
 
-		$conn->getConfiguration()->setSchemaAssetsFilter(function (Sequence $asset) use ($conn) {
+		$conn->getConfiguration()->setSchemaAssetsFilter(function ($asset) use ($conn) {
 			$prefix = $conn->getPrefix();
-			return str_starts_with($asset->getName(), $prefix);
+			if ($asset instanceof AbstractAsset) {
+				$asset = $asset->getName();
+			}
+			return str_starts_with($asset, $prefix);
 		});
 
 		foreach ($conn->getSchemaManager()->listTables() as $table) {
