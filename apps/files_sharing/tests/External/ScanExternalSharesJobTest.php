@@ -86,10 +86,7 @@ class ScanExternalSharesJobTest extends TestCase {
 				->setParameter(1, "https://hostname.tld/owncloud$i")
 				->setParameter(2, 'irrelevant')
 				->setParameter(3, 'irrelevant')
-				->setParameter(4, "user$i")
-				->setParameter(5, 'irrelevant')
-				->setParameter(6, 'irrelevant')
-				->setParameter(7, 'irrelevant');
+				->setParameter(4, "user$i");
 			$shareExternalQuery->execute();
 		}
 	}

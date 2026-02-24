@@ -261,7 +261,10 @@ class ScanExternalSharesJob extends TimedJob {
 		$qb->orderBy('id');
 
 		$cursor = $qb->execute();
-		return $cursor->fetchAllAssociative();
+		$data = $cursor->fetchAllAssociative();
+		$cursor->free();
+
+		return $data;
 	}
 
 	protected function updateLastScanned($id, $updatedTime) {
