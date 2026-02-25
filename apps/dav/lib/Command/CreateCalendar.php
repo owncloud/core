@@ -27,6 +27,7 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IUserManager;
+use Sabre\DAV\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -86,7 +87,12 @@ class CreateCalendar extends Command {
 
 		$name = $input->getArgument('name');
 		$caldav = new CalDavBackend($this->dbConnection, $principalBackend, $groupPrincipalBackend, $random);
-		$caldav->createCalendar("principals/users/$user", $name, []);
+		try {
+			$caldav->createCalendar("principals/users/$user", $name, []);
+		} catch (\Throwable $e) {
+			$this->getApplication()->renderThrowable($e, $output);
+			return 1;
+		}
 		return 0;
 	}
 }
