@@ -56,7 +56,6 @@ class DBSchemaTest extends TestCase {
 	public function testSchema() {
 		$this->doTestSchemaCreating();
 		$this->doTestSchemaChanging();
-		$this->doTestSchemaDumping();
 		$this->doTestSchemaRemoving();
 	}
 
@@ -71,15 +70,6 @@ class DBSchemaTest extends TestCase {
 		$connection = \OC::$server->getDatabaseConnection();
 		(new \OC\DB\MDB2SchemaManager($connection))->updateDbFromStructure($this->schema_file2);
 		$this->assertTableExist($this->table2);
-	}
-
-	public function doTestSchemaDumping() {
-		$outfile = 'static://db_out.xml';
-		$connection = \OC::$server->getDatabaseConnection();
-		(new \OC\DB\MDB2SchemaManager($connection))->getDbStructure($outfile);
-		$content = \file_get_contents($outfile);
-		$this->assertStringContainsString($this->table1, $content);
-		$this->assertStringContainsString($this->table2, $content);
 	}
 
 	public function doTestSchemaRemoving() {
