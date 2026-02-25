@@ -47,17 +47,6 @@ class MDB2SchemaManager {
 	}
 
 	/**
-	 * saves database scheme to xml file
-	 * @param string $file name of file
-	 * @return bool
-	 *
-	 * TODO: write more documentation
-	 */
-	public function getDbStructure($file) {
-		return \OC\DB\MDB2SchemaWriter::saveSchemaToFile($file, $this->conn);
-	}
-
-	/**
 	 * Creates tables from XML file
 	 * @param string $file file to read structure from
 	 * @return bool
