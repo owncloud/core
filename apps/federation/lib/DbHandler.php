@@ -115,7 +115,9 @@ class DbHandler {
 			->where($query->expr()->eq('id', $query->createParameter('id')))
 			->setParameter('id', $id);
 		$query->execute();
-		$result = $query->execute()->fetchAllAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAllAssociative();
+		$r->free();
 
 		if (empty($result)) {
 			throw new \Exception('No Server found with ID: ' . $id);
@@ -150,7 +152,9 @@ class DbHandler {
 		$query->select('url')->from($this->dbTable)
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
-		$result = $query->execute()->fetchAllAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAllAssociative();
+		$r->free();
 
 		return !empty($result);
 	}
@@ -186,7 +190,9 @@ class DbHandler {
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetchAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAssociative();
+		$r->free();
 
 		if (!isset($result['token'])) {
 			throw new \Exception('No token found for: ' . $url);
@@ -225,7 +231,9 @@ class DbHandler {
 			->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 			->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetchAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAssociative();
+		$r->free();
 		return $result['shared_secret'];
 	}
 
@@ -261,7 +269,9 @@ class DbHandler {
 				->where($query->expr()->eq('url_hash', $query->createParameter('url_hash')))
 				->setParameter('url_hash', $hash);
 
-		$result = $query->execute()->fetchAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAssociative();
+		$r->free();
 		return (int)$result['status'];
 	}
 
@@ -310,7 +320,9 @@ class DbHandler {
 		$query->select('url')->from($this->dbTable)
 				->where($query->expr()->eq('shared_secret', $query->createNamedParameter($password)));
 
-		$result = $query->execute()->fetchAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAssociative();
+		$r->free();
 		return !empty($result);
 	}
 }

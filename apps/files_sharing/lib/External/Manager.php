@@ -429,7 +429,6 @@ class Manager {
 				DeclineShare::class
 			);
 		}
-		$result->free();
 
 		$query = $this->connection->prepare('
 			DELETE FROM `*PREFIX*share_external`

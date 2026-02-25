@@ -320,7 +320,9 @@ class FederatedShareProvider implements IShareProvider {
 		$query->select('*')->from($this->externalShareTable)
 			->where($query->expr()->eq('user', $query->createNamedParameter($share->getShareOwner())))
 			->andWhere($query->expr()->eq('mountpoint', $query->createNamedParameter($share->getTarget())));
-		$result = $query->execute()->fetchAllAssociative();
+		$r = $query->execute();
+		$result = $r->fetchAllAssociative();
+		$r->free();
 
 		if (isset($result[0]) && $result[0]['remote_id'] !== "") {
 			return $result[0];
@@ -1094,7 +1096,9 @@ class FederatedShareProvider implements IShareProvider {
 					$query->createNamedParameter($shareToken)
 				)
 			);
-		$shareRow = $query->execute()->fetchAssociative();
+		$r = $query->execute();
+		$shareRow = $r->fetchAssociative();
+		$r->free();
 		if ($shareRow !== false) {
 			$query = $this->dbConnection->getQueryBuilder();
 			$query->delete($this->externalShareTable)

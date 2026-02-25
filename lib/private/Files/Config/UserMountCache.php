@@ -222,7 +222,9 @@ class UserMountCache implements IUserMountCache {
 				->where($builder->expr()->eq('user_id', $builder->createPositionalParameter($user->getUID())))
 				->orderBy('storage_id');
 
-			$rows = $query->execute()->fetchAllAssociative();
+			$r = $query->execute();
+			$rows = $r->fetchAllAssociative();
+			$r->free();
 
 			$this->mountsForUsers[$user->getUID()] = $this->convertRows($rows);
 		}
@@ -239,7 +241,9 @@ class UserMountCache implements IUserMountCache {
 			->from('mounts')
 			->where($builder->expr()->eq('storage_id', $builder->createPositionalParameter($numericStorageId, IQueryBuilder::PARAM_INT)));
 
-		$rows = $query->execute()->fetchAllAssociative();
+		$r = $query->execute();
+		$rows = $r->fetchAllAssociative();
+		$r->free();
 
 		return $this->convertRows($rows);
 	}
@@ -254,7 +258,9 @@ class UserMountCache implements IUserMountCache {
 			->from('mounts')
 			->where($builder->expr()->eq('root_id', $builder->createPositionalParameter($rootFileId, IQueryBuilder::PARAM_INT)));
 
-		$rows = $query->execute()->fetchAllAssociative();
+		$r = $query->execute();
+		$rows = $r->fetchAllAssociative();
+		$r->free();
 
 		return $this->convertRows($rows);
 	}

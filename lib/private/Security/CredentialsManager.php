@@ -80,12 +80,14 @@ class CredentialsManager implements ICredentialsManager {
 			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)))
 		;
-		$result = $qb->execute()->fetchAssociative();
+		$result = $qb->execute();
+		$row = $result->fetchAssociative();
+		$result->free();
 
-		if (!$result) {
+		if (!$row) {
 			return null;
 		}
-		$value = $result['credentials'];
+		$value = $row['credentials'];
 
 		return \json_decode($this->crypto->decrypt($value), true);
 	}

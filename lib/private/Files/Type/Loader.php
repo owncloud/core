@@ -164,7 +164,9 @@ class Loader implements IMimeTypeLoader {
 					$fetch->createNamedParameter($mimetype)
 				)
 			);
-		$row = $fetch->execute()->fetchAssociative();
+		$r = $fetch->execute();
+		$row = $r->fetchAssociative();
+		$r->free();
 
 		// update cache
 		$this->memcache->set(self::CACHE_PREFIX_FOR_ID . $row['id'], $mimetype);
