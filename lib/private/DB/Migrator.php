@@ -170,6 +170,7 @@ class Migrator {
 		$step = 0;
 		foreach ($sqls as $sql) {
 			$this->emit($sql, $step++, \count($sqls));
+			echo "Running statement: " . $sql . "\n";
 			$connection->query($sql);
 		}
 		$connection->commit();
