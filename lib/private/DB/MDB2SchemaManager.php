@@ -106,19 +106,10 @@ class MDB2SchemaManager {
 
 		if ($generateSql) {
 			return $migrator->generateChangeScript($toSchema);
-		} else {
-			$migrator->migrate($toSchema);
-			return true;
 		}
-	}
 
-	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
-	 * @return string
-	 */
-	public function generateChangeScript($schema) {
-		$migrator = $this->getMigrator();
-		return $migrator->generateChangeScript($schema);
+		$migrator->migrate($toSchema);
+		return true;
 	}
 
 	/**
