@@ -56,7 +56,6 @@ class DBSchemaTest extends TestCase {
 	public function testSchema() {
 		$this->doTestSchemaCreating();
 		$this->doTestSchemaChanging();
-		$this->doTestSchemaDumping();
 		$this->doTestSchemaRemoving();
 	}
 

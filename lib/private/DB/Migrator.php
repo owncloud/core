@@ -107,32 +107,6 @@ class Migrator {
 		return $this->config->getSystemValue('dbtableprefix', 'oc_') . $name . '_' . $this->random->generate(13, ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_DIGITS);
 	}
 
-	/**
-	 * @param \Doctrine\DBAL\Schema\Table $table
-	 * @param string $newName
-	 * @return \Doctrine\DBAL\Schema\Table
-	 */
-	protected function renameTableSchema(Table $table, $newName) {
-		/**
-		 * @var \Doctrine\DBAL\Schema\Index[] $indexes
-		 */
-		$indexes = $table->getIndexes();
-		$newIndexes = [];
-		foreach ($indexes as $index) {
-			if ($index->isPrimary()) {
-				// do not rename primary key
-				$indexName = $index->getName();
-			} else {
-				// avoid conflicts in index names
-				$indexName = $this->config->getSystemValue('dbtableprefix', 'oc_') . $this->random->generate(13, ISecureRandom::CHAR_LOWER);
-			}
-			$newIndexes[] = new Index($indexName, $index->getColumns(), $index->isUnique(), $index->isPrimary());
-		}
-
-		// foreign keys are not supported so we just set it to an empty array
-		return new Table($newName, $table->getColumns(), $newIndexes, [], 0, $table->getOptions());
-	}
-
 	public function createSchema() {
 		$filterExpression = $this->getFilterExpression();
 		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
@@ -202,18 +176,6 @@ class Migrator {
 	}
 
 	/**
-	 * @param string $sourceName
-	 * @param string $targetName
-	 */
-	protected function copyTable($sourceName, $targetName) {
-		$quotedSource = $this->connection->quoteIdentifier($sourceName);
-		$quotedTarget = $this->connection->quoteIdentifier($targetName);
-
-		$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ')');
-		$this->connection->exec('INSERT INTO ' . $quotedTarget . ' SELECT * FROM ' . $quotedSource);
-	}
-
-	/**
 	 * @param string $name
 	 */
 	protected function dropTable($name) {
@@ -243,12 +205,5 @@ class Migrator {
 			return;
 		}
 		$this->dispatcher->dispatch(new GenericEvent($sql, [$step+1, $max]), '\OC\DB\Migrator::executeSql');
-	}
-
-	private function emitCheckStep($tableName, $step, $max) {
-		if ($this->dispatcher === null) {
-			return;
-		}
-		$this->dispatcher->dispatch(new GenericEvent($tableName, [$step+1, $max]), '\OC\DB\Migrator::checkTable');
 	}
 }
