@@ -97,6 +97,14 @@ class Migrator {
 		return $script;
 	}
 
+	public function filterSchemaAsset($asset): bool {
+		if ($asset instanceof AbstractAsset) {
+			$asset = $asset->getName();
+		}
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		return str_starts_with($asset, $prefix);
+	}
+
 	/**
 	 * Create a unique name for the temporary table
 	 *
@@ -108,12 +116,8 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) use ($prefix) {
-			if ($asset instanceof AbstractAsset) {
-				$asset = $asset->getName();
-			}
-			return str_starts_with($asset, $prefix);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) {
+			return $this->filterSchemaAsset($asset);
 		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
@@ -137,12 +141,8 @@ class Migrator {
 			}
 		}
 
-		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) use ($prefix) {
-			if ($asset instanceof AbstractAsset) {
-				$asset = $asset->getName();
-			}
-			return str_starts_with($asset, $prefix);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) {
+			return $this->filterSchemaAsset($asset);
 		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 

@@ -23,6 +23,7 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Index;
@@ -214,5 +215,13 @@ class OracleMigrator extends Migrator {
 		$script .= PHP_EOL;
 		$script .= PHP_EOL;
 		return $script;
+	}
+
+	public function filterSchemaAsset($asset): bool {
+		if ($asset instanceof AbstractAsset) {
+			$asset = $asset->getName();
+		}
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		return str_starts_with($asset, "\"$prefix");
 	}
 }
