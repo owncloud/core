@@ -119,7 +119,7 @@ class ViewTest extends TestCase {
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
-			$ids = $cache->getAll();
+			$cache->getAll();
 			$cache->clear();
 		}
 
@@ -1886,7 +1886,7 @@ class ViewTest extends TestCase {
 					$lockTypeDuring = $this->getFileLockType($view, $lockedPath);
 
 					if ($operation === 'fopen') {
-						return \fopen('data://text/plain,test', 'r');
+						return \fopen('data://text/plain,test', 'rb');
 					}
 					return true;
 				}
@@ -2751,5 +2751,28 @@ class ViewTest extends TestCase {
 		$view->mkdir($shareFolder);
 		$view->mkdir($deleteFolder);
 		$this->assertTrue($view->rmdir($deleteFolder));
+	}
+
+	public function testCacheSizeUpdatedWhenEmptyingFile(): void {
+		$storage1 = $this->getTestStorage();
+		Filesystem::mount($storage1, [], '/');
+
+		$rootView = new View('');
+
+		# test with string as $data
+		$rootView->file_put_contents('welcome.txt', '1234567890');
+		$this->assertEquals(10, $rootView->filesize('welcome.txt'));
+
+		$rootView->file_put_contents('welcome.txt', '');
+		$this->assertEquals(0, $rootView->filesize('welcome.txt'));
+
+		# test with resource as $data
+		$stream = fopen('data://text/plain,1234567890', 'rb');
+		$rootView->file_put_contents('welcome.txt', $stream);
+		$this->assertEquals(10, $rootView->filesize('welcome.txt'));
+
+		$stream = fopen('data://text/plain,', 'rb');
+		$rootView->file_put_contents('welcome.txt', '');
+		$this->assertEquals(0, $rootView->filesize('welcome.txt'));
 	}
 }
