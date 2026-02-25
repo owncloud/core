@@ -174,7 +174,7 @@ Feature: admin storage settings
     And the user re-logs in as "Brian" using the webUI
     And folder "local_storage1" should be listed on the webUI
 
-  @issue-36803 @skipOnOcV10 @issue-files_primary_s3-351 @skipOnStorage:ceph @skipOnStorage:scality
+  @issue-36803 @skipOnOcV10 @issue-files_primary_s3-351 @skipOnStorage:ceph @skipOnStorage:scality @skipOnOcV11
   Scenario: applicable user is not able to share top-level of read-only storage
     Given these users have been created with default attributes and without skeleton files:
       | username |

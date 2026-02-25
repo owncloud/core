@@ -33,7 +33,7 @@ Feature: create a subadmin
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: subadmin of a group tries to make another user subadmin of their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |

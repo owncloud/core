@@ -46,7 +46,7 @@ Feature: edit users
     And the user attributes returned by the API should include
       | displayname | brand-new-user |
 
-  @issue-23603 @skipOnOcV10
+  @issue-23603 @skipOnOcV10 @skipOnOcV11
   Scenario: the administrator can edit a user quota
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator changes the quota of user "brand-new-user" to "12MB" using the occ command

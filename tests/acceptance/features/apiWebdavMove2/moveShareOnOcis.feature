@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10
+@api @files_sharing-app-required @skipOnOcV10 @skipOnOcV11
 Feature: move (rename) file
   As a user
   I want to be able to move and rename files

@@ -34,7 +34,7 @@ Feature: get user groups
       | नेपाली               |
       | 😅 😆                |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @skipOnOcV11
   Scenario: admin gets groups of an user, including groups containing a slash
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
@@ -69,7 +69,7 @@ Feature: get user groups
     And the groups returned by the API should include "brand-new-group"
     And the groups returned by the API should not include "another-new-group"
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to get the groups of another user
     Given these users have been created with default attributes and without skeleton files:
       | username         |

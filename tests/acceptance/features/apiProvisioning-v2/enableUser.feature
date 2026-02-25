@@ -70,7 +70,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "another-admin" should be disabled
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @skipOnOcV11
   Scenario: normal user tries to enable other user
     Given these users have been created with default attributes and without skeleton files:
       | username |

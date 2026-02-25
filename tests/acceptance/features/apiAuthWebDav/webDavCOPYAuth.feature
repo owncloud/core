@@ -108,7 +108,7 @@ Feature: COPY file/folder
       | /remote.php/dav/files/%username%/FOLDER            |
     Then the HTTP status code of responses on all endpoints should be "403"
 
-  @skipOnOcV10
+  @skipOnOcV10 @skipOnOcV11
   Scenario: send COPY requests to webDav endpoints with body as normal user
     When user "Alice" requests these endpoints with "COPY" including body "doesnotmatter" about user "Alice"
       | endpoint                                           |

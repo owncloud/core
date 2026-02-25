@@ -133,7 +133,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-33840 @skipOnOcV10
+  @issue-33840 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/textfile0.txt"
@@ -153,7 +153,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-33840 @skipOnOcV10
+  @issue-33840 @skipOnOcV10 @skipOnOcV11
   Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"

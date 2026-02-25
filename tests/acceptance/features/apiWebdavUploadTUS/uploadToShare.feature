@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10
+@api @files_sharing-app-required @skipOnOcV10 @skipOnOcV11
 
 Feature: upload file to shared folder
 

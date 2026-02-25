@@ -5,11 +5,11 @@
 	<description>ownCloud Federation allows you to connect with other trusted ownClouds to exchange the user directory. For example this will be used to auto-complete external users for federated sharing.</description>
 	<licence>AGPL</licence>
 	<author>Bjoern Schiessle</author>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<namespace>Federation</namespace>
 	<category>other</category>
 	<dependencies>
-		<owncloud min-version="10" max-version="10" />
+		<owncloud min-version="10" max-version="11" />
 	</dependencies>
 	<default_enable/>
 	<types>
