@@ -65,7 +65,7 @@
         "bantu/ini-get-wrapper": "v1.0.1",
         "christophwurst/id3parser": "^0.1.4",
         "composer/semver": "^3.3",
-        "deepdiver/zipstreamer": "^2.0",
+        "deepdiver/zipstreamer": "^3.0",
         "dg/composer-cleaner": "^2.2",
         "doctrine/dbal": "^2.13",
         "firebase/php-jwt": "^6.8",

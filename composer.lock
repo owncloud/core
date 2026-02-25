@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d75b7ae1ae621dbe24a44199ec6482f4",
+    "content-hash": "8f1c0a56026fd00344194d27547e84b1",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -160,21 +160,21 @@
         },
         {
             "name": "deepdiver/zipstreamer",
-            "version": "v2.0.3",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DeepDiver1975/PHPZipStreamer.git",
-                "reference": "b9d1f53453a5736285facb723252ea2169dc472e"
+                "reference": "e860b893fce08a370886cba5ec0252c61b0b5e73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/b9d1f53453a5736285facb723252ea2169dc472e",
-                "reference": "b9d1f53453a5736285facb723252ea2169dc472e",
+                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/e860b893fce08a370886cba5ec0252c61b0b5e73",
+                "reference": "e860b893fce08a370886cba5ec0252c61b0b5e73",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=7.1"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "ext-xdebug": "*",
@@ -229,7 +229,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DeepDiver1975/PHPZipStreamer/issues",
-                "source": "https://github.com/DeepDiver1975/PHPZipStreamer/tree/v2.0.3"
+                "source": "https://github.com/DeepDiver1975/PHPZipStreamer/tree/v3.0.1"
             },
             "funding": [
                 {
@@ -237,7 +237,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-13T14:30:52+00:00"
+            "time": "2026-02-25T12:56:39+00:00"
         },
         {
             "name": "dg/composer-cleaner",
