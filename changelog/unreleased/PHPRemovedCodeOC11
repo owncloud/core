@@ -1,0 +1,20 @@
+Change: Removed legacy and deprecated code from ownCloud 11
+
+The following have been removed:
+- class OC_DB
+- class OC_DB_StatementWrapper
+- class OC_Group_Backend
+- class OC_Group_Database
+- class OC_OCS_Result
+- class \OCP\DB
+- class MDBSchemaWriter
+- interface OC_Group_Interface
+- interface OC_User_Interface
+- method MDB2SchemaManager::getDbStructure()
+- method MDB2SchemaManager::generateChangeScript()
+
+https://github.com/owncloud/core/pull/41455
+https://github.com/owncloud/core/pull/41458
+https://github.com/owncloud/core/pull/41462
+https://github.com/owncloud/core/pull/41464
+https://github.com/owncloud/core/pull/41468
