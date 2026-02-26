@@ -24,31 +24,23 @@
 
 namespace OC\Memcache;
 
-abstract class Cache implements \ArrayAccess, \OCP\ICache {
-	/**
-	 * @var string $prefix
-	 */
-	protected $prefix;
+use OCP\ICache;
 
-	/**
-	 * @param string $prefix
-	 */
-	public function __construct($prefix = '') {
+abstract class Cache implements \ArrayAccess, ICache {
+	protected string $prefix;
+
+	public function __construct(string $prefix = '') {
 		$this->prefix = $prefix;
 	}
 
 	/**
 	 * @return string Prefix used for caching purposes
 	 */
-	public function getPrefix() {
+	public function getPrefix(): string {
 		return $this->prefix;
 	}
 
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
-	abstract public function get($key);
+	abstract public function get($key): mixed;
 
 	/**
 	 * @param string $key
@@ -56,7 +48,7 @@ abstract class Cache implements \ArrayAccess, \OCP\ICache {
 	 * @param int $ttl
 	 * @return mixed
 	 */
-	abstract public function set($key, $value, $ttl = 0);
+	abstract public function set($key, $value, $ttl = 0): mixed;
 
 	/**
 	 * @param string $key
@@ -78,19 +70,19 @@ abstract class Cache implements \ArrayAccess, \OCP\ICache {
 
 	//implement the ArrayAccess interface
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset): bool {
 		return $this->hasKey($offset);
 	}
 
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value): void {
 		$this->set($offset, $value);
 	}
 
-	public function offsetGet($offset) {
+	public function offsetGet($offset): mixed {
 		return $this->get($offset);
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset): void {
 		$this->remove($offset);
 	}
 }

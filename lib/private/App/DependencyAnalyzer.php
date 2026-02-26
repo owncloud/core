@@ -136,19 +136,19 @@ class DependencyAnalyzer {
 		if (isset($dependencies['php']['@attributes']['min-version'])) {
 			$minVersion = $dependencies['php']['@attributes']['min-version'];
 			if ($this->compareSmaller($this->platform->getPhpVersion(), $minVersion)) {
-				$missing[] = (string)$this->l->t('PHP %s or higher is required.', $minVersion);
+				$missing[] = (string)$this->l->t('PHP %s or higher is required.', [$minVersion]);
 			}
 		}
 		if (isset($dependencies['php']['@attributes']['max-version'])) {
 			$maxVersion = $dependencies['php']['@attributes']['max-version'];
 			if ($this->compareBigger($this->platform->getPhpVersion(), $maxVersion)) {
-				$missing[] = (string)$this->l->t('PHP with a version lower than %s is required.', $maxVersion);
+				$missing[] = (string)$this->l->t('PHP with a version lower than %s is required.', [$maxVersion]);
 			}
 		}
 		if (isset($dependencies['php']['@attributes']['min-int-size'])) {
 			$intSize = $dependencies['php']['@attributes']['min-int-size'];
 			if ($intSize > $this->platform->getIntSize()*8) {
-				$missing[] = (string)$this->l->t('%sbit or higher PHP required.', $intSize);
+				$missing[] = (string)$this->l->t('%sbit or higher PHP required.', [$intSize]);
 			}
 		}
 		return $missing;
@@ -175,8 +175,8 @@ class DependencyAnalyzer {
 			return $this->getValue($db);
 		}, $supportedDatabases);
 		$currentDatabase = $this->platform->getDatabase();
-		if (!\in_array($currentDatabase, $supportedDatabases)) {
-			$missing[] = (string)$this->l->t('Following databases are supported: %s', \join(', ', $supportedDatabases));
+		if (!\in_array($currentDatabase, $supportedDatabases, true)) {
+			$missing[] = (string)$this->l->t('Following databases are supported: %s', [\implode(', ', $supportedDatabases)]);
 		}
 		return $missing;
 	}
@@ -205,7 +205,7 @@ class DependencyAnalyzer {
 			}
 			$commandName = $this->getValue($command);
 			if (!$this->platform->isCommandKnown($commandName)) {
-				$missing[] = (string)$this->l->t('The command line tool %s could not be found', $commandName);
+				$missing[] = (string)$this->l->t('The command line tool %s could not be found', [$commandName]);
 			}
 		}
 		return $missing;
@@ -232,7 +232,7 @@ class DependencyAnalyzer {
 			$libName = $this->getValue($lib);
 			$libVersion = $this->platform->getLibraryVersion($libName);
 			if ($libVersion === null) {
-				$missing[] = (string)$this->l->t('The library %s is not available.', $libName);
+				$missing[] = (string)$this->l->t('The library %s is not available.', [$libName]);
 				continue;
 			}
 
@@ -282,8 +282,8 @@ class DependencyAnalyzer {
 			$oss = [$oss];
 		}
 		$currentOS = $this->platform->getOS();
-		if (!\in_array($currentOS, $oss)) {
-			$missing[] = (string)$this->l->t('Following platforms are supported: %s', \join(', ', $oss));
+		if (!\in_array($currentOS, $oss, true)) {
+			$missing[] = (string)$this->l->t('Following platforms are supported: %s', [\implode(', ', $oss)]);
 		}
 		return $missing;
 	}
@@ -312,12 +312,12 @@ class DependencyAnalyzer {
 
 		if ($minVersion !== null) {
 			if ($this->compareSmaller($this->platform->getOcVersion(), $minVersion)) {
-				$missing[] = (string)$this->l->t('ownCloud %s or higher is required.', $minVersion);
+				$missing[] = (string)$this->l->t('ownCloud %s or higher is required.', [$minVersion]);
 			}
 		}
 		if ($maxVersion !== null) {
 			if ($this->compareBigger($this->platform->getOcVersion(), $maxVersion)) {
-				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', $maxVersion);
+				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', [$maxVersion]);
 			}
 		}
 		return $missing;

@@ -44,15 +44,16 @@ namespace OCP;
 interface IL10N {
 	/**
 	 * Translating
+	 *
 	 * @param string $text The text we need a translation for
-	 * @param array $parameters default:array() Parameters for sprintf
-	 * @return \OC_L10N_String Translation or the same text
+	 * @param array|mixed $parameters default:array() Parameters for sprintf
+	 * @return string Translation or the same text
 	 *
 	 * Returns the translation. If no translation is found, $text will be
 	 * returned.
 	 * @since 6.0.0
 	 */
-	public function t($text, $parameters = []);
+	public function t(string $text, $parameters = []): string;
 
 	/**
 	 * Translating

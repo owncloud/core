@@ -102,7 +102,7 @@ class DefaultToken extends Entity implements IToken {
 		return $this->password;
 	}
 
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		return [
 			'id' => $this->id,
 			'name' => $this->name,

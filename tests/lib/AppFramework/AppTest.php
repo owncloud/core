@@ -24,37 +24,39 @@
 namespace Test\AppFramework;
 
 use OC\AppFramework\App;
+use OC\AppFramework\DependencyInjection\DIContainer;
 use OCP\AppFramework\Http\Response;
+use Test\TestCase;
+use function file_put_contents;
+use function mkdir;
 
-function rrmdir($directory) {
-	$files = \array_diff(\scandir($directory), ['.','..']);
-	foreach ($files as $file) {
-		if (\is_dir($directory . '/' . $file)) {
-			rrmdir($directory . '/' . $file);
-		} else {
-			\unlink($directory . '/' . $file);
-		}
-	}
-	return \rmdir($directory);
-}
-
-class AppTest extends \Test\TestCase {
+class AppTest extends TestCase {
 	private $container;
 	private $io;
-	private $api;
 	private $controller;
 	private $dispatcher;
-	private $params;
 	private $headers;
 	private $output;
 	private $controllerName;
 	private $controllerMethod;
 	private $appPath;
 
+	public static function rrmdir($directory): bool {
+		$files = \array_diff(\scandir($directory), ['.','..']);
+		foreach ($files as $file) {
+			if (\is_dir($directory . '/' . $file)) {
+				self::rrmdir($directory . '/' . $file);
+			} else {
+				\unlink($directory . '/' . $file);
+			}
+		}
+		return \rmdir($directory);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer('test', []);
+		$this->container = new DIContainer('test', []);
 		$this->controller = $this->getMockBuilder(
 			'OCP\AppFramework\Controller'
 		)
@@ -80,14 +82,14 @@ class AppTest extends \Test\TestCase {
 
 		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
 		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		\mkdir($this->appPath . '/appinfo', 0777, true);
+		mkdir($this->appPath . '/appinfo', 0777, true);
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
 			'<id>namespacetestapp</id>' .
 			'<namespace>NameSpaceTestApp</namespace>' .
 		'</info>';
-		\file_put_contents($infoXmlPath, $xml);
+		file_put_contents($infoXmlPath, $xml);
 	}
 
 	public function testControllerNameAndMethodAreBeingPassed() {
@@ -126,7 +128,7 @@ class AppTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		rrmdir($this->appPath);
+		self::rrmdir($this->appPath);
 		parent::tearDown();
 	}
 

@@ -58,6 +58,8 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$this->result = $this->createMock(Result::class);
 		$this->iterators = [];
 		$this->fetchAt = 0;
+
+		$this->query->method('execute')->willReturn($this->result);
 	}
 
 	/**

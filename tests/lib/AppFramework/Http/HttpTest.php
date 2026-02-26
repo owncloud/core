@@ -23,15 +23,14 @@
 
 namespace Test\AppFramework\Http;
 
+use DateTime;
+use DateTimeZone;
 use OC\AppFramework\Http;
+use Test\TestCase;
 
-class HttpTest extends \Test\TestCase {
-	private $server;
-
-	/**
-	 * @var Http
-	 */
-	private $http;
+class HttpTest extends TestCase {
+	private array $server;
+	private Http $http;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -40,33 +39,33 @@ class HttpTest extends \Test\TestCase {
 		$this->http = new Http($this->server);
 	}
 
-	public function testProtocol() {
+	public function testProtocol(): void {
 		$header = $this->http->getStatusHeader(Http::STATUS_TEMPORARY_REDIRECT);
 		$this->assertEquals('HTTP/1.1 307 Temporary Redirect', $header);
 	}
 
-	public function testProtocol10() {
+	public function testProtocol10(): void {
 		$this->http = new Http($this->server, 'HTTP/1.0');
 		$header = $this->http->getStatusHeader(Http::STATUS_OK);
 		$this->assertEquals('HTTP/1.0 200 OK', $header);
 	}
 
-	public function testEtagMatchReturnsNotModified() {
+	public function testEtagMatchReturnsNotModified(): void {
 		$http = new Http(['HTTP_IF_NONE_MATCH' => 'hi']);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, null, 'hi');
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
 
-	public function testQuotedEtagMatchReturnsNotModified() {
+	public function testQuotedEtagMatchReturnsNotModified(): void {
 		$http = new Http(['HTTP_IF_NONE_MATCH' => '"hi"']);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, null, 'hi');
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
 
-	public function testLastModifiedMatchReturnsNotModified() {
-		$dateTime = new \DateTime(null, new \DateTimeZone('GMT'));
+	public function testLastModifiedMatchReturnsNotModified(): void {
+		$dateTime = new DateTime('now', new DateTimeZone('GMT'));
 		$dateTime->setTimestamp('12');
 
 		$http = new Http(
@@ -78,7 +77,7 @@ class HttpTest extends \Test\TestCase {
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
 
-	public function testTempRedirectBecomesFoundInHttp10() {
+	public function testTempRedirectBecomesFoundInHttp10(): void {
 		$http = new Http([], 'HTTP/1.0');
 
 		$header = $http->getStatusHeader(Http::STATUS_TEMPORARY_REDIRECT);

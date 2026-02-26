@@ -7,12 +7,13 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.4"
+            "php": "8.2"
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
             "dg/composer-cleaner": true
-        }
+        },
+        "sort-packages": true
     },
     "autoload" : {
         "psr-4": {
@@ -40,11 +41,10 @@
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest"
+        "phpunit/phpunit": "^9.5"
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.2",
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
@@ -90,9 +90,9 @@
         "sabre/dav": "^4.4",
         "sabre/http": "^5.1",
         "sabre/vobject": "^4.5",
-        "swiftmailer/swiftmailer": "^6.3",
         "symfony/console": "^5.4",
         "symfony/event-dispatcher": "^5.4",
+        "symfony/mailer": "^5.4",
         "symfony/process": "^5.4",
         "symfony/routing": "^5.4",
         "symfony/translation": "^5.4"

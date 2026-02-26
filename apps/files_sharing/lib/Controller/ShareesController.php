@@ -226,7 +226,7 @@ class ShareesController extends OCSController {
 					// Check if exact display name
 					|| \strtolower($user->getDisplayName()) === $lowerSearch
 					// Check if exact first email
-					|| \strtolower($user->getEMailAddress()) === $lowerSearch
+					|| \strtolower($user->getEMailAddress() ?? '') === $lowerSearch
 					// Check for exact search term matches (when mail attributes configured as search terms + no enumeration)
 					|| \in_array($lowerSearch, \array_map('strtolower', $user->getSearchTerms()))
 				)

@@ -85,30 +85,32 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 		$this->owner = $owner;
 	}
 
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value): void {
 		$this->data[$offset] = $value;
 	}
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset): bool {
 		return isset($this->data[$offset]);
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset): void {
 		unset($this->data[$offset]);
 	}
 
-	public function offsetGet($offset) {
+	public function offsetGet($offset): mixed {
 		if ($offset === 'type') {
 			return $this->getType();
-		} elseif ($offset === 'etag') {
-			return $this->getEtag();
-		} elseif ($offset === 'permissions') {
-			return $this->getPermissions();
-		} elseif (isset($this->data[$offset])) {
-			return $this->data[$offset];
-		} else {
-			return null;
 		}
+
+		if ($offset === 'etag') {
+			return $this->getEtag();
+		}
+
+		if ($offset === 'permissions') {
+			return $this->getPermissions();
+		}
+
+		return $this->data[$offset] ?? null;
 	}
 
 	/**
@@ -341,6 +343,6 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @inheritdoc
 	 */
 	public function getChecksum() {
-		return $this->data['checksum'];
+		return $this->data['checksum'] ?? '';
 	}
 }

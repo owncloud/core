@@ -38,6 +38,7 @@ use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
 use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\File\X509;
 
 /**
@@ -342,7 +343,11 @@ class Checker {
 			return [];
 		}
 
-		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
+		$content = $this->fileAccessHelper->file_get_contents($signaturePath);
+		if (!$content) {
+			throw new MissingSignatureException('Signature data not found.');
+		}
+		$signatureData = \json_decode($content, true);
 		if (!\is_array($signatureData)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
@@ -464,7 +469,8 @@ class Checker {
 			return \json_decode($cachedResults, true);
 		}
 
-		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
+		$v = $this->getAppValue(self::CACHE_KEY, '{}') ?? '{}';
+		return \json_decode($v, true);
 	}
 
 	/**

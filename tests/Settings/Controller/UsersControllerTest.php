@@ -2144,6 +2144,11 @@ class UsersControllerTest extends TestCase {
 		$iL10->expects($this->atLeastOnce())
 			->method('t')
 			->willReturn('An email has been sent to this address for confirmation. Until the email is verified this address will not be set.');
+		$iConfig
+			->method('getUserValue')
+			->with($id, 'owncloud', 'changeMail')
+			->willReturn('12000:AVerySecretToken');
+
 		$expectedResponse = new DataResponse(
 			[
 				'status' => 'success',
@@ -3530,6 +3535,10 @@ class UsersControllerTest extends TestCase {
 			->method('send')
 			->with($message)
 			->willReturn([]);
+		$l10n->method('t')
+			->willReturnCallback(function ($text, $parameters = []) {
+				return \vsprintf($text, $parameters);
+			});
 
 		$result = $usersController->setPassword('fooBaZ1', 'foo', '123');
 		$this->assertEquals(new Http\JSONResponse(['status' => 'success']), $result);

@@ -213,7 +213,7 @@ class Controller {
 				$mailer->send($message);
 			} catch (\Exception $e) {
 				throw new \Exception($l10n->t(
-					'Couldn\'t send reset email. Please contact your administrator.'
+					"Couldn't send reset email. Please contact your administrator."
 				));
 			}
 		}

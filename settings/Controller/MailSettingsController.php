@@ -85,7 +85,6 @@ class MailSettingsController extends Controller {
 	 * @param string $mail_smtpmode
 	 * @param string $mail_smtpsecure
 	 * @param string $mail_smtphost
-	 * @param string $mail_smtpauthtype
 	 * @param int $mail_smtpauth
 	 * @param string $mail_smtpport
 	 * @return array
@@ -96,7 +95,6 @@ class MailSettingsController extends Controller {
 		$mail_smtpmode,
 		$mail_smtpsecure,
 		$mail_smtphost,
-		$mail_smtpauthtype,
 		$mail_smtpauth,
 		$mail_smtpport
 	) {
@@ -162,36 +160,35 @@ class MailSettingsController extends Controller {
 			$email = $this->userSession->getUser()->getEMailAddress();
 		}
 
-		if (!empty($email)) {
-			try {
-				$message = $this->mailer->createMessage();
-				$message->setTo([$email => $this->userSession->getUser()->getDisplayName()]);
-				$message->setFrom([$this->defaultMailAddress]);
-				$message->setSubject($this->l10n->t('test email settings'));
-				$message->setPlainBody('If you received this email, the settings seem to be correct.');
-				$this->mailer->send($message);
-			} catch (\Exception $e) {
-				return [
-					'data' => [
-						'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', [$e->getMessage()]),
-					],
-					'status' => 'error',
-				];
-			}
+		if (empty($email)) {
+			return ['data' =>
+				['message' =>
+					(string) $this->l10n->t('You need to set your user email before being able to send test emails.'),
+				],
+				'status' => 'error'
+			];
+		}
 
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$email => $this->userSession->getUser()->getDisplayName()]);
+			$message->setFrom([$this->defaultMailAddress]);
+			$message->setSubject($this->l10n->t('test email settings'));
+			$message->setPlainBody('If you received this email, the settings seem to be correct.');
+			$this->mailer->send($message);
 			return ['data' =>
 				['message' =>
 					(string) $this->l10n->t('Email sent')
 				],
 				'status' => 'success'
 			];
+		} catch (\Exception $e) {
+			return [
+				'data' => [
+					'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', [$e->getMessage()]),
+				],
+				'status' => 'error',
+			];
 		}
-
-		return ['data' =>
-			['message' =>
-				(string) $this->l10n->t('You need to set your user email before being able to send test emails.'),
-			],
-			'status' => 'error'
-		];
 	}
 }

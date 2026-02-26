@@ -42,8 +42,7 @@ use OC\Image\BmpToResource;
  * Class for basic image manipulation
  */
 class OC_Image implements \OCP\IImage {
-	/** @var false|resource */
-	protected $resource = false; // tmp resource.
+	protected ?\GdImage $resource = null; // tmp resource.
 	/** @var int */
 	protected $imageType = IMAGETYPE_PNG; // Default to png if file type isn't evident.
 	/** @var string */
@@ -107,11 +106,10 @@ class OC_Image implements \OCP\IImage {
 
 	/**
 	 * Determine whether the object contains an image resource.
-	 *
-	 * @return bool
 	 */
-	public function valid() { // apparently you can't name a method 'empty'...
-		return \is_resource($this->resource);
+	public function valid(): bool {
+		// apparently you can't name a method 'empty'...
+		return $this->resource instanceof \GdImage;
 	}
 
 	/**
@@ -218,7 +216,9 @@ class OC_Image implements \OCP\IImage {
 		if ($filePath === null && $this->filePath === null) {
 			$this->logger->error(__METHOD__ . '(): called with no path.', ['app' => 'core']);
 			return false;
-		} elseif ($filePath === null && $this->filePath !== null) {
+		}
+
+		if ($filePath === null && $this->filePath !== null) {
 			$filePath = $this->filePath;
 		}
 		return $this->_output($filePath, $mimeType);
@@ -240,7 +240,9 @@ class OC_Image implements \OCP\IImage {
 			if (!\is_writable(\dirname($filePath))) {
 				$this->logger->error(__METHOD__ . '(): Directory \'' . \dirname($filePath) . '\' is not writable.', ['app' => 'core']);
 				return false;
-			} elseif (\is_writable(\dirname($filePath)) && \file_exists($filePath) && !\is_writable($filePath)) {
+			}
+
+			if (\is_writable(\dirname($filePath)) && \file_exists($filePath) && !\is_writable($filePath)) {
 				$this->logger->error(__METHOD__ . '(): File \'' . $filePath . '\' is not writable.', ['app' => 'core']);
 				return false;
 			}
@@ -316,10 +318,7 @@ class OC_Image implements \OCP\IImage {
 		return $this->show();
 	}
 
-	/**
-	 * @return resource Returns the image resource in any.
-	 */
-	public function resource() {
+	public function resource(): ?GdImage {
 		return $this->resource;
 	}
 
@@ -491,18 +490,18 @@ class OC_Image implements \OCP\IImage {
 						\imagedestroy($this->resource);
 						$this->resource = $res;
 						return true;
-					} else {
-						$this->logger->debug('OC_Image->fixOrientation() Error during alpha-saving', ['app' => 'core']);
-						return false;
 					}
-				} else {
-					$this->logger->debug('OC_Image->fixOrientation() Error during alpha-blending', ['app' => 'core']);
+
+					$this->logger->debug('OC_Image->fixOrientation() Error during alpha-saving', ['app' => 'core']);
 					return false;
 				}
-			} else {
-				$this->logger->debug('OC_Image->fixOrientation() Error during orientation fixing', ['app' => 'core']);
+
+				$this->logger->debug('OC_Image->fixOrientation() Error during alpha-blending', ['app' => 'core']);
 				return false;
 			}
+
+			$this->logger->debug('OC_Image->fixOrientation() Error during orientation fixing', ['app' => 'core']);
+			return false;
 		}
 		return false;
 	}
@@ -510,22 +509,27 @@ class OC_Image implements \OCP\IImage {
 	/**
 	 * Loads an image from a local file, a base64 encoded string or a resource created by an imagecreate* function.
 	 *
-	 * @param resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by an imagecreate* function or a file resource (file handle    ).
-	 * @return resource|false An image resource or false on error
+	 * @param GdImage|resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by an imagecreate* function or a file resource (file handle    ).
+	 * @return GdImage|false An image resource or false on error
 	 */
 	public function load($imageRef) {
+		if ($imageRef instanceof \GdImage) {
+			$this->resource = $imageRef;
+			return $this->resource;
+		}
 		if (\is_resource($imageRef)) {
-			if (\get_resource_type($imageRef) == 'gd') {
-				$this->resource = $imageRef;
-				return $this->resource;
-			} elseif (\in_array(\get_resource_type($imageRef), ['file', 'stream'])) {
-				return $this->loadFromFileHandle($imageRef);
-			}
-		} elseif ($this->loadFromBase64($imageRef) !== false) {
+			return $this->loadFromFileHandle($imageRef);
+		}
+
+		if ($this->loadFromBase64($imageRef) !== false) {
 			return $this->resource;
-		} elseif ($this->loadFromFile($imageRef) !== false) {
+		}
+
+		if ($this->loadFromFile($imageRef) !== false) {
 			return $this->resource;
-		} elseif ($this->loadFromData($imageRef) !== false) {
+		}
+
+		if ($this->loadFromData($imageRef) !== false) {
 			return $this->resource;
 		}
 		$this->logger->debug(__METHOD__ . '(): could not load anything. Giving up!', ['app' => 'core']);
@@ -537,9 +541,9 @@ class OC_Image implements \OCP\IImage {
 	 * It is the responsibility of the caller to position the pointer at the correct place and to close the handle again.
 	 *
 	 * @param resource $handle
-	 * @return resource|false An image resource or false on error
+	 * @return GdImage|false|null An image resource or false on error
 	 */
-	public function loadFromFileHandle($handle) {
+	public function loadFromFileHandle($handle): GdImage|false|null {
 		$contents = \stream_get_contents($handle);
 		if ($this->loadFromData($contents)) {
 			$this->adjustStreamChunkSize($handle);
@@ -667,7 +671,10 @@ class OC_Image implements \OCP\IImage {
 				}
 				break;
 			case IMAGETYPE_BMP:
-				$this->resource = $this->imagecreatefrombmp($imagePath);
+				$resource = $this->imagecreatefrombmp($imagePath);
+				if ($resource !== false) {
+					$this->resource = $resource;
+				}
 				break;
 				/*
 				case IMAGETYPE_TIFF_II: // (intel byte order)
@@ -714,61 +721,55 @@ class OC_Image implements \OCP\IImage {
 	 * Loads an image from a string of data.
 	 *
 	 * @param string $str A string of image data as read from a file.
-	 * @return bool|resource An image resource or false on error
+	 * @return bool An image resource or false on error
 	 */
 	public function loadFromData($str) {
-		if (\is_resource($str)) {
+		if (!\is_string($str)) {
 			return false;
 		}
-		$this->resource = @\imagecreatefromstring($str);
+		$resource = @\imagecreatefromstring($str);
 		if ($this->fileInfo) {
 			$this->mimeType = $this->fileInfo->buffer($str);
 		}
-		if (\is_resource($this->resource)) {
-			\imagealphablending($this->resource, false);
-			\imagesavealpha($this->resource, true);
-		}
-
-		if (!$this->resource) {
+		if (!$resource) {
 			$this->logger->debug('OC_Image->loadFromFile, could not load', ['app' => 'core']);
 			return false;
 		}
-		return $this->resource;
+		$this->resource = $resource;
+		\imagealphablending($this->resource, false);
+		\imagesavealpha($this->resource, true);
+
+		return true;
 	}
 
 	/**
 	 * Loads an image from a base64 encoded string.
 	 *
 	 * @param string $str A string base64 encoded string of image data.
-	 * @return bool|resource An image resource or false on error
+	 * @return bool An image resource or false on error
 	 */
-	public function loadFromBase64($str) {
+	public function loadFromBase64(string $str): bool {
 		if (!\is_string($str)) {
 			return false;
 		}
 		$data = \base64_decode($str);
 		if ($data) { // try to load from string data
-			$this->resource = @\imagecreatefromstring($data);
+			$resource = @\imagecreatefromstring($data);
 			if ($this->fileInfo) {
 				$this->mimeType = $this->fileInfo->buffer($data);
 			}
-			if (!$this->resource) {
+			if ($resource === false) {
 				$this->logger->debug('OC_Image->loadFromBase64, could not load', ['app' => 'core']);
 				return false;
 			}
-			return $this->resource;
-		} else {
-			return false;
+			$this->resource = $resource;
+			return true;
 		}
+
+		return false;
 	}
 
-	/**
-	 * Create a new image from file or URL
-	 * @param string $fileName <p>
-	 * Path to the BMP image.
-	 * @return bool|resource an image resource identifier on success, <b>FALSE</b> on errors.
-	 */
-	private function imagecreatefrombmp($fileName) {
+	private function imagecreatefrombmp(string $fileName): GdImage|bool {
 		try {
 			$bmp = new BmpToResource($fileName);
 			$imageHandle = $bmp->toResource();
@@ -823,9 +824,8 @@ class OC_Image implements \OCP\IImage {
 		$heightOrig = \imagesy($this->resource);
 		$process = \imagecreatetruecolor($width, $height);
 
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -836,8 +836,8 @@ class OC_Image implements \OCP\IImage {
 			\imagesavealpha($process, true);
 		}
 
-		\imagecopyresampled($process, $this->resource, 0, 0, 0, 0, $width, $height, $widthOrig, $heightOrig);
-		if ($process == false) {
+		$result = \imagecopyresampled($process, $this->resource, 0, 0, 0, 0, $width, $height, $widthOrig, $heightOrig);
+		if ($result === false) {
 			$this->logger->error(__METHOD__ . '(): Error re-sampling process image', ['app' => 'core']);
 			\imagedestroy($process);
 			return false;
@@ -883,7 +883,6 @@ class OC_Image implements \OCP\IImage {
 		$process = \imagecreatetruecolor($targetWidth, $targetHeight);
 		if ($process == false) {
 			$this->logger->error('OC_Image->centerCrop, Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -894,8 +893,8 @@ class OC_Image implements \OCP\IImage {
 			\imagesavealpha($process, true);
 		}
 
-		\imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $targetWidth, $targetHeight, $width, $height);
-		if ($process == false) {
+		$result = \imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $targetWidth, $targetHeight, $width, $height);
+		if ($result === false) {
 			$this->logger->error('OC_Image->centerCrop, Error re-sampling process image ' . $width . 'x' . $height, ['app' => 'core']);
 			\imagedestroy($process);
 			return false;
@@ -920,9 +919,8 @@ class OC_Image implements \OCP\IImage {
 			return false;
 		}
 		$process = \imagecreatetruecolor($w, $h);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -933,8 +931,8 @@ class OC_Image implements \OCP\IImage {
 			\imagesavealpha($process, true);
 		}
 
-		\imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $w, $h, $w, $h);
-		if ($process == false) {
+		$result = \imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $w, $h, $w, $h);
+		if ($result === false) {
 			$this->logger->error(__METHOD__ . '(): Error re-sampling process image ' . $w . 'x' . $h, ['app' => 'core']);
 			\imagedestroy($process);
 			return false;
@@ -994,7 +992,7 @@ class OC_Image implements \OCP\IImage {
 	/**
 	 * Destroys the current image and resets the object
 	 */
-	public function destroy() {
+	public function destroy(): void {
 		if ($this->valid()) {
 			\imagedestroy($this->resource);
 		}
@@ -1015,7 +1013,7 @@ if (!\function_exists('imagebmp')) {
 	 * @link http://www.programmierer-forum.de/imagebmp-gute-funktion-gefunden-t143716.htm
 	 * @author mgutt <marc@gutt.it>
 	 * @version 1.00
-	 * @param resource $im
+	 * @param \GdImage $im
 	 * @param string $fileName [optional] <p>The path to save the file to.</p>
 	 * @param int $bit [optional] <p>Bit depth, (default is 24).</p>
 	 * @param int $compression [optional]
@@ -1069,6 +1067,7 @@ if (!\function_exists('imagebmp')) {
 						$index = \imagecolorat($im, $i, $j);
 						if ($index !== $lastIndex || $sameNum > 255) {
 							if ($sameNum != 0) {
+								/** @phan-suppress-next-line PhanTypeMismatchArgumentInternalReal */
 								$bmpData .= \chr($sameNum) . \chr($lastIndex);
 							}
 							$lastIndex = $index;

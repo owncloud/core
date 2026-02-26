@@ -262,13 +262,12 @@ class FileTest extends TestCase {
 			->getMock();
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
-			->will(
-				$this->returnCallback(
-					function ($path) use ($storage) {
-						return [$storage, $path];
-					}
-				)
+			->willReturnCallback(
+				function ($path) use ($storage) {
+					return [$storage, $path];
+				}
 			);
+		$view->method('getRelativePath')->willReturn('test.txt');
 
 		$storage->expects($this->once())
 			->method('fopen')
@@ -349,11 +348,11 @@ class FileTest extends TestCase {
 		$view = $this->createMock(View::class, ['getRelativePath', 'resolvePath'], []);
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
-			->will($this->returnCallback(
-				function ($path) use ($storage) {
-					return [$storage, $path];
-				}
-			));
+			->willReturnCallback(function ($path) use ($storage) {
+				return [$storage, $path];
+			});
+		$view->method('getAbsolutePath')->willReturnArgument(0);
+		$view->method('getRelativePath')->willReturnArgument(0);
 
 		if ($thrownException !== null) {
 			$storage->expects($this->once())
@@ -362,7 +361,7 @@ class FileTest extends TestCase {
 		} else {
 			$storage->expects($this->once())
 				->method('fopen')
-				->will($this->returnValue(false));
+				->willReturn(false);
 		}
 
 		$view->expects($this->any())
@@ -774,7 +773,7 @@ class FileTest extends TestCase {
 	 * if the passed view was chrooted (can happen with public webdav
 	 * where the root is the share root)
 	 */
-	public function testPutSingleFileTriggersHooksDifferentRoot() {
+	public function testPutSingleFileTriggersHooksDifferentRoot(): void {
 		$view = Filesystem::getView();
 		$view->mkdir('noderoot');
 
