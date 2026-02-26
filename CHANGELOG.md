@@ -39,6 +39,7 @@ ownCloud admins and users.
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
+* Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
 
 ## Details
 
@@ -59,6 +60,20 @@ ownCloud admins and users.
    This experimental command is untested and unsupported and therefore removed.
 
    https://github.com/owncloud/core/pull/41451
+
+* Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
+
+   The following have been removed: - class OC_DB - class OC_DB_StatementWrapper -
+   class OC_Group_Backend - class OC_Group_Database - class OC_OCS_Result - class
+   \OCP\DB - class MDBSchemaWriter - interface OC_Group_Interface - interface
+   OC_User_Interface - method MDB2SchemaManager::getDbStructure() - method
+   MDB2SchemaManager::generateChangeScript()
+
+   https://github.com/owncloud/core/pull/41455
+   https://github.com/owncloud/core/pull/41458
+   https://github.com/owncloud/core/pull/41462
+   https://github.com/owncloud/core/pull/41464
+   https://github.com/owncloud/core/pull/41468
 
 # Changelog for ownCloud Core [10.16.1] (2026-02-18)
 
