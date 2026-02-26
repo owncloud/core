@@ -24,7 +24,11 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\BlobType;
+use Doctrine\DBAL\Types\TextType;
 
 class MySQLMigrator extends Migrator {
 	/**
@@ -48,9 +52,26 @@ class MySQLMigrator extends Migrator {
 		// identifiers need to be quoted for mysql
 		foreach ($schemaDiff->changedTables as $tableDiff) {
 			$tableDiff->name = $this->connection->quoteIdentifier($tableDiff->name);
+			$changedColumns = [];
 			foreach ($tableDiff->changedColumns as $column) {
 				$column->oldColumnName = $this->connection->quoteIdentifier($column->oldColumnName);
+
+				# Bring back dbal 2.x behavior for default handling ... https://github.com/doctrine/dbal/pull/5332
+				// Don't propagate default value changes for unsupported column types.
+				$platform = $connection->getDatabasePlatform();
+				if (
+					$platform instanceof MySQLPlatform &&
+					!($platform instanceof MariaDBPlatform) &&
+					$column->hasDefaultChanged() &&
+					\count($column->changedProperties) === 1 &&
+					$column->fromColumn != null &&
+					($column->fromColumn->getType() instanceof TextType || $column->fromColumn->getType() instanceof BlobType)
+				) {
+					continue;
+				}
+				$changedColumns []= $column;
 			}
+			$tableDiff->changedColumns = $changedColumns;
 		}
 
 		return $schemaDiff;

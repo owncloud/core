@@ -166,8 +166,8 @@ class MigrationService {
 			->orderBy('version');
 
 		$result = $qb->execute();
-		$rows = $result->fetchAll(\PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		$rows = $result->fetchFirstColumn();
+		$result->free();
 
 		return $rows;
 	}

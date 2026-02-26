@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing\Command;
 
+use Doctrine\DBAL\Result;
 use OC\ServerNotAvailableException;
 use OC\User\NoUserException;
 use OCA\Files_Sharing\External\Manager;
@@ -88,7 +89,7 @@ class PollIncomingShares extends Command {
 			return 1;
 		}
 		$cursor = $this->getCursor();
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$user = $this->userManager->get($data['user']);
 			if ($user === null) {
 				$output->writeln(
@@ -133,7 +134,7 @@ class PollIncomingShares extends Command {
 				}
 			}
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 		return 0;
 	}
 
@@ -153,10 +154,7 @@ class PollIncomingShares extends Command {
 		}
 	}
 
-	/**
-	 * @return \Doctrine\DBAL\Driver\Statement
-	 */
-	protected function getCursor() {
+	protected function getCursor(): Result {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->selectDistinct('user')
 			->from('share_external')
@@ -186,7 +184,7 @@ class PollIncomingShares extends Command {
 			)
 		);
 		$result = $qb->execute();
-		$externalShare = $result->fetch();
+		$externalShare = $result->fetchAssociative();
 		return $externalShare;
 	}
 }

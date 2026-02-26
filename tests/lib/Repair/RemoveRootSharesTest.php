@@ -185,8 +185,8 @@ class RemoveRootSharesTest extends \Test\TestCase {
 			->from('share');
 
 		$cursor = $qb->execute();
-		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAssociative();
+		$cursor->free();
 
 		$count = (int)$data['count'];
 

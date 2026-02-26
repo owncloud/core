@@ -89,7 +89,8 @@ class CleanProperties extends TimedJob {
 			->leftJoin('prop', 'filecache', 'fc', $qb->expr()->eq('prop.fileid', 'fc.fileid'))
 			->setMaxResults(self::CHUNK_SIZE);
 
-		while ($rows = $qb->execute()->fetchAll()) {
+		# Note: trying to use Result::free() will break the logic - do not change for the time being
+		while ($rows = $qb->execute()->fetchAllAssociative()) {
 			$fileIds = \array_map(function ($row) {
 				return (int) $row['fileid'];
 			}, $rows);

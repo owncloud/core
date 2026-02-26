@@ -27,7 +27,7 @@
 
 namespace OC\DB;
 
-use \Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Schema\AbstractAsset;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -97,6 +97,14 @@ class Migrator {
 		return $script;
 	}
 
+	public function filterSchemaAsset($asset): bool {
+		if ($asset instanceof AbstractAsset) {
+			$asset = $asset->getName();
+		}
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		return str_starts_with($asset, $prefix);
+	}
+
 	/**
 	 * Create a unique name for the temporary table
 	 *
@@ -108,8 +116,9 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) {
+			return $this->filterSchemaAsset($asset);
+		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
 
@@ -117,7 +126,7 @@ class Migrator {
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 * @return \Doctrine\DBAL\Schema\SchemaDiff
-	 * @throws DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	protected function getDiff(Schema $targetSchema, \Doctrine\DBAL\Connection $connection) {
 		// adjust varchar columns with a length higher then getVarcharMaxLength to clob
@@ -132,8 +141,9 @@ class Migrator {
 			}
 		}
 
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function ($asset) {
+			return $this->filterSchemaAsset($asset);
+		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -191,10 +201,6 @@ class Migrator {
 		$script .= PHP_EOL;
 		$script .= PHP_EOL;
 		return $script;
-	}
-
-	protected function getFilterExpression() {
-		return '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 
 	protected function emit($sql, $step, $max) {

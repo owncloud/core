@@ -21,7 +21,7 @@
 namespace OC;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MariaDb1027Platform;
@@ -62,9 +62,9 @@ class PreviewCleanup {
 				$lastFileId = $row['fileid'];
 
 				if (!isset($lastStorageInfo[$storageId])) {
-					$query->setParameter(':sid', $storageId, IQueryBuilder::PARAM_INT);
+					$query->setParameter('sid', $storageId, IQueryBuilder::PARAM_INT);
 					$result = $query->execute();
-					$resultData = $result->fetchAll(); // only 1 result expected
+					$resultData = $result->fetchAllAssociative(); // only 1 result expected
 					if (empty($resultData)) {
 						continue; // we can't do anything without the user_id
 					}
@@ -106,11 +106,11 @@ class PreviewCleanup {
 	private function queryPreviewsToDelete(int $startFileId = 0, int $chunkSize = 1000): array {
 		$dbPlatform = $this->connection->getDatabasePlatform();
 		$isOracle = ($dbPlatform instanceof OraclePlatform);
-		$isOldMysql = ($dbPlatform instanceof MySqlPlatform && !($dbPlatform instanceof MySQL80Platform || $dbPlatform instanceof MariaDb1027Platform));
+		$isOldMysql = ($dbPlatform instanceof MySQLPlatform && !($dbPlatform instanceof MySQL80Platform || $dbPlatform instanceof MariaDb1027Platform));
 
 		$castToInt = 'BIGINT';
 		$castToVchar = 'VARCHAR(250)';
-		if ($dbPlatform instanceof MySqlPlatform) {
+		if ($dbPlatform instanceof MySQLPlatform) {
 			// for MySQL, we need to cast to "signed" instead
 			$castToInt = 'SIGNED';
 			$castToVchar = 'CHAR';
@@ -166,7 +166,7 @@ ORDER BY `storage`";
 			$sql .= " limit $chunkSize";
 		}
 
-		return $this->connection->executeQuery($sql, [$startFileId])->fetchAll(\PDO::FETCH_ASSOC);
+		return $this->connection->executeQuery($sql, [$startFileId])->fetchAllAssociative();
 	}
 
 	private function cleanFileCache($name, int $storageId): void {

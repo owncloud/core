@@ -184,7 +184,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$calendars = [];
-		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		while ($row = $stmt->fetchAssociative()) {
 			$components = [];
 			if ($row['components']) {
 				$components = \explode(',', $row['components']);
@@ -209,7 +209,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		// query for shared calendars
 		$principals = $this->principalBackend->getGroupMembership($principalUriOriginal, true);
@@ -233,7 +233,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->setParameter('principaluri', $principals, Connection::PARAM_STR_ARRAY)
 			->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$row['displayname'] .= " ($name)";
@@ -261,7 +261,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				$calendars[$calendar['id']] = $calendar;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return \array_values($calendars);
 	}
@@ -284,7 +284,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$calendars = [];
-		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		while ($row = $stmt->fetchAssociative()) {
 			$components = [];
 			if ($row['components']) {
 				$components = \explode(',', $row['components']);
@@ -309,7 +309,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return \array_values($calendars);
 	}
@@ -336,7 +336,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->andWhere($query->expr()->eq('s.type', $query->createNamedParameter('calendar')))
 			->execute();
 
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			list(, $name) = \Sabre\Uri\split($row['principaluri']);
 			$row['displayname'] .= "($name)";
 			$components = [];
@@ -364,7 +364,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				$calendars[$calendar['id']] = $calendar;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return \array_values($calendars);
 	}
@@ -393,9 +393,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->andWhere($query->expr()->eq('s.publicuri', $query->createNamedParameter($uri)))
 			->execute();
 
-		$row = $result->fetch(\PDO::FETCH_ASSOC);
+		$row = $result->fetchAssociative();
 
-		$result->closeCursor();
+		$result->free();
 
 		if ($row === false) {
 			throw new NotFound('Node with name \'' . $uri . '\' could not be found');
@@ -449,8 +449,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->setMaxResults(1);
 		$stmt = $query->execute();
 
-		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
-		$stmt->closeCursor();
+		$row = $stmt->fetchAssociative();
+		$stmt->free();
 		if ($row === false) {
 			return null;
 		}
@@ -493,8 +493,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->setMaxResults(1);
 		$stmt = $query->execute();
 
-		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
-		$stmt->closeCursor();
+		$row = $stmt->fetchAssociative();
+		$stmt->free();
 		if ($row === false) {
 			return null;
 		}
@@ -628,13 +628,13 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	public function deleteCalendar($calendarId) {
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarchanges` WHERE `calendarid` = ?');
-		$stmt->execute([$calendarId]);
+		$stmt->executeStatement([$calendarId]);
 
 		$this->sharingBackend->deleteAllShares($calendarId);
 	}
@@ -688,7 +688,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$result = [];
-		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+		foreach ($stmt->fetchAllAssociative() as $row) {
 			$result[] = [
 					'id'           => $row['id'],
 					'uri'          => $row['uri'],
@@ -727,7 +727,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)))
 				->andWhere($query->expr()->eq('uri', $query->createNamedParameter($objectUri)));
 		$stmt = $query->execute();
-		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
+		$row = $stmt->fetchAssociative();
 
 		if (!$row) {
 			return null;
@@ -771,7 +771,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			$stmt = $query->execute();
 
 			$result = [];
-			while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+			while ($row = $stmt->fetchAssociative()) {
 				$result[] = [
 					'id'           => $row['id'],
 					'uri'          => $row['uri'],
@@ -784,7 +784,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 					'classification' => (int)$row['classification']
 				];
 			}
-			$stmt->closeCursor();
+			$stmt->free();
 			return $result;
 		}
 		$chunks = \array_chunk($uris, $chunkSize);
@@ -913,7 +913,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	public function deleteCalendarObject($calendarId, $objectUri) {
 		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ? AND `uri` = ?');
-		$stmt->execute([$calendarId, $objectUri]);
+		$stmt->executeStatement([$calendarId, $objectUri]);
 
 		$this->addChange($calendarId, $objectUri, 3);
 	}
@@ -1020,7 +1020,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$result = [];
-		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		while ($row = $stmt->fetchAssociative()) {
 			if ($requirePostFilter) {
 				if (!$this->validateFilterForObject($row, $filters)) {
 					continue;
@@ -1061,7 +1061,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 		$stmt = $query->execute();
 
-		if ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		if ($row = $stmt->fetchAssociative()) {
 			return $row['calendaruri'] . '/' . $row['objecturi'];
 		}
 
@@ -1127,8 +1127,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null) {
 		// Current synctoken
 		$stmt = $this->db->prepare('SELECT `synctoken` FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([ $calendarId ]);
-		$currentToken = $stmt->fetchColumn(0);
+		$result = $stmt->executeQuery([ $calendarId ]);
+		$currentToken = $result->fetchFirstColumn()[0];
+		$result->free();
 
 		if ($currentToken === null) {
 			return null;
@@ -1146,15 +1147,16 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 			// Fetching all changes
 			$stmt = $this->db->prepare($query, $limit ?: null, $limit ? 0 : null);
-			$stmt->execute([$syncToken, $currentToken, $calendarId]);
+			$querRresult = $stmt->executeQuery([$syncToken, $currentToken, $calendarId]);
 
 			$changes = [];
 
 			// This loop ensures that any duplicates are overwritten, only the
 			// last change on a node is relevant.
-			while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+			while ($row = $querRresult->fetchAssociative()) {
 				$changes[$row['uri']] = $row['operation'];
 			}
+			$querRresult->free();
 
 			foreach ($changes as $uri => $operation) {
 				switch ($operation) {
@@ -1173,9 +1175,10 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			// No synctoken supplied, this is the initial sync.
 			$query = 'SELECT `uri` FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ?';
 			$stmt = $this->db->prepare($query);
-			$stmt->execute([$calendarId]);
+			$queryResult = $stmt->executeQuery([$calendarId]);
 
-			$result['added'] = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+			$result['added'] = $queryResult->fetchFirstColumn();
+			$queryResult->free();
 		}
 		return $result;
 	}
@@ -1228,7 +1231,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt =$query->execute();
 
 		$subscriptions = [];
-		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+		while ($row = $stmt->fetchAssociative()) {
 			$subscription = [
 				'id'           => $row['id'],
 				'uri'          => $row['uri'],
@@ -1383,7 +1386,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->andWhere($query->expr()->eq('uri', $query->createNamedParameter($objectUri)))
 			->execute();
 
-		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
+		$row = $stmt->fetchAssociative();
 
 		if (!$row) {
 			return null;
@@ -1417,7 +1420,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				->execute();
 
 		$result = [];
-		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+		foreach ($stmt->fetchAllAssociative() as $row) {
 			$result[] = [
 					'calendardata' => $row['calendardata'],
 					'uri'          => $row['uri'],
@@ -1477,14 +1480,14 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	protected function addChange($calendarId, $objectUri, $operation) {
 		$stmt = $this->db->prepare('INSERT INTO `*PREFIX*calendarchanges` (`uri`, `synctoken`, `calendarid`, `operation`) SELECT ?, `synctoken`, ?, ? FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$objectUri,
 			$calendarId,
 			$operation,
 			$calendarId
 		]);
 		$stmt = $this->db->prepare('UPDATE `*PREFIX*calendars` SET `synctoken` = `synctoken` + 1 WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$calendarId
 		]);
 	}
@@ -1644,8 +1647,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->andWhere($query->expr()->eq('access', $query->createNamedParameter(self::ACCESS_PUBLIC)))
 			->execute();
 
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 		return $row ? \reset($row) : false;
 	}
 

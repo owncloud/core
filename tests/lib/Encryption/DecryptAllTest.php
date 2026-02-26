@@ -21,7 +21,7 @@
 
 namespace Test\Encryption;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
@@ -373,25 +373,23 @@ class DecryptAllTest extends TestCase {
 		$idbConnection = $this->createMock(IDBConnection::class);
 		$iqueryBuilder = $this->createMock(IQueryBuilder::class);
 		$iexpressionBuilder = $this->createMock(IExpressionBuilder::class);
-		$resultStatement = $this->createMock(Statement::class);
+		$resultStatement = $this->createMock(Result::class);
 		$resultStatement
-			->expects($this->any())
-			->method('fetch')
+			->method('fetchAssociative')
 			->willReturnOnConsecutiveCalls(
 				['count' => '1'],
 				$user1,
 				$user1,
 			);
-		$resultStatement->expects($this->any())
-			->method('closeCursor')
-			->willReturn(true);
-		$iexpressionBuilder->expects($this->any())
+		$resultStatement
+			->method('free');
+		$iexpressionBuilder
 			->method('gt')
 			->willReturn('2');
-		$iqueryBuilder->expects($this->any())
+		$iqueryBuilder
 			->method('select')
 			->willReturn($iqueryBuilder);
-		$iqueryBuilder->expects($this->any())
+		$iqueryBuilder
 			->method('from')
 			->willReturn($iqueryBuilder);
 		$iqueryBuilder->expects($this->any())

@@ -320,7 +320,9 @@ class FederatedShareProvider implements IShareProvider {
 		$query->select('*')->from($this->externalShareTable)
 			->where($query->expr()->eq('user', $query->createNamedParameter($share->getShareOwner())))
 			->andWhere($query->expr()->eq('mountpoint', $query->createNamedParameter($share->getTarget())));
-		$result = $query->execute()->fetchAll();
+		$r = $query->execute();
+		$result = $r->fetchAllAssociative();
+		$r->free();
 
 		if (isset($result[0]) && $result[0]['remote_id'] !== "") {
 			return $result[0];
@@ -470,7 +472,10 @@ class FederatedShareProvider implements IShareProvider {
 		$query = $this->dbConnection->getQueryBuilder();
 		$query->select('remote_id')->from('federated_reshares')
 			->where($query->expr()->eq('share_id', $query->createNamedParameter((int)$share->getId())));
-		$data = $query->execute()->fetch();
+		$result = $query->execute();
+
+		$data = $result->fetchAssociative();
+		$result->free();
 
 		if (!\is_array($data) || !isset($data['remote_id'])) {
 			throw new ShareNotFound();
@@ -507,10 +512,10 @@ class FederatedShareProvider implements IShareProvider {
 			->orderBy('id');
 
 		$cursor = $qb->execute();
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$children[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $children;
 	}
@@ -654,10 +659,10 @@ class FederatedShareProvider implements IShareProvider {
 			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
 			$cursor = $qb->execute();
-			while ($data = $cursor->fetch()) {
+			while ($data = $cursor->fetchAssociative()) {
 				$shares[] = $this->createShareObject($data);
 			}
-			$cursor->closeCursor();
+			$cursor->free();
 		}
 
 		return $shares;
@@ -711,10 +716,10 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -740,8 +745,8 @@ class FederatedShareProvider implements IShareProvider {
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
 
 		$cursor = $qb->execute();
-		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAssociative();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound();
@@ -772,10 +777,10 @@ class FederatedShareProvider implements IShareProvider {
 			->execute();
 
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -818,10 +823,10 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -842,7 +847,7 @@ class FederatedShareProvider implements IShareProvider {
 			->andWhere($qb->expr()->eq('token', $qb->createNamedParameter($token)))
 			->execute();
 
-		$data = $cursor->fetch();
+		$data = $cursor->fetchAssociative();
 
 		if ($data === false) {
 			throw new ShareNotFound();
@@ -887,10 +892,10 @@ class FederatedShareProvider implements IShareProvider {
 		$cursor = $qb->execute();
 
 		$shares = [];
-		while ($data = $cursor->fetch()) {
+		while ($data = $cursor->fetchAssociative()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -910,8 +915,8 @@ class FederatedShareProvider implements IShareProvider {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		$cursor = $qb->execute();
-		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAssociative();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound;
@@ -1091,7 +1096,9 @@ class FederatedShareProvider implements IShareProvider {
 					$query->createNamedParameter($shareToken)
 				)
 			);
-		$shareRow = $query->execute()->fetch();
+		$r = $query->execute();
+		$shareRow = $r->fetchAssociative();
+		$r->free();
 		if ($shareRow !== false) {
 			$query = $this->dbConnection->getQueryBuilder();
 			$query->delete($this->externalShareTable)

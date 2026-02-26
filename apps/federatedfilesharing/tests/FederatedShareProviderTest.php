@@ -25,6 +25,7 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
@@ -191,8 +192,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -267,8 +268,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertEquals($fetchedData['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
@@ -333,8 +334,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$fetchedData = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -412,8 +413,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -451,8 +452,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -483,8 +484,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 			->execute();
 
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$data = $stmt->fetchAssociative();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -889,8 +890,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 				$qb->expr()->eq('id', $qb->createNamedParameter($id))
 			);
 		$cursor = $qb->execute();
-		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$data = $cursor->fetchAllAssociative();
+		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);
 	}
@@ -1011,15 +1012,16 @@ class FederatedShareProviderTest extends \Test\TestCase {
 
 	public function testGetRemoteId() {
 		$exprBuilder = $this->createMock(IExpressionBuilder::class);
-		$statementMock = $this->createMock(Statement::class);
-		$statementMock->method('fetch')->willReturn(['remote_id' => 'a0b0c0']);
+
+		$result = $this->createMock(Result::class);
+		$result->method('fetchAssociative')->willReturn(['remote_id' => 'a0b0c0']);
 
 		$qbMock = $this->createMock(IQueryBuilder::class);
 		$qbMock->method('select')->willReturnSelf();
 		$qbMock->method('from')->willReturnSelf();
 		$qbMock->method('where')->willReturnSelf();
 		$qbMock->method('expr')->willReturn($exprBuilder);
-		$qbMock->method('execute')->willReturn($statementMock);
+		$qbMock->method('execute')->willReturn($result);
 		$connectionMock = $this->createMock(IDBConnection::class);
 		$connectionMock->method('getQueryBuilder')->willReturn($qbMock);
 

@@ -22,7 +22,7 @@
 namespace OCA\DAV\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /*
@@ -39,22 +39,22 @@ class Version20170927201245 implements ISchemaMigration {
 		$prefix = $options['tablePrefix'];
 		if (!$schema->hasTable("{$prefix}dav_properties")) {
 			$table = $schema->createTable("{$prefix}dav_properties");
-			$table->addColumn('id', Type::BIGINT, [
+			$table->addColumn('id', Types::BIGINT, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 20,
 			]);
-			$table->addColumn('propertypath', Type::STRING, [
+			$table->addColumn('propertypath', Types::STRING, [
 				'notnull' => true,
 				'length' => 255,
 				'default' => '',
 			]);
-			$table->addColumn('propertyname', Type::STRING, [
+			$table->addColumn('propertyname', Types::STRING, [
 				'notnull' => true,
 				'length' => 255,
 				'default' => '',
 			]);
-			$table->addColumn('propertyvalue', Type::STRING, [
+			$table->addColumn('propertyvalue', Types::STRING, [
 				'notnull' => true,
 				'length' => 255,
 			]);

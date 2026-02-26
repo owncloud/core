@@ -8,9 +8,9 @@
 
 namespace Test\Files\Config;
 
-use Doctrine\DBAL\Driver\AbstractDriverException;
+use Doctrine\DBAL\Driver\AbstractException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use OC\DB\QueryBuilder\Literal;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Mount\MountPoint;
@@ -448,8 +448,8 @@ class UserMountCacheTest extends TestCase {
 	 * Oracle returns null for empty path, strict comparison fails on null
 	 */
 	public function testEmptyPathCacheInfoFromFileId() {
-		$statement = $this->createMock(Statement::class);
-		$statement->method('fetch')->willReturn([ 'storage' => 55, 'path' => null]);
+		$statement = $this->createMock(Result::class);
+		$statement->method('fetchAssociative')->willReturn([ 'storage' => 55, 'path' => null]);
 
 		$eb = $this->createMock(IExpressionBuilder::class);
 		$qb = $this->createMock(IQueryBuilder::class);
@@ -476,11 +476,11 @@ class UserMountCacheTest extends TestCase {
 		$userManager = $this->createMock(IUserManager::class);
 		$logger = $this->createMock(ILogger::class);
 		$user = $this->createMock(IUser::class);
-		$driverExceptionMock = $this->createMock(AbstractDriverException::class);
+		$driverExceptionMock = $this->createMock(AbstractException::class);
 
 		$conn = $this->createMock(IDBConnection::class);
 		$conn->method('insertIfNotExist')->will($this->throwException(
-			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+			new UniqueConstraintViolationException($driverExceptionMock, null)
 		));
 
 		$mountInfo = $this->createMock(ICachedMountInfo::class);

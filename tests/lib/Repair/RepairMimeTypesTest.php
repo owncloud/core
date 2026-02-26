@@ -96,7 +96,8 @@ class RepairMimeTypesTest extends TestCase {
 		$sql = 'SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?';
 		$connection = \OC::$server->getDatabaseConnection();
 		$results = $connection->executeQuery($sql, [$mimeType]);
-		$result = $results->fetch();
+		$result = $results->fetchAssociative();
+		$results->free();
 		if ($result) {
 			return $result['id'];
 		}

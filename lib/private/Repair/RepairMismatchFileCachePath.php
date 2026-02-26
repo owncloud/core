@@ -25,7 +25,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
@@ -141,7 +141,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 	private function addQueryConditionsParentIdWrongPath($qb) {
 		// thanks, VicDeo!
-		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$concatFunction = $qb->createFunction("CONCAT(fcp.path, '/', fc.name)");
 		} else {
 			$concatFunction = $qb->createFunction("(fcp.`path` || '/' || fc.`name`)");
@@ -212,8 +212,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsParentIdWrongPath($qb);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
-		$results->closeCursor();
+		$count = $results->fetchOne();
+		$results->free();
 		return $count;
 	}
 
@@ -222,8 +222,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsNonExistingParentIdEntry($qb, $storageNumericId);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
-		$results->closeCursor();
+		$count = $results->fetchOne();
+		$results->free();
 		return $count;
 	}
 
@@ -239,8 +239,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		// TODO: join with oc_storages / oc_mounts to deliver user id ?
 
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$rows = $results->fetchAllAssociative();
+		$results->free();
 
 		$storageIds = [];
 		foreach ($rows as $row) {
@@ -268,8 +268,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		// TODO: join with oc_storages / oc_mounts to deliver user id ?
 
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$rows = $results->fetchAllAssociative();
+		$results->free();
 
 		$storageIds = [];
 		foreach ($rows as $row) {
@@ -311,8 +311,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$results = $qb->execute();
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
-			$rows = $results->fetchAll();
-			$results->closeCursor();
+			$rows = $results->fetchAllAssociative();
+			$results->free();
 
 			$this->connection->beginTransaction();
 			$lastResultsCount = 0;
@@ -389,8 +389,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
 		}
 		$results = $qb->execute();
-		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$rows = $results->fetchAllAssociative();
+		$results->free();
 
 		if (!empty($rows)) {
 			return $rows[0]['fileid'];
@@ -509,8 +509,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$results = $qb->execute();
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
-			$rows = $results->fetchAll();
-			$results->closeCursor();
+			$rows = $results->fetchAllAssociative();
+			$results->free();
 
 			$lastResultsCount = 0;
 			foreach ($rows as $row) {

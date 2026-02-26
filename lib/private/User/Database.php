@@ -195,10 +195,10 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 
 		$displayNames = [];
 		$connection = \OC::$server->getDatabaseConnection();
-		$result = $connection->prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
+		$query = $connection->prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
 			. $searchLike .' ORDER BY `uid` ASC', $limit, $offset);
-		$result->execute($parameters);
-		while ($row = $result->fetch()) {
+		$result = $query->executeQuery($parameters);
+		while ($row = $result->fetchAssociative()) {
 			$displayNames[$row['uid']] = $row['displayname'];
 		}
 
@@ -218,7 +218,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		$connection = \OC::$server->getDatabaseConnection();
 		$result = $connection->executeQuery('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)', [$uid]);
 
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		if ($row) {
 			$storedHash = $row['password'];
 			$newHash = '';
@@ -251,14 +251,14 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 			}
 
 			// "uid" is primary key, so there can only be a single result
-			if ($row = $result->fetch()) {
+			if ($row = $result->fetchAssociative()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
 				$this->cache[$uid] = false;
 				return false;
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		return true;
@@ -282,12 +282,14 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		}
 
 		$connection = \OC::$server->getDatabaseConnection();
-		$result = $connection->prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
-		$result->execute($parameters);
+		$query = $connection->prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
+		$result = $query->executeQuery($parameters);
 		$users = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$users[] = $row['uid'];
 		}
+		$result->free();
+
 		return $users;
 	}
 
@@ -326,11 +328,11 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		$connection = \OC::$server->getDatabaseConnection();
 		try {
 			$result = $connection->executeQuery('SELECT COUNT(*) FROM `*PREFIX*users`');
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 			Util::writeLog('core', $connection->getError(), Util::ERROR);
 			return false;
 		}
-		return $result->fetchColumn();
+		return $result->fetchOne();
 	}
 
 	/**

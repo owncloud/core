@@ -74,8 +74,8 @@ class ScanExternalSharesJobTest extends TestCase {
 		$shareExternalQuery->insert('share_external')
 			->setValue('share_token', '?')
 			->setValue('remote', '?')
-			->setValue('name', '?')->setParameter(2, 'irrelevant')
-			->setValue('owner', '?')->setParameter(3, 'irrelevant')
+			->setValue('name', '?')
+			->setValue('owner', '?')
 			->setValue('user', '?')
 			->setValue('mountpoint', '?')->setParameter(5, 'irrelevant')
 			->setValue('mountpoint_hash', '?')->setParameter(6, 'irrelevant')
@@ -84,6 +84,8 @@ class ScanExternalSharesJobTest extends TestCase {
 			$shareExternalQuery
 				->setParameter(0, "f2c69dad1dc0649f26976fd210fc62e$i")
 				->setParameter(1, "https://hostname.tld/owncloud$i")
+				->setParameter(2, 'irrelevant')
+				->setParameter(3, 'irrelevant')
 				->setParameter(4, "user$i");
 			$shareExternalQuery->execute();
 		}
@@ -191,12 +193,12 @@ class ScanExternalSharesJobTest extends TestCase {
 			->from('share_external')
 			->where($qb->expr()->eq('remote', $qb->expr()->literal('https://hostname.tld/owncloud1')));
 
-		$res = $qb->execute()->fetchAll();
+		$res = $qb->execute()->fetchAllAssociative();
 		$this->assertNull($res[0]['lastscan']);
 
 		self::invokePrivate($scanShares, 'run', [[]]);
 
-		$res = $qb->execute()->fetchAll();
+		$res = $qb->execute()->fetchAllAssociative();
 		$this->assertNotNull($res[0]['lastscan']);
 	}
 

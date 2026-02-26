@@ -53,7 +53,7 @@ class MySQL extends AbstractDatabase {
 		//fill the database if needed
 		$query='select count(*) from information_schema.tables where table_schema=? AND table_name = ?';
 		$result = $connection->executeQuery($query, [$this->dbName, $this->tablePrefix.'users']);
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 		if (!$row or $row['count(*)'] === '0') {
 			(new \OC\DB\MDB2SchemaManager(\OC::$server->getDatabaseConnection()))->createDbFromStructure($this->dbDefinitionFile);
 		}
@@ -156,7 +156,7 @@ class MySQL extends AbstractDatabase {
 
 					//current dbuser has admin rights
 					if ($result) {
-						$data = $result->fetchAll();
+						$data = $result->fetchAllAssociative();
 						//new dbuser does not exist
 						if (\count($data) === 0) {
 							//use the admin login data for the new database user

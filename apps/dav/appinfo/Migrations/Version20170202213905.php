@@ -54,7 +54,7 @@ class Version20170202213905 implements ISqlMigration {
 			->from('properties', 'props')
 			->setMaxResults(1);
 		$result = $qb->execute();
-		$row = $result->fetch();
+		$row = $result->fetchAssociative();
 
 		// There is nothing to do if table is empty or has no userid field
 		if (!$row || !isset($row['userid'])) {
@@ -71,7 +71,7 @@ class Version20170202213905 implements ISqlMigration {
 			->addOrderBy('propertypath');
 
 		$selectResult = $qb->execute();
-		while ($row = $selectResult->fetch()) {
+		while ($row = $selectResult->fetchAssociative()) {
 			try {
 				$sql = $this->getRepairEntrySql($qb, $row);
 				if ($sql !== null) {

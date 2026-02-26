@@ -94,12 +94,12 @@ class DeleteOrphanedItems extends TimedJob {
 		while ($deletedInLastChunk === self::CHUNK_SIZE) {
 			$result = $query->execute();
 			$deletedInLastChunk = 0;
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$deletedInLastChunk++;
 				$deletedEntries += $deleteQuery->setParameter('objectid', (int) $row[$idCol])
 					->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		return $deletedEntries;

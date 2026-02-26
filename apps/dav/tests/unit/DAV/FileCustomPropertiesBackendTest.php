@@ -106,7 +106,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		);
 		$this->maxId = (int) $qb->select($maxFunction)
 			->from('properties')
-			->execute()->fetchColumn();
+			->execute()->fetchOne();
 	}
 
 	public function tearDown(): void {
@@ -115,12 +115,11 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			'DELETE FROM `*PREFIX*properties`' .
 			' WHERE `id` > ?'
 		);
-		$deleteStatement->execute(
+		$deleteStatement->executeStatement(
 			[
 				$this->maxId,
 			]
 		);
-		$deleteStatement->closeCursor();
 	}
 
 	private function createTestNode($class) {

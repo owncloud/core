@@ -22,10 +22,11 @@
 
 namespace Tests\Core\Command\Db;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
 use OC\Core\Command\Db\RestoreDefaultRowFormat;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OC\DB\ConnectionFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -71,21 +72,23 @@ class RestoreDefaultRowFormatTest extends TestCase {
 	}
 
 	public function testConversion() {
-		$platform = $this->getMockBuilder(MySqlPlatform::class)->getMock();
+		$platform = $this->getMockBuilder(MySQLPlatform::class)->getMock();
 		$this->connection->expects($this->once())->method('getDatabasePlatform')->willReturn($platform);
 		$this->config->expects($this->exactly(2))->method('getSystemValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['dbtableprefix', 'oc_'],
 				['dbname', 'oc']
-			]));
-		$statement = $this->getMockBuilder(Statement::class)->getMock();
-		$statement->expects($this->once())->method('fetchColumn')->willReturn('dynamic');
-		$statement->expects($this->once())->method('fetchAll')->willReturn(
+			]);
+		$result = $this->createMock(Result::class);
+		$result->expects($this->once())->method('fetchOne')->willReturn('dynamic');
+		$result->expects($this->once())->method('fetchAllAssociative')->willReturn(
 			[
 				['name' => 'oc_users', 'format' => 'compressed'], ['name' => 'oc_accounts', 'format' => 'compressed']
 			]
 		);
-		$this->connection->expects($this->exactly(2))->method('executeQuery')->willReturn($statement);
+		$this->connection->expects($this->exactly(2))->method('executeQuery')->willReturn($result);
+
+		$statement = $this->createMock(Statement::class);
 		$this->connection->expects($this->exactly(2))->method('prepare')->willReturn($statement);
 
 		$command = new RestoreDefaultRowFormat(

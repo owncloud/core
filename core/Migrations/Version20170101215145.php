@@ -4,6 +4,7 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -18,7 +19,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'notnull' => true,
 					'autoincrement' => 1,
@@ -28,7 +29,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'uid',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 64,
 					'default' => '',
@@ -38,7 +39,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'login_name',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 64,
 					'default' => '',
@@ -48,7 +49,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'name',
-				Type::TEXT,
+				Types::TEXT,
 				[
 					'default' => '',
 					'notnull' => true
@@ -57,7 +58,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'token',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 200,
 					'default' => '',
@@ -67,7 +68,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'type',
-				Type::SMALLINT,
+				Types::SMALLINT,
 				[
 					'unsigned' => true,
 					'default' => 0,
@@ -77,7 +78,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'last_activity',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'default' => 0,
@@ -87,7 +88,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'last_check',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'default' => 0,
@@ -97,7 +98,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$authTokenTable->addColumn(
 				'password',
-				Type::TEXT,
+				Types::TEXT,
 				[
 					'default' => null,
 					'notnull' => false
@@ -116,7 +117,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$systemTagGroupTable->addColumn(
 				'gid',
-				Type::STRING,
+				Types::STRING,
 				[
 					'length' => 255,
 					'notnull' => true
@@ -125,7 +126,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			$systemTagGroupTable->addColumn(
 				'systemtagid',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'unsigned' => true,
 					'default' => 0,
@@ -142,7 +143,7 @@ class Version20170101215145 implements ISchemaMigration {
 			if (!$jobsTable->hasColumn('last_checked')) {
 				$jobsTable->addColumn(
 					'last_checked',
-					Type::INTEGER,
+					Types::INTEGER,
 					[
 						'default' => 0,
 						'notnull' => false
@@ -153,7 +154,7 @@ class Version20170101215145 implements ISchemaMigration {
 			if (!$jobsTable->hasColumn('reserved_at')) {
 				$jobsTable->addColumn(
 					'reserved_at',
-					Type::INTEGER,
+					Types::INTEGER,
 					[
 						'default' => 0,
 						'notnull' => false
@@ -168,7 +169,7 @@ class Version20170101215145 implements ISchemaMigration {
 			if (!$calendarObjectsTable->hasColumn('classification')) {
 				$calendarObjectsTable->addColumn(
 					'classification',
-					Type::INTEGER,
+					Types::INTEGER,
 					[
 						'default' => 0,
 						'notnull' => false
@@ -184,12 +185,12 @@ class Version20170101215145 implements ISchemaMigration {
 
 			if ($calendarObjectsTable->hasColumn('firstoccurence')) {
 				$firstOccurence = $calendarObjectsTable->getColumn('firstoccurence');
-				$firstOccurence->setType(Type::getType(Type::BIGINT));
+				$firstOccurence->setType(Type::getType(Types::BIGINT));
 			}
 
 			if ($calendarObjectsTable->hasColumn('lastoccurence')) {
 				$lastOccurence = $calendarObjectsTable->getColumn('lastoccurence');
-				$lastOccurence->setType(Type::getType(Type::BIGINT));
+				$lastOccurence->setType(Type::getType(Types::BIGINT));
 			}
 		}
 

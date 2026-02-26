@@ -408,7 +408,7 @@ class AllConfig implements IConfig {
 		$data = [];
 		$query = 'SELECT `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?';
 		$result = $this->connection->executeQuery($query, [$userId]);
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$appId = $row['appid'];
 			if (!isset($data[$appId])) {
 				$data[$appId] = [];
@@ -453,7 +453,7 @@ class AllConfig implements IConfig {
 				'AND `userid` IN (' . $placeholders . ')';
 			$result = $this->connection->executeQuery($query, $queryParams);
 
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$userValues[$row['userid']] = $row['configvalue'];
 			}
 		}
@@ -509,11 +509,11 @@ class AllConfig implements IConfig {
 		$query = $queryBuilder->execute();
 
 		$userIDs = [];
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$userIDs[] = $row['userid'];
 		}
 
-		$query->closeCursor();
+		$query->free();
 
 		return $userIDs;
 	}

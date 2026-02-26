@@ -22,7 +22,7 @@
 namespace OCA\DAV\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCA\DAV\DAV\AbstractCustomPropertiesBackend;
 use OCP\Migration\ISchemaMigration;
 
@@ -43,7 +43,7 @@ class Version20200427142541 implements ISchemaMigration {
 			if ($table->hasColumn('propertytype') === false) {
 				$table->addColumn(
 					'propertytype',
-					Type::SMALLINT,
+					Types::SMALLINT,
 					[
 						'notnull' => true,
 						'default' => AbstractCustomPropertiesBackend::VT_STRING,

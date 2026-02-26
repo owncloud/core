@@ -187,8 +187,8 @@ class AccountMapper extends Mapper {
 		}
 
 		$result = $qb->execute();
-		$data = $result->fetchAll();
-		$result->closeCursor();
+		$data = $result->fetchAllAssociative();
+		$result->free();
 
 		$return = [];
 		foreach ($data as $d) {
@@ -208,8 +208,8 @@ class AccountMapper extends Mapper {
 		}
 
 		$result = $qb->execute();
-		$data = $result->fetch();
-		$result->closeCursor();
+		$data = $result->fetchAssociative();
+		$result->free();
 
 		return (int) $data['count'];
 	}
@@ -245,14 +245,14 @@ class AccountMapper extends Mapper {
 		}
 
 		$stmt = $qb->execute();
-		while ($row = $stmt->fetch()) {
+		while ($row = $stmt->fetchAssociative()) {
 			$return = $callback($this->mapRowToEntity($row));
 			if ($return === false) {
 				break;
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 	}
 
 	/**
@@ -284,8 +284,8 @@ class AccountMapper extends Mapper {
 		}
 
 		$stmt = $qb->execute();
-		$rows = $stmt->fetchAll(\PDO::FETCH_COLUMN);
-		$stmt->closeCursor();
+		$rows = $stmt->fetchFirstColumn();
+		$stmt->free();
 		return $rows;
 	}
 }

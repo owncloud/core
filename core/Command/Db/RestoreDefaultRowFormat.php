@@ -21,7 +21,7 @@
 
 namespace OC\Core\Command\Db;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
@@ -52,7 +52,7 @@ class RestoreDefaultRowFormat extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		if (!$this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$output->writeln("<error>This command is only valid for MySQL/MariaDB databases.</error>");
 			return 1;
 		}
@@ -61,7 +61,7 @@ class RestoreDefaultRowFormat extends Command {
 		$dbName = $this->config->getSystemValue("dbname");
 
 		$defaultRowFormatStatement = $this->connection->executeQuery("SELECT @@GLOBAL.innodb_default_row_format as 'default'");
-		$defaultFormat = $defaultRowFormatStatement->fetchColumn();
+		$defaultFormat = $defaultRowFormatStatement->fetchOne();
 
 		/**
 		 * Fetch tables with the row_format not matching default.
@@ -74,7 +74,7 @@ class RestoreDefaultRowFormat extends Command {
 			"	AND ROW_FORMAT != ?",
 			[$dbName, $dbPrefix.'%', $defaultFormat]
 		);
-		$tables = $tableSelectStatement->fetchAll();
+		$tables = $tableSelectStatement->fetchAllAssociative();
 		$tablesCount = \count($tables);
 
 		$output->writeln("<info>Found $tablesCount tables to convert</info>");
@@ -86,7 +86,7 @@ class RestoreDefaultRowFormat extends Command {
 			$output->writeln("<info>Converting table '$tableName' with row format '$tableRowFormat' to default value '$defaultFormat'</info>");
 
 			$alterTableQuery = $this->connection->prepare('ALTER TABLE `' . $tableName . '` ROW_FORMAT=DEFAULT;');
-			$alterTableQuery->execute();
+			$alterTableQuery->executeStatement();
 		}
 
 		$output->writeln("<info>Conversion done</info>");

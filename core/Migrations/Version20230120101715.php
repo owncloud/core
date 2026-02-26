@@ -22,7 +22,7 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -34,7 +34,7 @@ class Version20230120101715 implements ISchemaMigration {
 		$accountsTable = $schema->getTable("{$prefix}accounts");
 			  
 		if (!$accountsTable->hasColumn('creation_time')) {
-			$accountsTable->addColumn('creation_time', Type::INTEGER, [
+			$accountsTable->addColumn('creation_time', Types::INTEGER, [
 					'notnull' => true,
 					'length' => 32,
 					'default' => 0,

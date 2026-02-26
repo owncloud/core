@@ -162,9 +162,9 @@ class Manager implements ICommentsManager {
 				->setParameter('id', $id);
 
 		$resultStatement = $query->execute();
-		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
-		$resultStatement->closeCursor();
-		$children = \intval($data[0]);
+		$data = $resultStatement->fetchNumeric();
+		$resultStatement->free();
+		$children = (int)$data[0];
 
 		$comment = $this->get($id);
 		$comment->setChildrenCount($children);
@@ -239,8 +239,8 @@ class Manager implements ICommentsManager {
 			->setParameter('id', $id, IQueryBuilder::PARAM_INT)
 			->execute();
 
-		$data = $resultStatement->fetch();
-		$resultStatement->closeCursor();
+		$data = $resultStatement->fetchAssociative();
+		$resultStatement->free();
 		if (!$data) {
 			throw new NotFoundException();
 		}
@@ -299,7 +299,7 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		while ($data = $resultStatement->fetch()) {
+		while ($data = $resultStatement->fetchAssociative()) {
 			$comment = new Comment($this->normalizeDatabaseData($data));
 			$this->cache($comment);
 			$tree['replies'][] = [
@@ -307,7 +307,7 @@ class Manager implements ICommentsManager {
 				'replies' => []
 			];
 		}
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 
 		return $tree;
 	}
@@ -358,12 +358,12 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		while ($data = $resultStatement->fetch()) {
+		while ($data = $resultStatement->fetchAssociative()) {
 			$comment = new Comment($this->normalizeDatabaseData($data));
 			$this->cache($comment);
 			$comments[] = $comment;
 		}
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 
 		return $comments;
 	}
@@ -410,10 +410,10 @@ class Manager implements ICommentsManager {
 
 			$cursor = $qbMain->execute();
 
-			while ($data = $cursor->fetch()) {
+			while ($data = $cursor->fetchAssociative()) {
 				$unreadCountsForNodes[$data['id']] = \intval($data['count']);
 			}
-			$cursor->closeCursor();
+			$cursor->free();
 		}
 
 		return $unreadCountsForNodes;
@@ -443,9 +443,9 @@ class Manager implements ICommentsManager {
 		}
 
 		$resultStatement = $query->execute();
-		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
-		$resultStatement->closeCursor();
-		return \intval($data[0]);
+		$data = $resultStatement->fetchNumeric();
+		$resultStatement->free();
+		return (int)$data[0];
 	}
 
 	/**
@@ -788,8 +788,8 @@ class Manager implements ICommentsManager {
 			->setParameter('object_id', $objectId, IQueryBuilder::PARAM_STR)
 			->execute();
 
-		$data = $resultStatement->fetch();
-		$resultStatement->closeCursor();
+		$data = $resultStatement->fetchAssociative();
+		$resultStatement->free();
 		if (!$data || $data['marker_datetime'] === null) {
 			return null;
 		}

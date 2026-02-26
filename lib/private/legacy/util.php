@@ -967,7 +967,8 @@ class OC_Util {
 			// check PostgreSQL version
 			try {
 				$result = \OC::$server->getDatabaseConnection()->executeQuery('SHOW SERVER_VERSION');
-				$data = $result->fetch();
+				$data = $result->fetchAssociative();
+				$result->free();
 				if (isset($data['server_version'])) {
 					$version = $data['server_version'];
 					if (\version_compare($version, '9.0.0', '<')) {
@@ -977,7 +978,7 @@ class OC_Util {
 						];
 					}
 				}
-			} catch (\Doctrine\DBAL\DBALException $e) {
+			} catch (\Doctrine\DBAL\Exception $e) {
 				$logger = \OC::$server->getLogger();
 				$logger->warning('Error occurred while checking PostgreSQL version, assuming >= 9');
 				$logger->logException($e);

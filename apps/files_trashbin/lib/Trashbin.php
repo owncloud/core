@@ -145,7 +145,7 @@ class Trashbin {
 		$result = $connection->executeQuery('SELECT `id`, `timestamp`, `location`'
 			. ' FROM `*PREFIX*files_trash` WHERE `user`=?', [$user]);
 		$array = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			if (isset($array[$row['id']])) {
 				$array[$row['id']][$row['timestamp']] = $row['location'];
 			} else {
@@ -166,12 +166,12 @@ class Trashbin {
 	public static function getLocation($user, $filename, $timestamp) {
 		$connection = \OC::$server->getDatabaseConnection();
 		$result = $connection->executeQuery('SELECT `location` FROM `*PREFIX*files_trash`'
-			. ' WHERE `user`=? AND `id`=? AND `timestamp`=?', [$user, $filename, $timestamp])->fetchAll();
+			. ' WHERE `user`=? AND `id`=? AND `timestamp`=?', [$user, $filename, $timestamp])->fetchAllAssociative();
 		if (isset($result[0]['location'])) {
 			return $result[0]['location'];
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**

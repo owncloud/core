@@ -124,8 +124,8 @@ class RemoveStorageCache extends Command {
 			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storage_id, IQueryBuilder::PARAM_INT)))
 			->execute();
 
-		$row = $result->fetch();
-		$result->closeCursor();
+		$row = $result->fetchAssociative();
+		$result->free();
 
 		return (int)$row['count'];
 	}
@@ -147,13 +147,13 @@ class RemoveStorageCache extends Command {
 			->execute();
 
 		$maxId = 0;
-		while (($row = $result->fetch()) !== false) {
+		while (($row = $result->fetchAssociative()) !== false) {
 			if ($maxId < (int)$row['fileid']) {
 				$maxId = (int)$row['fileid'];
 			}
 		}
 
-		$result->closeCursor();
+		$result->free();
 		return $maxId;
 	}
 
@@ -184,10 +184,10 @@ class RemoveStorageCache extends Command {
 
 		$table = new Table($output);
 		$table->setHeaders(['storage-id', 'name', 'file_count']);
-		while (($row = $result->fetch()) !== false) {
+		while (($row = $result->fetchAssociative()) !== false) {
 			$table->addRow([$row['storage'], $row['id'] ?? 'NULL', $row['count']]);
 		}
 		$table->render();
-		$result->closeCursor();
+		$result->free();
 	}
 }

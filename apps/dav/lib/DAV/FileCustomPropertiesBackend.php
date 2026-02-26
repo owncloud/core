@@ -114,9 +114,8 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			}
 
 			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
-			$statement->execute([$fileId]);
+			$statement->executeStatement([$fileId]);
 			$this->offsetUnset($fileId);
-			$statement->closeCursor();
 		}
 	}
 
@@ -258,12 +257,12 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 				[$chunk, $requestedProperties],
 				[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
 			);
-			while ($row = $result->fetch()) {
+			while ($row = $result->fetchAssociative()) {
 				$props = $this->offsetGet($row['fileid']) ?? [];
 				$props[$row['propertyname']] = $this->decodeValue($row['propertyvalue'], (int) $row['propertytype']);
 				$this->offsetSet($row['fileid'], $props);
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 	}
 

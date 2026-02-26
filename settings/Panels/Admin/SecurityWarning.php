@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use Doctrine\DBAL\TransactionIsolationLevel;
 use OC\Lock\NoopLockingProvider;
 use OC\Settings\Panels\Helper;
 use OCP\IConfig;
@@ -75,9 +76,9 @@ class SecurityWarning implements ISettings {
 			if ($this->dbconnection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
 				$template->assign('invalidTransactionIsolationLevel', false);
 			} else {
-				$template->assign('invalidTransactionIsolationLevel', $this->dbconnection->getTransactionIsolation() !== \Doctrine\DBAL\Connection::TRANSACTION_READ_COMMITTED);
+				$template->assign('invalidTransactionIsolationLevel', $this->dbconnection->getTransactionIsolation() !== TransactionIsolationLevel::READ_COMMITTED);
 			}
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 			// ignore
 			$template->assign('invalidTransactionIsolationLevel', false);
 		}

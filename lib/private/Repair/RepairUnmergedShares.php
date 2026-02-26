@@ -135,7 +135,9 @@ class RepairUnmergedShares implements IRepairStep {
 		$query->setParameter('shareType', $shareType);
 		$query->setParameter('itemTypes', ['file', 'folder'], IQueryBuilder::PARAM_STR_ARRAY);
 
-		$shares = $query->execute()->fetchAll();
+		$result = $query->execute();
+		$shares = $result->fetchAllAssociative();
+		$result->free();
 
 		// group by item_source
 		foreach ($shares as $share) {

@@ -102,7 +102,7 @@ class CleanupRemoteStorages extends Command {
 				)
 			);
 		$result = $queryBuilder->execute();
-		$count = $result->fetchColumn();
+		$count = $result->fetchOne();
 		$output->writeln("$count files can be deleted for storage $numericId");
 	}
 
@@ -161,7 +161,7 @@ class CleanupRemoteStorages extends Command {
 
 		$remoteStorages = [];
 
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$remoteStorages[$row['id']] = $row['numeric_id'];
 		}
 
@@ -176,7 +176,7 @@ class CleanupRemoteStorages extends Command {
 
 		$remoteShareIds = [];
 
-		while ($row = $query->fetch()) {
+		while ($row = $query->fetchAssociative()) {
 			$remoteShareIds[$row['id']] = 'shared::' . \md5($row['share_token'] . '@' . $row['remote']);
 		}
 

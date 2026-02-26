@@ -24,9 +24,9 @@ class ManagerTest extends TestCase {
 
 		$this->dbConn = \OC::$server->getDatabaseConnection();
 		$sql = $this->dbConn->getDatabasePlatform()->getTruncateTableSQL('`*PREFIX*comments`');
-		$this->dbConn->prepare($sql)->execute();
+		$this->dbConn->prepare($sql)->executeStatement();
 		$sql = $this->dbConn->getDatabasePlatform()->getTruncateTableSQL('`*PREFIX*comments_read_markers`');
-		$this->dbConn->prepare($sql)->execute();
+		$this->dbConn->prepare($sql)->executeStatement();
 	}
 
 	public function tearDown(): void {

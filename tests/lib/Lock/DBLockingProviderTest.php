@@ -21,7 +21,7 @@
 
 namespace Test\Lock;
 
-use Doctrine\DBAL\Driver\AbstractDriverException;
+use Doctrine\DBAL\Driver\AbstractException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Lock\DBLockingProvider;
 use OCP\IDBConnection;
@@ -102,11 +102,11 @@ class DBLockingProviderTest extends LockingProvider {
 	 */
 	public function testInitLockFieldUniqueConstraintViolationException() {
 		$logger = $this->createMock(ILogger::class);
-		$driverExceptionMock = $this->createMock(AbstractDriverException::class);
+		$driverExceptionMock = $this->createMock(AbstractException::class);
 
 		$conn = $this->createMock(IDBConnection::class);
 		$conn->method('insertIfNotExist')->will($this->throwException(
-			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+			new UniqueConstraintViolationException($driverExceptionMock, null)
 		));
 
 		$dbLockProv = new DBLockingProvider($conn, $logger, $this->timeFactory, 3600);
@@ -117,9 +117,9 @@ class DBLockingProviderTest extends LockingProvider {
 
 	private function getLockEntries() {
 		$query = $this->connection->prepare('SELECT * FROM `*PREFIX*file_locks`');
-		$query->execute();
-		$rows = $query->fetchAll();
-		$query->closeCursor();
+		$result = $query->executeQuery();
+		$rows = $result->fetchAllAssociative();
+		$result->free();
 		return $rows;
 	}
 

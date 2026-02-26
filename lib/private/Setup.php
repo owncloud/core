@@ -350,12 +350,14 @@ class Setup {
 			// apply necessary migrations
 			$dbSetup->runMigrations();
 		} catch (\OC\DatabaseSetupException $e) {
+			$this->logger->logException($e);
 			$error[] = [
 				'error' => $e->getMessage(),
 				'hint' => $e->getHint()
 			];
 			return($error);
 		} catch (Exception $e) {
+			$this->logger->logException($e);
 			$error[] = [
 				'error' => 'Error while trying to create admin user: ' . $e->getMessage(),
 				'hint' => ''

@@ -23,7 +23,7 @@
 namespace OC\DB;
 
 use OCP\IDBConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 
 /**
@@ -33,8 +33,8 @@ class MySqlTools {
 	private function detectBarracuda(IDBConnection $connection) {
 		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
 			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");
-			$rows = $result->fetch();
-			$result->closeCursor();
+			$rows = $result->fetchAssociative();
+			$result->free();
 			if ($rows === false) {
 				return false;
 			}

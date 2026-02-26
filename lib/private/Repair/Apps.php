@@ -22,7 +22,7 @@
 namespace OC\Repair;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OC\RepairException;
 use OC_App;
 use OCP\App\AppAlreadyInstalledException;
@@ -399,7 +399,7 @@ class Apps implements IRepairStep {
 			if (!$jobsTable->hasColumn('last_checked')) {
 				$jobsTable->addColumn(
 					'last_checked',
-					Type::INTEGER,
+					Types::INTEGER,
 					[
 						'default' => 0,
 						'notnull' => false
@@ -410,7 +410,7 @@ class Apps implements IRepairStep {
 			if (!$jobsTable->hasColumn('reserved_at')) {
 				$jobsTable->addColumn(
 					'reserved_at',
-					Type::INTEGER,
+					Types::INTEGER,
 					[
 						'default' => 0,
 						'notnull' => false
@@ -419,7 +419,7 @@ class Apps implements IRepairStep {
 			}
 
 			if (!$jobsTable->hasColumn('execution_duration')) {
-				$jobsTable->addColumn('execution_duration', Type::INTEGER, [
+				$jobsTable->addColumn('execution_duration', Types::INTEGER, [
 					'notnull' => true,
 					'length' => 5,
 					'default' => -1,

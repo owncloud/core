@@ -158,7 +158,7 @@ class Manager {
 					(`remote`, `share_token`, `password`, `name`, `owner`, `user`, `mountpoint`, `mountpoint_hash`, `accepted`, `remote_id`)
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$query->execute([$remote, $token, $password, $name, $owner, $user, $mountPoint, $hash, $accepted, $remoteId]);
+		$query->executeStatement([$remote, $token, $password, $name, $owner, $user, $mountPoint, $hash, $accepted, $remoteId]);
 
 		$options = [
 			'remote' => $remote,
@@ -181,9 +181,11 @@ class Manager {
 			SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
 			FROM  `*PREFIX*share_external`
 			WHERE `id` = ? AND `user` = ?');
-		$result = $getShare->execute([$id, $this->uid]);
+		$result = $getShare->executeQuery([$id, $this->uid]);
+		$row = $result->fetchAssociative();
+		$result->free();
 
-		return $result ? $getShare->fetch() : false;
+		return $row;
 	}
 
 	/**
@@ -253,7 +255,7 @@ class Manager {
 					`mountpoint` = ?,
 					`mountpoint_hash` = ?
 				WHERE `id` = ? AND `user` = ?');
-			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
+			$acceptShare->executeStatement([1, $mountPoint, $hash, $id, $this->uid]);
 
 			$fileId = $this->getShareFileId($share, $mountPoint);
 
@@ -295,7 +297,7 @@ class Manager {
 		if ($share) {
 			$removeShare = $this->connection->prepare('
 				DELETE FROM `*PREFIX*share_external` WHERE `id` = ? AND `user` = ?');
-			$removeShare->execute([$id, $this->uid]);
+			$removeShare->executeStatement([$id, $this->uid]);
 
 			$this->eventDispatcher->dispatch(
 				new DeclineShare($share),
@@ -378,7 +380,7 @@ class Manager {
 			AND `user` = ?
 		');
 		try {
-			$result = (bool)$query->execute([$target, $targetHash, $sourceHash, $this->uid]);
+			$result = (bool)$query->executeStatement([$target, $targetHash, $sourceHash, $this->uid]);
 		} catch (UniqueConstraintViolationException $e) {
 			$result = false;
 		}
@@ -417,25 +419,23 @@ class Manager {
 			SELECT `remote`, `share_token`, `remote_id`
 			FROM  `*PREFIX*share_external`
 			WHERE `mountpoint_hash` = ? AND `user` = ?');
-		$result = $getShare->execute([$hash, $this->uid]);
+		$result = $getShare->executeQuery([$hash, $this->uid]);
 
-		if ($result) {
-			$share = $getShare->fetch();
-			if ($share !== false) {
-				$this->eventDispatcher->dispatch(
-					new DeclineShare($share),
-					DeclineShare::class
-				);
-			}
+		$share = $result->fetchAssociative();
+		$result->free();
+		if ($share !== false) {
+			$this->eventDispatcher->dispatch(
+				new DeclineShare($share),
+				DeclineShare::class
+			);
 		}
-		$getShare->closeCursor();
 
 		$query = $this->connection->prepare('
 			DELETE FROM `*PREFIX*share_external`
 			WHERE `mountpoint_hash` = ?
 			AND `user` = ?
 		');
-		$result = (bool)$query->execute([$hash, $this->uid]);
+		$result = (bool)$query->executeStatement([$hash, $this->uid]);
 
 		if ($result) {
 			$this->removeReShares($id);
@@ -479,23 +479,22 @@ class Manager {
 			SELECT `remote`, `share_token`, `remote_id`
 			FROM  `*PREFIX*share_external`
 			WHERE `user` = ?');
-		$result = $getShare->execute([$uid]);
+		$result = $getShare->executeQuery([$uid]);
 
-		if ($result) {
-			$shares = $getShare->fetchAll();
-			foreach ($shares as $share) {
-				$this->eventDispatcher->dispatch(
-					new DeclineShare($share),
-					DeclineShare::class
-				);
-			}
+		$shares = $result->fetchAllAssociative();
+		foreach ($shares as $share) {
+			$this->eventDispatcher->dispatch(
+				new DeclineShare($share),
+				DeclineShare::class
+			);
 		}
+		$result->free();
 
 		$query = $this->connection->prepare('
 			DELETE FROM `*PREFIX*share_external`
 			WHERE `user` = ?
 		');
-		return (bool)$query->execute([$uid]);
+		return (bool)$query->executeStatement([$uid]);
 	}
 
 	/**
@@ -536,9 +535,11 @@ class Manager {
 		$query .= ' ORDER BY `id` ASC';
 
 		$shares = $this->connection->prepare($query);
-		$result = $shares->execute($parameters);
+		$result = $shares->executeQuery($parameters);
+		$row = $result->fetchAllAssociative();
+		$result->free();
 
-		return $result ? $shares->fetchAll() : [];
+		return $row ?: [];
 	}
 
 	/**

@@ -2,7 +2,7 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -12,51 +12,51 @@ class Version20180607072706 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->createTable("{$prefix}persistent_locks");
-		$table->addColumn('id', Type::BIGINT, [
+		$table->addColumn('id', Types::BIGINT, [
 			'autoincrement' => true,
 			'unsigned' => true,
 			'notnull' => true,
 		]);
-		$table->addColumn('file_id', Type::BIGINT, [
+		$table->addColumn('file_id', Types::BIGINT, [
 			'notnull' => true,
 			'length' => 20,
 			'comment' => 'FK to fileid in table oc_file_cache'
 		]);
-		$table->addColumn('owner', Type::STRING, [
+		$table->addColumn('owner', Types::STRING, [
 			'notnull' => false,
 			'length' => 100,
 			'comment' => 'owner of the lock - just a human readable string'
 		]);
-		$table->addColumn('timeout', Type::INTEGER, [
+		$table->addColumn('timeout', Types::INTEGER, [
 			'notnull' => true,
 			'unsigned' => true,
 			'comment' => 'timestamp when the lock expires'
 		]);
-		$table->addColumn('created_at', Type::INTEGER, [
+		$table->addColumn('created_at', Types::INTEGER, [
 			'notnull' => true,
 			'unsigned' => true,
 			'comment' => 'timestamp when the lock was created'
 		]);
-		$table->addColumn('token', Type::STRING, [
+		$table->addColumn('token', Types::STRING, [
 			'notnull' => true,
 			'length' => 1024,
 			'comment' => 'uuid for webdav locks - 1024 random chars for WOPI locks'
 		]);
-		$table->addColumn('token_hash', Type::STRING, [
+		$table->addColumn('token_hash', Types::STRING, [
 			'notnull' => true,
 			'length' => 32,
 			'comment' => 'md5(token)'
 		]);
 		// mysql specific
-		$table->addColumn('scope', Type::SMALLINT, [
+		$table->addColumn('scope', Types::SMALLINT, [
 			'notnull' => true,
 			'comment' => '1 - exclusive, 2 - shared'
 		]);
-		$table->addColumn('depth', Type::SMALLINT, [
+		$table->addColumn('depth', Types::SMALLINT, [
 			'notnull' => true,
 			'comment' => '0, 1 or infinite'
 		]);
-		$table->addColumn('owner_account_id', Type::BIGINT, [
+		$table->addColumn('owner_account_id', Types::BIGINT, [
 			'notnull' => false,
 			'unsigned' => true,
 			'length' => 20,

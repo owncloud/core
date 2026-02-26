@@ -164,7 +164,9 @@ class Loader implements IMimeTypeLoader {
 					$fetch->createNamedParameter($mimetype)
 				)
 			);
-		$row = $fetch->execute()->fetch();
+		$r = $fetch->execute();
+		$row = $r->fetchAssociative();
+		$r->free();
 
 		// update cache
 		$this->memcache->set(self::CACHE_PREFIX_FOR_ID . $row['id'], $mimetype);
@@ -224,7 +226,7 @@ class Loader implements IMimeTypeLoader {
 		$result = $qb->execute();
 
 		$id = null;
-		if (($row = $result->fetch()) !== false) {
+		if (($row = $result->fetchAssociative()) !== false) {
 			$id = $row['id'];
 
 			// update cache
@@ -235,7 +237,7 @@ class Loader implements IMimeTypeLoader {
 			$this->mimetypes[$row['id']] = $row['mimetype'];
 			$this->mimetypeIds[$row['mimetype']] = $row['id'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $id;
 	}
@@ -258,7 +260,7 @@ class Loader implements IMimeTypeLoader {
 		$result = $qb->execute();
 
 		$mimetype = null;
-		if (($row = $result->fetch()) !== false) {
+		if (($row = $result->fetchAssociative()) !== false) {
 			$mimetype = $row['mimetype'];
 
 			// update cache
@@ -269,7 +271,7 @@ class Loader implements IMimeTypeLoader {
 			$this->mimetypes[$row['id']] = $row['mimetype'];
 			$this->mimetypeIds[$row['mimetype']] = $row['id'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $mimetype;
 	}

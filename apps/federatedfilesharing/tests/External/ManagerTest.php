@@ -21,7 +21,7 @@
 
 namespace OCA\FederatedFileSharing\Tests\External;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use OC\Files\Cache\Cache;
 use OC\Files\Mount\Manager as MountManager;
 use OC\Files\Storage\Storage;
@@ -74,9 +74,11 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->expects($this->never())
 			->method('dispatch');
 
-		$statement = $this->createMock(Statement::class);
-		$statement->method('execute')->willReturnOnConsecutiveCalls(true, false);
-		$statement->method('fetch')->willReturn(false);
+		$statement = $this->createMock(\Doctrine\DBAL\Statement::class);
+		$result = $this->createMock(Result::class);
+		$statement->method('executeQuery')->willReturn($result);
+		$result->method('fetchAssociative')->willReturn(false);
+
 		$this->connection->method('prepare')->willReturn($statement);
 
 		$cache = $this->createMock(Cache::class);

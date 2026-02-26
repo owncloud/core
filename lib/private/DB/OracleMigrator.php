@@ -23,6 +23,7 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Index;
@@ -118,10 +119,10 @@ class OracleMigrator extends Migrator {
 				\array_map(function (Index $index) {
 					return $this->quoteIndex($index);
 				}, $table->getIndexes()),
+				[],
 				\array_map(function (ForeignKeyConstraint $fck) {
 					return $this->quoteForeignKeyConstraint($fck);
 				}, $table->getForeignKeys()),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->newTables);
@@ -131,8 +132,8 @@ class OracleMigrator extends Migrator {
 				$this->connection->quoteIdentifier($table->getName()),
 				$table->getColumns(),
 				$table->getIndexes(),
+				$table->getUniqueConstraints(),
 				$table->getForeignKeys(),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->removedTables);
@@ -216,7 +217,11 @@ class OracleMigrator extends Migrator {
 		return $script;
 	}
 
-	protected function getFilterExpression() {
-		return '/^"' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+	public function filterSchemaAsset($asset): bool {
+		if ($asset instanceof AbstractAsset) {
+			$asset = $asset->getName();
+		}
+		$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+		return str_starts_with($asset, "\"$prefix");
 	}
 }

@@ -100,8 +100,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 			->from('filecache')
 			->where($qb->expr()->eq('fileid', $qb->createNamedParameter($fileId)));
 		$results = $qb->execute();
-		$result = $results->fetch();
-		$results->closeCursor();
+		$result = $results->fetchAssociative();
+		$results->free();
 		return $result;
 	}
 

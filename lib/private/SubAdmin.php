@@ -133,13 +133,13 @@ class SubAdmin extends PublicEmitter {
 			->execute();
 
 		$groups = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$group = $this->groupManager->get($row['gid']);
 			if ($group !== null) {
 				$groups[] = $group;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $groups;
 	}
@@ -158,13 +158,13 @@ class SubAdmin extends PublicEmitter {
 			->execute();
 
 		$users = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$user = $this->userManager->get($row['uid']);
 			if ($user !== null) {
 				$users[] = $user;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $users;
 	}
@@ -181,7 +181,7 @@ class SubAdmin extends PublicEmitter {
 			->execute();
 
 		$subadmins = [];
-		while ($row = $result->fetch()) {
+		while ($row = $result->fetchAssociative()) {
 			$user = $this->userManager->get($row['uid']);
 			$group = $this->groupManager->get($row['gid']);
 			if ($user !== null && $group !== null) {
@@ -191,7 +191,7 @@ class SubAdmin extends PublicEmitter {
 				];
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $subadmins;
 	}
@@ -214,8 +214,8 @@ class SubAdmin extends PublicEmitter {
 			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
 			->execute();
 
-		$fetch =  $result->fetch();
-		$result->closeCursor();
+		$fetch =  $result->fetchAssociative();
+		$result->free();
 		$result = !empty($fetch) ? true : false;
 
 		return $result;
@@ -240,8 +240,8 @@ class SubAdmin extends PublicEmitter {
 			->setMaxResults(1)
 			->execute();
 
-		$isSubAdmin = $result->fetch();
-		$result->closeCursor();
+		$isSubAdmin = $result->fetchAssociative();
+		$result->free();
 
 		$result = $isSubAdmin === false ? false : true;
 

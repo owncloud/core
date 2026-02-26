@@ -24,6 +24,7 @@
 namespace OCA\Files_Sharing;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use OC\Cache\CappedMemoryCache;
 use OCP\IDBConnection;
 
@@ -55,10 +56,10 @@ class Migration {
 	 * upgrade from oC 8.2 to 9.0 with the new sharing
 	 */
 	public function removeReShares() {
-		$stmt = $this->getReShares();
+		$result = $this->getReShares();
 
 		$owners = [];
-		while ($share = $stmt->fetch()) {
+		while ($share = $result->fetchAssociative()) {
 			$this->shareCache[$share['id']] = $share;
 
 			$owners[$share['id']] = [
@@ -73,7 +74,7 @@ class Migration {
 			}
 		}
 
-		$stmt->closeCursor();
+		$result->free();
 
 		if (\count($owners)) {
 			$this->updateOwners($owners);
@@ -127,10 +128,9 @@ class Migration {
 	/**
 	 * Get $n re-shares from the database
 	 *
-	 * @param int $n The max number of shares to fetch
-	 * @return \Doctrine\DBAL\Driver\Statement
+	 * @return Result
 	 */
-	private function getReShares() {
+	private function getReShares(): Result {
 		$query = $this->connection->getQueryBuilder();
 		$query->select(['id', 'parent', 'uid_owner', 'share_type'])
 			->from($this->table)
@@ -191,8 +191,8 @@ class Migration {
 			->orderBy('id', 'asc')
 			->setMaxResults($n);
 		$result = $query->execute();
-		$shares = $result->fetchAll();
-		$result->closeCursor();
+		$shares = $result->fetchAllAssociative();
+		$result->free();
 
 		$ordered = [];
 		foreach ($shares as $share) {
@@ -214,8 +214,8 @@ class Migration {
 			->from($this->table)
 			->where($query->expr()->eq('id', $query->createNamedParameter($id)));
 		$result = $query->execute();
-		$share = $result->fetchAll();
-		$result->closeCursor();
+		$share = $result->fetchAllAssociative();
+		$result->free();
 
 		return $share[0];
 	}

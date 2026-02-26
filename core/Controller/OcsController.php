@@ -149,23 +149,22 @@ class OcsController extends \OCP\AppFramework\OCSController {
 
 		if ($key === null) {
 			$q = $this->dbConnection->prepare(self::SELECT_MULTIPLE_STMT);
-			$result = $q->execute([$user, $app]);
+			$result = $q->executeQuery([$user, $app]);
 		} else {
 			$key = $this->escape($key);
 			$q = $this->dbConnection->prepare(self::SELECT_SINGLE_STMT);
-			$result = $q->execute([$user, $app, $key]);
+			$result = $q->executeQuery([$user, $app, $key]);
 		}
 
 		$xml = [];
-		if ($result === true) {
-			while ($row = $q->fetch()) {
-				$data= [];
-				$data['key']=$row['key'];
-				$data['app']=$row['app'];
-				$data['value']=$row['value'];
-				$xml[] = $data;
-			}
+		while ($row = $result->fetchAssociative()) {
+			$data= [];
+			$data['key']=$row['key'];
+			$data['app']=$row['app'];
+			$data['value']=$row['value'];
+			$xml[] = $data;
 		}
+		$result->free();
 
 		return new Result($xml);
 	}
@@ -223,7 +222,7 @@ class OcsController extends \OCP\AppFramework\OCSController {
 
 		// delete in DB
 		$q = $this->dbConnection->prepare(self::DELETE_STMT);
-		$q->execute([$user, $app, $key]);
+		$q->executeStatement([$user, $app, $key]);
 
 		return new Result(null, 100);
 	}
