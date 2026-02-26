@@ -38,6 +38,7 @@ ownCloud admins and users.
 
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+* Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
 
@@ -54,6 +55,12 @@ ownCloud admins and users.
    With composer managing auto loading for a long time this is no longer necessary.
 
    https://github.com/owncloud/core/pull/41376
+
+* Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
+
+   The following have been updated: - doctrine/dbal (2.13.9 to 3.10.4)
+
+   https://github.com/owncloud/core/pull/41450
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
