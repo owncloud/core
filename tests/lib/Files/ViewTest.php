@@ -1615,10 +1615,10 @@ class ViewTest extends TestCase {
 		$defaultRootValue->setAccessible(true);
 		$oldRoot = $defaultRootValue->getValue();
 		$defaultView = new View('/foo/files');
-		$defaultRootValue->setValue($defaultView);
+		$defaultRootValue->setValue(null, $defaultView);
 		$view = new View($root);
 		$result = static::invokePrivate($view, 'shouldEmitHooks', [$path]);
-		$defaultRootValue->setValue($oldRoot);
+		$defaultRootValue->setValue(null, $oldRoot);
 		$this->assertEquals($shouldEmit, $result);
 	}
 
