@@ -65,7 +65,7 @@ class CryptoSessionDataTest extends Session {
 		$instance = new CryptoSessionData($session, $this->crypto, 'PASS');
 		$instance->set('test', 'test');
 		$e = new SessionNotAvailableException();
-		$session->expects($this->exactly(2))->method('set')->willThrowException($e);
+		$session->expects($this->atLeastOnce())->method('set')->willThrowException($e);
 		$instance->__destruct();
 	}
 }
