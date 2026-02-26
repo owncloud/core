@@ -136,7 +136,7 @@ class MDB2SchemaManager {
 	 * @return bool
 	 */
 	private function executeSchemaChange($schema) {
-		if (!$this->conn->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$this->conn->getDatabasePlatform() instanceof MySQLPlatform) {
 			$this->conn->beginTransaction();
 		}
 		foreach ($schema->toSql($this->conn->getDatabasePlatform()) as $sql) {

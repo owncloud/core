@@ -174,7 +174,7 @@ class Migrator {
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
-		if (!$connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
 			$connection->beginTransaction();
 		}
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
