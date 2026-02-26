@@ -213,11 +213,31 @@ abstract class Mapper {
 	 * @param array $params the parameters of the SQL query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
+	 * @return Result|int the result of the query
+	 * @throws Exception
+	 * @since 7.0.0
+	 * @deprecated 11.0.0 use executeQuery or executeStatement instead
+	 */
+	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
+		$selectOccurrence = \stripos($sql, 'SELECT');
+		if ($selectOccurrence !== false && $selectOccurrence < 10) {
+			return $this->executeQuery($sql, $params, $limit, $offset);
+		}
+		return $this->executeStatement($sql, $params, $limit, $offset);
+	}
+
+	/**
+	 * Executes a query and binds the parameters
+	 *
+	 * @param string $sql the SQL query
+	 * @param array $params the parameters of the SQL query
+	 * @param int $limit the maximum number of rows
+	 * @param int $offset from which row we want to start
 	 * @return Result the result of the query
 	 * @throws Exception
 	 * @since 11.0.0
 	 */
-	private function executeQuery($sql, array $params=[], $limit=null, $offset=null): Result {
+	protected function executeQuery($sql, array $params=[], $limit=null, $offset=null): Result {
 		$query = $this->db->prepare($sql, $limit, $offset);
 
 		if ($this->isAssocArray($params)) {
@@ -248,7 +268,7 @@ abstract class Mapper {
 	 * @throws Exception
 	 * @since 11.0.0
 	 */
-	private function executeStatement($sql, array $params=[], $limit=null, $offset=null): int {
+	protected function executeStatement($sql, array $params=[], $limit=null, $offset=null): int {
 		$query = $this->db->prepare($sql, $limit, $offset);
 
 		if ($this->isAssocArray($params)) {
