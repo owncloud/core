@@ -59,7 +59,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$this->iterators = [];
 		$this->fetchAt = 0;
 
-		$this->query->method('execute')->willReturn(true);
+		$this->query->method('execute')->willReturn($this->result);
 	}
 
 	/**
