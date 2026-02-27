@@ -74,6 +74,7 @@ class CreateSignKey extends Base {
 			$output->writeln('This user already has a signing key. Recreating the key will invalidate all existing signed urls.');
 
 			$helper = $this->getHelper('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $helper';
 			$question = new ConfirmationQuestion('Shall we re-create the signing key? (y/N)', false);
 
 			if (!$helper->ask($input, $output, $question)) {
