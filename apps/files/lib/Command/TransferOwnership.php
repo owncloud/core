@@ -197,6 +197,7 @@ class TransferOwnership extends Command {
 		if ($hasSkipped && !$input->getOption('accept-skipped-shares')) {
 			// ask (if possible) how to handle missing accounts. Disable the accounts by default.
 			$helper = $this->getHelper('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $helper';
 			$question = new ChoiceQuestion(
 				'There are user shares that cannot be transferred. Do you want to continue with the transfer and skip these shares?',
 				['yes', 'no'],

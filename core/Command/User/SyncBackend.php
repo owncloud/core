@@ -158,6 +158,7 @@ class SyncBackend extends Command {
 		} else {
 			// ask (if possible) how to handle missing accounts. Disable the accounts by default.
 			$helper = $this->getHelper('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $helper';
 			$question = new ChoiceQuestion(
 				'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
 				\array_merge(self::VALID_ACTIONS, ['ask later']),
@@ -427,6 +428,7 @@ class SyncBackend extends Command {
 					);
 
 					$helper = $this->getHelper('question');
+					'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $helper';
 					$question = new ChoiceQuestion(
 						'What do you want to do with their accounts? (removing the account will also remove its data)',
 						self::VALID_ACTIONS,
