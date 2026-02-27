@@ -66,7 +66,7 @@ class RemoveStorageCache extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if ($input->getOption('show-candidates')) {
 			$this->showCandidates($output);
 			return 0;
