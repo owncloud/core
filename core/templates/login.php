@@ -5,7 +5,6 @@ script('core', [
 	'visitortimezone',
 	'lostpassword',
 	'login',
-	'browser-update'
 ]);
 ?>
 
