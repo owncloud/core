@@ -68,10 +68,7 @@ config = {
             ],
             # Gather coverage for all databases except Oracle
             "coverage": True,
-            "databases": [
-                "mariadb:10.6",
-                "mariadb:10.11",
-            ],
+            "databases": [],
         },
         "slowDatabases": {
             "phpVersions": [

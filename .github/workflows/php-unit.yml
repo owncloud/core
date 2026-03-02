@@ -22,11 +22,16 @@ jobs:
           - php: "7.4"
             database: "mysql:8.0"
           - php: "7.4"
+            database: "mariadb:10.6"
+          - php: "7.4"
+            database: "mariadb:10.11"
+          - php: "7.4"
             database: "postgres:10.21"
 
     services:
       mysql:
-        image: ${{ startsWith(matrix.database,'mysql:') && matrix.database || '' }}
+        image: >-
+          ${{ (startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:')) && matrix.database || '' }}
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: owncloud
@@ -84,6 +89,7 @@ jobs:
         run: |
           DB_TYPE=${DB%:*}
           if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
+          if [ $DB_TYPE == "mariadb" ] ; then DB_TYPE="mysql"; fi
           install_cmd="maintenance:install -vvv \
             --database=${DB_TYPE} \
             --database-name=${DB_NAME} \
