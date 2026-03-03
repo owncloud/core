@@ -2,5 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - doctrine/dbal (2.13.9 to 3.10.4)
+- pimple/pimple (3.6.1 to 3.6.2)
 
 https://github.com/owncloud/core/pull/41450
+https://github.com/owncloud/core/pull/41477
