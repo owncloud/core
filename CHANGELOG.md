@@ -58,9 +58,11 @@ ownCloud admins and users.
 
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 
-   The following have been updated: - doctrine/dbal (2.13.9 to 3.10.4)
+   The following have been updated: - doctrine/dbal (2.13.9 to 3.10.4) -
+   pimple/pimple (3.6.1 to 3.6.2)
 
    https://github.com/owncloud/core/pull/41450
+   https://github.com/owncloud/core/pull/41477
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
