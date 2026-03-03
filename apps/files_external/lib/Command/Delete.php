@@ -99,6 +99,7 @@ class Delete extends Base {
 			$listCommand->listMounts(null, [$mount], $listInput, $output);
 
 			$questionHelper = $this->getHelper('question');
+			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $questionHelper';
 			$question = new ConfirmationQuestion('Delete this mount? [y/N] ', false);
 
 			if (!$questionHelper->ask($input, $output, $question)) {
