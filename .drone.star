@@ -2246,6 +2246,10 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
 def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = "fed"):
     return [
         installFederated(ctx, federatedServerVersion, db, dbSuffix),
+        if (federatedServerVersion == "10.9.1"):
+            phpVersion = 7.4
+        if (federatedServerVersion == "latest"):
+            phpVersion = 7.4
         configureFederated(phpVersion, logLevel, protocol),
     ]
 
@@ -2289,6 +2293,8 @@ def installFederated(ctx, federatedServerVersion, db, dbSuffix = "fed"):
 
     image = OC_CI_CORE
     if (federatedServerVersion == "10.9.1"):
+        image = OC_CI_CORE_OLD
+    if (federatedServerVersion == "latest"):
         image = OC_CI_CORE_OLD
 
     return {
