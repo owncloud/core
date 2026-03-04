@@ -2244,12 +2244,12 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
     }]
 
 def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = "fed"):
+    if (federatedServerVersion == "10.9.1"):
+        phpVersion = 7.4
+    if (federatedServerVersion == "latest"):
+        phpVersion = 7.4
     return [
         installFederated(ctx, federatedServerVersion, db, dbSuffix),
-        if (federatedServerVersion == "10.9.1"):
-            phpVersion = 7.4
-        if (federatedServerVersion == "latest"):
-            phpVersion = 7.4
         configureFederated(phpVersion, logLevel, protocol),
     ]
 
