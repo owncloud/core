@@ -68,7 +68,7 @@ config = {
                 DEFAULT_PHP_VERSION,
             ],
             # Gather coverage for all databases except Oracle
-            "coverage": True,
+            "coverage": False,
             "databases": [],
         },
         "slowDatabases": {
@@ -93,7 +93,7 @@ config = {
             "externalTypes": [
                 "samba",
             ],
-            "coverage": True,
+            "coverage": False,
             "extraCommandsBeforeTestRun": [
                 "ls -l /var/cache",
                 "mkdir /var/cache/samba",
@@ -113,7 +113,7 @@ config = {
                 "sftp",
                 "owncloud",
             ],
-            "coverage": True,
+            "coverage": False,
         },
     },
     "acceptance": {
@@ -922,7 +922,7 @@ def javascript(ctx, withCoverage):
         return pipelines
 
     default = {
-        "coverage": True,
+        "coverage": False,
         "logLevel": "2",
         "skip": False,
     }
@@ -1029,7 +1029,7 @@ def phpTests(ctx, testType, withCoverage):
             "mariadb:10.6",
             "mariadb:10.11",
         ],
-        "coverage": True,
+        "coverage": False,
         "includeKeyInMatrixName": False,
         "logLevel": "2",
         "cephS3": False,
@@ -1065,7 +1065,7 @@ def phpTests(ctx, testType, withCoverage):
             "postgres:10.21",
             "oracle",
         ],
-        "coverage": True,
+        "coverage": False,
         "includeKeyInMatrixName": False,
         "logLevel": "2",
         "cephS3": False,
