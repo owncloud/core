@@ -21,10 +21,12 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\AdminAppsSettingsPage;
+use Tests\Acceptance\Page\AdminAppsSettingsPage;
 
 require_once 'bootstrap.php';
 

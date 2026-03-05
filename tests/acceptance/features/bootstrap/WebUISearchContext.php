@@ -20,11 +20,13 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\FilesPage;
-use Page\SearchResultInOtherFoldersPage;
+use Tests\Acceptance\Page\FilesPage;
+use Tests\Acceptance\Page\SearchResultInOtherFoldersPage;
 
 require_once 'bootstrap.php';
 
