@@ -1014,6 +1014,16 @@ def javascript(ctx, withCoverage):
     if params["coverage"]:
         result["steps"].append(
             {
+                "name": "ntp-check",
+                "image": OC_CI_NODEJS % DEFAULT_NODEJS_VERSION,
+                "commands": [
+                    "apt install ntpsec-ntpdate",
+                    "ntpdig pool.ntp.org",
+                ],
+            },
+        )
+        result["steps"].append(
+            {
                 "name": "coverage-cache",
                 "image": PLUGINS_S3,
                 "settings": {
