@@ -1312,7 +1312,7 @@ def acceptance(ctx):
         "browsers": ["chrome"],
         "phpVersions": [DEFAULT_PHP_VERSION],
         "databases": ["mariadb:10.2"],
-        "federatedPhpVersion": DEFAULT_PHP_VERSION,
+        "federatedPhpVersion": 7.4,
         "federatedServerNeeded": False,
         "federatedDb": "",
         "filterTags": "",
