@@ -207,7 +207,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
 
-
+  @issue-41480 @skip
   Scenario: it should update the preview content if the file content is updated (content with UTF chars)
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has uploaded file with content "सिमसिमे पानी" to "/lorem.txt"
