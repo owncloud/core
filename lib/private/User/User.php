@@ -191,9 +191,9 @@ class User implements IUser {
 	 *
 	 * @return string
 	 */
-	public function getDisplayName() {
-		$displayName = $this->account->getDisplayName();
-		if (\strlen($displayName) === 0) {
+	public function getDisplayName(): string {
+		$displayName = $this->account->getDisplayName() ?? '';
+		if ($displayName === '') {
 			$displayName = $this->getUID();
 		}
 		return $displayName;

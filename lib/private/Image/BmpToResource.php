@@ -46,8 +46,7 @@ class BmpToResource {
 	/** @var string[][] $pixelArray */
 	private $pixelArray;
 
-	/** @var resource $resource */
-	private $resource;
+	private \GdImage $resource;
 
 	/** @var array $bytesPerDepth */
 	private $bytesPerDepth = [
@@ -69,10 +68,9 @@ class BmpToResource {
 	}
 
 	/**
-	 * @return resource
 	 * @throws \Exception
 	 */
-	public function toResource() {
+	public function toResource(): \GdImage {
 		try {
 			$this->header = $this->readBitmapHeader();
 			$this->header += $this->readDibHeader();
@@ -87,10 +85,11 @@ class BmpToResource {
 			$this->pixelArray = $this->readPixelArray();
 
 			// create gd image
-			$this->resource = \imagecreatetruecolor($this->header['width'], $this->header['height']);
-			if ($this->resource === false) {
+			$resource = \imagecreatetruecolor($this->header['width'], $this->header['height']);
+			if ($resource === false) {
 				throw new \RuntimeException('imagecreatetruecolor failed for file ' . $this->getFilename() . '" with dimensions ' . $this->header['width'] . 'x' . $this->header['height']);
 			}
+			$this->resource = $resource;
 
 			$this->pixelArrayToImage();
 		} catch (\Exception $e) {
@@ -149,7 +148,7 @@ class BmpToResource {
 		}
 
 		$validBitDepth = \array_keys($this->bytesPerDepth);
-		if (!\in_array($dibHeader['bits'], $validBitDepth)) {
+		if (!\in_array($dibHeader['bits'], $validBitDepth, true)) {
 			throw new \UnexpectedValueException('Bit Depth ' . $dibHeader['bits'] . ' in ' . $this->getFilename() . ' is not supported');
 		}
 
@@ -159,7 +158,7 @@ class BmpToResource {
 	private function fixImageSize($header) {
 		// No compression - calculate it in our own
 		if ($header['compression'] === self::COMPRESSION_BI_RGB) {
-			$bytesPerRow = \intval(\floor(($header['bits'] * $header['width'] + 31) / 32) * 4);
+			$bytesPerRow = (int)(\floor(($header['bits'] * $header['width'] + 31) / 32) * 4);
 			$imageSize = $bytesPerRow * \abs($header['height']);
 		} else {
 			$imageSize = $this->file->getSize() - $this->header['offset'];
@@ -196,7 +195,7 @@ class BmpToResource {
 		$this->file->fseek($this->header['offset'], SEEK_SET);
 		$pixelString = $this->readFile($this->header['imagesize']);
 
-		$bytesPerRow = \intval(\floor(($this->header['bits'] * $this->header['width'] + 31) / 32) * 4);
+		$bytesPerRow = (int)(\floor(($this->header['bits'] * $this->header['width'] + 31) / 32) * 4);
 		$plainPixelArray = \str_split($pixelString, $bytesPerRow);
 
 		// Positive height: Bottom row first.
@@ -212,10 +211,7 @@ class BmpToResource {
 		return $pixelArray;
 	}
 
-	/**
-	 * @return resource
-	 */
-	private function pixelArrayToImage() {
+	private function pixelArrayToImage(): \GdImage {
 		$x = 0;
 		$y = 0;
 		foreach ($this->pixelArray as $pixelRow) {
@@ -246,7 +242,7 @@ class BmpToResource {
 	private function getColors($raw) {
 		$extra = \chr(0); // used to complement an argument to word or double word
 		$colors = [];
-		if (\in_array($this->header['bits'], [32, 24])) {
+		if (\in_array($this->header['bits'], [32, 24], true)) {
 			$colors = @\unpack('V', $raw . $extra);
 		} elseif ($this->header['bits'] === 16) {
 			$colors = @\unpack('v', $raw);
@@ -264,8 +260,7 @@ class BmpToResource {
 			);
 		}
 
-		$colors = \array_values($colors);
-		return $colors;
+		return \array_values($colors);
 	}
 
 	/**

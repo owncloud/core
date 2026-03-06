@@ -19,13 +19,13 @@ jobs:
         php: ${{ fromJSON(inputs.php-versions) }}
         database: [sqlite]
         include:
-          - php: "7.4"
+          - php: "8.3"
             database: "mysql:8.0"
-          - php: "7.4"
+          - php: "8.3"
             database: "mariadb:10.6"
-          - php: "7.4"
+          - php: "8.3"
             database: "mariadb:10.11"
-          - php: "7.4"
+          - php: "8.3"
             database: "postgres:10.21"
 
     services:

@@ -41,21 +41,12 @@ use Sabre\VObject\ITip;
  * @license http://sabre.io/license/ Modified BSD License
  */
 class IMipPlugin extends SabreIMipPlugin {
-	/** @var IMailer */
-	private $mailer;
-
-	/** @var ILogger */
-	private $logger;
-
-	/** @var IRequest */
-	private $request;
+	private IMailer $mailer;
+	private ILogger $logger;
+	private IRequest $request;
 
 	/**
 	 * Creates the email handler.
-	 *
-	 * @param IMailer $mailer
-	 * @param ILogger $logger
-	 * @param IRequest $request
 	 */
 	public function __construct(IMailer $mailer, ILogger $logger, IRequest $request) {
 		parent::__construct('');
@@ -123,14 +114,10 @@ class IMipPlugin extends SabreIMipPlugin {
 			->setFrom([$sender => $senderName])
 			->setTo([$recipient => $recipientName])
 			->setSubject($subject)
-			->setBody($iTipMessage->message->serialize(), $contentType);
+			->attach($iTipMessage->message->serialize(), "event.ics", $contentType);
 		try {
-			$failed = $this->mailer->send($message);
+			$this->mailer->send($message);
 			$iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
-			if ($failed) {
-				$this->logger->error('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' =>  \implode(', ', $failed)]);
-				$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';
-			}
 		} catch (\Exception $ex) {
 			$this->logger->logException($ex, ['app' => 'dav']);
 			$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';

@@ -1199,7 +1199,7 @@ class Manager implements IManager {
 		$deletedShares[] = $share;
 
 		//Format hook info
-		$formattedDeletedShares = \array_map('self::formatUnshareHookParams', $deletedShares);
+		$formattedDeletedShares = \array_map(self::formatUnshareHookParams(...), $deletedShares);
 
 		$hookParams['deletedShares'] = $formattedDeletedShares;
 

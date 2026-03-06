@@ -166,7 +166,7 @@ class LostController extends Controller {
 	private function checkPasswordResetToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
+		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null) ?? '');
 		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
@@ -354,7 +354,7 @@ class LostController extends Controller {
 			}
 		}
 
-		$getToken = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
+		$getToken = $this->config->getUserValue($user, 'owncloud', 'lostpassword') ?? '';
 		if ($getToken !== '') {
 			$splittedToken = \explode(':', $getToken);
 			if ((\count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
@@ -383,7 +383,7 @@ class LostController extends Controller {
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
 			throw new \Exception($this->l10n->t(
-				'Couldn\'t send reset email. Please contact your administrator.'
+				"Couldn't send reset email. Please contact your administrator."
 			));
 		}
 

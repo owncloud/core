@@ -147,7 +147,7 @@ class Base extends Command {
 		$this->interrupted = true;
 	}
 
-	public function run(InputInterface $input, OutputInterface $output) {
+	public function run(InputInterface $input, OutputInterface $output): int {
 		// check if the php pcntl_signal functions are accessible
 		$this->php_pcntl_signal = \function_exists('pcntl_signal');
 		if ($this->php_pcntl_signal) {

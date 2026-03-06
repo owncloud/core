@@ -11,10 +11,6 @@ namespace Test\Archive;
 use OC\Archive\ZIP;
 
 class ZIPTest extends TestBase {
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	protected function getExisting() {
 		return new ZIP($this->getArchiveTestDataDir() . '/data.zip');
 	}

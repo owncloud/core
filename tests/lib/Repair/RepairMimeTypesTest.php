@@ -8,11 +8,14 @@
  */
 namespace Test\Repair;
 
+use OC;
 use OC\Files\Storage\Temporary;
+use OC\Repair\RepairMimeTypes;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 /**
@@ -35,10 +38,10 @@ class RepairMimeTypesTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
+		$this->mimetypeLoader = OC::$server->getMimeTypeLoader();
 
-		/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
-		$config = $this->getMockBuilder('OCP\IConfig')
+		/** @var IConfig | MockObject $config */
+		$config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$config->expects($this->any())
@@ -46,9 +49,9 @@ class RepairMimeTypesTest extends TestCase {
 			->with('version')
 			->willReturn('8.0.0.0');
 
-		$this->storage = new \OC\Files\Storage\Temporary([]);
+		$this->storage = new Temporary([]);
 
-		$this->repair = new \OC\Repair\RepairMimeTypes($config);
+		$this->repair = new RepairMimeTypes($config);
 	}
 
 	protected function tearDown(): void {
@@ -107,7 +110,7 @@ class RepairMimeTypesTest extends TestCase {
 	private function renameMimeTypes($currentMimeTypes, $fixedMimeTypes) {
 		$this->addEntries($currentMimeTypes);
 
-		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
+		/** @var IOutput | MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
 			->disableOriginalConstructor()
 			->getMock();

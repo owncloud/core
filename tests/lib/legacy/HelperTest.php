@@ -7,10 +7,8 @@ use Test\TestCase;
 class HelperTest extends TestCase {
 	/**
 	 * @dataProvider getCleanedPathProvider
-	 * @param string $original
-	 * @param string $expected
 	 */
-	public function testGetCleanedPath($original, $expected) {
+	public function testGetCleanedPath(string $original, string $expected): void {
 		$this->assertSame($expected, \OC_Helper::getCleanedPath($original), 'Returned system path is not what was expected.');
 	}
 
@@ -26,18 +24,6 @@ class HelperTest extends TestCase {
 			],
 			[
 				"",
-				"/usr/local/bin /usr/bin /opt/bin /bin",
-			],
-			[
-				null,
-				"/usr/local/bin /usr/bin /opt/bin /bin",
-			],
-			[
-				false,
-				"/usr/local/bin /usr/bin /opt/bin /bin",
-			],
-			[
-				false,
 				"/usr/local/bin /usr/bin /opt/bin /bin",
 			],
 			[

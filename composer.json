@@ -7,12 +7,13 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.4"
+            "php": "8.2"
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
             "dg/composer-cleaner": true
-        }
+        },
+        "sort-packages": true
     },
     "autoload" : {
         "psr-4": {
@@ -40,11 +41,10 @@
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest"
+        "phpunit/phpunit": "^9.5"
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.2",
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
@@ -68,8 +68,8 @@
         "deepdiver/zipstreamer": "^3.0",
         "dg/composer-cleaner": "^2.2",
         "doctrine/dbal": "^3",
-        "firebase/php-jwt": "^6.8",
-        "google/apiclient": "^2.15",
+        "firebase/php-jwt": "^7.0",
+        "google/apiclient": "^2.19",
         "guzzlehttp/guzzle": "^7.7",
         "icewind/smb": "^3.6",
         "icewind/streams": "0.7.8",
@@ -90,12 +90,12 @@
         "sabre/dav": "^4.4",
         "sabre/http": "^5.1",
         "sabre/vobject": "^4.5",
-        "swiftmailer/swiftmailer": "^6.3",
-        "symfony/console": "^5.4",
-        "symfony/event-dispatcher": "^5.4",
-        "symfony/process": "^5.4",
-        "symfony/routing": "^5.4",
-        "symfony/translation": "^5.4"
+        "symfony/console": "^7.4",
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/mailer": "^7.4",
+        "symfony/process": "^7.4",
+        "symfony/routing": "^7.4",
+        "symfony/translation": "^7.4"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",

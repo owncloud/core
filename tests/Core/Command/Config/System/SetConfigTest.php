@@ -49,7 +49,7 @@ class SetConfigTest extends TestCase {
 		$this->command = new SetConfig($systemConfig);
 	}
 
-	public function setData() {
+	public function providesData() {
 		return [
 			[['name'], 'newvalue', null, 'newvalue'],
 			[['a', 'b', 'c'], 'foobar', null, ['b' => ['c' => 'foobar']]],
@@ -58,7 +58,7 @@ class SetConfigTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider setData
+	 * @dataProvider providesData
 	 *
 	 * @param array $configNames
 	 * @param string $newValue

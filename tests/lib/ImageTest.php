@@ -9,6 +9,7 @@
 namespace Test;
 
 use OC;
+use OC\Files\Stream\Close;
 
 class ImageTest extends \Test\TestCase {
 	public static function tearDownAfterClass(): void {
@@ -352,7 +353,7 @@ class ImageTest extends \Test\TestCase {
 	public function testExifDataBigStream($targetFile) {
 		$img = new \OC_Image();
 
-		\OC\Files\Stream\Close::registerCallback($targetFile, function () {
+		Close::registerCallback($targetFile, function () {
 		});
 		$stream = \fopen("close://{$targetFile}", 'rb');
 
