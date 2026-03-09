@@ -96,16 +96,16 @@ class Memcached extends Cache implements IMemcache {
 		return $this->prefix;
 	}
 
-	public function get($key) {
+	public function get($key): mixed {
 		$result = self::$cache->get($this->getNamespace() . $key);
-		if ($result === false and self::$cache->getResultCode() == \Memcached::RES_NOTFOUND) {
+		if ($result === false && self::$cache->getResultCode() == \Memcached::RES_NOTFOUND) {
 			return null;
-		} else {
-			return $result;
 		}
+
+		return $result;
 	}
 
-	public function set($key, $value, $ttl = 0) {
+	public function set($key, $value, $ttl = 0): mixed {
 		if ($ttl > 0) {
 			$result =  self::$cache->set($this->getNamespace() . $key, $value, $ttl);
 		} else {

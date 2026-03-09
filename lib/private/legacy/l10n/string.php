@@ -1,4 +1,7 @@
 <?php
+
+use OC\L10N\L10N;
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
@@ -26,25 +29,17 @@
  */
 
 class OC_L10N_String implements JsonSerializable {
-	/** @var \OC\L10N\L10N */
-	protected $l10n;
+	protected L10N $l10n;
 
-	/** @var string */
-	protected $text;
+	protected string $text;
 
 	/** @var array */
-	protected $parameters;
+	protected array $parameters;
 
 	/** @var integer */
-	protected $count;
+	protected int $count;
 
-	/**
-	 * @param \OC\L10N\L10N $l10n
-	 * @param string|string[] $text
-	 * @param array $parameters
-	 * @param int $count
-	 */
-	public function __construct($l10n, $text, $parameters, $count = 1) {
+	public function __construct(L10N $l10n, string $text, array $parameters, int $count = 1) {
 		$this->l10n = $l10n;
 		$this->text = $text;
 		$this->parameters = $parameters;
@@ -66,13 +61,14 @@ class OC_L10N_String implements JsonSerializable {
 
 		// Replace %n first (won't interfere with vsprintf)
 		$text = \str_replace('%n', $this->count, $text);
-		$text = @\vsprintf($text, $this->parameters);
+		if (\count($this->parameters) === 0) {
+			return (string)$text;
+		}
 
-		// If vsprintf fails, return untranslated string
-		return $text === false ? $this->text : $text;
+		return \vsprintf($text, $this->parameters);
 	}
 
-	public function jsonSerialize() {
+	public function jsonSerialize(): string {
 		return $this->__toString();
 	}
 }

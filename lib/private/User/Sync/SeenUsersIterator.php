@@ -23,26 +23,20 @@ namespace OC\User\Sync;
 use OC\User\AccountMapper;
 
 class SeenUsersIterator extends UsersIterator {
-	/**
-	 * @var AccountMapper
-	 */
-	private $mapper;
-	/**
-	 * @var string class name
-	 */
-	private $backend;
+	private AccountMapper $mapper;
+	private string $backend;
 
-	public function __construct(AccountMapper $mapper, $backend) {
+	public function __construct(AccountMapper $mapper, string $backend) {
 		$this->mapper = $mapper;
 		$this->backend = $backend;
 	}
 
-	public function rewind() {
+	public function rewind(): void {
 		parent::rewind();
 		$this->data = $this->mapper->findUserIds($this->backend, true, self::LIMIT, 0);
 	}
 
-	public function next() {
+	public function next(): void {
 		$this->position++;
 		if ($this->currentDataPos() === 0) {
 			$this->page++;

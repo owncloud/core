@@ -177,7 +177,7 @@ class Application {
 				}
 			}
 
-			$this->application->add($c);
+			$this->application->addCommand($c);
 		}
 	}
 }

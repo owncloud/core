@@ -181,7 +181,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		$this->logout();
 	}
 
-	public function testOwnerWritesToShare() {
+	public function testOwnerWritesToShare(): void {
 		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::file_put_contents('/sub1/sub2/folder/asd.txt', 'bar');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);

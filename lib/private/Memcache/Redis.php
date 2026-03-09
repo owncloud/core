@@ -45,33 +45,37 @@ class Redis extends Cache implements IMemcacheTTL {
 		return $this->prefix;
 	}
 
-	public function get($key) {
+	public function get($key): mixed {
 		$result = self::$cache->get($this->getNameSpace() . $key);
 		if ($result === false && !self::$cache->exists($this->getNameSpace() . $key)) {
 			return null;
-		} else {
-			return \json_decode($result, true);
 		}
+
+		return \json_decode($result, true);
 	}
 
-	public function set($key, $value, $ttl = 0) {
+	public function set($key, $value, $ttl = 0): mixed {
 		if ($ttl > 0) {
 			return self::$cache->setex($this->getNameSpace() . $key, $ttl, \json_encode($value));
-		} else {
-			return self::$cache->set($this->getNameSpace() . $key, \json_encode($value));
 		}
+
+		return self::$cache->set($this->getNameSpace() . $key, \json_encode($value));
 	}
 
-	public function hasKey($key) {
-		return self::$cache->exists($this->getNameSpace() . $key);
+	public function hasKey($key): bool {
+		$val = self::$cache->exists($this->getNameSpace() . $key);
+		if (\is_bool($val)) {
+			return $val;
+		}
+		return (int)$val > 0;
 	}
 
 	public function remove($key) {
 		if (self::$cache->del($this->getNameSpace() . $key)) {
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	public function clear($prefix = '') {

@@ -202,7 +202,14 @@ class SettingTest extends TestCase {
 			->willReturnMap($options);
 		$this->consoleInput->expects($this->any())
 			->method('hasParameterOption')
-			->willReturnMap($parameterOptions);
+			->willReturnCallback(function ($values, $onlyParams) use ($parameterOptions) {
+				foreach ($parameterOptions as $opt) {
+					if (isset($opt[0]) && $values === $opt[0]) {
+						return $opt[2] ?? false;
+					}
+				}
+				return false;
+			});
 
 		if ($user !== false) {
 			$this->userManager->expects($this->once())
@@ -274,10 +281,15 @@ class SettingTest extends TestCase {
 
 		$this->consoleInput->expects($this->atLeastOnce())
 			->method('hasParameterOption')
-			->willReturnMap([
-				['--delete', false, true],
-				['--error-if-not-exists', false, $errorIfNotExists],
-			]);
+			->willReturnCallback(function ($values, $onlyParams) use ($errorIfNotExists) {
+				switch ($values) {
+					case "--delete":
+						return true;
+					case "--error-if-not-exists":
+						return $errorIfNotExists;
+				}
+				return false;
+			});
 
 		if ($expectedLine === null) {
 			$this->consoleOutput->expects($this->never())
@@ -409,15 +421,16 @@ class SettingTest extends TestCase {
 			if ($defaultValue === null) {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
-					->willReturnMap([
-						['--default-value', false, false],
-					]);
+					->willReturn(false);
 			} else {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
-					->willReturnMap([
-						['--default-value', false, true],
-					]);
+					->willReturnCallback(function ($values, $onlyParams) {
+						if ($values === '--default-value') {
+							return true;
+						}
+						return false;
+					});
 				$this->consoleInput->expects($this->once())
 					->method('getOption')
 					->with('default-value')

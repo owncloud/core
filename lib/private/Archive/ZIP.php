@@ -30,9 +30,11 @@
 
 namespace OC\Archive;
 
+use ZipArchive;
+
 class ZIP extends Archive {
 	/**
-	 * @var \ZipArchive zip
+	 * @var ZipArchive zip
 	 */
 	private $zip=null;
 	private $path;
@@ -42,8 +44,8 @@ class ZIP extends Archive {
 	 */
 	public function __construct($source) {
 		$this->path=$source;
-		$this->zip=new \ZipArchive();
-		if ($this->zip->open($source, \ZipArchive::CREATE)) {
+		$this->zip=new ZipArchive();
+		if ($this->zip->open($source, ZipArchive::CREATE)) {
 		} else {
 			\OCP\Util::writeLog('files_archive', 'Error while opening archive '.$source, \OCP\Util::WARN);
 		}
