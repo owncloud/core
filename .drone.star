@@ -2248,6 +2248,8 @@ def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLev
         phpVersion = 7.4
     if (federatedServerVersion == "latest"):
         phpVersion = 7.4
+    if (federatedServerVersion == "git"):
+        phpVersion = 8.3
     return [
         installFederated(ctx, federatedServerVersion, db, dbSuffix),
         configureFederated(phpVersion, logLevel, protocol),
