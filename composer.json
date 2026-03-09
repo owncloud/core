@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "8.2"
+            "php": "8.3"
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
@@ -41,10 +41,11 @@
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest"
     },
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
