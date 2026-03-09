@@ -1312,7 +1312,6 @@ def acceptance(ctx):
         "browsers": ["chrome"],
         "phpVersions": [DEFAULT_PHP_VERSION],
         "databases": ["mariadb:10.2"],
-        "federatedPhpVersion": 7.4,
         "federatedServerNeeded": False,
         "federatedDb": "",
         "filterTags": "",
@@ -1397,6 +1396,11 @@ def acceptance(ctx):
                 extraAppsDict[app] = command
 
             for federatedServerVersion in params["federatedServerVersions"]:
+                federatedPhpVersion = 7.4
+                if (federatedServerVersion == "latest"):
+                    federatedPhpVersion = 7.4
+                if (federatedServerVersion == "git"):
+                    federatedPhpVersion = 8.3
                 for browser in params["browsers"]:
                     for phpVersion in params["phpVersions"]:
                         # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
@@ -1526,7 +1530,7 @@ def acceptance(ctx):
                                                  installServer(phpVersion, db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"])
                                              )) +
                                              (
-                                                 installAndConfigureFederated(ctx, federatedServerVersion, params["federatedPhpVersion"], params["logLevel"], protocol, federatedDb, federationDbSuffix) +
+                                                 installAndConfigureFederated(ctx, federatedServerVersion, federatedPhpVersion, params["logLevel"], protocol, federatedDb, federationDbSuffix) +
                                                  owncloudLog("federated", "federated") if params["federatedServerNeeded"] else []
                                              ) +
                                              installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
@@ -1564,7 +1568,7 @@ def acceptance(ctx):
                                                 params["extraServices"] +
                                                 owncloudService(phpVersion, "server", pathOfServerUnderTest, params["useHttps"]) +
                                                 ((
-                                                    owncloudService(params["federatedPhpVersion"], "federated", dir["federated"], params["useHttps"]) +
+                                                    owncloudService(federatedPhpVersion, "federated", dir["federated"], params["useHttps"]) +
                                                     databaseServiceForFederation(federatedDb, federationDbSuffix)
                                                 ) if params["federatedServerNeeded"] else []),
                                     "depends_on": [],
@@ -2244,12 +2248,6 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
     }]
 
 def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = "fed"):
-    if (federatedServerVersion == "10.9.1"):
-        phpVersion = 7.4
-    if (federatedServerVersion == "latest"):
-        phpVersion = 7.4
-    if (federatedServerVersion == "git"):
-        phpVersion = 8.3
     return [
         installFederated(ctx, federatedServerVersion, db, dbSuffix),
         configureFederated(phpVersion, logLevel, protocol),
