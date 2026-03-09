@@ -71,7 +71,12 @@ class ErrorHandler {
 
 	//Recoverable errors handler
 	public static function onError($number, $message, $file, $line) {
-		if (\error_reporting() === 0) {
+		// https://www.php.net/manual/en/language.operators.errorcontrol.php
+		// Prior to PHP 8.0.0, the error_reporting() called inside the
+		// custom error handler always returned 0 if the error was suppressed
+		// by the @ operator. As of PHP 8.0.0, it returns the value of this
+		// (bitwise) expression: E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE.
+		if (\error_reporting() === (E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE)) {
 			return;
 		}
 		$msg = $message . ' at ' . $file . '#' . $line;
