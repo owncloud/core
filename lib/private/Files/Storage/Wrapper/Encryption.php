@@ -855,8 +855,12 @@ class Encryption extends Wrapper {
 				\fclose($target);
 			} catch (\Exception $e) {
 				Encryption::setDisableWriteEncryption(false);
-				\fclose($source);
-				\fclose($target);
+				if (\is_resource($source)) {
+					\fclose($source);
+				}
+				if (\is_resource($target)) {
+					\fclose($target);
+				}
 				throw $e;
 			}
 			if ($result) {
