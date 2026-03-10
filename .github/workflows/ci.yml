@@ -26,4 +26,4 @@ jobs:
     name: PHP Unit
     uses: ./.github/workflows/php-unit.yml
     with:
-      php-versions: '["8.3"]'
+      php-versions: '["8.3","8.4"]'
