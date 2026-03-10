@@ -41,6 +41,7 @@ else
 	RED_COLOR="tput setaf 1"
 	GREEN_COLOR="tput setaf 2"
 	YELLOW_COLOR="tput setaf 3"
+	tput colors
 fi
 
 # The following environment variables can be specified:
