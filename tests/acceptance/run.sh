@@ -34,6 +34,7 @@ then
 	GREEN_COLOR=":"
 	YELLOW_COLOR=":"
 else
+	[[ -z "$TERM" ]] && export TERM=xterm
 	COLORS_OPTION="--colors"
 	RED_COLOR="tput setaf 1"
 	GREEN_COLOR="tput setaf 2"
