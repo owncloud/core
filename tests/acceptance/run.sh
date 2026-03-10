@@ -494,9 +494,22 @@ function run_behat_tests() {
 			echo "Checking expected failures"
 		fi
 
+		# set the Internal Field Separator (IFS) to a newlinw,
+		# so that we loop over each whole line of the failed scenarios list
+		IFS=$'\n'
 		# Check that every failed scenario is in the list of expected failures
-		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
+		for FAILED_SCENARIO_LINE in ${FAILED_SCENARIO_PATHS}
 			do
+				# each FAILED_SCENARIO_LINE looks like:
+				# whitespace then a full path to a feature file,
+				# then colon and the line number in the feature file,
+				# then other text indicating exactly which line of the scenario failed.
+				# Example:
+				# "    /drone/src/tests/acceptance/features/webUISharingPublic2/shareByPublicLink.feature:55 (on line 66)"
+				# remove any whitespace from the beginning of the line
+				FAILED_SCENARIO_X="${FAILED_SCENARIO_LINE#"${FAILED_SCENARIO_LINE%%[![:space:]]*}"}"
+				# remove any characters from the first space onwards
+				FAILED_SCENARIO_PATH=${FAILED_SCENARIO_X%% *}
 				SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
 				SUITE=`basename ${SUITE_PATH}`
 				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
@@ -550,8 +563,21 @@ function run_behat_tests() {
 				fi
 			done < ${EXPECTED_FAILURES_FILE}
 	else
-		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
+		# set the Internal Field Separator (IFS) to a newlinw,
+		# so that we loop over each whole line of the failed scenarios list
+		IFS=$'\n'
+		for FAILED_SCENARIO_LINE in ${FAILED_SCENARIO_PATHS}
 		do
+			# each FAILED_SCENARIO_LINE looks like:
+			# whitespace then a full path to a feature file,
+			# then colon and the line number in the feature file,
+			# then other text indicating exactly which line of the scenario failed.
+			# Example:
+			# "    /drone/src/tests/acceptance/features/webUISharingPublic2/shareByPublicLink.feature:55 (on line 66)"
+			# remove any whitespace from the beginning of the line
+			FAILED_SCENARIO_X="${FAILED_SCENARIO_LINE#"${FAILED_SCENARIO_LINE%%[![:space:]]*}"}"
+			# remove any characters from the first space onwards
+			FAILED_SCENARIO_PATH=${FAILED_SCENARIO_X%% *}
 			SUITE_PATH=$(dirname "${FAILED_SCENARIO_PATH}")
 			SUITE=$(basename "${SUITE_PATH}")
 			SCENARIO=$(basename "${FAILED_SCENARIO_PATH}")
@@ -589,9 +615,21 @@ function run_behat_tests() {
 			unset FAILED_SCENARIO_PATHS
 			FAILED_SCENARIO_PATHS=()
 		fi
-
-		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
+		# set the Internal Field Separator (IFS) to a newlinw,
+		# so that we loop over each whole line of the failed scenarios list
+		IFS=$'\n'
+		for FAILED_SCENARIO_LINE in ${FAILED_SCENARIO_PATHS}
 			do
+				# each FAILED_SCENARIO_LINE looks like:
+				# whitespace then a full path to a feature file,
+				# then colon and the line number in the feature file,
+				# then other text indicating exactly which line of the scenario failed.
+				# Example:
+				# "    /drone/src/tests/acceptance/features/webUISharingPublic2/shareByPublicLink.feature:55 (on line 66)"
+				# remove any whitespace from the beginning of the line
+				FAILED_SCENARIO_X="${FAILED_SCENARIO_LINE#"${FAILED_SCENARIO_LINE%%[![:space:]]*}"}"
+				# remove any characters from the first space onwards
+				FAILED_SCENARIO_PATH=${FAILED_SCENARIO_X%% *}
 				SUITE_PATH=`dirname ${FAILED_SCENARIO_PATH}`
 				SUITE=`basename ${SUITE_PATH}`
 				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
