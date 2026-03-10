@@ -14,7 +14,6 @@ OC.L10N.register(
     "Language" : "Til",
     "Save" : "Saqlash",
     "Log" : "Log",
-    "Login" : "Tizimga kirish",
     "Server address" : "Server adresi",
     "Port" : "Port",
     "Cancel" : "Bekor qilish",

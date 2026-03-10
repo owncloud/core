@@ -10,7 +10,6 @@ OC.L10N.register(
     "never" : "byth",
     "None" : "Dim",
     "Save" : "Cadw",
-    "Login" : "Mewngofnodi",
     "Encryption" : "Amgryptiad",
     "Add" : "Ychwanegu",
     "Cancel" : "Diddymu",

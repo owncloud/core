@@ -19,7 +19,6 @@ OC.L10N.register(
     "None" : "කිසිවක් නැත",
     "Save" : "සුරකින්න",
     "Log" : "ලඝුව",
-    "Login" : "ප්‍රවිශ්ටය",
     "Encryption" : "ගුප්ත කේතනය",
     "Server address" : "සේවාදායකයේ ලිපිනය",
     "Port" : "තොට",

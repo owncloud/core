@@ -12,7 +12,6 @@ OC.L10N.register(
     "Groups" : "ਗਰੁੱਪ",
     "unknown" : "ਅਣਜਾਣ",
     "Sharing" : "ਸਾਂਝ",
-    "Login" : "ਲਾਗਇਨ",
     "Server address" : "ਸਰਵਰ ਐਡਰੈਸ",
     "Cancel" : "ਰੱਦ ਕਰੋ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",

@@ -7,7 +7,6 @@ OC.L10N.register(
     "Enable" : "چالاککردن",
     "None" : "هیچ",
     "Save" : "پاشکه‌وتکردن",
-    "Login" : "چوونەژوورەوە",
     "Encryption" : "نهێنیکردن",
     "Server address" : "ناونیشانی ڕاژه",
     "Add" : "زیادکردن",

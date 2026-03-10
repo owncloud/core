@@ -54,7 +54,6 @@ OC.L10N.register(
     "What to log" : "Kva skal sparast",
     "Download logfile (%s)" : "Last ned logg (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Logg fil er større enn 100MB. Nedlasting kan ta tid.",
-    "Login" : "Logg inn",
     "Encryption" : "Kryptering",
     "Server address" : "Tenaradresse",
     "Port" : "Port",

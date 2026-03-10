@@ -16,7 +16,6 @@ OC.L10N.register(
     "Language" : "மொழி",
     "None" : "ஒன்றுமில்லை",
     "Save" : "சேமிக்க ",
-    "Login" : "புகுபதிகை",
     "Encryption" : "மறைக்குறியீடு",
     "Server address" : "சேவையக முகவரி",
     "Port" : "துறை ",

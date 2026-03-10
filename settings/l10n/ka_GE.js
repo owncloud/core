@@ -35,7 +35,6 @@ OC.L10N.register(
     "None" : "არა",
     "Save" : "შენახვა",
     "Log" : "ლოგი",
-    "Login" : "ლოგინი",
     "Encryption" : "ენკრიპცია",
     "Server address" : "სერვერის მისამართი",
     "Port" : "პორტი",

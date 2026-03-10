@@ -14,7 +14,6 @@ OC.L10N.register(
     "Language" : "Bahasa",
     "Save" : "Simpan",
     "Log" : "Log",
-    "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
     "Add" : "Tambah",
     "Profile picture" : "Gambar profil",
