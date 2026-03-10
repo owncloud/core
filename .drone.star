@@ -1524,6 +1524,7 @@ def acceptance(ctx):
                                              composerInstall(phpVersion) +
                                              vendorbinBehat() +
                                              yarnInstall() +
+                                             waitForServer(params["federatedServerNeeded"]) +
                                              ((
                                                  installCoreFromTarball(params["coreTarball"], db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"], pathOfServerUnderTest)
                                              ) if params["testAgainstCoreTarball"] else (
@@ -1537,7 +1538,6 @@ def acceptance(ctx):
                                              setupCeph(phpVersion, params["cephS3"]) +
                                              setupScality(phpVersion, params["scalityS3"]) +
                                              params["extraSetup"] +
-                                             waitForServer(params["federatedServerNeeded"]) +
                                              waitForEmailService(params["emailNeeded"]) +
                                              waitForBrowserService(browser) +
                                              fixPermissions(phpVersion, params["federatedServerNeeded"], params["selUserNeeded"], pathOfServerUnderTest) +
