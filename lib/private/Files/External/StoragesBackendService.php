@@ -68,9 +68,10 @@ class StoragesBackendService implements IStoragesBackendService {
 		if ($this->config->getAppValue('files_external', 'allow_user_mounting', 'no') !== 'yes') {
 			$this->userMountingAllowed = false;
 		}
+		$user_mounting_backends = $this->config->getAppValue('files_external', 'user_mounting_backends', '');
 		$this->userMountingBackends = \explode(
 			',',
-			$this->config->getAppValue('files_external', 'user_mounting_backends', '')
+			$user_mounting_backends
 		);
 
 		// if no backend is in the list an empty string is in the array and user mounting is disabled

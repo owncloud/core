@@ -22,6 +22,8 @@ namespace Test\Files\External;
 
 use OC\Files\External\StoragesBackendService;
 use OCP\Files\External\IStoragesBackendService;
+use OCP\IConfig;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class StoragesBackendServiceTest extends \Test\TestCase {
 	/** @var \OCP\IConfig */
@@ -29,19 +31,24 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 
 	protected function setUp(): void {
 		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config
+			->method('getAppValue')
+			->willReturnMap([
+				['files_external', 'user_mounting_backends', '', '']
+			]);
 	}
 
 	/**
 	 * @param string $class
 	 *
-	 * @return \OCP\Files\External\Backend\Backend
+	 * @return \OCP\Files\External\Backend\Backend|MockObject
 	 */
 	protected function getBackendMock($class) {
 		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
 			->disableOriginalConstructor()
 			->getMock();
-		$backend->method('getIdentifier')->will($this->returnValue('identifier:'.$class));
-		$backend->method('getIdentifierAliases')->will($this->returnValue(['identifier:'.$class]));
+		$backend->method('getIdentifier')->willReturn('identifier:' . $class);
+		$backend->method('getIdentifierAliases')->willReturn(['identifier:' . $class]);
 		return $backend;
 	}
 
@@ -149,14 +156,15 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testUserMountingBackends() {
-		$this->config->expects($this->exactly(2))
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->exactly(2))
 			->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['files_external', 'allow_user_mounting', 'no', 'yes'],
 				['files_external', 'user_mounting_backends', '', 'identifier:\User\Mount\Allowed,identifier_alias']
-			]));
+			]);
 
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($config);
 
 		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
 		$backendAllowed->expects($this->never())
