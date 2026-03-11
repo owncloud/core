@@ -465,7 +465,8 @@ class Notifications {
 	 *
 	 * @return bool
 	 */
-	private function isOcsStatusOk($status) {
-		return \in_array($status['ocs']['meta']['statuscode'], [100, 200]);
+	private function isOcsStatusOk($status): bool {
+		$statusCode = $status['ocs']['meta']['statuscode'] ?? 500;
+		return \in_array($statusCode, [100, 200], true);
 	}
 }
