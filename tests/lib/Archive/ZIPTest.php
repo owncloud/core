@@ -14,8 +14,4 @@ class ZIPTest extends TestBase {
 	protected function getExisting() {
 		return new ZIP($this->getArchiveTestDataDir() . '/data.zip');
 	}
-
-	protected function getNew() {
-		return new ZIP(\OCP\Files::tmpFile('.zip'));
-	}
 }
