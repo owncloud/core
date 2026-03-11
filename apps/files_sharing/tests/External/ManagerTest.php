@@ -144,18 +144,6 @@ class ManagerTest extends TestCase {
 			\array_push($called, $event);
 		});
 
-		$event = new GenericEvent(
-			null,
-			[
-				'sharedItem' => '/SharedFolder',
-				'shareAcceptedFrom' => 'foobar',
-				'remoteUrl' => 'http://localhost',
-				'fileId' => null,
-				'shareId' => $openShares[0]['id'],
-				'shareRecipient' => $this->uid,
-			]
-		);
-
 		$this->eventDispatcher
 			->method('dispatch')
 			->withConsecutive(
@@ -167,7 +155,29 @@ class ManagerTest extends TestCase {
 					),
 					AcceptShare::class
 				],
-				[$event, 'remoteshare.accepted']
+				[
+					$this->callback(
+						function (GenericEvent $e) use ($openShares) {
+							if ($e->getArgument('sharedItem') !== '/SharedFolder') {
+								return false;
+							}
+							if ($e->getArgument('shareAcceptedFrom') !== 'foobar') {
+								return false;
+							}
+							if ($e->getArgument('remoteUrl') !== 'http://localhost') {
+								return false;
+							}
+							if ($e->getArgument('shareId') !== $openShares[0]['id']) {
+								return false;
+							}
+							if ($e->getArgument('shareRecipient') !== $this->uid) {
+								return false;
+							}
+							return true;
+						}
+					),
+					'remoteshare.accepted'
+				]
 			);
 
 		// Accept the first share
