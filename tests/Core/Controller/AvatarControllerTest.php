@@ -295,7 +295,7 @@ class AvatarControllerTest extends TestCase {
 
 	public function testPostAvatarFilePixelFlood(): void {
 		//Create temp file
-		$fileName = \tempnam(null, "avatarTest");
+		$fileName = \tempnam(\sys_get_temp_dir(), "avatarTest");
 		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/pixel.jpg', $fileName);
 		$this->assertTrue($copyRes);
 
