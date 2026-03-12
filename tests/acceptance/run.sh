@@ -1369,6 +1369,10 @@ then
 	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
 fi
 
+echo $TERM
+tput colors
+tput setaf 2; echo "some green text"
+
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
 	${YELLOW_COLOR}; echo "runsh: Total unexpected failed scenarios throughout the test run:"
