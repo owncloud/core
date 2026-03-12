@@ -21,6 +21,7 @@
 
 namespace OC\Files\Type;
 
+use Doctrine\DBAL\Exception;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
 use OCP\ICacheFactory;
@@ -141,7 +142,8 @@ class Loader implements IMimeTypeLoader {
 	 * Store a mimetype in the DB
 	 *
 	 * @param string $mimetype
-	 * @param int inserted ID
+	 * @return mixed
+	 * @throws Exception
 	 */
 	protected function store($mimetype) {
 		try {
