@@ -1772,7 +1772,7 @@ class Share extends Constants {
 		if (\count($collectionTypes) > 0) {
 			return $collectionTypes;
 		}
-		return false;
+		return [];
 	}
 
 	/**

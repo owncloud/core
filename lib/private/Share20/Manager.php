@@ -932,7 +932,8 @@ class Manager implements IManager {
 		} else {
 			$sharedWith = $share->getSharedWith();
 
-			$targetFile = '/' . \rtrim(\basename($finalTarget), '/') . '/' . \ltrim(\basename($share->getTarget()), '/');
+			$shareTarget = $share->getTarget() ?? '';
+			$targetFile = '/' . \rtrim(\basename($finalTarget), '/') . '/' . \ltrim(\basename($shareTarget), '/');
 			/**
 			 * Scenario where share is made by old owner to a user different
 			 * from new owner
