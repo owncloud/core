@@ -34,10 +34,14 @@ then
 	GREEN_COLOR=":"
 	YELLOW_COLOR=":"
 else
+	echo $TERM
+	[[ -z "$TERM" ]] && export TERM=xterm
+	echo $TERM
 	COLORS_OPTION="--colors"
 	RED_COLOR="tput setaf 1"
 	GREEN_COLOR="tput setaf 2"
 	YELLOW_COLOR="tput setaf 3"
+	tput colors
 fi
 
 # The following environment variables can be specified:
@@ -1364,6 +1368,10 @@ if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
 	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
 fi
+
+echo $TERM
+tput colors
+tput setaf 2; echo "some green text"
 
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
