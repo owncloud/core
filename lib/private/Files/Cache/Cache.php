@@ -277,9 +277,9 @@ class Cache implements ICache {
 		if (($id = $this->getId($file)) > -1) {
 			$this->update($id, $data);
 			return $id;
-		} else {
-			return $this->insert($file, $data);
 		}
+
+		return $this->insert($file, $data);
 	}
 
 	/**
@@ -434,9 +434,14 @@ class Cache implements ICache {
 					$params[] = \md5($value);
 					$queryParts[] = '`path_hash`';
 				} elseif ($name === 'mimetype') {
-					$params[] = $this->mimetypeLoader->getId(\substr($value, 0, \strpos($value, '/')));
-					$queryParts[] = '`mimepart`';
-					$value = $this->mimetypeLoader->getId($value);
+					# an unknown mimetyp will be stored as -1
+					if ($value === false) {
+						$value = -1;
+					} else {
+						$params[] = $this->mimetypeLoader->getId(\substr($value, 0, \strpos($value, '/')));
+						$queryParts[] = '`mimepart`';
+						$value = $this->mimetypeLoader->getId($value);
+					}
 				} elseif ($name === 'storage_mtime') {
 					if (!$doNotCopyStorageMTime && !isset($data['mtime'])) {
 						$params[] = $value;
