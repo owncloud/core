@@ -20,7 +20,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
