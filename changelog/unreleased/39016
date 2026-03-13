@@ -1,0 +1,3 @@
+Bugfix: Update file size in cache after writing empty content to non-empty file
+
+https://github.com/owncloud/core/pull/39016
