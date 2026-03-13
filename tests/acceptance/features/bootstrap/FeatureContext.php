@@ -448,10 +448,10 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @return integer
+	 * @return string
 	 */
-	public function getLdapPort():int {
-		return $this->ldapPort;
+	public function getLdapPortAsString(): string {
+		return (string)$this->ldapPort;
 	}
 
 	/**
