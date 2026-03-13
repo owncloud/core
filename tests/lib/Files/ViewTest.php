@@ -2739,7 +2739,7 @@ class ViewTest extends TestCase {
 	public function testDeleteNonShareFolder($shareFolder, $deleteFolder) {
 		/**
 		 * Using overwriteService in this method instead of setUp, because there
-		 * are other methods in the test's which might get affected if we use it
+		 * are other methods in the tests which might get affected if we use it
 		 * in setUp.
 		 */
 		$this->overwriteService('AllConfig', $this->config);
