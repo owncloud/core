@@ -449,10 +449,10 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @return integer
+	 * @return string
 	 */
-	public function getLdapPort():int {
-		return $this->ldapPort;
+	public function getLdapPortAsString(): string {
+		return (string)$this->ldapPort;
 	}
 
 	/**
@@ -980,7 +980,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @param string $storageName
 	 *
-	 * @return integer
+	 * @return string
 	 * @throws Exception
 	 */
 	public function getStorageId(string $storageName):int {
