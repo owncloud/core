@@ -276,7 +276,7 @@ class AvatarControllerTest extends TestCase {
 	 */
 	public function testPostAvatarFile() {
 		//Create temp file
-		$fileName = \tempnam('', "avatarTest");
+		$fileName = \tempnam(null, "avatarTest");
 		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/testimage.jpg', $fileName);
 		$this->assertTrue($copyRes);
 
@@ -329,7 +329,7 @@ class AvatarControllerTest extends TestCase {
 	 */
 	public function testPostAvatarFileGif() {
 		//Create temp file
-		$fileName = \tempnam('', "avatarTest");
+		$fileName = \tempnam(null, "avatarTest");
 		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/testimage.gif', $fileName);
 		$this->assertTrue($copyRes);
 

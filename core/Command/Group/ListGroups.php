@@ -49,8 +49,7 @@ class ListGroups extends Base {
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
-				'Restrict the list to groups whose name contains the string.',
-				''
+				'Restrict the list to groups whose name contains the string.'
 			)
 		;
 	}

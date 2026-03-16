@@ -6,6 +6,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -63,7 +64,7 @@ class App {
 	 * @param DIContainer $container an instance of a pimple container.
 	 * @param array $urlParams list of URL parameters (optional)
 	 */
-	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
+	public static function main($controllerName, $methodName, DIContainer $container, ?array $urlParams = null) {
 		if ($urlParams !== null) {
 			$container['OCP\\IRequest']->setUrlParameters($urlParams);
 		} elseif (isset($container['urlParams']) && $container['urlParams'] !== null) {

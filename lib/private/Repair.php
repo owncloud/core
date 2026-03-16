@@ -11,6 +11,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -69,7 +70,7 @@ class Repair implements IOutput {
 	 * @param IRepairStep[] $repairSteps array of RepairStep instances
 	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct($repairSteps = [], EventDispatcherInterface $dispatcher = null) {
+	public function __construct($repairSteps = [], ?EventDispatcherInterface $dispatcher = null) {
 		$this->repairSteps = $repairSteps;
 		$this->dispatcher = $dispatcher;
 	}

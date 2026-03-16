@@ -6,6 +6,7 @@
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -290,7 +291,7 @@ trait Sharing {
 			'expireDate and expireDateAsString cannot be set at the same time.'
 		);
 		$needToParse = \array_key_exists('expireDate', $bodyRows);
-		$expireDate = $bodyRows['expireDate'] ?? $bodyRows['expireDateAsString'] ?? null;
+		$expireDate = $bodyRows['expireDate'] ?? $bodyRows['expireDateAsString'] ?? '';
 		$bodyRows['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
 		$this->createShare(
 			$user,
@@ -457,7 +458,7 @@ trait Sharing {
 		string $user,
 		string $path,
 		bool $publicUpload = false,
-		string $sharePassword = null,
+		?string $sharePassword = null,
 		$permissions = null,
 		?string $linkName = null,
 		?string $expireDate = null
@@ -1885,7 +1886,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function deleteLastShareUsingSharingApi(string $user, string $sharer = null, bool $deleteLastPublicLink = false):void {
+	public function deleteLastShareUsingSharingApi(string $user, ?string $sharer = null, bool $deleteLastPublicLink = false):void {
 		$user = $this->getActualUsername($user);
 		if ($deleteLastPublicLink) {
 			$shareId = (string) $this->getLastCreatedPublicShare()->id;
@@ -3703,7 +3704,7 @@ trait Sharing {
 	 * @return void
 	 * @throws GuzzleException
 	 */
-	public function expireShare(string $shareId = null):void {
+	public function expireShare(?string $shareId = null):void {
 		$adminUser = $this->getAdminUsername();
 		if ($shareId === null) {
 			$shareId = $this->getLastCreatedUserGroupShareId();

@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "handlebars": "^4.7.8",
-    "jasmine-core": "^2.99.1",
+    "jasmine-core": "^6.1.0",
     "jasmine-sinon": "^0.4.0",
     "karma": "^6.4.4",
     "karma-coverage": "*",
@@ -44,7 +44,7 @@
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
-    "sinon": "^18.0.0"
+    "sinon": "^21.0.2"
   },
   "resolutions": {
     "socket.io-parser": "4.2.3",

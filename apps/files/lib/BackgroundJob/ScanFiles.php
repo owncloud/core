@@ -3,6 +3,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -52,9 +53,9 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 	 * @param ILogger|null $logger
 	 */
 	public function __construct(
-		IConfig $config = null,
-		IUserManager $userManager = null,
-		ILogger $logger = null
+		?IConfig $config = null,
+		?IUserManager $userManager = null,
+		?ILogger $logger = null
 	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);

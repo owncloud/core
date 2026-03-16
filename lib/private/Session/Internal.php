@@ -9,6 +9,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +49,7 @@ class Internal extends Session {
 		try {
 			$this->start();
 		} catch (\Exception $e) {
-			\setcookie(\session_name(), null, -1, \OC::$WEBROOT ? : '/');
+			\setcookie(\session_name(), '', -1, \OC::$WEBROOT ? : '/');
 		}
 		\restore_error_handler();
 		if ($_SESSION === null) {
@@ -70,7 +71,7 @@ class Internal extends Session {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function get(string $key): mixed {
+	public function get($key) {
 		if (!$this->exists($key)) {
 			return null;
 		}

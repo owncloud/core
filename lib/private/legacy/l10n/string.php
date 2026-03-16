@@ -1,7 +1,4 @@
 <?php
-
-use OC\L10N\L10N;
-
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
@@ -12,6 +9,7 @@ use OC\L10N\L10N;
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,17 +27,25 @@ use OC\L10N\L10N;
  */
 
 class OC_L10N_String implements JsonSerializable {
-	protected L10N $l10n;
+	/** @var \OC\L10N\L10N */
+	protected $l10n;
 
-	protected string $text;
+	/** @var string */
+	protected $text;
 
 	/** @var array */
-	protected array $parameters;
+	protected $parameters;
 
 	/** @var integer */
-	protected int $count;
+	protected $count;
 
-	public function __construct(L10N $l10n, string $text, array $parameters, int $count = 1) {
+	/**
+	 * @param \OC\L10N\L10N $l10n
+	 * @param string|string[] $text
+	 * @param array $parameters
+	 * @param int $count
+	 */
+	public function __construct($l10n, $text, $parameters, $count = 1) {
 		$this->l10n = $l10n;
 		$this->text = $text;
 		$this->parameters = $parameters;
@@ -61,14 +67,18 @@ class OC_L10N_String implements JsonSerializable {
 
 		// Replace %n first (won't interfere with vsprintf)
 		$text = \str_replace('%n', $this->count, $text);
-		if (\count($this->parameters) === 0) {
-			return (string)$text;
+		try {
+			$text = vsprintf($text, (array)$this->parameters);
+		} catch(\ValueError $ex) {
+			// Simulate the Pre-PHP 8 behavior of vsprintf returning false on error
+			$text = false;
 		}
 
-		return \vsprintf($text, $this->parameters);
+		// If vsprintf fails, return untranslated string
+		return $text === false ? $this->text : $text;
 	}
 
-	public function jsonSerialize(): string {
+	public function jsonSerialize() : mixed {
 		return $this->__toString();
 	}
 }

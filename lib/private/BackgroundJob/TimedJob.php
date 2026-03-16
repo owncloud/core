@@ -4,6 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +49,7 @@ abstract class TimedJob extends Job {
 	 * @param JobList $jobList
 	 * @param ILogger $logger
 	 */
-	public function execute($jobList, ILogger $logger = null) {
+	public function execute($jobList, ?ILogger $logger = null) {
 		if ((\time() - $this->lastRun) > $this->interval) {
 			if ($logger !== null) {
 				$id = $this->getId();

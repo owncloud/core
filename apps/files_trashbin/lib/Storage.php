@@ -7,6 +7,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -52,7 +53,7 @@ class Storage extends Wrapper {
 	/** @var  TrashbinSkipChecker */
 	private $trashbinSkipChecker;
 
-	public function __construct($parameters, IUserManager $userManager = null, TrashbinSkipChecker $trashbinSkipChecker = null) {
+	public function __construct($parameters, ?IUserManager $userManager = null, ?TrashbinSkipChecker $trashbinSkipChecker = null) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->userManager = $userManager;
 		$this->trashbinSkipChecker = $trashbinSkipChecker;

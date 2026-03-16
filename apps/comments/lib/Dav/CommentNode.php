@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,11 +35,11 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\PropPatch;
 
 class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
-	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const string NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	public const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
-	public const PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
-	public const PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
+	public const string PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
+	public const string PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
+	public const string PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
 
 	/** @var  IComment */
 	public $comment;

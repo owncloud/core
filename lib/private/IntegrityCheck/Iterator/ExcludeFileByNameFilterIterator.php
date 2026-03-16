@@ -4,6 +4,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -65,6 +66,9 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 		'|/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
 	];
 
+	/**
+	 * @return bool
+	 */
 	public function accept(): bool {
 		/** @var \SplFileInfo $current */
 		$current = $this->current();

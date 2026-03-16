@@ -5,6 +5,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,7 +43,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\Comments\Dav
  */
 class EntityCollection extends RootCollection implements IProperties {
-	public const PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
+	public const string PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
 
 	/** @var  string */
 	protected $id;
@@ -128,7 +129,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @param \DateTime|null $datetime
 	 * @return CommentNode[]
 	 */
-	public function findChildren($limit = 0, $offset = 0, \DateTime $datetime = null) {
+	public function findChildren($limit = 0, $offset = 0, ?\DateTime $datetime = null) {
 		$comments = $this->commentsManager->getForObject($this->name, $this->id, $limit, $offset, $datetime);
 		$result = [];
 		foreach ($comments as $comment) {
@@ -165,7 +166,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @return bool
 	 */
 	public function setReadMarker($value) {
-		$dateTime = new \DateTime($value);
+		$dateTime = new \DateTime($value ?? 'now');
 		$user = $this->userSession->getUser();
 		$this->commentsManager->setReadMark($this->name, $this->id, $dateTime, $user);
 		return true;

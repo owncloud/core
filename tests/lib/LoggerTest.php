@@ -347,8 +347,8 @@ class LoggerTest extends TestCase {
 				$logLine = $logLine['message'];
 				$this->assertStringNotContainsString($uid, $logLine);
 				$this->assertStringNotContainsString($password, $logLine);
-				$this->assertStringContainsString(
-					'{closure}(*** sensitive parameters replaced ***)',
+				$this->assertMatchesRegularExpression(
+					'!{closure:.*?}\(\*\*\* sensitive parameters replaced \*\*\*\)!',
 					$logLine
 				);
 			}

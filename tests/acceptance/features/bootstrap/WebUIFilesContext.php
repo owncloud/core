@@ -1482,7 +1482,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		string $typeOfFilesPage = "",
 		string $folder = "",
 		string $path = "",
-		FilesPageBasic $pageObject = null
+		?FilesPageBasic $pageObject = null
 	) {
 		$should = ($shouldOrNot !== "not");
 		switch ($typeOfFilesPage) {
@@ -1676,7 +1676,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		string $shouldOrNot,
 		string $typeOfFilesPage,
 		string $folder = "",
-		TableNode $namePartsTable = null
+		?TableNode $namePartsTable = null
 	):void {
 		$fileNameParts = [];
 

@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -123,7 +124,7 @@ class SyncService {
 	 * @param \Traversable $userIds of users
 	 * @param \Closure $callback is called for every user to progress display
 	 */
-	public function run(UserInterface $backend, \Traversable $userIds, \Closure $callback = null) {
+	public function run(UserInterface $backend, \Traversable $userIds, ?\Closure $callback = null) {
 		// update existing and insert new users
 		foreach ($userIds as $uid) {
 			try {

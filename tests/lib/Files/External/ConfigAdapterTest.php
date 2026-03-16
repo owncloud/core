@@ -33,11 +33,9 @@ use OCP\IConfig;
 use OCP\IUser;
 use OCP\ISession;
 use OC\Files\External\StorageConfig;
-use PHPUnit\Framework\MockObject\MockObject;
-use Test\TestCase;
 
-class ConfigAdapterTest extends TestCase {
-	/** @var IConfig | MockObject */
+class ConfigAdapterTest extends \Test\TestCase {
+	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
 	/** @var IUserStoragesService */
@@ -46,10 +44,10 @@ class ConfigAdapterTest extends TestCase {
 	/** @var IUserGlobalStoragesService */
 	private $userGlobalStoragesService;
 
-	/** @var IUser | MockObject **/
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject **/
 	private $user;
 
-	/** @var ISession | MockObject **/
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject **/
 	private $session;
 
 	/** @var int */
@@ -61,13 +59,9 @@ class ConfigAdapterTest extends TestCase {
 		$this->userGlobalStoragesService = $this->createMock(UserGlobalStoragesService::class);
 		$this->session = $this->createMock(ISession::class);
 		$this->user = $this->createMock(IUser::class);
-		$this->user->expects($this->atLeastOnce())
+		$this->user->expects($this->any())
 			->method('getUID')
 			->willReturn('user1');
-		$this->user->expects($this->atLeastOnce())
-			->method('getUserName')
-			->willReturn('altlogin1');
-
 		$this->configId = 0;
 	}
 
@@ -132,7 +126,7 @@ class ConfigAdapterTest extends TestCase {
 		return $configAdapter->getMountsForUser($this->user, $storageFactory);
 	}
 
-	public function testGetPersonalMounts(): void {
+	public function testGetPersonalMounts() {
 		$storage1 = $this->createStorageConfig('/mount1', ['test_value' => true], ['backend_option' => 'abc']);
 		$storage2 = $this->createStorageConfig('/globalmount1', ['test_value2' => 'abc'], ['backend_option' => 'def']);
 
@@ -185,8 +179,24 @@ class ConfigAdapterTest extends TestCase {
 		$this->assertTrue($options['enable_sharing']);
 	}
 
-	public function testGetPersonalMountsUserPlaceholderAltLogin(): void {
-		$this->user
+	public function testGetPersonalMountsUserPlaceholder() {
+		$this->user->expects($this->any())
+			->method('getUserName')
+			->willReturn('user1');
+		
+		$storage1 = $this->createStorageConfig('/mount1', [], ['backend_option' => '$user']);
+		$storage2 = $this->createStorageConfig('/globalmount1', [], ['backend_option' => '$user']);
+
+		$result = $this->getMountsForUser([$storage2], [$storage1]);
+
+		$this->assertCount(2, $result);
+
+		$this->assertEquals('user1', $storage1->getBackendOption('backend_option'));
+		$this->assertEquals('user1', $storage2->getBackendOption('backend_option'));
+	}
+
+	public function testGetPersonalMountsUserPlaceholderAltLogin() {
+		$this->user->expects($this->any())
 			->method('getUserName')
 			->willReturn('altlogin1');
 

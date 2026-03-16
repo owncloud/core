@@ -248,12 +248,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 			'assembly' => [
 				'nodes' => $nodes]
 		]);
-		$existed = \in_array("assembly", stream_get_wrappers());
-		if (!$existed) {
-			\stream_wrapper_register('assembly', __CLASS__);
-		}
+		\stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStream');
 		try {
-			$wrapped = \fopen('assembly://', 'r', false, $context);
+			$wrapped = \fopen('assembly://', 'r', null, $context);
 		} catch (\BadMethodCallException $e) {
 			\stream_wrapper_unregister('assembly');
 			throw $e;

@@ -3,6 +3,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,7 +40,7 @@ class ForbiddenException extends \Exception {
 	 * @param \Exception $previous previous exception for cascading
 	 * @since 9.0.0
 	 */
-	public function __construct($message, $retry, \Exception $previous = null) {
+	public function __construct($message, $retry, ?\Exception $previous = null) {
 		parent::__construct($message, 0, $previous);
 		$this->retry = $retry;
 	}

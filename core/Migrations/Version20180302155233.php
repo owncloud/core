@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +23,7 @@
 
 namespace OC\Migrations;
 
+use OC\Share\Constants;
 use OCP\IDBConnection;
 use OCP\Migration\ISqlMigration;
 
@@ -47,7 +49,7 @@ class Version20180302155233 implements ISqlMigration {
 		// The permissions value will be reset again if the user decides to
 		// accept the share again.
 		$qb->update('share')
-			->set('accepted', $qb->expr()->literal(\OCP\Share::STATE_REJECTED))
+			->set('accepted', $qb->expr()->literal(Constants::STATE_REJECTED))
 			->where($qb->expr()->eq('share_type', $qb->expr()->literal(2)))
 			->andWhere($qb->expr()->eq('permissions', $qb->expr()->literal(0)))
 			->execute();

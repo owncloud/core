@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ use Sabre\DAV\PropPatch;
 use OC\Group\Group;
 
 class GroupPrincipalTest extends \Test\TestCase {
-	/** @var IGroupManager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
 	/** @var GroupPrincipalBackend */

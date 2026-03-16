@@ -3,6 +3,7 @@
  * @author Christoph Wurst <christoph@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -102,7 +103,7 @@ class DefaultToken extends Entity implements IToken {
 		return $this->password;
 	}
 
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): mixed {
 		return [
 			'id' => $this->id,
 			'name' => $this->name,

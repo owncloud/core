@@ -39,7 +39,6 @@ class JSResourceLocatorTest extends TestCase {
 		$themeInstance->method('getName')->willReturn($theme);
 		$themeInstance->method('getBaseDirectory')->willReturn($this->appRoot);
 		$themeInstance->method('getDirectory')->willReturn($this->themeAppDir);
-		$themeInstance->method('getWebPath')->willReturn('');
 
 		$this->appManager = $this->getMockBuilder(AppManager::class)
 									->disableOriginalConstructor()
@@ -128,7 +127,7 @@ class JSResourceLocatorTest extends TestCase {
 		$locator->find(['randomapp/js/script']);
 	}
 
-	public function testFindL10nScript(): void {
+	public function testFindL10nScript() {
 		/** @var \OC\Template\JSResourceLocator $locator */
 		$locator = $this->getResourceLocator(
 			'theme',
@@ -139,10 +138,6 @@ class JSResourceLocatorTest extends TestCase {
 			->method('getAppPath')
 			->with('randomapp')
 			->willReturn('/var/www/apps/randomapp');
-		$this->appManager->expects($this->any())
-			->method('getAppWebPath')
-			->with('randomapp')
-			->willReturn('');
 
 		$locator->expects($this->exactly(7))
 			->method('appendOnceIfExist')

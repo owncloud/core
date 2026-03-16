@@ -26,7 +26,6 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OCP\IURLGenerator;
 use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\File\X509;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

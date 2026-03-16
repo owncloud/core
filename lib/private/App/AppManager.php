@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -98,20 +99,20 @@ class AppManager implements IAppManager {
 	];
 
 	/**
-	 * @param IUserSession $userSession
-	 * @param IAppConfig $appConfig
-	 * @param IGroupManager $groupManager
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
+	 * @param IUserSession $userSession
+	 * @param IAppConfig $appConfig
+	 * @param IGroupManager $groupManager
 	 */
 	public function __construct(
-		IUserSession $userSession = null,
-		IAppConfig $appConfig = null,
-		IGroupManager $groupManager = null,
 		ICacheFactory $memCacheFactory,
 		EventDispatcherInterface $dispatcher,
-		IConfig $config
+		IConfig $config,
+		?IUserSession $userSession = null,
+		?IAppConfig $appConfig = null,
+		?IGroupManager $groupManager = null
 	) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
@@ -165,7 +166,7 @@ class AppManager implements IAppManager {
 	 * @param \OCP\IUser|null $user
 	 * @return string[]
 	 */
-	public function getEnabledAppsForUser(IUser $user = null) {
+	public function getEnabledAppsForUser(?IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
 		$appsForUser = \array_filter($apps, function ($enabled, $appName) use ($user) {
 			return $this->checkAppForUser($enabled, $appName, $user);

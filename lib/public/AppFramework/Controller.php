@@ -100,12 +100,11 @@ abstract class Controller {
 
 	/**
 	 * Parses an HTTP accept header and returns the supported responder type
-	 *
 	 * @param string $acceptHeader
 	 * @return string the responder type
 	 * @since 7.0.0
 	 */
-	public function getResponderByHTTPHeader(string $acceptHeader): string {
+	public function getResponderByHTTPHeader($acceptHeader) {
 		$headers = \explode(',', $acceptHeader);
 
 		// return the first matching responder

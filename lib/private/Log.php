@@ -14,6 +14,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -117,7 +118,7 @@ class Log implements ILogger {
 		'setPassword',
 
 		//any closure can leak passwords
-		'{closure}'
+		'{closure:.*?}'
 
 	];
 
@@ -129,9 +130,9 @@ class Log implements ILogger {
 	 */
 	public function __construct(
 		$logger = null,
-		SystemConfig $config = null,
+		?SystemConfig $config = null,
 		$normalizer = null,
-		EventDispatcherInterface $eventDispatcher = null
+		?EventDispatcherInterface $eventDispatcher = null
 	) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if ($config === null) {
@@ -167,7 +168,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function emergency($message, array $context = []) {
+	public function emergency($message, array $context = []): void {
 		$this->log(Util::FATAL, $message, $context);
 	}
 
@@ -181,7 +182,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function alert($message, array $context = []) {
+	public function alert($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -194,7 +195,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function critical($message, array $context = []) {
+	public function critical($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -206,7 +207,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function error($message, array $context = []) {
+	public function error($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -220,7 +221,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function warning($message, array $context = []) {
+	public function warning($message, array $context = []): void {
 		$this->log(Util::WARN, $message, $context);
 	}
 
@@ -231,7 +232,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function notice($message, array $context = []) {
+	public function notice($message, array $context = []): void {
 		$this->log(Util::INFO, $message, $context);
 	}
 
@@ -244,7 +245,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function info($message, array $context = []) {
+	public function info($message, array $context = []): void {
 		$this->log(Util::INFO, $message, $context);
 	}
 
@@ -255,7 +256,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function debug($message, array $context = []) {
+	public function debug($message, array $context = []): void {
 		$this->log(Util::DEBUG, $message, $context);
 	}
 
@@ -267,7 +268,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$minLevel = \min($this->config->getValue('loglevel', Util::WARN), Util::FATAL);
 		$logConditions = $this->config->getValue('log.conditions', []);
 		if (empty($logConditions)) {

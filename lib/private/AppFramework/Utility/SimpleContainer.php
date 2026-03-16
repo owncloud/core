@@ -8,6 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,30 +48,26 @@ class SimpleContainer extends Container implements IContainer {
 		$constructor = $class->getConstructor();
 		if ($constructor === null) {
 			return $class->newInstance();
-		}
+		} else {
+			$parameters = [];
+			foreach ($constructor->getParameters() as $parameter) {
+				$resolveName = $parameter->getType() && !$parameter->getType()->isBuiltin()
+					? $parameter->getType()->getName()
+					:  $parameter->getName();
 
-		$parameters = [];
-		foreach ($constructor->getParameters() as $parameter) {
-			$resolveName = $parameter->getName();
-
-			$parameterType = $parameter->getType();
-			// try to find out if it is a class or a simple parameter
-			if (($parameterType instanceof \ReflectionNamedType) && !$parameterType->isBuiltin()) {
-				$resolveName = $parameterType->getName();
-			}
-
-			try {
-				$parameters[] = $this->query($resolveName);
-			} catch (QueryException $ex) {
-				if ($parameter->isDefaultValueAvailable()) {
-					$default = $parameter->getDefaultValue();
-					$parameters[] = $default;
-				} else {
-					throw $ex;
+				try {
+					$parameters[] = $this->query($resolveName);
+				} catch (QueryException $ex) {
+					if ($parameter->isDefaultValueAvailable()) {
+						$default = $parameter->getDefaultValue();
+						$parameters[] = $default;
+					} else {
+						throw $ex;
+					}
 				}
 			}
+			return $class->newInstanceArgs($parameters);
 		}
-		return $class->newInstanceArgs($parameters);
 	}
 
 	/**

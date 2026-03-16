@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -210,8 +211,9 @@ function human_file_size($bytes) {
 
 /**
  * Strips the timestamp of its time value
+ *
  * @param int $timestamp UNIX timestamp to strip
- * @return $timestamp without time value
+ * @return int $timestamp without time value
  */
 function strip_time($timestamp) {
 	$date = new \DateTime("@{$timestamp}");

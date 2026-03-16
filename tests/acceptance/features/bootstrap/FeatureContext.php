@@ -5,6 +5,7 @@
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -448,10 +449,10 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @return string
+	 * @return integer
 	 */
-	public function getLdapPortAsString(): string {
-		return (string)$this->ldapPort;
+	public function getLdapPort():int {
+		return $this->ldapPort;
 	}
 
 	/**
@@ -1498,7 +1499,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return object
 	 */
-	public function getJsonDecodedResponseBodyContent(ResponseInterface $response = null):?object {
+	public function getJsonDecodedResponseBodyContent(?ResponseInterface $response = null):?object {
 		$response = $response ?? $this->response;
 		if ($response !== null) {
 			$response->getBody()->rewind();

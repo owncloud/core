@@ -207,7 +207,7 @@ class LicenseManager implements ILicenseManager {
 		return $info[1];  // license state is the second item.
 	}
 
-	public function getLicenseMessageFor(string $appid, string $language = null): array {
+	public function getLicenseMessageFor(string $appid, ?string $language = null): array {
 		$info = $this->getLicenseWithState($appid);
 		if ($info[0] === null) {
 			// no license

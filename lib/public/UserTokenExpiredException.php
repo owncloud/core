@@ -3,6 +3,7 @@
  * @author Sujith Haridasan <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +39,7 @@ class UserTokenExpiredException extends UserTokenException {
 	 * @param int $code
 	 * @since 10.0.10
 	 */
-	public function __construct($message = "", $code = 0, \Exception $previous = null) {
+	public function __construct($message = "", $code = 0, ?\Exception $previous = null) {
 		parent::__construct($message, $code, $previous);
 	}
 }

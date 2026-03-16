@@ -115,8 +115,6 @@ class OcmControllerTest extends TestCase {
 		$this->logger = $this->createMock(ILogger::class);
 		$this->config = $this->createMock(IConfig::class);
 
-		$this->urlGenerator->method('linkToRouteAbsolute')->willReturn('');
-
 		$this->ocmController = new OcmController(
 			'federatedfilesharing',
 			$this->request,

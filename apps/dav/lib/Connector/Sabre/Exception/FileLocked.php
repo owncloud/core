@@ -7,6 +7,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ namespace OCA\DAV\Connector\Sabre\Exception;
 use Exception;
 
 class FileLocked extends \Sabre\DAV\Exception {
-	public function __construct($message = '', $code = 0, Exception $previous = null) {
+	public function __construct($message = '', $code = 0, ?Exception $previous = null) {
 		if ($previous instanceof \OCP\Files\LockNotAcquiredException) {
 			$message = \sprintf('Target file %s is locked by another process.', $previous->path);
 		}

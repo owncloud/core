@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -76,7 +77,7 @@ class Updater extends BasicEmitter {
 	public function __construct(
 		IConfig $config,
 		Checker $checker,
-		ILogger $log = null
+		?ILogger $log = null
 	) {
 		$this->log = $log;
 		$this->config = $config;

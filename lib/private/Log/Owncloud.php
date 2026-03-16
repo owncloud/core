@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -68,76 +69,71 @@ class Owncloud {
 	}
 
 	public static function writeExtra($app, $message, $level, $conditionalLogFile, $extraFields = []) {
+		$config = \OC::$server->getSystemConfig();
+
+		// default to ISO8601
+		$format = $config->getValue('logdateformat', 'c');
+		$logTimeZone = $config->getValue("logtimezone", 'UTC');
 		try {
-			$config = \OC::$server->getSystemConfig();
+			$timezone = new \DateTimeZone($logTimeZone);
+		} catch (\Exception $e) {
+			$timezone = new \DateTimeZone('UTC');
+		}
+		$time = \DateTime::createFromFormat("U.u", \number_format(\microtime(true), 4, ".", ""));
+		if ($time === false) {
+			$time = new \DateTime('now', $timezone);
+		} else {
+			// apply timezone if $time is created from UNIX timestamp
+			$time->setTimezone($timezone);
+		}
+		$request = \OC::$server->getRequest();
+		$reqId = $request->getId();
+		$remoteAddr = $request->getRemoteAddress();
+		// remove username/passwords from URLs before writing the to the log file
+		$time = $time->format($format);
+		$url = ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--';
+		$method = \is_string($request->getMethod()) ? $request->getMethod() : '--';
+		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
+			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
+		} else {
+			$user = '--';
+		}
+		$entry = \compact(
+			'reqId',
+			'level',
+			'time',
+			'remoteAddr',
+			'user',
+			'app',
+			'method',
+			'url',
+			'message'
+		);
 
-			// default to ISO8601
-			$format = $config->getValue('logdateformat', 'c');
-			$logTimeZone = $config->getValue("logtimezone", 'UTC');
-			try {
-				$timezone = new \DateTimeZone($logTimeZone);
-			} catch (\Exception $e) {
-				$timezone = new \DateTimeZone('UTC');
-			}
-			$time = \DateTime::createFromFormat("U.u", \number_format(\microtime(true), 4, ".", ""));
-			if ($time === false) {
-				$time = new \DateTime(null, $timezone);
-			} else {
-				// apply timezone if $time is created from UNIX timestamp
-				$time->setTimezone($timezone);
-			}
-			$request = \OC::$server->getRequest();
-			$reqId = $request->getId();
-			$remoteAddr = $request->getRemoteAddress();
-			// remove username/passwords from URLs before writing the to the log file
-			$time = $time->format($format);
-			$url = ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--';
-			$method = \is_string($request->getMethod()) ? $request->getMethod() : '--';
-			if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
-				$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
-			} else {
-				$user = '--';
-			}
-			$entry = \compact(
-				'reqId',
-				'level',
-				'time',
-				'remoteAddr',
-				'user',
-				'app',
-				'method',
-				'url',
-				'message'
-			);
+		if (!empty($extraFields)) {
+			// augment with additional fields
+			$entry = \array_merge($entry, $extraFields);
+		}
 
-			if (!empty($extraFields)) {
-				// augment with additional fields
-				$entry = \array_merge($entry, $extraFields);
+		$entry = \json_encode($entry);
+		if ($conditionalLogFile !== null) {
+			if ($conditionalLogFile[0] !== '/') {
+				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
 			}
-
-			$entry = \json_encode($entry);
-			if ($conditionalLogFile !== null) {
-				if ($conditionalLogFile[0] !== '/') {
-					$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
-				}
-				self::createLogFile($conditionalLogFile);
-				$handle = @\fopen($conditionalLogFile, 'a');
-			} else {
-				self::createLogFile(self::$logFile);
-				$handle = @\fopen(self::$logFile, 'a');
-			}
-			if ($handle) {
-				\fwrite($handle, $entry."\n");
-				\fclose($handle);
-			} else {
-				// Fall back to error_log
-				\error_log($entry);
-			}
-			if (\php_sapi_name() === 'cli-server') {
-				\error_log($message, 4);
-			}
-		} catch(\Exception $ex) {
-			\error_log($ex->getMessage());
+			self::createLogFile($conditionalLogFile);
+			$handle = @\fopen($conditionalLogFile, 'a');
+		} else {
+			self::createLogFile(self::$logFile);
+			$handle = @\fopen(self::$logFile, 'a');
+		}
+		if ($handle) {
+			\fwrite($handle, $entry."\n");
+			\fclose($handle);
+		} else {
+			// Fall back to error_log
+			\error_log($entry);
+		}
+		if (\php_sapi_name() === 'cli-server') {
 			\error_log($message, 4);
 		}
 	}

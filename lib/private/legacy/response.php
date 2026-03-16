@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,14 +30,14 @@
  */
 
 class OC_Response {
-	public const STATUS_FOUND = 304;
-	public const STATUS_NOT_MODIFIED = 304;
-	public const STATUS_TEMPORARY_REDIRECT = 307;
-	public const STATUS_BAD_REQUEST = 400;
-	public const STATUS_FORBIDDEN = 403;
-	public const STATUS_NOT_FOUND = 404;
-	public const STATUS_INTERNAL_SERVER_ERROR = 500;
-	public const STATUS_SERVICE_UNAVAILABLE = 503;
+	public const int STATUS_FOUND = 304;
+	public const int STATUS_NOT_MODIFIED = 304;
+	public const int STATUS_TEMPORARY_REDIRECT = 307;
+	public const int STATUS_BAD_REQUEST = 400;
+	public const int STATUS_FORBIDDEN = 403;
+	public const int STATUS_NOT_FOUND = 404;
+	public const int STATUS_INTERNAL_SERVER_ERROR = 500;
+	public const int STATUS_SERVICE_UNAVAILABLE = 503;
 
 	/**
 	* Enable response caching by sending correct HTTP headers
@@ -273,7 +274,7 @@ class OC_Response {
 	 *
 	 * @param string $userId
 	 * @param string $domain
-	 * @param \OCP\IConfig $config
+	 * @param \OCP\IConfig|null $config
 	 * @param array $headers
 	 *
 	 * Format of $headers:
@@ -285,7 +286,7 @@ class OC_Response {
 	 *
 	 * @return array
 	 */
-	public static function setCorsHeaders($userId, $domain, \OCP\IConfig $config = null, array $headers = []) {
+	public static function setCorsHeaders($userId, $domain, ?\OCP\IConfig $config = null, array $headers = []) {
 		if ($config === null) {
 			$config = \OC::$server->getConfig();
 		}
@@ -331,7 +332,7 @@ class OC_Response {
 	 * @param \OCP\IConfig|null $config
 	 * @return Sabre\HTTP\ResponseInterface $response
 	 */
-	public static function setOptionsRequestHeaders($response, $headers = [], \OCP\IConfig $config = null) {
+	public static function setOptionsRequestHeaders($response, $headers = [], ?\OCP\IConfig $config = null) {
 		// TODO: infer allowed verbs from existing known routes
 		$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
 		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
@@ -377,12 +378,13 @@ class OC_Response {
 
 	/**
 	 * These are the headers the browser is allowed to ask for in a CORS request.
+	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
 	 *
-	 * @param \OCP\IConfig $config
+	 * @param \OCP\IConfig|null $config
 	 * @return array|mixed
 	 */
-	private static function getAllowedCorsHeaders(\OCP\IConfig $config = null) {
+	private static function getAllowedCorsHeaders(?\OCP\IConfig $config = null) {
 		if ($config === null) {
 			$config = \OC::$server->getConfig();
 		}

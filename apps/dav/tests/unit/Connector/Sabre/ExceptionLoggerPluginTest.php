@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,7 +41,7 @@ class TestLogger extends Log {
 		//disable original constructor
 	}
 
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$this->level = $level;
 		$this->message = $message;
 	}
@@ -53,7 +54,7 @@ class ExceptionLoggerPluginTest extends TestCase {
 	/** @var PluginToTest */
 	private $plugin;
 
-	/** @var TestLogger | PHPUnit\Framework\MockObject\MockObject */
+	/** @var TestLogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
 	private function init() {

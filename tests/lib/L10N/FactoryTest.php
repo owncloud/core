@@ -80,14 +80,14 @@ class FactoryTest extends TestCase {
 					$this->config,
 					$this->request,
 					$this->themeService,
-					$this->userSession,
 					$this->serverRoot,
+					$this->userSession,
 				])
 				->setMethods($methods)
 				->getMock();
 		}
 
-		return new Factory($this->config, $this->request, $this->themeService, $this->userSession, $this->serverRoot);
+		return new Factory($this->config, $this->request, $this->themeService, $this->serverRoot, $this->userSession);
 	}
 
 	public function dataFindAvailableLanguages(): array {

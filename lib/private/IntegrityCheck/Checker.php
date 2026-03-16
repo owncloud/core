@@ -7,6 +7,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +39,6 @@ use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
 use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\File\X509;
 
 /**
@@ -72,19 +72,19 @@ class Checker {
 	 * @param EnvironmentHelper $environmentHelper
 	 * @param FileAccessHelper $fileAccessHelper
 	 * @param AppLocator $appLocator
-	 * @param IConfig $config
 	 * @param ICacheFactory $cacheFactory
-	 * @param IAppManager $appManager
 	 * @param ITempManager $tempManager
+	 * @param IConfig|null $config
+	 * @param IAppManager|null $appManager
 	 */
 	public function __construct(
 		EnvironmentHelper $environmentHelper,
 		FileAccessHelper $fileAccessHelper,
 		AppLocator $appLocator,
-		IConfig $config = null,
 		ICacheFactory $cacheFactory,
-		IAppManager $appManager = null,
-		ITempManager $tempManager
+		ITempManager $tempManager,
+		?IConfig $config = null,
+		?IAppManager $appManager = null
 	) {
 		$this->environmentHelper = $environmentHelper;
 		$this->fileAccessHelper = $fileAccessHelper;
@@ -343,11 +343,7 @@ class Checker {
 			return [];
 		}
 
-		$content = $this->fileAccessHelper->file_get_contents($signaturePath);
-		if (!$content) {
-			throw new MissingSignatureException('Signature data not found.');
-		}
-		$signatureData = \json_decode($content, true);
+		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath) ?? '', true);
 		if (!\is_array($signatureData)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
@@ -469,8 +465,7 @@ class Checker {
 			return \json_decode($cachedResults, true);
 		}
 
-		$v = $this->getAppValue(self::CACHE_KEY, '{}') ?? '{}';
-		return \json_decode($v, true);
+		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}') ?? '', true);
 	}
 
 	/**

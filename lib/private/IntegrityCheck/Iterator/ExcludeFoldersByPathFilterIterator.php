@@ -4,6 +4,7 @@
  * @author RealRancor <Fisch.666@gmx.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,6 +50,9 @@ class ExcludeFoldersByPathFilterIterator extends \RecursiveFilterIterator {
 		$this->excludedFolders = \array_merge($excludedFolders, $appFolders);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function accept(): bool {
 		return !\in_array(
 			$this->current()->getPathName(),

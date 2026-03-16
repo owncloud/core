@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -332,7 +333,7 @@ class Manager implements ICommentsManager {
 		$objectId,
 		$limit = 0,
 		$offset = 0,
-		\DateTime $notOlderThan = null
+		?\DateTime $notOlderThan = null
 	) {
 		$comments = [];
 
@@ -427,7 +428,7 @@ class Manager implements ICommentsManager {
 	 * @return Int
 	 * @since 9.0.0
 	 */
-	public function getNumberOfCommentsForObject($objectType, $objectId, \DateTime $notOlderThan = null) {
+	public function getNumberOfCommentsForObject($objectType, $objectId, ?\DateTime $notOlderThan = null) {
 		$qb = $this->dbConn->getQueryBuilder();
 		$query = $qb->select($qb->createFunction('COUNT(`id`)'))
 				->from('comments')

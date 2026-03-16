@@ -3,6 +3,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +50,11 @@ class CacheEntry implements ICacheEntry, \ArrayAccess {
 	}
 
 	public function offsetGet($offset): mixed {
-		return $this->data[$offset] ?? null;
+		if (isset($this->data[$offset])) {
+			return $this->data[$offset];
+		} else {
+			return null;
+		}
 	}
 
 	public function getId() {

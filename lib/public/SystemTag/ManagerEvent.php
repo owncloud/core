@@ -3,6 +3,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +50,7 @@ class ManagerEvent extends Event {
 	 * @param ISystemTag $beforeTag
 	 * @since 9.0.0
 	 */
-	public function __construct($event, ISystemTag $tag, ISystemTag $beforeTag = null) {
+	public function __construct($event, ISystemTag $tag, ?ISystemTag $beforeTag = null) {
 		$this->event = $event;
 		$this->tag = $tag;
 		$this->beforeTag = $beforeTag;

@@ -38,6 +38,7 @@
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -462,7 +463,7 @@ class OC {
 				// session timeout
 				\OC::$server->getUserSession()->logout();
 				if (isset($_COOKIE[\session_name()])) {
-					\setcookie(\session_name(), null, -1, self::$WEBROOT ? : '/');
+					\setcookie(\session_name(), '', -1, self::$WEBROOT ? : '/');
 				}
 			}
 		}
@@ -547,7 +548,7 @@ class OC {
 		\OC::$server->getEventLogger()->start('boot', 'Initialize');
 
 		// Don't display errors and log them
-		\error_reporting(E_ALL | E_STRICT);
+		\error_reporting(E_ALL);
 		@\ini_set('display_errors', 0);
 		@\ini_set('log_errors', 1);
 

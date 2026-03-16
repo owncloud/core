@@ -5,6 +5,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -157,9 +158,10 @@ class DefinitionParameter implements \JsonSerializable {
 	/**
 	 * Serialize into JSON for client-side JS
 	 *
+	 * @return string
 	 * @since 10.0
 	 */
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): mixed {
 		return [
 			'value' => $this->getText(),
 			'flags' => $this->getFlags(),

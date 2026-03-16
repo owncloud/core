@@ -7,6 +7,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,7 +44,7 @@ class MaintenancePlugin extends ServerPlugin {
 	/**
 	 * @param IConfig $config
 	 */
-	public function __construct(IConfig $config = null) {
+	public function __construct(?IConfig $config = null) {
 		$this->config = $config;
 		if ($config === null) {
 			$this->config = \OC::$server->getConfig();

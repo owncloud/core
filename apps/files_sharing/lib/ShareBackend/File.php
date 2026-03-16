@@ -13,6 +13,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,7 +48,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 	/** @var FederatedShareProvider */
 	private $federatedShareProvider;
 
-	public function __construct(FederatedShareProvider $federatedShareProvider = null) {
+	public function __construct(?FederatedShareProvider $federatedShareProvider = null) {
 		if ($federatedShareProvider) {
 			$this->federatedShareProvider = $federatedShareProvider;
 		} else {

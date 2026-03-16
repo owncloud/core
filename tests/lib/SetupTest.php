@@ -9,11 +9,6 @@
 namespace Test;
 
 use OCP\IConfig;
-use bantu\IniGetWrapper\IniGetWrapper;
-use OCP\IL10N;
-use OCP\ILogger;
-use OCP\Security\ISecureRandom;
-use OC\Setup;
 
 class SetupTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
@@ -34,35 +29,37 @@ class SetupTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock(IConfig::class);
-		$this->iniWrapper = $this->createMock(IniGetWrapper::class);
-		$this->l10n = $this->createMock(IL10N::class);
-		$this->defaults = $this->createMock(\OC_Defaults::class);
-		$this->logger = $this->createMock(ILogger::class);
-		$this->random = $this->createMock(ISecureRandom::class);
-		$this->setupClass = $this->getMockBuilder(Setup::class)
+		$this->config = $this->createMock('\OCP\IConfig');
+		$this->iniWrapper = $this->createMock('\bantu\IniGetWrapper\IniGetWrapper');
+		$this->l10n = $this->createMock('\OCP\IL10N');
+		$this->defaults = $this->createMock('\OC_Defaults');
+		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->random = $this->createMock('\OCP\Security\ISecureRandom');
+		$this->setupClass = $this->getMockBuilder('\OC\Setup')
 			->setMethods(['IsClassExisting', 'is_callable', 'getAvailableDbDriversForPdo'])
 			->setConstructorArgs([$this->config, $this->iniWrapper, $this->l10n, $this->defaults, $this->logger, $this->random])
 			->getMock();
 	}
 
-	public function testGetSupportedDatabasesWithOneWorking(): void {
+	public function testGetSupportedDatabasesWithOneWorking() {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql', 'oci']);
+			->will($this->returnValue(
+				['sqlite', 'mysql', 'oci']
+			));
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
-			->willReturn(true);
+			->will($this->returnValue(true));
 		$this->setupClass
 			->expects($this->once())
 			->method('is_callable')
-			->willReturn(false);
+			->will($this->returnValue(false));
 		$this->setupClass
 			->expects($this->once())
 			->method('getAvailableDbDriversForPdo')
-			->willReturn([]);
+			->will($this->returnValue([]));
 		$result = $this->setupClass->getSupportedDatabases();
 		$expectedResult = [
 			'sqlite' => 'SQLite'
@@ -71,45 +68,49 @@ class SetupTest extends \Test\TestCase {
 		$this->assertSame($expectedResult, $result);
 	}
 
-	public function testGetSupportedDatabasesWithNoWorking(): void {
+	public function testGetSupportedDatabasesWithNoWorking() {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql', 'oci', 'pgsql']);
+			->will($this->returnValue(
+				['sqlite', 'mysql', 'oci', 'pgsql']
+			));
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
-			->willReturn(false);
+			->will($this->returnValue(false));
 		$this->setupClass
 			->expects($this->exactly(2))
 			->method('is_callable')
-			->willReturn(false);
+			->will($this->returnValue(false));
 		$this->setupClass
 			->expects($this->once())
 			->method('getAvailableDbDriversForPdo')
-			->willReturn([]);
+			->will($this->returnValue([]));
 		$result = $this->setupClass->getSupportedDatabases();
 
 		$this->assertSame([], $result);
 	}
 
-	public function testGetSupportedDatabasesWithAllWorking(): void {
+	public function testGetSupportedDatabasesWithAllWorking() {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql', 'pgsql', 'oci']);
+			->will($this->returnValue(
+				['sqlite', 'mysql', 'pgsql', 'oci']
+			));
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
-			->willReturn(true);
+			->will($this->returnValue(true));
 		$this->setupClass
 			->expects($this->exactly(2))
 			->method('is_callable')
-			->willReturn(true);
+			->will($this->returnValue(true));
 		$this->setupClass
 			->expects($this->once())
 			->method('getAvailableDbDriversForPdo')
-			->willReturn(['mysql']);
+			->will($this->returnValue(['mysql']));
 		$result = $this->setupClass->getSupportedDatabases();
 		$expectedResult = [
 			'sqlite' => 'SQLite',
@@ -120,20 +121,22 @@ class SetupTest extends \Test\TestCase {
 		$this->assertSame($expectedResult, $result);
 	}
 
-	public function testGetSupportedDatabaseException(): void {
+	/**
+	 */
+	public function testGetSupportedDatabaseException() {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('Supported databases are not properly configured.');
 
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn('NotAnArray');
+			->will($this->returnValue('NotAnArray'));
 		$this->setupClass->getSupportedDatabases();
 	}
 
 	/**
 	 */
-	public function testCannotUpdateHtaccess(): void {
+	public function testCannotUpdateHtaccess() {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('Can\'t update');
 
@@ -159,7 +162,7 @@ class SetupTest extends \Test\TestCase {
 
 	/**
 	 */
-	public function testHtaccessIsFolder(): void {
+	public function testHtaccessIsFolder() {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('Can\'t update');
 
@@ -179,7 +182,7 @@ class SetupTest extends \Test\TestCase {
 		}
 	}
 
-	public function testUpdateHtaccess(): void {
+	public function testUpdateHtaccess() {
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
 		\touch($htaccessFile);

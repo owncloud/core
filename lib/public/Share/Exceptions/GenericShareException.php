@@ -4,6 +4,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,7 +37,7 @@ class GenericShareException extends HintException {
 	 * @param \Exception $previous
 	 * @since 9.0.0
 	 */
-	public function __construct($message = '', $hint = '', $code = 0, \Exception $previous = null) {
+	public function __construct($message = '', $hint = '', $code = 0, ?\Exception $previous = null) {
 		if (empty($message)) {
 			$message = 'Unspecified share exception';
 		}

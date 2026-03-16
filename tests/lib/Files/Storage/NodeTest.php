@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -52,7 +53,7 @@ abstract class NodeTest extends TestCase {
 	 * @param IStorage $storage
 	 * @return Node
 	 */
-	abstract protected function createTestNode($path, IStorage $storage = null);
+	abstract protected function createTestNode($path, ?IStorage $storage = null);
 
 	public function testGetMimetype() {
 		$this->storage->expects($this->once())

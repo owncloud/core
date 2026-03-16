@@ -26,28 +26,23 @@
 
 namespace OC\AppFramework\Http;
 
-use Exception;
-use OC\AppFramework\Middleware\MiddlewareDispatcher;
-use OC\AppFramework\Http;
-use OC\AppFramework\Utility\ControllerMethodReflector;
+use \OC\AppFramework\Middleware\MiddlewareDispatcher;
+use \OC\AppFramework\Http;
+use \OC\AppFramework\Utility\ControllerMethodReflector;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
-use function array_merge;
-use function call_user_func_array;
-use function in_array;
-use function settype;
 
 /**
  * Class to dispatch the request to the middleware dispatcher
  */
 class Dispatcher {
-	private MiddlewareDispatcher $middlewareDispatcher;
-	private Http $protocol;
-	private ControllerMethodReflector $reflector;
-	private IRequest $request;
+	private $middlewareDispatcher;
+	private $protocol;
+	private $reflector;
+	private $request;
 
 	/**
 	 * @param Http $protocol the http protocol with contains all status headers
@@ -71,20 +66,19 @@ class Dispatcher {
 
 	/**
 	 * Handles a request and calls the dispatcher on the controller
-	 *
 	 * @param Controller $controller the controller which will be called
 	 * @param string $methodName the method name which will be called on
 	 * the controller
 	 * @return array $array[0] contains a string with the http main header,
 	 * $array[1] contains headers in the form: $key => value, $array[2] contains
 	 * the response output
-	 * @throws Exception
+	 * @throws \Exception
 	 */
-	public function dispatch(Controller $controller, string $methodName): array {
+	public function dispatch(Controller $controller, $methodName) {
 		$out = [null, [], null];
 
 		try {
-			// prefill reflector with everything that's needed for the
+			// prefill reflector with everything thats needed for the
 			// middlewares
 			$this->reflector->reflect($controller, $methodName);
 
@@ -96,9 +90,9 @@ class Dispatcher {
 
 			// if an exception appears, the middleware checks if it can handle the
 			// exception and creates a response. If no response is created, it is
-			// assumed that there's no middleware who can handle it and the error is
+			// assumed that theres no middleware who can handle it and the error is
 			// thrown again
-		} catch (Exception $exception) {
+		} catch (\Exception $exception) {
 			$response = $this->middlewareDispatcher->afterException(
 				$controller,
 				$methodName,
@@ -121,7 +115,7 @@ class Dispatcher {
 			$response->getLastModified(),
 			$response->getETag()
 		);
-		$out[1] = array_merge($response->getHeaders());
+		$out[1] = \array_merge($response->getHeaders());
 		$out[2] = $response->getCookies();
 		$out[3] = $this->middlewareDispatcher->beforeOutput(
 			$controller,
@@ -136,12 +130,11 @@ class Dispatcher {
 	/**
 	 * Uses the reflected parameters, types and request parameters to execute
 	 * the controller
-	 *
 	 * @param Controller $controller the controller to be executed
 	 * @param string $methodName the method on the controller that should be executed
 	 * @return Response
 	 */
-	private function executeController(Controller $controller, string $methodName): Response {
+	private function executeController($controller, $methodName) {
 		$arguments = [];
 
 		// valid types that will be casted
@@ -159,12 +152,15 @@ class Dispatcher {
 				$value === 'false' &&
 				(
 					$this->request->method === 'GET' ||
-					str_contains($this->request->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded')
+					\strpos(
+						$this->request->getHeader('Content-Type') ?? '',
+						'application/x-www-form-urlencoded'
+					) !== false
 				)
 			) {
 				$value = false;
-			} elseif ($value !== null && \in_array($type, $types, true)) {
-				settype($value, $type);
+			} elseif ($value !== null && \in_array($type, $types)) {
+				\settype($value, $type);
 			}
 
 			$arguments[] = $value;

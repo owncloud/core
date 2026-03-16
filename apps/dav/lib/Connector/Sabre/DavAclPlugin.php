@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,6 +36,8 @@ use Sabre\DAVACL\Plugin;
  * @package OCA\DAV\Connector\Sabre
  */
 class DavAclPlugin extends Plugin {
+	public string $defaultUsernamePath;
+
 	public function __construct() {
 		$this->hideNodesFromListings = true;
 		$this->allowUnauthenticatedAccess = false;

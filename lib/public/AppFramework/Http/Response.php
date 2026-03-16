@@ -8,6 +8,7 @@
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -103,7 +104,7 @@ class Response {
 	 * @return $this
 	 * @since 8.0.0
 	 */
-	public function addCookie($name, $value, \DateTime $expireDate = null) {
+	public function addCookie($name, $value, ?\DateTime $expireDate = null) {
 		$this->cookies[$name] = ['value' => $value, 'expireDate' => $expireDate];
 		return $this;
 	}

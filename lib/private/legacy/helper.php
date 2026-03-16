@@ -195,12 +195,11 @@ class OC_Helper {
 
 	/**
 	 * Recursive deletion of folders
-	 *
 	 * @param string $dir path to the folder
 	 * @param bool $deleteSelf if set to false only the content of the folder will be deleted
 	 * @return bool
 	 */
-	public static function rmdirr(string $dir, bool $deleteSelf = true): bool {
+	public static function rmdirr($dir, $deleteSelf = true) {
 		if (\is_dir($dir)) {
 			$files = new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -557,7 +556,7 @@ class OC_Helper {
 	 * @param string $path
 	 * @return string|null
 	 */
-	public static function getCleanedPath(string $path = ''): ?string {
+	public static function getCleanedPath($path = '') {
 		$pattern = "((\/[\w\d]*)+)";
 
 		if (\preg_match_all($pattern, $path, $matches) > 0) {

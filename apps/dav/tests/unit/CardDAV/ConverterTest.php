@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -120,7 +121,7 @@ class ConverterTest extends TestCase {
 	 * @param $displayName
 	 * @param $eMailAddress
 	 * @param $cloudId
-	 * @return IUser | PHPUnit\Framework\MockObject\MockObject
+	 * @return IUser | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getUserMock($displayName, $eMailAddress, $cloudId) {
 		$image0 = $this->getMockBuilder(IImage::class)->disableOriginalConstructor()->getMock();

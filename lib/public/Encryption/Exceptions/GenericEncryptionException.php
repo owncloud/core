@@ -7,6 +7,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,7 +41,7 @@ class GenericEncryptionException extends HintException {
 	 * @param \Exception $previous
 	 * @since 8.1.0
 	 */
-	public function __construct($message = '', $hint = '', $code = 0, \Exception $previous = null) {
+	public function __construct($message = '', $hint = '', $code = 0, ?\Exception $previous = null) {
 		if (empty($message)) {
 			$message = 'Unspecified encryption exception';
 		}

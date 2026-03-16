@@ -262,4 +262,17 @@ class LegacyHelperTest extends \Test\TestCase {
 		\OC_Helper::rmdirr($baseDir);
 		$this->assertFileDoesNotExist($baseDir);
 	}
+
+	/**
+	 * Allows us to test private methods/properties
+	 *
+	 * @param $object
+	 * @param $methodName
+	 * @param array $parameters
+	 * @return mixed
+	 * @deprecated Please extend \Test\TestCase and use self::invokePrivate() then
+	 */
+	public static function invokePrivate($object, $methodName, array $parameters = []) {
+		return parent::invokePrivate($object, $methodName, $parameters);
+	}
 }

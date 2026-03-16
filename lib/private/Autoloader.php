@@ -13,6 +13,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -113,6 +114,7 @@ class Autoloader {
 	 */
 	public function load($class) {
 		$pathsToRequire = null;
+
 		if (\class_exists($class, false)) {
 			return false;
 		}
@@ -126,6 +128,7 @@ class Autoloader {
 					$pathsToRequire[] = $fullPath;
 				}
 			}
+
 		}
 
 		foreach ($pathsToRequire as $fullPath) {

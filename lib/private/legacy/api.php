@@ -16,6 +16,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -50,6 +51,7 @@ use OCP\Authentication\Exceptions\AccountCheckException;
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -72,32 +74,32 @@ class OC_API {
 	 */
 
 	/** @deprecated Use \OCP\API::GUEST_AUTH instead */
-	public const GUEST_AUTH = 0;
+	public const int GUEST_AUTH = 0;
 
 	/** @deprecated Use \OCP\API::USER_AUTH instead */
-	public const USER_AUTH = 1;
+	public const int USER_AUTH = 1;
 
 	/** @deprecated Use \OCP\API::SUBADMIN_AUTH instead */
-	public const SUBADMIN_AUTH = 2;
+	public const int SUBADMIN_AUTH = 2;
 
 	/** @deprecated Use \OCP\API::ADMIN_AUTH instead */
-	public const ADMIN_AUTH = 3;
+	public const int ADMIN_AUTH = 3;
 
 	/**
 	 * API Response Codes
 	 */
 
 	/** @deprecated Use \OCP\API::RESPOND_UNAUTHORISED instead */
-	public const RESPOND_UNAUTHORISED = 997;
+	public const int RESPOND_UNAUTHORISED = 997;
 
 	/** @deprecated Use \OCP\API::RESPOND_SERVER_ERROR instead */
-	public const RESPOND_SERVER_ERROR = 996;
+	public const int RESPOND_SERVER_ERROR = 996;
 
 	/** @deprecated Use \OCP\API::RESPOND_NOT_FOUND instead */
-	public const RESPOND_NOT_FOUND = 998;
+	public const int RESPOND_NOT_FOUND = 998;
 
 	/** @deprecated Use \OCP\API::RESPOND_UNKNOWN_ERROR instead */
-	public const RESPOND_UNKNOWN_ERROR = 999;
+	public const int RESPOND_UNKNOWN_ERROR = 999;
 
 	/**
 	 * api actions

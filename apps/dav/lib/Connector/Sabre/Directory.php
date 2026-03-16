@@ -13,6 +13,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -84,7 +85,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @param ObjectTree|null $tree
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, ObjectTree $tree = null, $shareManager = null) {
+	public function __construct($view, $info, ?ObjectTree $tree = null, $shareManager = null) {
 		parent::__construct($view, $info, $shareManager);
 		$this->tree = $tree;
 	}
@@ -119,7 +120,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws \Sabre\DAV\Exception
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 * @throws SabreForbidden
-	 * @throws ServiceUnavailable
+	 * @throws SabreServiceUnavailable
 	 */
 	public function createFile($name, $data = null) {
 		# the check here is necessary, because createFile uses put covered in sabre/file.php

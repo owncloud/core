@@ -7,7 +7,6 @@ namespace Test\AppFramework\Http;
  * Used to simulate php://input for Request tests
  */
 class RequestStream {
-	public $context;
 	protected $position;
 	protected $varname;
 

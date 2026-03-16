@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -466,7 +467,7 @@ class FilesPlugin extends ServerPlugin {
 	 * @param \Sabre\DAV\INode $node
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
-	public function sendFileIdHeader($filePath, \Sabre\DAV\INode $node = null) {
+	public function sendFileIdHeader($filePath, ?\Sabre\DAV\INode $node = null) {
 		// chunked upload handling
 		if (\OC_FileChunking::isWebdavChunk()) {
 			list($path, $name) = \Sabre\Uri\split($filePath);

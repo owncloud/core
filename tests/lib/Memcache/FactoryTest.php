@@ -20,16 +20,11 @@
  */
 namespace Test\Memcache;
 
-use OC\HintException;
-use OC\Memcache\Factory;
-use Test\TestCase;
-use OCP\ILogger;
-
 class Test_Factory_Available_Cache1 {
 	public function __construct($prefix = '') {
 	}
 
-	public static function isAvailable(): true {
+	public static function isAvailable() {
 		return true;
 	}
 }
@@ -38,7 +33,7 @@ class Test_Factory_Available_Cache2 {
 	public function __construct($prefix = '') {
 	}
 
-	public static function isAvailable(): true {
+	public static function isAvailable() {
 		return true;
 	}
 }
@@ -47,7 +42,7 @@ class Test_Factory_Unavailable_Cache1 {
 	public function __construct($prefix = '') {
 	}
 
-	public static function isAvailable(): false {
+	public static function isAvailable() {
 		return false;
 	}
 }
@@ -56,48 +51,48 @@ class Test_Factory_Unavailable_Cache2 {
 	public function __construct($prefix = '') {
 	}
 
-	public static function isAvailable(): false {
+	public static function isAvailable() {
 		return false;
 	}
 }
 
-class FactoryTest extends TestCase {
+class FactoryTest extends \Test\TestCase {
 	public const AVAILABLE1 = '\\Test\\Memcache\\Test_Factory_Available_Cache1';
 	public const AVAILABLE2 = '\\Test\\Memcache\\Test_Factory_Available_Cache2';
 	public const UNAVAILABLE1 = '\\Test\\Memcache\\Test_Factory_Unavailable_Cache1';
 	public const UNAVAILABLE2 = '\\Test\\Memcache\\Test_Factory_Unavailable_Cache2';
 
-	public function cacheAvailabilityProvider(): array {
+	public function cacheAvailabilityProvider() {
 		return [
 			[
 				// local and distributed available
 				self::AVAILABLE1, self::AVAILABLE2, null,
-				self::AVAILABLE1, self::AVAILABLE2, Factory::NULL_CACHE
+				self::AVAILABLE1, self::AVAILABLE2, \OC\Memcache\Factory::NULL_CACHE
 			],
 			[
 				// local and distributed null
 				null, null, null,
-				Factory::NULL_CACHE, Factory::NULL_CACHE, Factory::NULL_CACHE
+				\OC\Memcache\Factory::NULL_CACHE, \OC\Memcache\Factory::NULL_CACHE, \OC\Memcache\Factory::NULL_CACHE
 			],
 			[
 				// local available, distributed null (most common scenario)
 				self::AVAILABLE1, null, null,
-				self::AVAILABLE1, self::AVAILABLE1, Factory::NULL_CACHE
+				self::AVAILABLE1, self::AVAILABLE1, \OC\Memcache\Factory::NULL_CACHE
 			],
 			[
 				// locking cache available
 				null, null, self::AVAILABLE1,
-				Factory::NULL_CACHE, Factory::NULL_CACHE, self::AVAILABLE1
+				\OC\Memcache\Factory::NULL_CACHE, \OC\Memcache\Factory::NULL_CACHE, self::AVAILABLE1
 			],
 			[
 				// locking cache unavailable: no exception here in the factory
 				null, null, self::UNAVAILABLE1,
-				Factory::NULL_CACHE, Factory::NULL_CACHE, Factory::NULL_CACHE
+				\OC\Memcache\Factory::NULL_CACHE, \OC\Memcache\Factory::NULL_CACHE, \OC\Memcache\Factory::NULL_CACHE
 			]
 		];
 	}
 
-	public function cacheUnavailableProvider(): array {
+	public function cacheUnavailableProvider() {
 		return [
 			[
 				// local available, distributed unavailable
@@ -124,9 +119,9 @@ class FactoryTest extends TestCase {
 		$expectedLocalCache,
 		$expectedDistributedCache,
 		$expectedLockingCache
-	): void {
-		$logger = $this->getMockBuilder(ILogger::class)->getMock();
-		$factory = new Factory('abc', $logger, $localCache, $distributedCache, $lockingCache);
+	) {
+		$logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
+		$factory = new \OC\Memcache\Factory('abc', $logger, $localCache, $distributedCache, $lockingCache);
 		$this->assertTrue(\is_a($factory->createLocal(), $expectedLocalCache));
 		$this->assertTrue(\is_a($factory->createDistributed(), $expectedDistributedCache));
 		$this->assertTrue(\is_a($factory->createLocking(), $expectedLockingCache));
@@ -135,10 +130,10 @@ class FactoryTest extends TestCase {
 	/**
 	 * @dataProvider cacheUnavailableProvider
 	 */
-	public function testCacheNotAvailableException($localCache, $distributedCache): void {
-		$this->expectException(HintException::class);
+	public function testCacheNotAvailableException($localCache, $distributedCache) {
+		$this->expectException(\OC\HintException::class);
 
-		$logger = $this->getMockBuilder(ILogger::class)->getMock();
-		new Factory('abc', $logger, $localCache, $distributedCache);
+		$logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
+		new \OC\Memcache\Factory('abc', $logger, $localCache, $distributedCache);
 	}
 }

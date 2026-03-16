@@ -5,6 +5,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,11 +34,16 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  * @package OC\Session
  */
 class CryptoSessionData implements \ArrayAccess, ISession {
-	protected ISession $session;
-	protected ICrypto $crypto;
-	protected string $passphrase;
-	protected array $sessionValues;
-	protected bool $isModified = false;
+	/** @var ISession */
+	protected $session;
+	/** @var \OCP\Security\ICrypto */
+	protected $crypto;
+	/** @var string */
+	protected $passphrase;
+	/** @var array */
+	protected $sessionValues;
+	/** @var bool */
+	protected $isModified = false;
 	public const encryptedSessionName = 'encrypted_session_data';
 
 	/**
@@ -62,20 +68,20 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	public function __destruct() {
 		try {
 			$this->close();
-		} catch (SessionNotAvailableException) {
+		} catch (SessionNotAvailableException $e) {
 			// This exception can occur if session is already closed
 			// So it is safe to ignore it and let the garbage collector to proceed
 		}
 	}
 
-	protected function initializeSession(): void {
-		$encryptedSessionData = $this->session->get(self::encryptedSessionName) ?? '';
+	protected function initializeSession() {
+		$encryptedSessionData = $this->session->get(self::encryptedSessionName);
 		try {
 			$this->sessionValues = \json_decode(
 				$this->crypto->decrypt($encryptedSessionData, $this->passphrase),
 				true
-			) ?? [];
-		} catch (\Exception) {
+			);
+		} catch (\Exception $e) {
 			$this->sessionValues = [];
 		}
 	}
@@ -86,16 +92,23 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set($key, $value): void {
+	public function set($key, $value) {
 		$this->sessionValues[$key] = $value;
 		$this->isModified = true;
 	}
 
 	/**
 	 * Get a value from the session
+	 *
+	 * @param string $key
+	 * @return string|null Either the value or null
 	 */
-	public function get(string $key): mixed {
-		return $this->sessionValues[$key] ?? null;
+	public function get($key) {
+		if (isset($this->sessionValues[$key])) {
+			return $this->sessionValues[$key];
+		}
+
+		return null;
 	}
 
 	/**
@@ -113,7 +126,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 *
 	 * @param string $key
 	 */
-	public function remove($key): void {
+	public function remove($key) {
 		$this->isModified = true;
 		unset($this->sessionValues[$key]);
 		$this->session->remove(self::encryptedSessionName);
@@ -122,7 +135,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	/**
 	 * Reset and recreate the session
 	 */
-	public function clear(): void {
+	public function clear() {
 		$this->sessionValues = [];
 		$this->isModified = true;
 		$this->session->clear();
@@ -134,7 +147,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param bool $deleteOldSession Whether to delete the old associated session file or not.
 	 * @return void
 	 */
-	public function regenerateId($deleteOldSession = true): void {
+	public function regenerateId($deleteOldSession = true) {
 		$this->session->regenerateId($deleteOldSession);
 	}
 
@@ -145,7 +158,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @throws SessionNotAvailableException
 	 * @since 9.1.0
 	 */
-	public function getId(): string {
+	public function getId() {
 		return $this->session->getId();
 	}
 
@@ -171,9 +184,9 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 
 	/**
 	 * @param mixed $offset
-	 * @return string|null
+	 * @return mixed
 	 */
-	public function offsetGet($offset): ?string {
+	public function offsetGet($offset): mixed {
 		return $this->get($offset);
 	}
 
@@ -181,7 +194,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @param mixed $value
 	 */
-	public function offsetSet($offset, mixed $value): void {
+	public function offsetSet($offset, $value): void {
 		$this->set($offset, $value);
 	}
 

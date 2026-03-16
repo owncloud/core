@@ -10,7 +10,6 @@
 namespace Test\DB;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
@@ -137,9 +136,7 @@ class MigratorTest extends \Test\TestCase {
 		} catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
 			$caught = true;
 			// makes PostgreSQL happier after an exception (and we don't have rollback yet on the public API...)
-			if (!$this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
-				$this->connection->commit();
-			}
+			$this->connection->commit();
 		}
 		$this->assertTrue($caught);
 	}

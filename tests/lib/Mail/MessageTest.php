@@ -11,66 +11,176 @@ namespace Test\Mail;
 use OC\Mail\Message;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 use Test\TestCase;
 
 class MessageTest extends TestCase {
-	private Email $symfonyMail;
-	private Message $message;
+	/** @var Email */
+	private $email;
+	/** @var Message */
+	private $message;
+
+	/**
+	 * @return array
+	 */
+	public function mailAddressProvider() {
+		return [
+			[['lukas@owncloud.com' => 'Lukas Reschke'], ['lukas@owncloud.com' => 'Lukas Reschke']],
+			[['lukas@owncloud.com' => 'Lukas Reschke', 'lukas@öwnclöüd.com', 'lukäs@owncloud.örg' => 'Lükäs Réschke'],
+				['lukas@owncloud.com' => 'Lukas Reschke', 'lukas@xn--wncld-iuae2c.com', 'lukäs@owncloud.xn--rg-eka' => 'Lükäs Réschke']],
+			[['lukas@öwnclöüd.com'], ['lukas@xn--wncld-iuae2c.com']]
+		];
+	}
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->symfonyMail = new Email();
-		$this->message = new Message($this->symfonyMail);
+		$this->email = $this->getMockBuilder(Email::class)
+			->disableOriginalConstructor()->getMock();
+
+		$this->message = new Message($this->email);
 	}
 
-	public function testFrom(): void {
+	/**
+	 * @requires function idn_to_ascii
+	 * @dataProvider mailAddressProvider
+	 *
+	 * @param string $unconverted
+	 * @param string $expected
+	 */
+	public function testConvertAddresses($unconverted, $expected) {
+		$this->assertSame($expected, self::invokePrivate($this->message, 'convertAddresses', [$unconverted]));
+	}
+
+	public function testSetFrom() {
+		$this->email
+			->expects($this->once())
+			->method('from')
+			->with(Address::create('lukas@owncloud.com'));
 		$this->message->setFrom(['lukas@owncloud.com']);
+	}
+
+	public function testGetFrom() {
+		$this->email
+			->expects($this->once())
+			->method('getFrom')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
 		$this->assertSame(['lukas@owncloud.com'], $this->message->getFrom());
-		$this->assertEquals([new Address('lukas@owncloud.com')], $this->symfonyMail->getFrom());
 	}
 
-	public function testTo(): void {
-		$this->message->setTo(['lukas@owncloud.com']);
-		$this->assertSame(['lukas@owncloud.com'], $this->message->getTo());
-		$this->assertEquals([new Address('lukas@owncloud.com')], $this->symfonyMail->getTo());
-	}
-
-	public function testReplyTo(): void {
+	public function testSetReplyTo() {
+		$this->email
+			->expects($this->once())
+			->method('replyTo')
+			->with(Address::create('lukas@owncloud.com'));
 		$this->message->setReplyTo(['lukas@owncloud.com']);
+	}
+
+	public function testGetReplyTo() {
+		$this->email
+			->expects($this->once())
+			->method('getReplyTo')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
 		$this->assertSame(['lukas@owncloud.com'], $this->message->getReplyTo());
-		$this->assertEquals([new Address('lukas@owncloud.com')], $this->symfonyMail->getReplyTo());
 	}
 
-	public function testCC(): void {
+	public function testSetTo() {
+		$this->email
+			->expects($this->once())
+			->method('to')
+			->with(Address::create('lukas@owncloud.com'));
+		$this->message->setTo(['lukas@owncloud.com']);
+	}
+
+	public function testGetTo() {
+		$this->email
+			->expects($this->once())
+			->method('getTo')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getTo());
+	}
+
+	public function testSetCc() {
+		$this->email
+			->expects($this->once())
+			->method('cc')
+			->with(Address::create('lukas@owncloud.com'));
 		$this->message->setCc(['lukas@owncloud.com']);
+	}
+
+	public function testGetCc() {
+		$this->email
+			->expects($this->once())
+			->method('getCc')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
 		$this->assertSame(['lukas@owncloud.com'], $this->message->getCc());
-		$this->assertEquals([new Address('lukas@owncloud.com')], $this->symfonyMail->getCc());
 	}
 
-	public function testBCC(): void {
+	public function testSetBcc() {
+		$this->email
+			->expects($this->once())
+			->method('bcc')
+			->with(Address::create('lukas@owncloud.com'));
 		$this->message->setBcc(['lukas@owncloud.com']);
+	}
+
+	public function testGetBcc() {
+		$this->email
+			->expects($this->once())
+			->method('getBcc')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
 		$this->assertSame(['lukas@owncloud.com'], $this->message->getBcc());
-		$this->assertEquals([new Address('lukas@owncloud.com')], $this->symfonyMail->getBcc());
 	}
-	public function testSubject(): void {
+
+	public function testSetSubject() {
+		$this->email
+			->expects($this->once())
+			->method('subject')
+			->with('Fancy Subject');
+
 		$this->message->setSubject('Fancy Subject');
+	}
+
+	public function testGetSubject() {
+		$this->email
+			->expects($this->once())
+			->method('getSubject')
+			->will($this->returnValue('Fancy Subject'));
+
 		$this->assertSame('Fancy Subject', $this->message->getSubject());
-		$this->assertEquals('Fancy Subject', $this->symfonyMail->getSubject());
 	}
 
-	public function testSetPlainBody(): void {
+	public function testSetPlainBody() {
+		$this->email
+			->expects($this->once())
+			->method('text')
+			->with('Fancy Body');
+
 		$this->message->setPlainBody('Fancy Body');
-		self::assertEquals('Fancy Body', $this->symfonyMail->getTextBody());
 	}
 
-	public function testGetPlainBody(): void {
-		$this->symfonyMail->text('Fancy Body');
-		$this->assertSame('Fancy Body', $this->message->getPlainBody());
+	public function testGetPlainBody() {
+		$content = 'Fancy Body';
+		$this->email
+			->expects($this->once())
+			->method('getBody')
+			->will($this->returnValue(new DataPart(body: $content)));
+
+		$this->assertSame($content, $this->message->getPlainBody()->getBody());
 	}
 
-	public function testSetHtmlBody(): void {
-		$this->message->setHtmlBody('<blink>Fancy Body</blink>');
-		self::assertEquals('<blink>Fancy Body</blink>', $this->symfonyMail->getHtmlBody());
+	public function testSetHtmlBody() {
+		$content = '<blink>Fancy Body</blink>';
+		$this->email
+			->expects($this->once())
+			->method('addPart')
+			->with(new DataPart(body: $content, contentType: 'text/html'));
+
+		$this->message->setHtmlBody($content);
 	}
 }

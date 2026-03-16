@@ -9,6 +9,7 @@
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -108,7 +109,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null) {
+	public function insertIfNotExist($table, $input, ?array $compare = null) {
 		return $this->connection->insertIfNotExist($table, $input, $compare);
 	}
 
@@ -234,7 +235,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function escapeLikeParameter(string $param): string {
+	public function escapeLikeParameter($param) {
 		return $this->connection->escapeLikeParameter($param);
 	}
 
@@ -269,7 +270,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function upsert($table, $input, array $compare = null) {
+	public function upsert($table, $input, ?array $compare = null) {
 		return $this->connection->upsert($table, $input, $compare);
 	}
 }

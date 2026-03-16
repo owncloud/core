@@ -6,6 +6,7 @@
  * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,7 +48,7 @@ class QueryLogger implements IQueryLogger {
 	/**
 	 * @inheritdoc
 	 */
-	public function startQuery($sql, array $params = null, array $types = null) {
+	public function startQuery($sql, ?array $params = null, ?array $types = null) {
 		if ($this->activated) {
 			$this->activeQuery = new Query($sql, $params ?? [], $this->getMicrotime());
 		}
@@ -82,10 +83,10 @@ class QueryLogger implements IQueryLogger {
 		$this->queries = [];
 	}
 
-	private function getMicrotime(): int {
+	private function getMicrotime(): float {
 		if ($this->testNow) {
-			return (int)$this->testNow;
+			return $this->testNow;
 		}
-		return (int)microtime(true);
+		return microtime(true);
 	}
 }

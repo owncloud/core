@@ -1,4 +1,4 @@
-# ownCloud Core
+# ownCloud.online
 
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud/core/status.svg?branch=master)](https://drone.owncloud.com/owncloud/core)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=alert_status)](https://sonarcloud.io/dashboard?id=owncloud_core)
@@ -8,7 +8,7 @@
 
 **[ownCloud](http://ownCloud.com) offers file sharing and collaboration trusted by 200+ million users worldwide regardless of device or location.**
 
-![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
+![](core/img/design-preview.png)
 
 ## Why Is This so Awesome?
 * :file_folder: **Access your Data** You can store your files, contacts, calendars and more on a server of your choosing.

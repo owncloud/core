@@ -9,18 +9,16 @@
 
 namespace Test\Memcache;
 
-use OC\Memcache\Redis;
-
 class RedisTest extends Cache {
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
-		if (!Redis::isAvailable()) {
+		if (!\OC\Memcache\Redis::isAvailable()) {
 			self::markTestSkipped('The redis extension is not available.');
 		}
 		
 		try {
-			$instance = new Redis(self::getUniqueID());
+			$instance = new \OC\Memcache\Redis(self::getUniqueID());
 			$instance->set(self::getUniqueID(), self::getUniqueID());
 		} catch (\RedisException $ex) {
 			self::markTestSkipped('redis server seems to be down.');
@@ -29,6 +27,6 @@ class RedisTest extends Cache {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->instance = new Redis(self::getUniqueID());
+		$this->instance = new \OC\Memcache\Redis(self::getUniqueID());
 	}
 }

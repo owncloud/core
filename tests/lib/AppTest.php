@@ -499,12 +499,12 @@ class AppTest extends \Test\TestCase {
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
 			return new \OC\App\AppManager(
-				$c->getUserSession(),
-				$appConfig,
-				$c->getGroupManager(),
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				$c->getUserSession(),
+				$appConfig,
+				$c->getGroupManager()
 			);
 		});
 	}
@@ -518,12 +518,12 @@ class AppTest extends \Test\TestCase {
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
 			return new \OC\App\AppManager(
-				$c->getUserSession(),
-				$c->getAppConfig(),
-				$c->getGroupManager(),
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				$c->getUserSession(),
+				$c->getAppConfig(),
+				$c->getGroupManager()
 			);
 		});
 

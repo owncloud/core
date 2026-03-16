@@ -5,6 +5,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -45,5 +46,5 @@ interface Emitter {
 	 * @param callable $callback optional
 	 * @return void
 	 */
-	public function removeListener($scope = null, $method = null, callable $callback = null);
+	public function removeListener($scope = null, $method = null, ?callable $callback = null);
 }

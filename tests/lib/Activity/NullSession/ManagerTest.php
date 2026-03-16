@@ -38,8 +38,8 @@ class ManagerTest extends TestCase {
 
 		$this->activityManager = new \OC\Activity\Manager(
 			$this->request,
-			null,
-			$this->config
+			$this->config,
+			null
 		);
 
 		$this->assertSame([], self::invokePrivate($this->activityManager, 'getConsumers'));

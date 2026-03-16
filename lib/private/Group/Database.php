@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -59,8 +60,8 @@ class Database extends \OC\Group\Backend {
 	 * @param \OCP\IConfig|null $config
 	 */
 	public function __construct(
-		\OCP\IDBConnection $dbConn = null,
-		\OCP\IConfig $config = null
+		?\OCP\IDBConnection $dbConn = null,
+		?\OCP\IConfig $config = null
 	) {
 		$this->dbConn = $dbConn;
 		$this->config = $config;

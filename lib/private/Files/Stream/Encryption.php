@@ -8,6 +8,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +30,7 @@ namespace OC\Files\Stream;
 use Icewind\Streams\Wrapper;
 use OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException;
 
+#[\AllowDynamicProperties]
 class Encryption extends Wrapper {
 	/** @var \OC\Encryption\Util */
 	protected $util;
@@ -98,9 +100,6 @@ class Encryption extends Wrapper {
 
 	/** @var array */
 	protected $expectedContextProperties;
-
-	/** @var string - keep this for property access in L224*/
-	protected $sourceFileOfRename;
 
 	public function __construct() {
 		$this->expectedContextProperties = [
@@ -201,9 +200,17 @@ class Encryption extends Wrapper {
 	 */
 	protected static function wrapSource($source, $context = [], $protocol = null, $class = null, $mode = 'r+') {
 		try {
+			if (\in_array($protocol, \stream_get_wrappers())) {
+				\stream_wrapper_unregister($protocol);
+			}
+
 			\stream_wrapper_register($protocol, $class);
-			\rewind($source);
-			$wrapped = \fopen($protocol . '://', $mode, false, $context);
+			try {
+				\rewinddir($source);
+				$wrapped = \opendir($protocol . '://', $context);
+			} catch (\TypeError $e) {
+				$wrapped = \fopen($protocol . '://', $mode, false, $context);
+			}
 		} catch (\BadMethodCallException $e) {
 			\stream_wrapper_unregister($protocol);
 			throw $e;

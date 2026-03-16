@@ -6,6 +6,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,23 +25,31 @@
 
 namespace OC\Memcache;
 
-use OCP\ICache;
+abstract class Cache implements \ArrayAccess, \OCP\ICache {
+	/**
+	 * @var string $prefix
+	 */
+	protected $prefix;
 
-abstract class Cache implements \ArrayAccess, ICache {
-	protected string $prefix;
-
-	public function __construct(string $prefix = '') {
+	/**
+	 * @param string $prefix
+	 */
+	public function __construct($prefix = '') {
 		$this->prefix = $prefix;
 	}
 
 	/**
 	 * @return string Prefix used for caching purposes
 	 */
-	public function getPrefix(): string {
+	public function getPrefix() {
 		return $this->prefix;
 	}
 
-	abstract public function get($key): mixed;
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	abstract public function get($key);
 
 	/**
 	 * @param string $key
@@ -48,7 +57,7 @@ abstract class Cache implements \ArrayAccess, ICache {
 	 * @param int $ttl
 	 * @return mixed
 	 */
-	abstract public function set($key, $value, $ttl = 0): mixed;
+	abstract public function set($key, $value, $ttl = 0);
 
 	/**
 	 * @param string $key

@@ -38,7 +38,7 @@
 	z-index: 2000;
 	height: 45px;
 	line-height: 2.5em;
-	background-color: #041e42;
+	background-color: #00E4BD;
 	box-sizing: border-box;
 }
 
@@ -347,7 +347,7 @@
 	display: block;
 	padding: 7px 30px 6px 10px;
 	cursor: pointer;
-	color: #bbb;
+	color: #fff;
 	transition: color .25s;
 }
 
@@ -362,7 +362,7 @@
 	height: 0;
 	border-style: solid;
 	border-width: 4px 4px 0 4px;
-	border-color: #bbb transparent transparent transparent;
+	border-color: #fff transparent transparent transparent;
 	right: 17px;
 	top: 22px;
 	transition: border-color .25s;

@@ -5,6 +5,7 @@
  * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,7 +43,7 @@ interface IQueryLogger extends SQLLogger {
 	 * @param array $types
 	 * @since 8.0.0
 	 */
-	public function startQuery($sql, array $params = null, array $types = null);
+	public function startQuery($sql, ?array $params = null, ?array $types = null);
 
 	/**
 	 * Mark the end of the current active query. Ending query should store \OCP\Diagnostics\IQuery to

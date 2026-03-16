@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -50,7 +51,7 @@ trait StorageModifierTrait {
 	 * @throws InsufficientDataForMeaningfulAnswerException
 	 * @throws StorageNotAvailableException
 	 */
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, ?IUser $user = null) {
 	}
 
 	/**

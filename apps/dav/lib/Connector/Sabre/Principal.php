@@ -97,10 +97,10 @@ class Principal implements BackendInterface {
 	 * getPrincipalsByPrefix.
 	 *
 	 * @param string $path
-	 * @return array|null
+	 * @return array
 	 */
-	public function getPrincipalByPath($path): ?array {
-		[$prefix, $name] = \Sabre\Uri\split($path);
+	public function getPrincipalByPath($path) {
+		list($prefix, $name) = \Sabre\Uri\split($path);
 
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
@@ -219,12 +219,12 @@ class Principal implements BackendInterface {
 	 * @param IUser $user
 	 * @return array
 	 */
-	protected function userToPrincipal(IUser $user): array {
+	protected function userToPrincipal($user) {
 		$userId = $user->getUID();
 		$displayName = $user->getDisplayName();
 		$principal = [
 				'uri' => $this->principalPrefix . '/' . $userId,
-				'{DAV:}displayname' => $displayName,
+				'{DAV:}displayname' => $displayName === null ? $userId : $displayName,
 		];
 
 		$email = $user->getEMailAddress();

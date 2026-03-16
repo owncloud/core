@@ -3,6 +3,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,7 +37,7 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 		$this->capacity = $capacity;
 	}
 
-	public function hasKey($key) {
+	public function hasKey($key): bool {
 		return isset($this->cache[$key]);
 	}
 

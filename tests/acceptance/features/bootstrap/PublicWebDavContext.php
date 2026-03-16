@@ -4,6 +4,7 @@
  *
  * @author Artur Neumann <artur@jankaritech.com>
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -1135,7 +1136,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function publiclyUploadingShouldNotWork(
 		string $publicWebDAVAPIVersion,
-		string $expectedHttpCode = null
+		?string $expectedHttpCode = null
 	):void {
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();

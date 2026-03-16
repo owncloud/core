@@ -16,6 +16,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -79,7 +80,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @param \OCP\Files\FileInfo $info
 	 * @param IManager $shareManager
 	 */
-	public function __construct($view, $info, IManager $shareManager = null) {
+	public function __construct($view, $info, ?IManager $shareManager = null) {
 		$this->fileView = $view;
 		$this->path = $this->fileView->getRelativePath($info->getPath());
 		$this->info = $info;

@@ -7,6 +7,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ namespace OC;
 class HintException extends \Exception {
 	private $hint;
 
-	public function __construct($message, $hint = '', $code = 0, \Exception $previous = null) {
+	public function __construct($message, $hint = '', $code = 0, ?\Exception $previous = null) {
 		$this->hint = $hint;
 		parent::__construct($message, $code, $previous);
 	}

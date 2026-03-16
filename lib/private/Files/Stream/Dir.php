@@ -28,7 +28,6 @@ class Dir {
 	private static $dirs = [];
 	private $name;
 	private $index;
-	public $context;
 
 	public function dir_opendir($path, $options) {
 		$this->name = \substr($path, \strlen('fakedir://'));

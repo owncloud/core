@@ -11,6 +11,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -108,7 +109,7 @@ class Root extends Folder implements IRootFolder {
 	 * @param string $method optional
 	 * @param callable $callback optional
 	 */
-	public function removeListener($scope = null, $method = null, callable $callback = null) {
+	public function removeListener($scope = null, $method = null, ?callable $callback = null) {
 		$this->emitter->removeListener($scope, $method, $callback);
 	}
 

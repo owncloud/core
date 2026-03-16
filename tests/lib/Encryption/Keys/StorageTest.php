@@ -39,6 +39,7 @@ use Test\Traits\UserTrait;
  * @package Test\Encryption\Keys
  */
 class StorageTest extends TestCase {
+	public $mkdirStack;
 	use UserTrait;
 
 	/** @var Storage */
@@ -52,10 +53,6 @@ class StorageTest extends TestCase {
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
-	/**
-	 * @var array|string[]
-	 */
-	private array $mkdirStack;
 
 	public function setUp(): void {
 		parent::setUp();

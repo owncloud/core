@@ -6,6 +6,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -262,12 +263,13 @@ class FileTest extends TestCase {
 			->getMock();
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
-			->willReturnCallback(
-				function ($path) use ($storage) {
-					return [$storage, $path];
-				}
+			->will(
+				$this->returnCallback(
+					function ($path) use ($storage) {
+						return [$storage, $path];
+					}
+				)
 			);
-		$view->method('getRelativePath')->willReturn('test.txt');
 
 		$storage->expects($this->once())
 			->method('fopen')
@@ -348,11 +350,11 @@ class FileTest extends TestCase {
 		$view = $this->createMock(View::class, ['getRelativePath', 'resolvePath'], []);
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
-			->willReturnCallback(function ($path) use ($storage) {
-				return [$storage, $path];
-			});
-		$view->method('getAbsolutePath')->willReturnArgument(0);
-		$view->method('getRelativePath')->willReturnArgument(0);
+			->will($this->returnCallback(
+				function ($path) use ($storage) {
+					return [$storage, $path];
+				}
+			));
 
 		if ($thrownException !== null) {
 			$storage->expects($this->once())
@@ -361,7 +363,7 @@ class FileTest extends TestCase {
 		} else {
 			$storage->expects($this->once())
 				->method('fopen')
-				->willReturn(false);
+				->will($this->returnValue(false));
 		}
 
 		$view->expects($this->any())
@@ -428,7 +430,7 @@ class FileTest extends TestCase {
 	 *
 	 * @return null|string of the PUT operation which is usually the etag
 	 */
-	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
+	private function doPut($path, $viewRoot = null, ?\OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();
 		if ($viewRoot !== null) {
 			$view = new View($viewRoot);
@@ -773,7 +775,7 @@ class FileTest extends TestCase {
 	 * if the passed view was chrooted (can happen with public webdav
 	 * where the root is the share root)
 	 */
-	public function testPutSingleFileTriggersHooksDifferentRoot(): void {
+	public function testPutSingleFileTriggersHooksDifferentRoot() {
 		$view = Filesystem::getView();
 		$view->mkdir('noderoot');
 
@@ -1399,7 +1401,7 @@ class FileTest extends TestCase {
 	 *
 	 * @return array list of part files
 	 */
-	private function listPartFiles(View $userView = null, $path = '') {
+	private function listPartFiles(?View $userView = null, $path = '') {
 		if ($userView === null) {
 			$userView = Filesystem::getView();
 		}
@@ -1425,7 +1427,7 @@ class FileTest extends TestCase {
 	 * @param View $userView
 	 * @return array
 	 */
-	private function getFileInfos($path = '', View $userView = null) {
+	private function getFileInfos($path = '', ?View $userView = null) {
 		if ($userView === null) {
 			$userView = Filesystem::getView();
 		}

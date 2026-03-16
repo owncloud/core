@@ -9,6 +9,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -71,15 +72,15 @@ class Factory implements IFactory {
 	 * @param IConfig $config
 	 * @param IRequest $request
 	 * @param IThemeService $themeService
-	 * @param IUserSession|null $userSession
 	 * @param string $serverRoot
+	 * @param IUserSession|null $userSession
 	 */
 	public function __construct(
 		IConfig $config,
 		IRequest $request,
 		IThemeService $themeService,
-		IUserSession $userSession = null,
-		$serverRoot
+		$serverRoot,
+		?IUserSession $userSession = null
 	) {
 		$this->config = $config;
 		$this->request = $request;

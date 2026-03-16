@@ -2,33 +2,37 @@
     "name": "owncloud/core",
     "description": "A safe home for all your data",
     "license": "AGPL-3.0-or-later",
-    "config" : {
+    "config": {
         "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
             "dg/composer-cleaner": true
         },
-        "sort-packages": true
+        "audit": {
+            "abandoned": "ignore",
+            "block-insecure": false
+        }
     },
-    "autoload" : {
+    "autoload": {
         "psr-4": {
             "OC\\": "lib/private",
             "OC\\Core\\": "core/",
             "OC\\Settings\\": "settings/",
             "OCP\\": "lib/public"
         },
-        "classmap": ["lib/private/legacy"],
+        "classmap": [
+            "lib/private/legacy"
+        ],
         "files": [
             "apps/files_external/lib/config.php"
         ]
-
     },
-    "autoload-dev" : {
+    "autoload-dev": {
         "psr-4": {
             "Test\\": "tests/lib/",
             "TestHelpers\\": "tests/TestHelpers/",
@@ -45,7 +49,7 @@
         "roave/security-advisories": "dev-latest"
     },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
@@ -64,20 +68,20 @@
         "ext-simplexml": "*",
         "ext-zip": "*",
         "bantu/ini-get-wrapper": "v1.0.1",
-        "christophwurst/id3parser": "^0.1.4",
-        "composer/semver": "^3.3",
+        "nextcloud/id3parser": "^0.1.4",
+        "composer/semver": "^3.4",
         "deepdiver/zipstreamer": "^3.0",
         "dg/composer-cleaner": "^2.2",
         "doctrine/dbal": "^3",
-        "firebase/php-jwt": "^7.0",
-        "google/apiclient": "^2.19",
+        "firebase/php-jwt": "^6.8 || ^7.0",
+        "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.7",
         "icewind/smb": "^3.6",
         "icewind/streams": "0.7.8",
         "interfasys/lognormalizer": "^v1.0",
-        "laminas/laminas-inputfilter": "^2.21",
-        "laminas/laminas-servicemanager": "^3.17",
-        "laminas/laminas-validator": "^2.25",
+        "laminas/laminas-inputfilter": "^2.33",
+        "laminas/laminas-servicemanager": "^3.23",
+        "laminas/laminas-validator": "^2.64",
         "laravel/serializable-closure": "^2.0",
         "league/flysystem": "^1.1",
         "nikic/php-parser": "^5.0",
@@ -91,12 +95,12 @@
         "sabre/dav": "^4.4",
         "sabre/http": "^5.1",
         "sabre/vobject": "^4.5",
-        "symfony/console": "^7.4",
-        "symfony/event-dispatcher": "^7.4",
-        "symfony/mailer": "^7.4",
-        "symfony/process": "^7.4",
-        "symfony/routing": "^7.4",
-        "symfony/translation": "^7.4"
+        "symfony/console": "^7.3",
+        "symfony/event-dispatcher": "^7.3",
+        "symfony/process": "^7.3",
+        "symfony/routing": "^7.3",
+        "symfony/translation": "^7.3",
+        "symfony/mailer": "^7.3"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",

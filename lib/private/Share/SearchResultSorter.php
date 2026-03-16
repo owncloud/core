@@ -6,6 +6,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +39,7 @@ class SearchResultSorter {
 	 * @param string $encoding optional, encoding to use, defaults to UTF-8
 	 * @param ILogger $log optional
 	 */
-	public function __construct($search, $key, ILogger $log = null, $encoding = 'UTF-8') {
+	public function __construct($search, $key, ?ILogger $log = null, $encoding = 'UTF-8') {
 		$this->encoding = $encoding;
 		$this->key = $key;
 		$this->log = $log;

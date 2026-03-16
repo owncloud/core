@@ -137,7 +137,7 @@ class MoveHome extends Command {
 	private function rsync(string $oldHome, string $newLocation): void {
 		exec("rsync -aAX $oldHome/ $newLocation", $output, $return_var);
 		if ($return_var !== 0) {
-			throw new RuntimeException("Copying files failed: \n $output");
+			throw new RuntimeException("Copying files failed: \n " . implode("\n", $output));
 		}
 	}
 }

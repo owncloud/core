@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,78 +23,30 @@
 
 namespace OCA\DAV\Tests\unit\CalDAV\Schedule;
 
-use Exception;
 use OC\Mail\Mailer;
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCP\ILogger;
 use OCP\IRequest;
-use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\ITip\Message;
-use Symfony\Component\Mime\Email;
 use Test\TestCase;
 use OC\Log;
 
 class IMipPluginTest extends TestCase {
-	private \OC\Mail\Message $mailMessage;
-	/**
-	 * @var Mailer|MockObject
-	 */
-	private $mailer;
-	private IMipPlugin $plugin;
-	/** @var ILogger|MockObject */
-	private $logger;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->mailMessage = new \OC\Mail\Message(new Email());
-		$this->mailer = $this->createMock(Mailer::class);
-		$this->mailer->method('createMessage')->willReturn($this->mailMessage);
-
-		$this->logger = $this->createMock(Log::class);
-		/** @var IRequest| MockObject $request */
+	public function testDelivery() {
+		$mailMessage = new \OC\Mail\Message(new \Symfony\Component\Mime\Email());
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
+		$mailer = $this->createMock(Mailer::class);
+		$mailer->method('createMessage')->willReturn($mailMessage);
+		$mailer->expects($this->once())->method('send');
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
+		$logger = $this->createMock(Log::class);
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->createMock(IRequest::class);
 
-		$this->plugin = new IMipPlugin($this->mailer, $this->logger, $request);
-	}
-
-	public function testDelivery(): void {
-		$this->mailer->expects($this->once())->method('send');
-
-		$message = $this->buildIMIPMessage('REQUEST');
-
-		$this->plugin->schedule($message);
-		$this->assertEquals('1.1', $message->getScheduleStatus());
-		$this->assertEquals('Fellowship meeting', $this->mailMessage->getSubject());
-		$this->assertEquals(['frodo@hobb.it' => null], $this->mailMessage->getTo());
-		$this->assertEquals(['gandalf@wiz.ard' => null], $this->mailMessage->getReplyTo());
-		$this->assertStringContainsString('text/calendar; charset=UTF-8; method=REQUEST', $this->mailMessage->getMessage()->getBody()->bodyToString());
-	}
-
-	public function testFailedDeliveryWithException(): void {
-		$ex = new Exception();
-		$this->mailer->method('send')->willThrowException($ex);
-		$this->logger->expects(self::once())->method('logException')->with($ex, ['app' => 'dav']);
-
-		$message = $this->buildIMIPMessage('REQUEST');
-
-		$this->plugin->schedule($message);
-		$this->assertIMipState($message, '5.0', 'REQUEST', 'Fellowship meeting');
-	}
-
-	public function testDeliveryOfCancel(): void {
-		$this->mailer->expects($this->once())->method('send');
-
-		$message = $this->buildIMIPMessage('CANCEL');
-
-		$this->plugin->schedule($message);
-		$this->assertIMipState($message, '1.1', 'CANCEL', 'Cancelled: Fellowship meeting');
-	}
-
-	private function buildIMIPMessage(string $method): Message {
+		$plugin = new IMipPlugin($mailer, $logger, $request);
 		$message = new Message();
-		$message->method = $method;
+		$message->method = 'REQUEST';
 		$message->message = new VCalendar();
 		$message->message->add('VEVENT', [
 			'UID' => $message->uid,
@@ -102,14 +55,107 @@ class IMipPluginTest extends TestCase {
 		]);
 		$message->sender = 'mailto:gandalf@wiz.ard';
 		$message->recipient = 'mailto:frodo@hobb.it';
-		return $message;
+
+		$plugin->schedule($message);
+		$this->assertEquals('1.1', $message->getScheduleStatus());
+		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
+		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
+		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getHeaders()->getHeaderBody('Content-Type'));
 	}
 
-	private function assertIMipState(Message $message, string $scheduleStatus, string $method, string $mailSubject): void {
-		$this->assertEquals($scheduleStatus, $message->getScheduleStatus());
-		$this->assertEquals($mailSubject, $this->mailMessage->getSubject());
-		$this->assertEquals(['frodo@hobb.it' => null], $this->mailMessage->getTo());
-		$this->assertEquals(['gandalf@wiz.ard' => null], $this->mailMessage->getReplyTo());
-		$this->assertStringContainsString("text/calendar; charset=UTF-8; method=$method", $this->mailMessage->getMessage()->getBody()->bodyToString());
+	public function testFailedDeliveryWithException() {
+		$mailMessage = new \OC\Mail\Message(new \Symfony\Component\Mime\Email());
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
+		$mailer = $this->createMock(Mailer::class);
+		$mailer->method('createMessage')->willReturn($mailMessage);
+		$mailer->method('send')->willThrowException(new \Exception());
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
+		$logger = $this->createMock(Log::class);
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
+		$message = new Message();
+		$message->method = 'REQUEST';
+		$message->message = new VCalendar();
+		$message->message->add('VEVENT', [
+			'UID' => $message->uid,
+			'SEQUENCE' => $message->sequence,
+			'SUMMARY' => 'Fellowship meeting',
+		]);
+		$message->sender = 'mailto:gandalf@wiz.ard';
+		$message->recipient = 'mailto:frodo@hobb.it';
+
+		$plugin->schedule($message);
+		$this->assertEquals('5.0', $message->getScheduleStatus());
+		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
+		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
+		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getHeaders()->getHeaderBody('Content-Type'));
+	}
+
+	public function testFailedDelivery() {
+		$mailMessage = new \OC\Mail\Message(new \Symfony\Component\Mime\Email());
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
+		$mailer = $this->createMock(Mailer::class);
+		$mailer->method('createMessage')->willReturn($mailMessage);
+		$mailer->method('send')->willReturn(['foo@example.net']);
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
+		$logger = $this->createMock(Log::class);
+		$logger->expects(self::once())->method('error')->with('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' => 'foo@example.net']);
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
+		$message = new Message();
+		$message->method = 'REQUEST';
+		$message->message = new VCalendar();
+		$message->message->add('VEVENT', [
+			'UID' => $message->uid,
+			'SEQUENCE' => $message->sequence,
+			'SUMMARY' => 'Fellowship meeting',
+		]);
+		$message->sender = 'mailto:gandalf@wiz.ard';
+		$message->recipient = 'mailto:frodo@hobb.it';
+
+		$plugin->schedule($message);
+		$this->assertEquals('5.0', $message->getScheduleStatus());
+		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
+		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
+		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getHeaders()->getHeaderBody('Content-Type'));
+	}
+
+	public function testDeliveryOfCancel() {
+		$mailMessage = new \OC\Mail\Message(new \Symfony\Component\Mime\Email());
+		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */
+		$mailer = $this->createMock(Mailer::class);
+		$mailer->method('createMessage')->willReturn($mailMessage);
+		$mailer->expects($this->once())->method('send');
+		/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject $logger */
+		$logger = $this->createMock(Log::class);
+		/** @var IRequest| \PHPUnit\Framework\MockObject\MockObject $request */
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
+		$message = new Message();
+		$message->method = 'CANCEL';
+		$message->message = new VCalendar();
+		$message->message->add('VEVENT', [
+			'UID' => $message->uid,
+			'SEQUENCE' => $message->sequence,
+			'SUMMARY' => 'Fellowship meeting',
+		]);
+		$message->sender = 'mailto:gandalf@wiz.ard';
+		$message->recipient = 'mailto:frodo@hobb.it';
+
+		$plugin->schedule($message);
+		$this->assertEquals('1.1', $message->getScheduleStatus());
+		$this->assertEquals('Cancelled: Fellowship meeting', $mailMessage->getSubject());
+		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
+		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=CANCEL', $mailMessage->getMessage()->getHeaders()->getHeaderBody('Content-Type'));
+		$this->assertEquals('CANCELLED', $message->message->VEVENT->STATUS->getValue());
 	}
 }

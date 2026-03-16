@@ -5,6 +5,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,7 +33,7 @@ class Audio extends File {
 	 * @var string
 	 */
 	public $type = 'audio';
-	
+
 	/**
 	 * @TODO add ID3 information
 	 */

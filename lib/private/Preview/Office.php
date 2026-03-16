@@ -77,7 +77,7 @@ abstract class Office implements IProvider2 {
 		}
 
 		$image = new \OC_Image();
-		$image->loadFromData($imagick->getImageBlob());
+		$image->loadFromData($imagick);
 
 		\unlink($pdfPreview);
 

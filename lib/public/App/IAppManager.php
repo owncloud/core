@@ -7,6 +7,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -85,7 +86,7 @@ interface IAppManager {
 	 * @return string[]
 	 * @since 8.1.0
 	 */
-	public function getEnabledAppsForUser(IUser $user = null);
+	public function getEnabledAppsForUser(?IUser $user = null);
 
 	/**
 	 * List all installed apps

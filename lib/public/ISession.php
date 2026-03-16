@@ -58,7 +58,7 @@ interface ISession {
 	 * @return mixed should return null if $key does not exist
 	 * @since 6.0.0
 	 */
-	public function get(string $key): mixed;
+	public function get($key);
 
 	/**
 	 * Check if a named key exists in the session

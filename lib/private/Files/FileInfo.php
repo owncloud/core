@@ -11,6 +11,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -100,17 +101,15 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset): mixed {
 		if ($offset === 'type') {
 			return $this->getType();
-		}
-
-		if ($offset === 'etag') {
+		} elseif ($offset === 'etag') {
 			return $this->getEtag();
-		}
-
-		if ($offset === 'permissions') {
+		} elseif ($offset === 'permissions') {
 			return $this->getPermissions();
+		} elseif (isset($this->data[$offset])) {
+			return $this->data[$offset];
+		} else {
+			return null;
 		}
-
-		return $this->data[$offset] ?? null;
 	}
 
 	/**
@@ -343,6 +342,6 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @inheritdoc
 	 */
 	public function getChecksum() {
-		return $this->data['checksum'] ?? '';
+		return $this->data['checksum'];
 	}
 }

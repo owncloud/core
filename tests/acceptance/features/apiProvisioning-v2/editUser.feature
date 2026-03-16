@@ -334,6 +334,7 @@ Feature: edit users
     And user "subadmin" changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
+      | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
 

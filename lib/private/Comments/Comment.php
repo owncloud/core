@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +49,7 @@ class Comment implements IComment {
 	 * @param array|null $data	optional, array with keys according to column names from
 	 * 					the comments database scheme
 	 */
-	public function __construct(array $data = null) {
+	public function __construct(?array $data = null) {
 		if (\is_array($data)) {
 			$this->fromArray($data);
 		}
@@ -311,7 +312,7 @@ class Comment implements IComment {
 	 * @return IComment
 	 * @since 9.0.0
 	 */
-	public function setLatestChildDateTime(\DateTime $dateTime = null) {
+	public function setLatestChildDateTime(?\DateTime $dateTime = null) {
 		$this->data['latestChildDT'] = $dateTime;
 		return $this;
 	}

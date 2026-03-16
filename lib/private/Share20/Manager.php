@@ -8,6 +8,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -129,7 +130,7 @@ class Manager implements IManager {
 		View $view,
 		IDBConnection $connection,
 		ActivityIManager $activityManager,
-		IUserSession $userSession = null
+		?IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;

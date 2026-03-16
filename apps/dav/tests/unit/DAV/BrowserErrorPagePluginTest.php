@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,11 +33,11 @@ class BrowserErrorPagePluginTest extends \Test\TestCase {
 	 * @param $exception
 	 */
 	public function test($expectedCode, $exception) {
-		/** @var BrowserErrorPagePlugin | PHPUnit\Framework\MockObject\MockObject $plugin */
+		/** @var BrowserErrorPagePlugin | \PHPUnit\Framework\MockObject\MockObject $plugin */
 		$plugin = $this->getMockBuilder('OCA\DAV\Files\BrowserErrorPagePlugin')->setMethods(['sendResponse', 'generateBody'])->getMock();
 		$plugin->expects($this->once())->method('generateBody')->willReturn(':boom:');
 		$plugin->expects($this->once())->method('sendResponse');
-		/** @var \Sabre\DAV\Server | PHPUnit\Framework\MockObject\MockObject $server */
+		/** @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject $server */
 		$server = $this->getMockBuilder('Sabre\DAV\Server')->disableOriginalConstructor()->getMock();
 		$server->expects($this->once())->method('on');
 		$httpResponse = $this->getMockBuilder('Sabre\HTTP\Response')->disableOriginalConstructor()->getMock();

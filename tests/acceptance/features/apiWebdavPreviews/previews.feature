@@ -133,17 +133,17 @@ Feature: previews of files downloaded through the webdav API
 
   Scenario: unset maximum size of previews
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    And the administrator has updated system config key "preview_max_x" with value "null" and type "null"
-    And the administrator has updated system config key "preview_max_y" with value "null" and type "null"
+    And the administrator has updated system config key "preview_max_x" with value "null"
+    And the administrator has updated system config key "preview_max_y" with value "null"
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixels wide and "32" pixels high
+    Then the HTTP status code should be "404"
+    And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
 
   Scenario: download preview of size "null"
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    And the administrator has updated system config key "preview_max_x" with value "null" and type "null"
-    And the administrator has updated system config key "preview_max_y" with value "null" and type "null"
+    And the administrator has updated system config key "preview_max_x" with value "null"
+    And the administrator has updated system config key "preview_max_y" with value "null"
     When user "Alice" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\BadRequest"
@@ -207,7 +207,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
 
-  @issue-41480 @skip
+
   Scenario: it should update the preview content if the file content is updated (content with UTF chars)
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has uploaded file with content "सिमसिमे पानी" to "/lorem.txt"

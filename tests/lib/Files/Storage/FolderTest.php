@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,7 +37,7 @@ class FolderTest extends NodeTest {
 	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage
 	 * @return Folder
 	 */
-	protected function createTestNode($path, IStorage $storage = null) {
+	protected function createTestNode($path, ?IStorage $storage = null) {
 		if ($storage === null) {
 			$storage = $this->storage;
 		}

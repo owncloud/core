@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -54,7 +55,7 @@ interface ICompositeExpression {
 	 * @return integer
 	 * @since 8.2.0
 	 */
-	public function count();
+	public function count() : int;
 
 	/**
 	 * Returns the type of this composite expression (AND/OR).

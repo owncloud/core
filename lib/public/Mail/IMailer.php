@@ -51,7 +51,7 @@ interface IMailer {
 	 * @return Message
 	 * @since 8.1.0
 	 */
-	public function createMessage(): Message;
+	public function createMessage();
 
 	/**
 	 * Send the specified message. Also sets the from address to the value defined in config.php
@@ -64,7 +64,7 @@ interface IMailer {
 	 * has been supplied.)
 	 * @since 8.1.0
 	 */
-	public function send(Message $message): array;
+	public function send(Message $message);
 
 	/**
 	 * Checks if an e-mail address is valid
@@ -73,5 +73,5 @@ interface IMailer {
 	 * @return bool True if the mail address is valid, false otherwise
 	 * @since 8.1.0
 	 */
-	public function validateMailAddress(string $email): bool;
+	public function validateMailAddress($email);
 }

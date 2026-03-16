@@ -15,6 +15,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -75,7 +76,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param \OCP\Files\FileInfo $info
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, $shareManager = null, Request $request = null) {
+	public function __construct($view, $info, $shareManager = null, ?Request $request = null) {
 		if (isset($request)) {
 			$this->request = $request;
 		} else {

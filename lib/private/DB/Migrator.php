@@ -9,6 +9,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +29,8 @@
 namespace OC\DB;
 
 use Doctrine\DBAL\Schema\AbstractAsset;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use \Doctrine\DBAL\Schema\Index;
+use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Types\StringType;
@@ -64,7 +66,7 @@ class Migrator {
 		\Doctrine\DBAL\Connection $connection,
 		ISecureRandom $random,
 		IConfig $config,
-		EventDispatcher $dispatcher = null
+		?EventDispatcher $dispatcher = null
 	) {
 		$this->connection = $connection;
 		$this->random = $random;
@@ -167,25 +169,21 @@ class Migrator {
 	 * @param \Doctrine\DBAL\Schema\Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 */
-	protected function applySchema(Schema $targetSchema, \Doctrine\DBAL\Connection $connection = null) {
+	protected function applySchema(Schema $targetSchema, ?\Doctrine\DBAL\Connection $connection = null) {
 		if ($connection === null) {
 			$connection = $this->connection;
 		}
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
-		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
-			$connection->beginTransaction();
-		}
+		$connection->beginTransaction();
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
 		foreach ($sqls as $sql) {
 			$this->emit($sql, $step++, \count($sqls));
-			$connection->executeQuery($sql);
+			$connection->query($sql);
 		}
-		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
-			$connection->commit();
-		}
+		$connection->commit();
 	}
 
 	/**

@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +50,7 @@ class AccountCheckException extends Exception {
 		RedirectResponse $redirectResponse,
 		$message = '',
 		$code = 0,
-		\Throwable $previous = null
+		?\Throwable $previous = null
 	) {
 		parent::__construct($message, $code, $previous);
 		$this->redirectResponse = $redirectResponse;

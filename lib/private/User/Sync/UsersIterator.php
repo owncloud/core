@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,7 +22,7 @@
 namespace OC\User\Sync;
 
 abstract class UsersIterator implements \Iterator {
-	protected int $position = 0;
+	protected $position = 0;
 	protected $page;
 	protected $data;
 

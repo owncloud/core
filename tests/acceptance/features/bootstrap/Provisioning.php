@@ -821,7 +821,7 @@ trait Provisioning {
 				"code" => "%ldap_port%",
 				"function" => [
 					$this,
-					"getLdapPortAsString"
+					"getLdapPort"
 				],
 				"parameter" => []
 			]

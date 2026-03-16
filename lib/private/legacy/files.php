@@ -20,6 +20,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -45,11 +46,11 @@ use OCP\Lock\ILockingProvider;
  *
  */
 class OC_Files {
-	public const FILE = 1;
-	public const ZIP_FILES = 2;
-	public const ZIP_DIR = 3;
+	public const int FILE = 1;
+	public const int ZIP_FILES = 2;
+	public const int ZIP_DIR = 3;
 
-	public const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
+	public const int UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
 	private static $multipartBoundary = '';
 

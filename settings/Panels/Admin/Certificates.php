@@ -3,6 +3,7 @@
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +39,7 @@ class Certificates implements ISettings {
 	public function __construct(
 		IConfig $config,
 		IURLGenerator $urlGenerator,
-		ICertificateManager $certificateManager = null
+		?ICertificateManager $certificateManager = null
 	) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;

@@ -10,6 +10,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -133,8 +134,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	public function __construct(
 		array $params,
 		Driver $driver,
-		Configuration $config = null,
-		EventManager $eventManager = null
+		?Configuration $config = null,
+		?EventManager $eventManager = null
 	) {
 		if (!isset($params['adapter'])) {
 			throw new \Exception('adapter not set');
@@ -186,7 +187,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @throws \Doctrine\DBAL\Exception
 	 */
-	public function executeQuery($query, array $params = [], $types = [], QueryCacheProfile $qcp = null) : Result {
+	public function executeQuery($query, array $params = [], $types = [], ?QueryCacheProfile $qcp = null) : Result {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeQuery($query, $params, $types, $qcp);
@@ -273,7 +274,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return int number of inserted rows
 	 * @throws \Doctrine\DBAL\Exception
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null) {
+	public function insertIfNotExist($table, $input, ?array $compare = null) {
 		return $this->adapter->insertIfNotExist($table, $input, $compare);
 	}
 
@@ -288,7 +289,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return int number of affected rows
 	 * @throws \Doctrine\DBAL\Exception
 	 */
-	public function upsert($table, $input, array $compare = null) {
+	public function upsert($table, $input, ?array $compare = null) {
 		return $this->adapter->upsert($table, $input, $compare);
 	}
 
@@ -440,8 +441,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $param
 	 * @return string
 	 */
-	public function escapeLikeParameter(string $param): string {
-		return \addcslashes($param, '\\_%');
+	public function escapeLikeParameter($param) {
+		return \addcslashes((string)$param, '\\_%');
 	}
 
 	/**
@@ -497,6 +498,40 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			return $this->_conn->getServerVersion();
 		}
 		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 */
+	public function commit() {
+		try {
+			$nativeConn = $this->getNativeConnection();
+			if ($nativeConn instanceof \PDO && !$nativeConn->inTransaction()) {
+				return true;
+			}
+		} catch (\Exception $e) {
+			// ignore
+		}
+
+		return parent::commit();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 */
+	public function rollBack() {
+		try {
+			$nativeConn = $this->getNativeConnection();
+			if ($nativeConn instanceof \PDO && !$nativeConn->inTransaction()) {
+				return true;
+			}
+		} catch (\Exception $e) {
+			// ignore
+		}
+
+		return parent::rollBack();
 	}
 
 	public function errorCode() {

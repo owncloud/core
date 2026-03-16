@@ -103,12 +103,12 @@ class ManagerTest extends TestCase {
 			->with('settings')
 			->willReturn($this->cache);
 		$this->manager = new AppManager(
-			$this->userSession,
-			$this->appConfig,
-			$this->groupManager,
 			$this->cacheFactory,
 			$this->eventDispatcher,
-			$this->config
+			$this->config,
+			$this->userSession,
+			$this->appConfig,
+			$this->groupManager
 		);
 	}
 
@@ -136,9 +136,9 @@ class ManagerTest extends TestCase {
 		$appThemeName = 'theme-one';
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath'])
-			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-				$this->config])
+			->setConstructorArgs([$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->userSession, $this->appConfig, $this->groupManager,
+			])
 			->getMock();
 
 		$manager->expects($this->once())
@@ -161,9 +161,10 @@ class ManagerTest extends TestCase {
 		$appThemeName = 'theme-one';
 		$manager = $this->getMockBuilder(AppManager::class)
 			->setMethods(['isTheme', 'getAppInfo', 'getAppPath', 'getInstalledApps'])
-			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-				$this->config])
+			->setConstructorArgs([
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->userSession, $this->appConfig, $this->groupManager,
+			])
 			->getMock();
 
 		$manager->expects($this->once())
@@ -247,8 +248,8 @@ class ManagerTest extends TestCase {
 		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
 				$this->userSession, $this->appConfig, $this->groupManager,
-				$this->cacheFactory, $this->eventDispatcher, $this->config
 			])
 			->setMethods([
 				'getAppInfo'
@@ -292,8 +293,8 @@ class ManagerTest extends TestCase {
 		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
-				$this->userSession, $this->appConfig, $this->groupManager,
-				$this->cacheFactory, $this->eventDispatcher, $this->config
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->userSession, $this->appConfig, $this->groupManager
 			])
 			->setMethods([
 				'getAppInfo'
@@ -419,8 +420,10 @@ class ManagerTest extends TestCase {
 
 	public function testGetAppsNeedingUpgrade() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
+			->setConstructorArgs([
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->userSession, $this->appConfig, $this->groupManager,
+			])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
@@ -462,8 +465,10 @@ class ManagerTest extends TestCase {
 
 	public function testGetIncompatibleApps() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig,
-				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
+			->setConstructorArgs([
+				$this->cacheFactory, $this->eventDispatcher, $this->config,
+				$this->userSession, $this->appConfig, $this->groupManager,
+			])
 			->setMethods(['getAppInfo'])
 			->getMock();
 

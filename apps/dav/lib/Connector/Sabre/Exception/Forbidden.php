@@ -3,6 +3,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,7 +35,7 @@ class Forbidden extends \Sabre\DAV\Exception\Forbidden {
 	 * @param bool $retry
 	 * @param \Exception $previous
 	 */
-	public function __construct($message, $retry = false, \Exception $previous = null) {
+	public function __construct($message, $retry = false, ?\Exception $previous = null) {
 		parent::__construct($message, 0, $previous);
 		$this->retry = $retry;
 	}

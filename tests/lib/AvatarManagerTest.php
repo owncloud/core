@@ -96,9 +96,8 @@ class AvatarManagerTest extends TestCase {
 		$this->avatarManager->getAvatar('invalidUser');
 	}
 
-	public function testGetAvatarValidUser(): void {
+	public function testGetAvatarValidUser() {
 		$user = $this->createMock(User::class);
-		$user->method('getUID')->willReturn('');
 		$this->userManager->expects($this->once())
 			->method('get')
 			->with('valid-user')

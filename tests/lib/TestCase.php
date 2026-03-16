@@ -173,7 +173,7 @@ abstract class TestCase extends BaseTestCase {
 	 * @param array $parameters
 	 * @return mixed
 	 */
-	protected static function invokePrivate($object, $methodName, array $parameters = []): mixed {
+	protected static function invokePrivate($object, $methodName, array $parameters = []) {
 		if (\is_string($object)) {
 			$className = $object;
 		} else {

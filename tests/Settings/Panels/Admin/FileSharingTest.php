@@ -30,10 +30,6 @@ class FileSharingTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
-		# 		$excludedGroupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '') ?? '';
-
-		$this->config->method('getAppValue')->willReturnArgument(2);
-
 		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 
 		$l = $this->createMock(IL10N::class);

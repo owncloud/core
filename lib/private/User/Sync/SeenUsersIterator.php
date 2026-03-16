@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,10 +24,16 @@ namespace OC\User\Sync;
 use OC\User\AccountMapper;
 
 class SeenUsersIterator extends UsersIterator {
-	private AccountMapper $mapper;
-	private string $backend;
+	/**
+	 * @var AccountMapper
+	 */
+	private $mapper;
+	/**
+	 * @var string class name
+	 */
+	private $backend;
 
-	public function __construct(AccountMapper $mapper, string $backend) {
+	public function __construct(AccountMapper $mapper, $backend) {
 		$this->mapper = $mapper;
 		$this->backend = $backend;
 	}

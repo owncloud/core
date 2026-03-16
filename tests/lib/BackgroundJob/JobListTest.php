@@ -32,7 +32,7 @@ class JobListTest extends TestCase {
 	/** @var \OCP\AppFramework\Utility\ITimeFactory|\PHPUnit\Framework\MockObject\MockObject */
 	protected $timeFactory;
 
-	/** @var ILogger|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 
 	protected function setUp(): void {

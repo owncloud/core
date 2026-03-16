@@ -5,6 +5,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -69,7 +70,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	private $user;
 
 	/**
-	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject Obj$rootFolder
+	 * @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject Obj$rootFolder
 	 */
 	private $rootFolder;
 

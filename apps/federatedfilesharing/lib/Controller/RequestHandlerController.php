@@ -111,7 +111,7 @@ class RequestHandlerController extends OCSController {
 				null
 			);
 
-			if ($token === null || \strlen($token) > 128) {
+			if (\strlen($token) > 128) {
 				throw new BadRequestException('Token too long');
 			}
 

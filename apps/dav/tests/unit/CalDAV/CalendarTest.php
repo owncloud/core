@@ -42,9 +42,9 @@ class CalendarTest extends TestCase {
 		$this->l10n
 			->expects($this->any())
 			->method('t')
-			->willReturnCallback(function ($text, $parameters = []) {
+			->will($this->returnCallback(function ($text, $parameters = []) {
 				return \vsprintf($text, $parameters);
-			});
+			}));
 	}
 
 	public function testDelete() {

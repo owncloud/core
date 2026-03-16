@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,17 +24,19 @@
 
 namespace OC\Session;
 
-use ArrayAccess;
 use OCP\ISession;
 
-abstract class Session implements ArrayAccess, ISession {
-	protected bool $sessionClosed = false;
+abstract class Session implements \ArrayAccess, ISession {
+	/**
+	 * @var bool
+	 */
+	protected $sessionClosed = false;
 
 	/**
 	 * @param mixed $offset
 	 * @return bool
 	 */
-	public function offsetExists(mixed $offset): bool {
+	public function offsetExists($offset): bool {
 		return $this->exists($offset);
 	}
 
@@ -41,7 +44,7 @@ abstract class Session implements ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	public function offsetGet(mixed $offset): mixed {
+	public function offsetGet($offset): mixed {
 		return $this->get($offset);
 	}
 
@@ -49,14 +52,14 @@ abstract class Session implements ArrayAccess, ISession {
 	 * @param mixed $offset
 	 * @param mixed $value
 	 */
-	public function offsetSet(mixed $offset, mixed $value): void {
+	public function offsetSet($offset, $value): void {
 		$this->set($offset, $value);
 	}
 
 	/**
 	 * @param mixed $offset
 	 */
-	public function offsetUnset(mixed $offset): void {
+	public function offsetUnset($offset): void {
 		$this->remove($offset);
 	}
 

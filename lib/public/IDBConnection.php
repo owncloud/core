@@ -9,6 +9,7 @@
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -131,7 +132,7 @@ interface IDBConnection {
 	 * @throws \Doctrine\DBAL\Exception
 	 * @since 6.0.0 - parameter $compare was added in 8.1.0, return type changed from boolean in 8.1.0
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null);
+	public function insertIfNotExist($table, $input, ?array $compare = null);
 
 	/**
 	 * Attempt to update a row, else insert a new one
@@ -145,7 +146,7 @@ interface IDBConnection {
 	 * @throws \Doctrine\DBAL\Exception
 	 * @since 10.0.3
 	 */
-	public function upsert($table, $input, array $compare = null);
+	public function upsert($table, $input, ?array $compare = null);
 
 	/**
 	 * Insert or update a row value
@@ -299,7 +300,7 @@ interface IDBConnection {
 	 * @return string
 	 * @since 9.0.0
 	 */
-	public function escapeLikeParameter(string $param): string;
+	public function escapeLikeParameter($param);
 
 	/**
 	 * Create the schema of the connected database

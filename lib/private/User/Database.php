@@ -21,6 +21,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -167,7 +168,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	 */
 	public function getDisplayName($uid) {
 		$this->loadUser($uid);
-		if (($this->cache[$uid]['displayname'] ?? '') === '') {
+		if (\strlen((string)$this->cache[$uid]['displayname']) === 0) {
 			return $uid;
 		}
 

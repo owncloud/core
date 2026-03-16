@@ -14,6 +14,7 @@
  * @author Sujith Haridasan <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -111,11 +112,11 @@ class User implements IUser {
 		Account $account,
 		AccountMapper $mapper,
 		$emitter = null,
-		IConfig $config = null,
+		?IConfig $config = null,
 		$urlGenerator = null,
-		EventDispatcher $eventDispatcher = null,
-		\OC\Group\Manager $groupManager = null,
-		Session $userSession = null
+		?EventDispatcher $eventDispatcher = null,
+		?\OC\Group\Manager $groupManager = null,
+		?Session $userSession = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;
@@ -191,9 +192,9 @@ class User implements IUser {
 	 *
 	 * @return string
 	 */
-	public function getDisplayName(): string {
-		$displayName = $this->account->getDisplayName() ?? '';
-		if ($displayName === '') {
+	public function getDisplayName() {
+		$displayName = $this->account->getDisplayName();
+		if (\strlen($displayName) === 0) {
 			$displayName = $this->getUID();
 		}
 		return $displayName;

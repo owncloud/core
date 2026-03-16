@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,15 +24,18 @@
 
 namespace OCP;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Interface ILogger
+ *
  * @package OCP
  * @since 7.0.0
  *
  * This logger interface follows the design guidelines of PSR-3
  * https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#3-psrlogloggerinterface
  */
-interface ILogger {
+interface ILogger extends LoggerInterface {
 	/**
 	 * System is unusable.
 	 *
@@ -40,7 +44,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function emergency($message, array $context = []);
+	public function emergency($message, array $context = []): void;
 
 	/**
 	 * Action must be taken immediately.
@@ -50,7 +54,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function alert($message, array $context = []);
+	public function alert($message, array $context = []): void;
 
 	/**
 	 * Critical conditions.
@@ -60,7 +64,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function critical($message, array $context = []);
+	public function critical($message, array $context = []): void;
 
 	/**
 	 * Runtime errors that do not require immediate action but should typically
@@ -71,7 +75,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function error($message, array $context = []);
+	public function error($message, array $context = []): void;
 
 	/**
 	 * Exceptional occurrences that are not errors.
@@ -81,7 +85,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function warning($message, array $context = []);
+	public function warning($message, array $context = []): void;
 
 	/**
 	 * Normal but significant events.
@@ -91,7 +95,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function notice($message, array $context = []);
+	public function notice($message, array $context = []): void;
 
 	/**
 	 * Interesting events.
@@ -101,7 +105,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function info($message, array $context = []);
+	public function info($message, array $context = []): void;
 
 	/**
 	 * Detailed debug information.
@@ -111,7 +115,7 @@ interface ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function debug($message, array $context = []);
+	public function debug($message, array $context = []): void;
 
 	/**
 	 * Logs with an arbitrary level.
@@ -122,7 +126,7 @@ interface ILogger {
 	 * @return mixed
 	 * @since 7.0.0
 	 */
-	public function log($level, $message, array $context = []);
+	public function log($level, $message, array $context = []): void;
 
 	/**
 	 * Logs an exception very detailed

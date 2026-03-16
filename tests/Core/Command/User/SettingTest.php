@@ -3,6 +3,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -202,14 +203,7 @@ class SettingTest extends TestCase {
 			->willReturnMap($options);
 		$this->consoleInput->expects($this->any())
 			->method('hasParameterOption')
-			->willReturnCallback(function ($values, $onlyParams) use ($parameterOptions) {
-				foreach ($parameterOptions as $opt) {
-					if (isset($opt[0]) && $values === $opt[0]) {
-						return $opt[2] ?? false;
-					}
-				}
-				return false;
-			});
+			->willReturnCallback($this->getHasOptionCallback($parameterOptions));
 
 		if ($user !== false) {
 			$this->userManager->expects($this->once())
@@ -281,15 +275,10 @@ class SettingTest extends TestCase {
 
 		$this->consoleInput->expects($this->atLeastOnce())
 			->method('hasParameterOption')
-			->willReturnCallback(function ($values, $onlyParams) use ($errorIfNotExists) {
-				switch ($values) {
-					case "--delete":
-						return true;
-					case "--error-if-not-exists":
-						return $errorIfNotExists;
-				}
-				return false;
-			});
+			->willReturnCallback($this->getHasOptionCallback([
+					['--delete', false, true],
+					['--error-if-not-exists', false, $errorIfNotExists],
+			]));
 
 		if ($expectedLine === null) {
 			$this->consoleOutput->expects($this->never())
@@ -421,16 +410,15 @@ class SettingTest extends TestCase {
 			if ($defaultValue === null) {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
-					->willReturn(false);
+					->willReturnCallback($this->getHasOptionCallback([
+						['--default-value', false, false],
+					]));
 			} else {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
-					->willReturnCallback(function ($values, $onlyParams) {
-						if ($values === '--default-value') {
-							return true;
-						}
-						return false;
-					});
+					->willReturnCallback($this->getHasOptionCallback([
+						['--default-value', false, true],
+					]));
 				$this->consoleInput->expects($this->once())
 					->method('getOption')
 					->with('default-value')
@@ -470,5 +458,17 @@ class SettingTest extends TestCase {
 			->with($this->consoleInput, $this->consoleOutput, ['settings']);
 
 		$this->assertEquals(0, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+	}
+
+	private function getHasOptionCallback(array $map) {
+		return function () use ($map) {
+			$args = \func_get_args();
+			foreach ($map as $entry) {
+				if ($args[0] === $entry[0] && $args[1] === $entry[1]) {
+					return $entry[2];
+				}
+			}
+			return false;
+		};
 	}
 }

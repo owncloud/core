@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -57,13 +58,13 @@ class Manager implements IManager {
 	 * constructor of the controller
 	 *
 	 * @param IRequest $request
-	 * @param IUserSession $session
 	 * @param IConfig $config
+	 * @param IUserSession $session
 	 */
 	public function __construct(
 		IRequest $request,
-		IUserSession $session = null,
-		IConfig $config
+		IConfig $config,
+		?IUserSession $session = null
 	) {
 		$this->request = $request;
 		$this->session = $session;

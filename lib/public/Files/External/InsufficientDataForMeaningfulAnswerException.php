@@ -5,6 +5,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,7 +40,7 @@ class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableEx
 	 * @param \Exception $previous
 	 * @since 6.0.0
 	 */
-	public function __construct($message = '', $code = self::STATUS_INDETERMINATE, \Exception $previous = null) {
+	public function __construct($message = '', $code = self::STATUS_INDETERMINATE, ?\Exception $previous = null) {
 		parent::__construct($message, $code, $previous);
 	}
 }

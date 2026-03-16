@@ -91,7 +91,7 @@ class ScanTest extends TestCase {
 	private $commandTester;
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	private $groupsCreated = [];
 
@@ -118,8 +118,8 @@ class ScanTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 
-		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid('', true));
-		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid('', true));
+		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
+		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
 
 		$user1 = $this->createUser('user1');
 		$this->createUser('user2');

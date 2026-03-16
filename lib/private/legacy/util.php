@@ -40,6 +40,7 @@
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -70,8 +71,8 @@ class OC_Util {
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 	private static $version;
-	public const EDITION_COMMUNITY = 'Community';
-	public const EDITION_ENTERPRISE = 'Enterprise';
+	public const string EDITION_COMMUNITY = 'Community';
+	public const string EDITION_ENTERPRISE = 'Enterprise';
 
 	protected static function getAppManager() {
 		return \OC::$server->getAppManager();
@@ -1327,7 +1328,7 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function isAnnotationsWorking() {
-		$reflection = new \ReflectionMethod(__METHOD__);
+		$reflection = ReflectionMethod::createFromMethodName(__METHOD__);
 		$docs = $reflection->getDocComment();
 
 		return (\is_string($docs) && \strlen($docs) > 50);

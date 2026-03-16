@@ -3,6 +3,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,25 +24,28 @@ namespace OC\User\Sync;
 use OCP\UserInterface;
 
 class BackendUsersIterator extends UsersIterator {
-	private UserInterface $backend;
+	/**
+	 * @var UserInterface
+	 */
+	private $backend;
 	/**
 	 * @var int the current data position,
 	 *      we need to track it independently of parent::$position to handle data sets larger thin LIMIT properly
 	 */
-	private int $dataPos = 0;
+	private $dataPos = 0;
 
 	/**
 	 * @var int to cache the count($this->data) calculations
 	 */
-	private int $endPos = 0;
+	private $endPos = 0;
 
 	/** @var bool false if the backend returned less than LIMIT results */
-	private bool $hasMoreData = false;
+	private $hasMoreData = false;
 
 	/** @var string search for the uid string in backend */
-	private string $search;
+	private $search;
 
-	public function __construct(UserInterface $backend, string $filterUID = '') {
+	public function __construct(UserInterface $backend, $filterUID = '') {
 		$this->backend = $backend;
 		$this->search = $filterUID;
 	}

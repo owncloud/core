@@ -3,6 +3,7 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -54,7 +55,7 @@ class RetryJob extends Job {
 	 *
 	 * @param Notifications $notifications
 	 */
-	public function __construct(Notifications $notifications = null) {
+	public function __construct(?Notifications $notifications = null) {
 		if ($notifications) {
 			$this->notifications = $notifications;
 		} else {
@@ -69,7 +70,7 @@ class RetryJob extends Job {
 	 * @param JobList $jobList
 	 * @param ILogger $logger
 	 */
-	public function execute($jobList, ILogger $logger = null) {
+	public function execute($jobList, ?ILogger $logger = null) {
 		if ($this->shouldRun($this->argument)) {
 			parent::execute($jobList, $logger);
 			$jobList->remove($this, $this->argument);

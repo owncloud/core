@@ -38,7 +38,7 @@ class Verifier {
 	 */
 	private $now;
 
-	public function __construct(RequestInterface $request, IConfig $config, \DateTime $now = null) {
+	public function __construct(RequestInterface $request, IConfig $config, ?\DateTime $now = null) {
 		$this->request = $request;
 		$this->config = $config;
 		$this->now = $now ?? new \DateTime();

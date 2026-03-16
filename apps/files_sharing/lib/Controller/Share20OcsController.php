@@ -1173,12 +1173,12 @@ class Share20OcsController extends OCSController {
 	 *
 	 * @param string $expireDate
 	 *
+	 * @throws Exception
 	 * @return \DateTime
-	 *@throws Exception
 	 */
-	private function parseDate(string $expireDate) {
+	private function parseDate($expireDate) {
 		try {
-			$date = new \DateTime($expireDate);
+			$date = new \DateTime($expireDate ?? 'now');
 		} catch (Exception $e) {
 			throw new Exception('Invalid date. Format must be YYYY-MM-DD');
 		}

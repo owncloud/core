@@ -4,6 +4,7 @@
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +49,7 @@ class CryptoSessionDataTest extends Session {
 		$this->crypto->expects($this->any())
 			->method('decrypt')
 			->willReturnCallback(function ($input) {
-				return \substr($input, 1, -1);
+				return $input ? \substr($input, 1, -1) : '';
 			});
 
 		$this->instance = new CryptoSessionData($this->wrappedSession, $this->crypto, 'PASS');
@@ -65,7 +66,7 @@ class CryptoSessionDataTest extends Session {
 		$instance = new CryptoSessionData($session, $this->crypto, 'PASS');
 		$instance->set('test', 'test');
 		$e = new SessionNotAvailableException();
-		$session->expects($this->atLeastOnce())->method('set')->willThrowException($e);
+		$session->expects($this->exactly(2))->method('set')->willThrowException($e);
 		$instance->__destruct();
 	}
 }

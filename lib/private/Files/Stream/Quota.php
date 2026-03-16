@@ -32,7 +32,6 @@ namespace OC\Files\Stream;
  * or:    resource \OC\Files\Stream\Quota::wrap($stream, $limit)
  */
 class Quota {
-	public $context;
 	private static $streams = [];
 
 	/**
@@ -67,7 +66,7 @@ class Quota {
 	 * @return resource
 	 */
 	public static function wrap($stream, $limit) {
-		$id = \uniqid('', true);
+		$id = \uniqid();
 		self::register($id, $stream, $limit);
 		$meta = \stream_get_meta_data($stream);
 		return \fopen('quota://' . $id, $meta['mode']);
@@ -78,9 +77,9 @@ class Quota {
 		if (isset(self::$streams[$id])) {
 			list($this->source, $this->limit) = self::$streams[$id];
 			return true;
+		} else {
+			return false;
 		}
-
-		return false;
 	}
 
 	public function stream_seek($offset, $whence = SEEK_SET) {

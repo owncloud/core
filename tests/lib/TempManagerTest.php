@@ -17,7 +17,7 @@ class NullLogger extends Log {
 		//disable original constructor
 	}
 
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		//noop
 	}
 }
@@ -35,14 +35,12 @@ class TempManagerTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		if ($this->baseDir) {
-			\OC_Helper::rmdirr($this->baseDir);
-			$this->baseDir = null;
-		}
+		\OC_Helper::rmdirr($this->baseDir);
+		$this->baseDir = null;
 		parent::tearDown();
 	}
 
-	protected function getManager(\OCP\ILogger $logger = null, IConfig $config = null): \OC\TempManager {
+	protected function getManager(?\OCP\ILogger $logger = null, ?IConfig $config = null): \OC\TempManager {
 		if (!$logger) {
 			$logger = new NullLogger();
 		}

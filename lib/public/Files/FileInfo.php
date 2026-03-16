@@ -8,6 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -74,7 +75,7 @@ interface FileInfo {
 	/**
 	 * Get the size in bytes for the file or folder
 	 *
-	 * @return int|foat
+	 * @return int|float
 	 * @since 7.0.0
 	 */
 	public function getSize();

@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -77,12 +78,12 @@ class GetSharedSecret extends Job {
 	 * @param DbHandler $dbHandler
 	 */
 	public function __construct(
-		IClient $httpClient = null,
-		IURLGenerator $urlGenerator = null,
-		IJobList $jobList = null,
-		TrustedServers $trustedServers = null,
-		ILogger $logger = null,
-		DbHandler $dbHandler = null
+		?IClient $httpClient = null,
+		?IURLGenerator $urlGenerator = null,
+		?IJobList $jobList = null,
+		?TrustedServers $trustedServers = null,
+		?ILogger $logger = null,
+		?DbHandler $dbHandler = null
 	) {
 		$this->logger = $logger ? $logger : \OC::$server->getLogger();
 		$this->httpClient = $httpClient ? $httpClient : \OC::$server->getHTTPClientService()->newClient();
@@ -110,7 +111,7 @@ class GetSharedSecret extends Job {
 	 * @param JobList $jobList
 	 * @param ILogger $logger
 	 */
-	public function execute($jobList, ILogger $logger = null) {
+	public function execute($jobList, ?ILogger $logger = null) {
 		$target = $this->argument['url'];
 		// only execute if target is still in the list of trusted domains
 		if ($this->trustedServers->isTrustedServer($target)) {

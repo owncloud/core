@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -57,7 +58,7 @@ class SMB_OC extends ExternalBackend {
 		;
 	}
 
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, ?IUser $user = null) {
 		$username_as_share = ($storage->getBackendOption('username_as_share') === true);
 
 		if ($username_as_share) {

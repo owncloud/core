@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -298,8 +299,7 @@ class Auth extends AbstractBasic {
 	public function challenge(RequestInterface $request, ResponseInterface $response): void {
 		$schema = 'Basic';
 		// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
-		$xRequestedWithHeader = $request->getHeader('X-Requested-With') ?? '';
-		if (\in_array('XMLHttpRequest', \explode(',', $xRequestedWithHeader), true)) {
+		if (\in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With') ?? ''), true)) {
 			$schema = 'DummyBasic';
 		}
 

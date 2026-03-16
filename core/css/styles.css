@@ -563,9 +563,9 @@ a.two-factor-cancel {
 }
 
 #body-login form #selectDbType label {
-	background-color: #041e42;
+	background-color: #00E4BD;
 }
-#body-login form #selectDbType label.ui-state-hover, #body-login form #selectDbType label.ui-state-active { background-color:#4e85c8; }
+#body-login form #selectDbType label.ui-state-hover, #body-login form #selectDbType label.ui-state-active { background-color:#00E4BD; }
 
 
 /* Warnings and errors are the same */
@@ -677,7 +677,7 @@ html #body-login button[type="submit"] {
 	border-color: rgba(0,0,0,0);
 	font-size: 1rem;
 	font-weight: 600;
-	background-color: #4e85c8;
+	background-color: #00E4BD;
 	transition: all 300ms ease 0ms;
 	padding: 0.65rem;
 	text-align: center;

@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -208,7 +209,7 @@ interface IComment {
 	 * @return IComment
 	 * @since 9.0.0
 	 */
-	public function setLatestChildDateTime(\DateTime $dateTime = null);
+	public function setLatestChildDateTime(?\DateTime $dateTime = null);
 
 	/**
 	 * returns the object type the comment is attached to

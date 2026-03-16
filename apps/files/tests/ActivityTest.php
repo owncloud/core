@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -71,7 +72,7 @@ class ActivityTest extends TestCase {
 			->getMock();
 
 		$this->activityManager = $this->getMockBuilder('OC\Activity\Manager')
-			->setConstructorArgs([$this->request, $this->session, $this->config])
+			->setConstructorArgs([$this->request, $this->config, $this->session ])
 			->setMethods(['isFormattingFilteredObject'])
 			->getMock();
 

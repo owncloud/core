@@ -25,57 +25,45 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Files\View;
-use OCA\DAV\Connector\Sabre\Directory;
-use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin as FilesReportPluginImplementation;
 use OCA\DAV\Files\Xml\FilterRequest;
-use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\ITags;
-use OCP\IUserSession;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
-use OCP\SystemTag\TagNotFoundException;
-use PHPUnit\Framework\MockObject\MockObject;
-use Sabre\DAV\Server;
-use Sabre\DAV\Tree;
-use Sabre\HTTP\ResponseInterface;
-use Test\TestCase;
-use function array_keys;
-use function array_values;
 
-class FilesReportPluginTest extends TestCase {
-	/** @var Server|MockObject */
+class FilesReportPluginTest extends \Test\TestCase {
+	/** @var \Sabre\DAV\Server|\PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 
-	/** @var Tree|MockObject */
+	/** @var \Sabre\DAV\Tree|\PHPUnit\Framework\MockObject\MockObject */
 	private $tree;
 
-	/** @var ISystemTagObjectMapper|MockObject */
+	/** @var ISystemTagObjectMapper|\PHPUnit\Framework\MockObject\MockObject */
 	private $tagMapper;
 
-	/** @var ISystemTagManager|MockObject */
+	/** @var ISystemTagManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $tagManager;
 
-	/** @var ITags|MockObject */
+	/** @var ITags|\PHPUnit\Framework\MockObject\MockObject */
 	private $privateTags;
 
-	/** @var  IUserSession */
+	/** @var  \OCP\IUserSession */
 	private $userSession;
 
 	/** @var FilesReportPluginImplementation */
 	private $plugin;
 
-	/** @var View|MockObject **/
+	/** @var View|\PHPUnit\Framework\MockObject\MockObject **/
 	private $view;
 
-	/** @var IGroupManager|MockObject **/
+	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject **/
 	private $groupManager;
 
-	/** @var Folder|MockObject **/
+	/** @var Folder|\PHPUnit\Framework\MockObject\MockObject **/
 	private $userFolder;
 
 	public function setUp(): void {
@@ -93,7 +81,7 @@ class FilesReportPluginTest extends TestCase {
 
 		$this->server->expects($this->any())
 			->method('getBaseUri')
-			->willReturn('http://example.com/owncloud/remote.php/dav');
+			->will($this->returnValue('http://example.com/owncloud/remote.php/dav'));
 
 		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')
 			->disableOriginalConstructor()
@@ -111,19 +99,19 @@ class FilesReportPluginTest extends TestCase {
 		$privateTagManager->expects($this->any())
 			->method('load')
 			->with('files')
-			->willReturn($this->privateTags);
+			->will($this->returnValue($this->privateTags));
 
 		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->any())
 			->method('getUID')
-			->willReturn('testuser');
+			->will($this->returnValue('testuser'));
 		$this->userSession->expects($this->any())
 			->method('getUser')
-			->willReturn($user);
+			->will($this->returnValue($user));
 
 		// add FilesPlugin to test more properties
 		$this->server->addPlugin(
-			new FilesPlugin(
+			new \OCA\DAV\Connector\Sabre\FilesPlugin(
 				$this->tree,
 				$this->createMock(IConfig::class),
 				$this->createMock(IRequest::class)
@@ -191,7 +179,7 @@ class FilesReportPluginTest extends TestCase {
 
 		$this->groupManager->expects($this->any())
 			->method('isAdmin')
-			->willReturn(true);
+			->will($this->returnValue(true));
 
 		$this->tagMapper
 			->expects($this->exactly(2))
@@ -205,9 +193,8 @@ class FilesReportPluginTest extends TestCase {
 				['111', '222', '333'],
 			);
 
-		$reportTargetNode = $this->createMock(Directory::class);
-		$reportTargetNode->method('getPath')->willReturn('');
-		$response = $this->createMock(ResponseInterface::class);
+		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
+		$response = $this->createMock(\Sabre\HTTP\ResponseInterface::class);
 		$response->expects($this->once())
 			->method('setHeader')
 			->with('Content-Type', 'application/xml; charset=utf-8');
@@ -222,14 +209,14 @@ class FilesReportPluginTest extends TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->willReturn($reportTargetNode);
+			->will($this->returnValue($reportTargetNode));
 
-		$filesNode1 = $this->createMock(Folder::class);
+		$filesNode1 = $this->createMock(\OCP\Files\Folder::class);
 		$filesNode1->method('getId')->willReturn(111);
 		$filesNode1->method('getPath')->willReturn('/node1');
 		$filesNode1->method('isReadable')->willReturn(true);
 		$filesNode1->method('getSize')->willReturn(2048);
-		$filesNode2 = $this->createMock(File::class);
+		$filesNode2 = $this->createMock(\OCP\Files\File::class);
 		$filesNode2->method('getId')->willReturn(222);
 		$filesNode2->method('getPath')->willReturn('/sub/node2');
 		$filesNode2->method('getSize')->willReturn(1024);
@@ -249,17 +236,17 @@ class FilesReportPluginTest extends TestCase {
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
-			->willReturn($path);
+			->will($this->returnValue($path));
 		$this->server->httpResponse = $response;
 		$this->plugin->initialize($this->server);
 
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->willReturnCallback(
-				function ($responsesArg) use (&$responses) {
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
 					$responses = $responsesArg;
-				}
+				})
 			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
@@ -286,7 +273,7 @@ class FilesReportPluginTest extends TestCase {
 		$this->assertCount(0, $props2[200]['{DAV:}resourcetype']->getValue());
 	}
 
-	public function testOnReportPaginationFiltered(): void {
+	public function testOnReportPaginationFiltered() {
 		$path = 'test';
 
 		$parameters = new FilterRequest();
@@ -304,7 +291,7 @@ class FilesReportPluginTest extends TestCase {
 
 		$filesNodes = [];
 		for ($i = 0; $i < 20; $i++) {
-			$filesNode = $this->createMock(File::class);
+			$filesNode = $this->createMock(\OCP\Files\File::class);
 			$filesNode->method('getId')->willReturn(1000 + $i);
 			$filesNode->method('getPath')->willReturn('/nodes/node' . $i);
 			$filesNode->method('isReadable')->willReturn(true);
@@ -314,15 +301,14 @@ class FilesReportPluginTest extends TestCase {
 		// return all above nodes as favorites
 		$this->privateTags->expects($this->once())
 			->method('getFavorites')
-			->willReturn(array_keys($filesNodes));
+			->will($this->returnValue(\array_keys($filesNodes)));
 
-		$reportTargetNode = $this->createMock(Directory::class);
-		$reportTargetNode->method('getPath')->willReturn('/');
+		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
 
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->willReturn($reportTargetNode);
+			->will($this->returnValue($reportTargetNode));
 
 		// getById must only be called for the required nodes
 		$this->userFolder
@@ -341,17 +327,17 @@ class FilesReportPluginTest extends TestCase {
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
-			->willReturn($path);
+			->will($this->returnValue($path));
 
 		$this->plugin->initialize($this->server);
 
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->willReturnCallback(
-				function ($responsesArg) use (&$responses) {
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
 					$responses = $responsesArg;
-				}
+				})
 			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
@@ -397,7 +383,7 @@ class FilesReportPluginTest extends TestCase {
 				[$filesNode2],
 			);
 
-		/** @var Directory|MockObject $reportTargetNode */
+		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
 
 		$this->assertCount(2, $result);
@@ -450,7 +436,7 @@ class FilesReportPluginTest extends TestCase {
 				[$filesNode2],
 			);
 
-		/** @var Directory|MockObject $reportTargetNode */
+		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
 
 		$this->assertCount(2, $result);
@@ -503,7 +489,7 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithOneEmptyResult() {
@@ -527,7 +513,7 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithFirstEmptyResult() {
@@ -551,7 +537,7 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithEmptyMidResult() {
@@ -577,7 +563,7 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesInvisibleTagAsAdmin() {
@@ -622,13 +608,13 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	/**
 	 */
 	public function testProcessFilterRulesInvisibleTagAsUser() {
-		$this->expectException(TagNotFoundException::class);
+		$this->expectException(\OCP\SystemTag\TagNotFoundException::class);
 
 		$this->groupManager->expects($this->any())
 			->method('isAdmin')
@@ -706,7 +692,7 @@ class FilesReportPluginTest extends TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFavoriteFilter() {
@@ -719,7 +705,7 @@ class FilesReportPluginTest extends TestCase {
 			->method('getFavorites')
 			->will($this->returnValue(['456', '789']));
 
-		$this->assertEquals(['456', '789'], array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['456', '789'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function filesBaseUriProvider() {

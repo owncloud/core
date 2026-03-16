@@ -64,7 +64,7 @@ class SVG implements IProvider2 {
 
 		//new image object
 		$image = new \OC_Image();
-		$image->loadFromData($imagick->getImageBlob());
+		$image->loadFromData($imagick);
 		//check if image object is valid
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);

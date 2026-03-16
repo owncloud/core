@@ -54,6 +54,7 @@ use OCP\Files\Storage;
 use OCP\IConfig;
 use OCP\Util;
 use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionClass;
 use Test\TestCase;
 use function basename;
 use function file_exists;
@@ -177,7 +178,6 @@ class VersioningTest extends TestCase {
 
 				return $config->getSystemValue($key, $default);
 			});
-		$this->mockConfig->method('getAppValue')->willReturnArgument(2);
 
 		$this->overwriteService('AllConfig', $this->mockConfig);
 
@@ -1407,10 +1407,16 @@ class VersioningTest extends TestCase {
 	 * @param string $user
 	 * @param bool $create
 	 */
-	public static function loginHelper(string $user, bool $create = false): void {
+	public static function loginHelper($user, $create = false): void {
 		if ($create) {
 			OC::$server->getUserManager()->createUser($user, $user);
 		}
+
+		$storage = new ReflectionClass('\OCA\Files_Sharing\SharedStorage');
+		$isInitialized = $storage->getProperty('initialized');
+		$isInitialized->setAccessible(true);
+		$isInitialized->setValue($storage, false);
+		$isInitialized->setAccessible(false);
 
 		OC_Util::tearDownFS();
 		OC_User::setUserId('');

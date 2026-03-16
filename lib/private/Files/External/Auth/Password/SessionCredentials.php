@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -67,7 +68,7 @@ class SessionCredentials extends AuthMechanism {
 		$this->session->set('password::sessioncredentials/credentials', $this->crypto->encrypt(\json_encode($params)));
 	}
 
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, ?IUser $user = null) {
 		$encrypted = $this->session->get('password::sessioncredentials/credentials');
 		if (!isset($encrypted)) {
 			throw new InsufficientDataForMeaningfulAnswerException('No session credentials saved');

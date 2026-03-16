@@ -3,6 +3,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -163,6 +164,6 @@ class PluginManager {
 					throw new \Exception("Sabre collection class '$collection' is unknown and could not be loaded");
 				}
 			}
-		};
+		}
 	}
 }

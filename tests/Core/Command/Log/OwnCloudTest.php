@@ -23,7 +23,6 @@ namespace Tests\Core\Command\Log;
 
 use OC\Core\Command\Log\OwnCloud;
 use Test\TestCase;
-use OCP\IConfig;
 
 class OwnCloudTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
@@ -39,7 +38,7 @@ class OwnCloudTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$config = $this->config = $this->getMockBuilder(IConfig::class)
+		$config = $this->config = $this->getMockBuilder('OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
@@ -48,14 +47,11 @@ class OwnCloudTest extends TestCase {
 		$this->command = new OwnCloud($config);
 	}
 
-	public function testEnable(): void {
+	public function testEnable() {
 		$this->consoleInput->method('getOption')
-			->willReturnMap([
+			->will($this->returnValueMap([
 				['enable', 'true']
-			]);
-		$this->config->expects(self::atLeastOnce())
-			->method('getSystemValue')
-			->willReturnArgument(1);
+			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
 			->with('log_type', 'owncloud');
@@ -63,14 +59,11 @@ class OwnCloudTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function testChangeFile(): void {
+	public function testChangeFile() {
 		$this->consoleInput->method('getOption')
-			->willReturnMap([
+			->will($this->returnValueMap([
 				['file', '/foo/bar/file.log']
-			]);
-		$this->config->expects(self::atLeastOnce())
-			->method('getSystemValue')
-			->willReturnArgument(1);
+			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
 			->with('logfile', '/foo/bar/file.log');
@@ -78,7 +71,7 @@ class OwnCloudTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function changeRotateSizeProvider(): array {
+	public function changeRotateSizeProvider() {
 		return [
 			['42', 42],
 			['0', 0],
@@ -90,14 +83,11 @@ class OwnCloudTest extends TestCase {
 	/**
 	 * @dataProvider changeRotateSizeProvider
 	 */
-	public function testChangeRotateSize($optionValue, $configValue): void {
+	public function testChangeRotateSize($optionValue, $configValue) {
 		$this->consoleInput->method('getOption')
-			->willReturnMap([
+			->will($this->returnValueMap([
 				['rotate-size', $optionValue]
-			]);
-		$this->config->expects(self::atLeastOnce())
-			->method('getSystemValue')
-			->willReturnArgument(1);
+			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
 			->with('log_rotate_size', $configValue);
@@ -105,14 +95,14 @@ class OwnCloudTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function testGetConfiguration(): void {
+	public function testGetConfiguration() {
 		$this->config->method('getSystemValue')
-			->willReturnMap([
+			->will($this->returnValueMap([
 				['log_type', 'owncloud', 'log_type_value'],
-				['datadirectory', \OC::$SERVERROOT . '/data', '/data/directory/'],
+				['datadirectory', \OC::$SERVERROOT.'/data', '/data/directory/'],
 				['logfile', '/data/directory/owncloud.log', '/var/log/owncloud.log'],
 				['log_rotate_size', 0, 5 * 1024 * 1024],
-			]);
+			]));
 
 		$this->consoleOutput
 			->expects($this->exactly(3))

@@ -46,7 +46,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function emergency($message, array $context = []) {
+	public function emergency($message, array $context = []): void {
 		$this->log(Util::FATAL, $message, $context);
 	}
 
@@ -58,7 +58,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function alert($message, array $context = []) {
+	public function alert($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -70,7 +70,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function critical($message, array $context = []) {
+	public function critical($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -83,7 +83,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function error($message, array $context = []) {
+	public function error($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -95,7 +95,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function warning($message, array $context = []) {
+	public function warning($message, array $context = []): void {
 		$this->log(Util::WARN, $message, $context);
 	}
 
@@ -107,7 +107,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function notice($message, array $context = []) {
+	public function notice($message, array $context = []): void {
 		$this->log(Util::INFO, $message, $context);
 	}
 
@@ -119,7 +119,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function info($message, array $context = []) {
+	public function info($message, array $context = []): void {
 		$this->log(Util::ERROR, $message, $context);
 	}
 
@@ -131,7 +131,7 @@ class CommandLogger implements ILogger {
 	 * @return void
 	 * @since 7.0.0
 	 */
-	public function debug($message, array $context = []) {
+	public function debug($message, array $context = []): void {
 		$this->log(Util::DEBUG, $message, $context);
 	}
 
@@ -144,7 +144,7 @@ class CommandLogger implements ILogger {
 	 * @return mixed
 	 * @since 7.0.0
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$minLevel = Util::INFO;
 		$verbosity = $this->output->getVerbosity();
 		if ($verbosity === OutputInterface::VERBOSITY_DEBUG) {

@@ -3,6 +3,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech for PHP 8.4 / Symfony 7.x compatibility
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -46,7 +47,7 @@ class TimestampFormatter implements OutputFormatterInterface {
 	 *
 	 * @param bool $decorated Whether to decorate the messages or not
 	 */
-	public function setDecorated($decorated): void {
+	public function setDecorated(bool $decorated): void {
 		$this->formatter->setDecorated($decorated);
 	}
 
@@ -65,7 +66,7 @@ class TimestampFormatter implements OutputFormatterInterface {
 	 * @param string $name The style name
 	 * @param OutputFormatterStyleInterface $style The style instance
 	 */
-	public function setStyle($name, OutputFormatterStyleInterface $style): void {
+	public function setStyle(string $name, OutputFormatterStyleInterface $style): void {
 		$this->formatter->setStyle($name, $style);
 	}
 
@@ -75,7 +76,7 @@ class TimestampFormatter implements OutputFormatterInterface {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function hasStyle($name): bool {
+	public function hasStyle(string $name): bool {
 		return $this->formatter->hasStyle($name);
 	}
 
@@ -85,18 +86,18 @@ class TimestampFormatter implements OutputFormatterInterface {
 	 * @param string $name
 	 * @return OutputFormatterStyleInterface
 	 */
-	public function getStyle($name): OutputFormatterStyleInterface {
+	public function getStyle(string $name): OutputFormatterStyleInterface {
 		return $this->formatter->getStyle($name);
 	}
 
 	/**
 	 * Formats a message according to the given styles.
 	 *
-	 * @param string $message The message to style
-	 * @return string The styled message, prepended with a timestamp using the
+	 * @param string|null $message The message to style
+	 * @return string|null The styled message, prepended with a timestamp using the
 	 * log timezone and dateformat, e.g. "2015-06-23T17:24:37+02:00"
 	 */
-	public function format($message): ?string {
+	public function format(?string $message): ?string {
 		$timeZone = $this->config->getSystemValue('logtimezone', null);
 		$timeZone = $timeZone !== null ? new \DateTimeZone($timeZone) : null;
 

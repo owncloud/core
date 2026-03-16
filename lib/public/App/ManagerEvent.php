@@ -3,6 +3,7 @@
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +50,7 @@ class ManagerEvent extends Event {
 	 * @param \OCP\IGroup[] $groups
 	 * @since 9.0.0
 	 */
-	public function __construct($event, $appID, array $groups = null) {
+	public function __construct($event, $appID, ?array $groups = null) {
 		$this->event = $event;
 		$this->appID = $appID;
 		$this->groups = $groups;

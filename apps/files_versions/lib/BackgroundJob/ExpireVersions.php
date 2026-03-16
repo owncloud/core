@@ -5,6 +5,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,7 +43,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 	 */
 	private $userManager;
 
-	public function __construct(IUserManager $userManager = null, Expiration $expiration = null) {
+	public function __construct(?IUserManager $userManager = null, ?Expiration $expiration = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 

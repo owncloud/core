@@ -5,6 +5,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -165,11 +166,11 @@ class CommentsPlugin extends ServerPlugin {
 		}
 		$args = ['limit' => 0, 'offset' => 0, 'datetime' => null];
 		$acceptableParameters = [
-			$this::REPORT_PARAM_LIMIT,
-			$this::REPORT_PARAM_OFFSET,
-			$this::REPORT_PARAM_TIMESTAMP
+			self::REPORT_PARAM_LIMIT,
+			self::REPORT_PARAM_OFFSET,
+			self::REPORT_PARAM_TIMESTAMP
 		];
-		$ns = '{' . $this::NS_OWNCLOUD . '}';
+		$ns = '{' . self::NS_OWNCLOUD . '}';
 		foreach ($report as $parameter) {
 			if (!\in_array($parameter['name'], $acceptableParameters) || empty($parameter['value'])) {
 				continue;

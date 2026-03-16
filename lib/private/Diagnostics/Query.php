@@ -4,6 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -41,11 +42,11 @@ class Query implements IQuery, \JsonSerializable {
 	public function __construct(string $sql, $params, $start) {
 		$this->sql = $sql;
 		$this->params = $params;
-		$this->start = $start;
+		$this->start = (int)$start;
 	}
 
 	public function end($time) {
-		$this->end = $time;
+		$this->end = (int)$time;
 	}
 
 	/**

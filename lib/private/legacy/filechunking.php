@@ -11,6 +11,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -109,8 +110,8 @@ class OC_FileChunking {
 	 *
 	 * @return integer assembled file size
 	 *
-	 * @throws \OC\InsufficientStorageException when file could not be fully
-	 * assembled due to lack of free space
+	 * @throws \OC\ForbiddenException when file could not be fully
+	 * assembled due to lack of free space or permissions
 	 */
 	public function assemble($f) {
 		$cache = $this->getCache();

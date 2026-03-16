@@ -21,28 +21,27 @@
 
 namespace Test\User;
 
-use Exception;
-use OC\AppFramework\Http\Request;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\User\TokenAuthModule;
+use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
-use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
-use function get_class;
 
 class TokenAuthModuleTest extends TestCase {
-	/** @var IUserManager | MockObject */
+	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $manager;
-	/** @var IUser | MockObject */
+	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
+	private $request;
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
 	private $user;
-	/** @var ISession | MockObject */
+	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
 	private $session;
-	/** @var IProvider | MockObject */
+	/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject */
 	private $tokenProvider;
 
 	public function setUp(): void {
@@ -50,6 +49,7 @@ class TokenAuthModuleTest extends TestCase {
 		$this->manager = $this->createMock(IUserManager::class);
 		$this->session = $this->createMock(ISession::class);
 		$this->tokenProvider = $this->createMock(IProvider::class);
+		$this->request = $this->createMock(IRequest::class);
 		$this->user = $this->createMock(IUser::class);
 
 		$this->session->expects($this->any())->method('getId')->willThrowException(new SessionNotAvailableException());
@@ -88,33 +88,29 @@ class TokenAuthModuleTest extends TestCase {
 	public function testModule($expectedResult, $authHeader, $password = '') {
 		$module = new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
 		if ($authHeader === 'basic') {
-			$request = new Request([
-				'server' => [
-					'PHP_AUTH_USER' => 'user1',
-					'PHP_AUTH_PW' => 'valid-token',
-				]
-			]);
+			$this->request->server = [
+				'PHP_AUTH_USER' => 'user1',
+				'PHP_AUTH_PW' => 'valid-token',
+			];
 		} else {
-			$request = new Request([
-				'server' => [
-					'PHP_AUTH_USER' => '',
-					'PHP_AUTH_PW' => '',
-					'HTTP_AUTHORIZATION' => $authHeader
-				]
-			]);
+			$this->request->server = [
+				'PHP_AUTH_USER' => '',
+				'PHP_AUTH_PW' => '',
+			];
+			$this->request->expects($this->any())->method('getHeader')->willReturn($authHeader);
 		}
 
-		if ($expectedResult instanceof Exception) {
+		if ($expectedResult instanceof \Exception) {
 			$this->expectException(\get_class($expectedResult));
 			$this->expectExceptionMessage($expectedResult->getMessage());
-			$module->auth($request);
+			$module->auth($this->request);
 		} else {
-			$this->assertEquals($expectedResult ? $this->user : null, $module->auth($request));
-			$this->assertEquals($password, $module->getUserPassword($request));
+			$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
+			$this->assertEquals($password, $module->getUserPassword($this->request));
 		}
 	}
 
-	public function providesCredentials(): array {
+	public function providesCredentials() {
 		return [
 			'no auth header' => [false, ''],
 			'not valid token' => [false, 'token whateverbutnothingvalid'],

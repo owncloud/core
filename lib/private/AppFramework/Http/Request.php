@@ -15,6 +15,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -119,9 +120,9 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 */
 	public function __construct(
 		array $vars= [],
-		ISecureRandom $secureRandom = null,
-		IConfig $config = null,
-		CsrfTokenManager $csrfTokenManager = null,
+		?ISecureRandom $secureRandom = null,
+		?IConfig $config = null,
+		?CsrfTokenManager $csrfTokenManager = null,
 		$stream = 'php://input'
 	) {
 		$this->inputStream = $stream;
@@ -324,10 +325,10 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 *                     1. URL parameters
 	 *                     2. POST parameters
 	 *                     3. GET parameters
-	 * @param mixed|null $default If the key is not found, this value will be returned
+	 * @param mixed $default If the key is not found, this value will be returned
 	 * @return mixed the content of the array
 	 */
-	public function getParam(string $key, mixed $default = null): mixed {
+	public function getParam($key, $default = null) {
 		return $this->parameters[$key] ?? $default;
 	}
 
@@ -336,19 +337,15 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 * (as GET or POST) or through the URL by the route
 	 * @return array the array with all parameters
 	 */
-	public function getParams(): array {
-		$parameters = $this->parameters;
-		if (\is_array($parameters)) {
-			return $parameters;
-		}
-		return [];
+	public function getParams() {
+		return $this->parameters;
 	}
 
 	/**
 	 * Returns the method of the request
 	 * @return string the method of the request (POST, GET, etc)
 	 */
-	public function getMethod(): string {
+	public function getMethod() {
 		return $this->method;
 	}
 
@@ -395,8 +392,8 @@ class Request implements ArrayAccess, Countable, IRequest {
 		if ($this->method === 'PUT'
 			&& $this->getHeader('Content-Length') !== 0
 			&& $this->getHeader('Content-Length') !== null
-			&& !str_contains($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded')
-			&& !str_contains($this->getHeader('Content-Type') ?? '', 'application/json')
+			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') === false
+			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/json') === false
 		) {
 			if ($this->content === false) {
 				throw new \LogicException(
@@ -435,7 +432,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 			// or post correctly
 		} elseif ($this->method !== 'GET'
 				&& $this->method !== 'POST'
-				&& str_contains($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded')) {
+				&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') !== false) {
 			\parse_str(\file_get_contents($this->inputStream), $params);
 			if (\is_array($params)) {
 				$this->items['params'] = $params;
@@ -590,8 +587,8 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 *
 	 * @return string HTTP protocol. HTTP/2, HTTP/1.1 or HTTP/1.0.
 	 */
-	public function getHttpProtocol(): string {
-		$claimedProtocol = \strtoupper($this->server['SERVER_PROTOCOL'] ?? 'HTTP/1.1');
+	public function getHttpProtocol() {
+		$claimedProtocol = \strtoupper($this->server['SERVER_PROTOCOL'] ?? '');
 
 		$validProtocols = [
 			'HTTP/1.0',
@@ -662,18 +659,21 @@ class Request implements ArrayAccess, Countable, IRequest {
 
 		// strip off the script name's dir and file name
 		// FIXME: Sabre does not really belong here
-		[$path, $name] = \Sabre\Uri\split($scriptName);
+		list($path, $name) = \Sabre\Uri\split($scriptName);
 		if (!empty($path)) {
-			if ($path === $pathInfo || str_starts_with($pathInfo, $path . '/')) {
+			if ($path === $pathInfo || \strpos($pathInfo, $path.'/') === 0) {
 				$pathInfo = \substr($pathInfo, \strlen($path));
 			} else {
 				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
 			}
 		}
-		if (str_starts_with($pathInfo, "/$name")) {
-			$pathInfo = \substr($pathInfo, \strlen($name ?? '') + 1);
+		if(empty($name)) {
+			$name = '';
 		}
-		if (\is_string($name) && str_starts_with($pathInfo, $name)) {
+		if (\strpos($pathInfo, "/$name") === 0) {
+			$pathInfo = \substr($pathInfo, \strlen($name) + 1);
+		}
+		if (\is_string($name) && \strpos($pathInfo, $name) === 0) {
 			$pathInfo = \substr($pathInfo, \strlen($name));
 		}
 
@@ -713,7 +713,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 */
 	public function getScriptName() {
 		$name = $this->server['SCRIPT_NAME'];
-		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot') ?? '';
+		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
 			$serverRoot = \str_replace('\\', '/', \substr(__DIR__, 0, -\strlen('lib/private/appframework/http/')));

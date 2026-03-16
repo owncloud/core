@@ -4,6 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,8 +48,8 @@ class ExpireTrash extends Command {
 	 * @param TrashExpiryManager|null $trashExpiryManager
 	 */
 	public function __construct(
-		IUserManager $userManager = null,
-		TrashExpiryManager $trashExpiryManager = null
+		?IUserManager $userManager = null,
+		?TrashExpiryManager $trashExpiryManager = null
 	) {
 		parent::__construct();
 

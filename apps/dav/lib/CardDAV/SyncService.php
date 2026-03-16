@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -290,7 +291,7 @@ class SyncService {
 		return $this->localSystemAddressBook;
 	}
 
-	public function syncInstance(\Closure $progressCallback = null) {
+	public function syncInstance(?\Closure $progressCallback = null) {
 		$systemAddressBook = $this->getLocalSystemAddressBook();
 		$this->userManager->callForAllUsers(function ($user) use ($progressCallback) {
 			$this->updateUser($user);

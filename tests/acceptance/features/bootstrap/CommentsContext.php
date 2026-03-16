@@ -4,6 +4,7 @@
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -270,7 +271,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userHasDeletedLastComment(string $user = null):void {
+	public function userHasDeletedLastComment(?string $user = null):void {
 		$this->userDeletesLastComment($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe("204");
 	}

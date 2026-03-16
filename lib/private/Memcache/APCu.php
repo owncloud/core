@@ -35,7 +35,7 @@ class APCu extends Cache implements IMemcache {
 
 	use CADTrait;
 
-	public function get($key): mixed {
+	public function get($key) {
 		$result = \apcu_fetch($this->getPrefix() . $key, $success);
 		if (!$success) {
 			return null;
@@ -43,7 +43,7 @@ class APCu extends Cache implements IMemcache {
 		return $result;
 	}
 
-	public function set($key, $value, $ttl = 0): mixed {
+	public function set($key, $value, $ttl = 0) {
 		return \apcu_store($this->getPrefix() . $key, $value, $ttl);
 	}
 
@@ -58,8 +58,7 @@ class APCu extends Cache implements IMemcache {
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
 		$ns = \preg_quote($ns, '/');
-		$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
-
+		$iter = new \APCuIterator('/^' . $ns . '/', APC_ITER_KEY);
 		return \apcu_delete($iter);
 	}
 
@@ -106,7 +105,7 @@ class APCu extends Cache implements IMemcache {
 	 * @param mixed $new
 	 * @return bool
 	 */
-	public function cas($key, $old, $new): bool {
+	public function cas($key, $old, $new) {
 		// apc only does cas for ints
 		if (\is_int($old) && \is_int($new)) {
 			return \apcu_cas($this->getPrefix() . $key, $old, $new);
@@ -118,7 +117,7 @@ class APCu extends Cache implements IMemcache {
 	/**
 	 * @return bool
 	 */
-	public static function isAvailable(): bool {
+	public static function isAvailable() {
 		if (!\extension_loaded('apcu')) {
 			return false;
 		}

@@ -12,6 +12,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -170,7 +171,7 @@ class UsersController extends Controller {
 	 * @param IGroup[]|null $userGroups
 	 * @return array
 	 */
-	private function formatUserForIndex(IUser $user, array $userGroups = null) {
+	private function formatUserForIndex(IUser $user, ?array $userGroups = null) {
 		// TODO: eliminate this encryption specific code below and somehow
 		// hook in additional user info from other apps
 
@@ -268,7 +269,7 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
 		}
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null) ?? '');
+		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		if (\count($splittedToken) !== 3) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));

@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
@@ -1344,9 +1343,6 @@ class ApiTest extends TestCase {
 	 * Tests mounting a folder that is an external storage mount point.
 	 */
 	public function testShareStorageMountPoint() {
-		if (\OC::$server->getDatabaseConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\OraclePlatform) {
-			self::markTestSkipped("Failing under Oracle - assumption this is related to https://github.com/doctrine/dbal/issues/4687");
-		}
 		self::$tempStorage = new \OC\Files\Storage\Temporary([]);
 		self::$tempStorage->file_put_contents('test.txt', 'abcdef');
 		self::$tempStorage->getScanner()->scan('');

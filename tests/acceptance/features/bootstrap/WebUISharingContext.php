@@ -1215,11 +1215,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI():void {
 		$lastCreatedLinkUrl = $this->featureContext->getLastCreatedPublicShare()->url;
-		$url = $lastCreatedLinkUrl->__toString();
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
-			$url
+			$lastCreatedLinkUrl
 		);
 		$this->publicLinkFilesPage->setPagePath($path);
 		$this->publicLinkFilesPage->open();

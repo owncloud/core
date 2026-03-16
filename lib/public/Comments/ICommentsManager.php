@@ -5,6 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -111,7 +112,7 @@ interface ICommentsManager {
 		$objectId,
 		$limit = 0,
 		$offset = 0,
-		\DateTime $notOlderThan = null
+		?\DateTime $notOlderThan = null
 	);
 
 	/**
@@ -143,7 +144,7 @@ interface ICommentsManager {
 	 * @return Int
 	 * @since 9.0.0
 	 */
-	public function getNumberOfCommentsForObject($objectType, $objectId, \DateTime $notOlderThan = null);
+	public function getNumberOfCommentsForObject($objectType, $objectId, ?\DateTime $notOlderThan = null);
 
 	/**
 	 * creates a new comment and returns it. At this point of time, it is not

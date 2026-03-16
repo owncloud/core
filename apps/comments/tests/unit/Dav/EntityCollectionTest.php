@@ -6,6 +6,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,7 +43,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	protected $collection;
 	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
-	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $dispatcher;
 
 	public function setUp(): void {

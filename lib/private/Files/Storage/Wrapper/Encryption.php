@@ -8,6 +8,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -105,15 +106,15 @@ class Encryption extends Wrapper {
 	 */
 	public function __construct(
 		$parameters,
-		IManager $encryptionManager = null,
-		Util $util = null,
-		ILogger $logger = null,
-		IFile $fileHelper = null,
+		?IManager $encryptionManager = null,
+		?Util $util = null,
+		?ILogger $logger = null,
+		?IFile $fileHelper = null,
 		$uid = null,
-		IStorage $keyStorage = null,
-		Update $update = null,
-		Manager $mountManager = null,
-		ArrayCache $arrayCache = null
+		?IStorage $keyStorage = null,
+		?Update $update = null,
+		?Manager $mountManager = null,
+		?ArrayCache $arrayCache = null
 	) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->mount = $parameters['mount'];
@@ -992,9 +993,9 @@ class Encryption extends Wrapper {
 				$path = $realFile;
 			}
 		}
-		$firstBlock = $this->readFirstBlock($path) ?? '';
+		$firstBlock = $this->readFirstBlock($path);
 
-		if (str_starts_with($firstBlock, Util::HEADER_START)) {
+		if (\substr($firstBlock, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
 			$headerSize = $this->util->getHeaderSize();
 		}
 

@@ -414,9 +414,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			} else {
 				$stat['size'] = $file->getSize();
 			}
-			$stat['atime'] = \strtotime($file->getViewedByMeTime());
-			$stat['mtime'] = \strtotime($file->getModifiedTime());
-			$stat['ctime'] = \strtotime($file->getCreatedTime());
+			$stat['atime'] = \strtotime($file->getViewedByMeTime() ?? 'now');
+			$stat['mtime'] = \strtotime($file->getModifiedTime() ?? 'now');
+			$stat['ctime'] = \strtotime($file->getCreatedTime() ?? 'now');
 			return $stat;
 		} else {
 			return false;

@@ -59,6 +59,7 @@ class TemporaryNoLocal extends Temporary {
  * @package Test\Files
  */
 class ViewTest extends TestCase {
+	public $shallThrow;
 	/**
 	 * @var Storage[] $storages
 	 */
@@ -84,7 +85,6 @@ class ViewTest extends TestCase {
 
 	/** @var \OC\AllConfig */
 	private $config;
-	private bool $shallThrow;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -1615,10 +1615,10 @@ class ViewTest extends TestCase {
 		$defaultRootValue->setAccessible(true);
 		$oldRoot = $defaultRootValue->getValue();
 		$defaultView = new View('/foo/files');
-		$defaultRootValue->setValue(null, $defaultView);
+		$defaultRootValue->setValue($defaultView);
 		$view = new View($root);
 		$result = static::invokePrivate($view, 'shouldEmitHooks', [$path]);
-		$defaultRootValue->setValue(null, $oldRoot);
+		$defaultRootValue->setValue($oldRoot);
 		$this->assertEquals($shouldEmit, $result);
 	}
 

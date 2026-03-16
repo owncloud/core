@@ -3,6 +3,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -248,5 +249,5 @@ interface IStorageConfig extends \JsonSerializable {
 	 * @return array
 	 * @since 10.0
 	 */
-	public function jsonSerialize(): array;
+	public function jsonSerialize(): mixed;
 }

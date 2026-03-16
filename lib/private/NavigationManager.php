@@ -7,6 +7,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -56,12 +57,12 @@ class NavigationManager implements INavigationManager {
 	private $config;
 
 	public function __construct(
-		IAppManager $appManager = null,
-		IURLGenerator $urlGenerator = null,
-		IFactory $l10nFac = null,
-		IUserSession $userSession = null,
-		IGroupManager $groupManager = null,
-		IConfig $config = null
+		?IAppManager $appManager = null,
+		?IURLGenerator $urlGenerator = null,
+		?IFactory $l10nFac = null,
+		?IUserSession $userSession = null,
+		?IGroupManager $groupManager = null,
+		?IConfig $config = null
 	) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;

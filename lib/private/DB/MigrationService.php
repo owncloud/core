@@ -4,6 +4,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -66,9 +67,9 @@ class MigrationService {
 	public function __construct(
 		$appName,
 		IDBConnection $connection,
-		IOutput $output = null,
-		AppLocator $appLocator = null,
-		ILogger $logger = null
+		?IOutput $output = null,
+		?AppLocator $appLocator = null,
+		?ILogger $logger = null
 	) {
 		$this->appName = $appName;
 		$this->connection = $connection;

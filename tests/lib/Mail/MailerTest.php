@@ -8,25 +8,19 @@
 
 namespace Test\Mail;
 
-use Exception;
 use OC\Mail\Mailer;
 use OC_Defaults;
 use OCP\IConfig;
 use OCP\ILogger;
-use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Mailer\Transport\SendmailTransport;
-use Symfony\Component\Mime\Email;
 use Test\TestCase;
 use OC\Mail\Message;
-use function array_merge;
-use function json_encode;
 
 class MailerTest extends TestCase {
-	/** @var IConfig | MockObject */
+	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var OC_Defaults */
 	private $defaults;
-	/** @var ILogger | MockObject */
+	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 	/** @var Mailer */
 	private $mailer;
@@ -45,49 +39,54 @@ class MailerTest extends TestCase {
 
 	public function testGetSendMailInstanceSendMail(): void {
 		$this->config
-			->expects($this->once())
 			->method('getSystemValue')
-			->with('mail_smtpmode', 'sendmail')
-			->willReturn('sendmail');
+			->willReturnCallback($this->getSystemValueCallback([
+				['mail_smtpmode', 'sendmail', 'sendmail']
+			]));
 
-		/** @var SendmailTransport $mailer */
 		$mailer = self::invokePrivate($this->mailer, 'getSendMailInstance');
-		$this->assertInstanceOf(SendmailTransport::class, $mailer);
+		$this->assertInstanceOf(\Symfony\Component\Mailer\Transport\SendmailTransport::class, $mailer);
 		$this->assertEquals('/usr/sbin/sendmail -bs', self::invokePrivate($mailer, 'command'));
 	}
 
 	public function testGetSendMailInstanceSendMailQmail(): void {
 		$this->config
-			->expects($this->once())
 			->method('getSystemValue')
-			->with('mail_smtpmode', 'sendmail')
-			->willReturn('qmail');
+			->willReturnCallback($this->getSystemValueCallback([
+					['mail_smtpmode', 'sendmail', 'qmail']
+			]));
 		$mailer = self::invokePrivate($this->mailer, 'getSendMailInstance');
-		$this->assertInstanceOf(SendmailTransport::class, $mailer);
+		$this->assertInstanceOf(\Symfony\Component\Mailer\Transport\SendmailTransport::class, $mailer);
 		$this->assertEquals('/var/qmail/bin/sendmail -bs', self::invokePrivate($mailer, 'command'));
 	}
 
 	public function testGetInstanceDefault(): void {
-		$this->assertInstanceOf(SendmailTransport::class, self::invokePrivate($this->mailer, 'getInstance'));
+		$this->assertInstanceOf(\Symfony\Component\Mailer\MailerInterface::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
 	public function testGetInstanceSendmail(): void {
 		$this->config
 			->method('getSystemValue')
-			->willReturn('sendmail');
+			->will($this->returnValue('sendmail'));
 
-		$this->assertInstanceOf(SendmailTransport::class, self::invokePrivate($this->mailer, 'getInstance'));
+		$this->assertInstanceOf(\Symfony\Component\Mailer\MailerInterface::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
-	public function testSendInvalidMailException(): void {
-		$this->expectException(Exception::class);
+	public function testCreateMessage(): void {
+		$this->assertInstanceOf(Message::class, $this->mailer->createMessage());
+	}
 
-		/** @var Message | MockObject $message */
+	/**
+	 */
+	public function testSendInvalidMailException(): void {
+		$this->expectException(\Symfony\Component\Mime\Exception\LogicException::class);
+
+		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
 			->method('getMessage')
-			->willReturn(new Email());
+			->will($this->returnValue(new \Symfony\Component\Mime\Email()));
 
 		$this->mailer->send($message);
 	}
@@ -120,14 +119,14 @@ class MailerTest extends TestCase {
 			->setMethods(['getInstance'])
 			->getMock();
 
-		$this->mailer->method('getInstance')->willReturn($this->createMock(SendmailTransport::class));
+		$this->mailer->method('getInstance')->willReturn($this->createMock(\Symfony\Component\Mailer\Transport\SendmailTransport::class));
 
-		/** @var Message | MockObject $message */
+		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
 			->method('getMessage')
-			->willReturn(new Email());
+			->will($this->returnValue(new \Symfony\Component\Mime\Email()));
 
 		$from = ['from@example.org' => 'From Address'];
 		$to = ['to1@example.org' => 'To Address 1', 'to2@example.org' => 'To Address 2'];
@@ -144,12 +143,23 @@ class MailerTest extends TestCase {
 			->method('debug')
 			->with('Sent mail from "{from}" to "{recipients}" with subject "{subject}"', [
 				'app' => 'core',
-				'from' => json_encode($from),
-				'recipients' => json_encode(array_merge($to, $cc, $bcc)),
-				'subject' => 'Email subject',
-				'mail_log' => null
+				'from' => \json_encode($from),
+				'recipients' => \json_encode(\array_merge($to, $cc, $bcc)),
+				'subject' => 'Email subject'
 			]);
 
 		$this->mailer->send($message);
+	}
+
+	private function getSystemValueCallback(array $map) {
+		return function ($key, $default) use ($map) {
+			foreach ($map as $entry) {
+				if($entry[0] === $key && $entry[1] === $default) {
+					return $entry[2];
+				}
+			}
+
+			return $default;
+		};
 	}
 }

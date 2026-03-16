@@ -14,6 +14,7 @@
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -106,7 +107,7 @@ class Preview {
 	public function __construct(
 		$user = '',
 		$root = '/',
-		Node $file = null,
+		?Node $file = null,
 		$maxX = 1,
 		$maxY = 1,
 		$scalingUp = true,
@@ -1116,7 +1117,7 @@ class Preview {
 		$previewProviders = \OC::$server->getPreviewManager()
 			->getProviders();
 		foreach ($previewProviders as $supportedMimeType => $providers) {
-			if (!\preg_match($supportedMimeType, $this->mimeType ?? '')) {
+			if (!\preg_match($supportedMimeType, $this->mimeType)) {
 				continue;
 			}
 

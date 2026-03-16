@@ -29,6 +29,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -62,8 +63,8 @@ class OC_App {
 	private static $loadedApps = [];
 	private static $loadedTypes = [];
 	private static $altLogin = [];
-	public const officialApp = 200;
-	public const approvedApp = 100;
+	public const int officialApp = 200;
+	public const int approvedApp = 100;
 
 	/**
 	 * clean the appId
@@ -128,7 +129,7 @@ class OC_App {
 		\ob_end_clean();
 
 		// once all authentication apps are loaded we can validate the session
-		if ($types === null || \in_array('authentication', \is_array($types) ? $types : [$types], true)) {
+		if ($types === null || \in_array('authentication', $types)) {
 			if (\OC::$server->getUserSession()) {
 				$request = \OC::$server->getRequest();
 				$session = \OC::$server->getUserSession();

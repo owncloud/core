@@ -23,6 +23,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -440,8 +441,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getConfig(),
 				$c->getRequest(),
 				$c->getThemeService(),
-				$c->getUserSession(),
-				\OC::$SERVERROOT
+				\OC::$SERVERROOT,
+				$c->getUserSession()
 			);
 		});
 		$this->registerService('URLGenerator', function (Server $c) {
@@ -493,8 +494,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('ActivityManager', function (Server $c) {
 			return new \OC\Activity\Manager(
 				$c->getRequest(),
-				$c->getUserSession(),
-				$c->getConfig()
+				$c->getConfig(),
+				$c->getUserSession()
 			);
 		});
 		$this->registerService('AvatarManager', function (Server $c) {
@@ -623,12 +624,12 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$groupManager = null;
 			}
 			return new \OC\App\AppManager(
-				$c->getUserSession(),
-				$appConfig,
-				$groupManager,
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
-				$c->getConfig()
+				$c->getConfig(),
+				$c->getUserSession(),
+				$appConfig,
+				$groupManager
 			);
 		});
 		$this->registerService('DateTimeZone', function (Server $c) {
@@ -701,10 +702,10 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				new EnvironmentHelper(),
 				new FileAccessHelper(),
 				new AppLocator(),
-				$config,
 				$c->getMemCacheFactory(),
-				$appManager,
-				$c->getTempManager()
+				$c->getTempManager(),
+				$config,
+				$appManager
 			);
 		});
 		$this->registerService('Request', function ($c) {
@@ -730,7 +731,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					'server' => $_SERVER,
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
-					'method' => $_SERVER['REQUEST_METHOD'] ?? 'GET',
+					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD']))
+						? $_SERVER['REQUEST_METHOD']
+						: null,
 					'urlParams' => $urlParams,
 				],
 				$this->getSecureRandom(),
@@ -1707,7 +1710,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	/**
 	 * @inheritdoc
 	 */
-	public function load(array $xmlPath, IUser $user = null) {
+	public function load(array $xmlPath, ?IUser $user = null) {
 		$appManager = $this->getAppManager();
 		$allApps = $appManager->getEnabledAppsForUser($user);
 

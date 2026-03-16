@@ -3,6 +3,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,7 +36,7 @@ class SessionStorage {
 	/**
 	 * @param ISession $session
 	 */
-	public function __construct(ISession $session = null) {
+	public function __construct(?ISession $session = null) {
 		$this->session = $session;
 	}
 

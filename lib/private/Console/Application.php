@@ -8,6 +8,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -156,7 +157,7 @@ class Application {
 	 * @return int
 	 * @throws \Exception
 	 */
-	public function run(InputInterface $input = null, OutputInterface $output = null) {
+	public function run(?InputInterface $input = null, ?OutputInterface $output = null) {
 		$args = isset($this->request->server['argv']) ? $this->request->server['argv'] : [];
 		$this->dispatcher->dispatch(
 			new ConsoleEvent(ConsoleEvent::EVENT_RUN, $args),
@@ -177,7 +178,7 @@ class Application {
 				}
 			}
 
-			$this->application->addCommand($c);
+			$this->application->add($c);
 		}
 	}
 }

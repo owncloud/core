@@ -9,6 +9,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * Modified by BW-Tech GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -106,7 +107,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @param FileInfo $info
 	 * @return File|Folder
 	 */
-	protected function createNode($path, FileInfo $info = null) {
+	protected function createNode($path, ?FileInfo $info = null) {
 		if ($info === null) {
 			$isDir = $this->view->is_dir($path);
 		} else {

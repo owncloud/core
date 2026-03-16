@@ -95,13 +95,13 @@ class FilesystemTest extends TestCase {
 		}
 
 		self::logout();
-		# self::invokePrivate('\OC\Files\Filesystem', 'normalizedPathCache', [null]);
+		self::invokePrivate(new \OC\Files\Filesystem(), 'normalizedPathCache', [null]);
 		\OC_User::clearBackends();
 		parent::tearDown();
 	}
 
 	public function testMount() {
-		Filesystem::mount('\OC\Files\Storage\Local', $this->getStorageData(), '/');
+		Filesystem::mount('\OC\Files\Storage\Local', self::getStorageData(), '/');
 		$this->assertEquals('/', Filesystem::getMountPoint('/'));
 		$this->assertEquals('/', Filesystem::getMountPoint('/some/folder'));
 		list(, $internalPath) = Filesystem::resolvePath('/');
