@@ -298,7 +298,8 @@ class Auth extends AbstractBasic {
 	public function challenge(RequestInterface $request, ResponseInterface $response): void {
 		$schema = 'Basic';
 		// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
-		if (\in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')), true)) {
+		$xRequestedWithHeader = $request->getHeader('X-Requested-With') ?? '';
+		if (\in_array('XMLHttpRequest', \explode(',', $xRequestedWithHeader), true)) {
 			$schema = 'DummyBasic';
 		}
 
