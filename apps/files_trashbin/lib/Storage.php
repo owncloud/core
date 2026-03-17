@@ -230,7 +230,17 @@ class Storage extends Wrapper {
 			if ($sourceStorage !== null) {
 				$sourcePath = '/' . $owner . '/files_trashbin/files/'. $filename . '.d' . $timestamp;
 				$targetPath = '/' . $owner . '/files/' . $ownerPath;
-				return $sourceStorage->copyKeys($sourcePath, $targetPath);
+				try {
+					return $sourceStorage->copyKeys($sourcePath, $targetPath);
+				} catch (\TypeError $e) {
+					// FIXME: The copyKeys method isn't fully implemented in all the storages / wrappers.
+					// The call will likely trigger this error if the OC\Files\Storage\Wrapper\Encryption
+					// isn't part if the wrappers in the $sourceStorage.
+					// In PHP 7.4, this error was ignored and logged, but in PHP 8.3 it throws an
+					// exception that breaks the code execution.
+					// For the short term, we'll keep the previous behavior and catch the exception here.
+					return false;
+				}
 			}
 		}
 		return false;
