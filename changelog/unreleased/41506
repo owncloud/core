@@ -1,0 +1,8 @@
+Change: Use configurable URL for internet connectivity check
+
+Default URL is now configurable and the default is set to an independent
+resource: https://detectportal.firefox.com/success.txt
+This also provides an IPv6 compatible URL.
+
+https://github.com/owncloud/core/pull/41506
+https://github.com/owncloud/core/issues/41465

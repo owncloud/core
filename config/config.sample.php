@@ -759,6 +759,10 @@ $CONFIG = [
 'has_internet_connection' => true,
 
 /**
+ * The following URL is used to detect internet connectivity.
+ */
+'internet_connectivity_detect_url' => 'https://detectportal.firefox.com/success.txt',
+/**
  * Check for a `.well-known` setup
  * Allows ownCloud to verify a working .well-known URL redirect.
  * This is done by attempting to make a request from JS to
