@@ -79,7 +79,7 @@
         "laminas/laminas-servicemanager": "^3.24",
         "laminas/laminas-validator": "^2.65",
         "laravel/serializable-closure": "^2.0",
-        "league/flysystem": "^1.1",
+        "league/flysystem": "^3.32",
         "nikic/php-parser": "^5.7",
         "owncloud/tarstreamer": "v2.1.0",
         "pear/archive_tar": "1.6.0",
