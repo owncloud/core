@@ -179,6 +179,8 @@ class Share extends Constants {
 			$mountPath = $meta->getMountPoint()->getMountPoint();
 			if ($mountPath !== false) {
 				$mountPath = \substr($mountPath, \strlen('/' . $ownerUser . '/files'));
+				// Note: if the mountPath is shorter than the strlen, substr in php 7.4 returns false
+				// but in php 8+ returns an empty string
 			}
 		}
 
@@ -312,7 +314,7 @@ class Share extends Constants {
 				$result = $query->executeQuery();
 				while ($row = $result->fetchAssociative()) {
 					foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
-						if ($mountPath !== false) {
+						if ($mountPath !== false && $mountPath !== '') {
 							$sharedPath = $shareData['file_target'];
 							$sharedPath .= \substr($path, \strlen($mountPath) + \strlen($paths[$row['fileid']]));
 							$sharePaths[$uid] = $sharedPath;
