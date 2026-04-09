@@ -5,6 +5,8 @@ on:
     - cron: '0 2 * * 1'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   sync:
     uses: owncloud/reusable-workflows/.github/workflows/translation-sync.yml@main
