@@ -1,0 +1,17 @@
+name: Translation Sync
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    uses: owncloud/reusable-workflows/.github/workflows/translation-sync.yml@main
+    with:
+      mode: make
+      sub_path: l10n
+    secrets:
+      TX_TOKEN: ${{ secrets.TX_TOKEN }}
+      TRANSLATION_APP_ID: ${{ secrets.TRANSLATION_APP_ID }}
+      TRANSLATION_APP_PRIVATE_KEY: ${{ secrets.TRANSLATION_APP_PRIVATE_KEY }}
