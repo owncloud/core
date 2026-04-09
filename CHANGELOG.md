@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.2](#changelog-for-owncloud-core-10162-2026-04-02)
 * [Changelog for 10.16.1](#changelog-for-owncloud-core-10161-2026-02-18)
 * [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
 * [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
@@ -26,6 +27,27 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.2] (2026-04-02)
+
+The following sections list the changes in ownCloud core 10.16.2 relevant to
+ownCloud admins and users.
+
+[10.16.2]: https://github.com/owncloud/core/compare/v10.16.1...v10.16.2
+
+## Summary
+
+* Change - Update dependencies: [#41518](https://github.com/owncloud/core/pull/41518)
+
+## Details
+
+* Change - Update dependencies: [#41518](https://github.com/owncloud/core/pull/41518)
+
+   The following have been updated: - phpseclib/phpseclib (3.0.49 to 3.0.50) -
+   minimatch (3.1.2 to 3.1.5) - underscore.js (1.13.6 to 1.13.8) - brace-expansion
+   (1.1.12 to 1.1.13)
+
+   https://github.com/owncloud/core/pull/41518
+
 # Changelog for ownCloud Core [10.16.1] (2026-02-18)
 
 The following sections list the changes in ownCloud core 10.16.1 relevant to
