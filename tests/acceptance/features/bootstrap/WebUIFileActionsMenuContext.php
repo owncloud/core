@@ -20,12 +20,14 @@
  *
  */
 
-require_once 'bootstrap.php';
+namespace Tests\Acceptance;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\FilesPage;
+use Tests\Acceptance\Page\FilesPage;
+
+require_once 'bootstrap.php';
 
 /**
  * Context for file actions menu

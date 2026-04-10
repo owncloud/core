@@ -21,12 +21,14 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\AdminStorageSettingsPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
+use Tests\Acceptance\Page\AdminStorageSettingsPage;
 
 require_once 'bootstrap.php';
 
