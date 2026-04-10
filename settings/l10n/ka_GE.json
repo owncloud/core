@@ -1,5 +1,6 @@
 { "translations": {
     "Authentication error" : "ავთენტიფიკაციის შეცდომა",
+    "Saved" : "შენახულია",
     "Email sent" : "იმეილი გაიგზავნა",
     "Unable to change display name" : "დისფლეის სახელის შეცვლა ვერ მოხერხდა",
     "Create" : "შექმნა",
@@ -39,6 +40,9 @@
     "Credentials" : "იუზერ/პაროლი",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "PHP მოდული 'fileinfo' არ არსებობს. ჩვენ გირჩევთ რომ აუცილებლად ჩართოთ ეს მოდული, რომ მიიღოთ კარგი შედეგები mime-type–ს აღმოჩენისას.",
     "Get the apps to sync your files" : "აპლიკაცია ფაილების სინქრონიზაციისთვის",
+    "Desktop client" : "კომპიუტერის კლიენტი",
+    "Android app" : "Android-ის აპლიკაცია",
+    "iOS app" : "iOS-ის აპლიკაცია",
     "Show First Run Wizard again" : "მაჩვენე თავიდან გაშვებული ვიზარდი",
     "Add" : "დამატება",
     "Profile picture" : "პროფილის სურათი",
