@@ -298,6 +298,7 @@ function assert_server_up() {
 	curl -k -sSf -L $1/status.php -o /dev/null
 	if [[ $? -eq 0 ]]
 	then
+		echo "Server on $1 is responding to status request"
 		return
 	else
 		echo >&2 "Server on $1 is down or not working correctly."
@@ -319,6 +320,7 @@ function assert_testing_app_enabled() {
 		echo >&2 "Please install and enable it to run the tests."
 		exit 98
 	else
+		echo "Testing app is enabled on the server on $1."
 		return
 	fi
 }
