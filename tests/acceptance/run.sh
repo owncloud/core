@@ -790,7 +790,7 @@ then
 		OCC_FED_URL="${TESTING_APP_FED_URL}occ"
 		# test that fed server is up and running, and testing app is enabled.
 		assert_server_up ${TEST_SERVER_FED_URL}
-		assert_testing_app_enabled ${TEST_SERVER_URL}
+		assert_testing_app_enabled ${TEST_SERVER_FED_URL}
 	fi
 
 	echo "Not using php inbuilt server for running scenario ..."
