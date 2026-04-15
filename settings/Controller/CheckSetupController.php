@@ -83,9 +83,9 @@ class CheckSetupController extends Controller {
 		}
 
 		try {
+			$detectUrl = $this->config->getSystemValue('internet_connectivity_detect_url', 'https://detectportal.firefox.com/success.txt');
 			$client = $this->clientService->newClient();
-			$client->get('https://www.owncloud.com/');
-			$client->get('http://www.owncloud.com/');
+			$client->get($detectUrl);
 			return true;
 		} catch (\Exception $e) {
 			return false;
