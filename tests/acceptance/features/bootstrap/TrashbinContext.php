@@ -236,16 +236,24 @@ class TrashbinContext implements Context {
 			__METHOD__ . " $collectionPath"
 		);
 
+		$subfolder = parse_url($this->featureContext->getBaseUrl(), PHP_URL_PATH);
+		if ($subfolder === null) {
+			$subfolder = "";
+			$subfolderWithSlashAtEnd = "";
+		} else {
+			$subfolderWithSlashAtEnd = \trim($subfolder, "/") . "/";
+		}
+
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
 		// filter out the collection itself, we only want to return the members
 		$files = \array_filter(
 			$files,
-			static function ($element) use ($user, $collectionPath) {
+			static function ($element) use ($user, $collectionPath, $subfolder) {
 				$path = $collectionPath;
 				if ($path !== "") {
 					$path = $path . "/";
 				}
-				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
+				return ($element['href'] !== "$subfolder/remote.php/dav/trash-bin/$user/$path");
 			}
 		);
 
@@ -254,7 +262,7 @@ class TrashbinContext implements Context {
 			// avoid "common" situations that could cause infinite recursion.
 			$trashbinRef = $file["href"];
 			$trimmedTrashbinRef = \trim($trashbinRef, "/");
-			$expectedStart = "remote.php/dav/trash-bin/$user";
+			$expectedStart = "{$subfolderWithSlashAtEnd}remote.php/dav/trash-bin/$user";
 			$expectedStartLength = \strlen($expectedStart);
 			if ((\substr($trimmedTrashbinRef, 0, $expectedStartLength) !== $expectedStart)
 				|| (\strlen($trimmedTrashbinRef) === $expectedStartLength)
