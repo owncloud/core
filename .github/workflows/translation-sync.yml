@@ -5,7 +5,8 @@ on:
     - cron: '0 2 * * *'
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   sync:
