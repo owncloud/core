@@ -1288,6 +1288,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// of the remote and local server respectively, waiting for us to login.
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getUserPassword($actualUsername);
+		echo "INFORMATION: thePublicAddsThePublicLinkToUsingTheWebUI calling loginAs at" . date("Y-m-d H:i:s") . "\n";
 		$this->webUIGeneralContext->loginAs($username, $password);
 	}
 

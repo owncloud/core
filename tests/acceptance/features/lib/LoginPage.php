@@ -107,7 +107,10 @@ class LoginPage extends OwncloudPage {
 			);
 		}
 
+		echo "INFORMATION: finished waiting for LoginPage to load\n";
+		echo "             waiting for outstanding Ajax calls at " . date("Y-m-d H:i:s") . "\n";
 		$this->waitForOutstandingAjaxCalls($session);
+		echo "             finished waiting for outstanding Ajax calls at " . date("Y-m-d H:i:s") . "\n";
 	}
 
 	/**
