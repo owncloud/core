@@ -20,12 +20,14 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 require_once 'bootstrap.php';
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\PersonalSharingSettingsPage;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\PersonalSharingSettingsPage;
 
 /**
  * steps for personal sharing settings
