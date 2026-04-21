@@ -158,7 +158,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			" id $this->saveToOcButtonExpandId could not find 'expand save to owncloud' button"
 		);
 
+		echo "INFORMATION: about to click saveToOcButtonExpandId";
 		$saveToOcButtonExpand->click();
+		echo "INFORMATION: clicked saveToOcButtonExpandId";
 
 		$this->assertElementNotNull(
 			$changeServerLink,
@@ -166,7 +168,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			" id $this->saveToOcButtonExpandId could not find 'change server' link"
 		);
 
+		echo "INFORMATION: about to click changeServerLinkId";
 		$changeServerLink->click();
+		echo "INFORMATION: clicked changeServerLinkId";
 
 		$changeServerPrompt  = $this->find('xpath', $this->changeServerPromptXpath);
 
@@ -184,7 +188,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			" id $this->changeServerPromptInputId could not find 'change server' input field"
 		);
 
+		echo "INFORMATION: setting changeServerPromptInputId to $server";
 		$changeServerPromptInput->setValue($server);
+		echo "INFORMATION: set changeServerPromptInputId to $server";
 
 		$confirmBtn = $this->findById($this->confirmBtnId);
 		$this->assertElementNotNull(
@@ -193,7 +199,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			" id $this->confirmBtnId could not find confirm button"
 		);
 
+		echo "INFORMATION: about to click confirmBtnId";
 		$confirmBtn->click();
+		echo "INFORMATION: clicked confirmBtnId";
 	}
 
 	/**
