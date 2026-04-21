@@ -168,9 +168,13 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			" id $this->saveToOcButtonExpandId could not find 'change server' link"
 		);
 
-		echo "INFORMATION: about to click changeServerLinkId";
+		echo "waiting until changeServerLinkId is clickable " . date("H:i:s");
+		$this->waitTillXpathIsVisible(
+			"//*[@id='$this->changeServerLinkId']"
+		);
+		echo "INFORMATION: about to click changeServerLinkId " . date("H:i:s");
 		$changeServerLink->click();
-		echo "INFORMATION: clicked changeServerLinkId";
+		echo "INFORMATION: clicked changeServerLinkId " . date("H:i:s");
 
 		$changeServerPrompt  = $this->find('xpath', $this->changeServerPromptXpath);
 
