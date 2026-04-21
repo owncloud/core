@@ -169,9 +169,14 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		);
 
 		echo "waiting until changeServerLinkId is clickable " . date("H:i:s");
-		$this->waitTillXpathIsVisible(
-			"//*[@id='$this->changeServerLinkId']"
-		);
+		// The previous click of saveToOcButtonExpandId opens a drop-down that has
+		// the option to change server in it. Wait until the dropdown has opened
+		// and the changeServerLinkId element is visible. Then we can reliably click it.
+		//$this->waitTillXpathIsVisible(
+		//	"//*[@id='$this->changeServerLinkId']"
+		//);
+		// Try sleeping for 1 second so that the popup menu is displayed.
+		sleep(1);
 		echo "INFORMATION: about to click changeServerLinkId " . date("H:i:s");
 		$changeServerLink->click();
 		echo "INFORMATION: clicked changeServerLinkId " . date("H:i:s");
