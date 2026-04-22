@@ -2183,10 +2183,10 @@ class UsersControllerTest extends TestCase {
 	 * @param string $mailAddress
 	 * @param bool $isValid
 	 * @param bool $expectsUpdate
-	 * @param bool $chanChangeMailAddress
+	 * @param bool $canChangeMailAddress
 	 * @param bool $responseCode
 	 */
-	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $chanChangeMailAddress, $responseCode): void {
+	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeMailAddress, $responseCode): void {
 		$this->container['IsAdmin'] = true;
 
 		$user = $this->getMockBuilder(User::class)
@@ -2199,12 +2199,21 @@ class UsersControllerTest extends TestCase {
 			->willReturn('foo@local');
 		$user
 			->method('canChangeMailAddress')
-			->willReturn($chanChangeMailAddress);
-		$user
-			->method('setEMailAddress')
-			->with(
-				$this->equalTo($mailAddress)
-			);
+			->willReturn($canChangeMailAddress);
+
+		$user2 = $this->createMock(User::class);
+		$user2->method('getUID')->willReturn('anotherUserId');
+		$user2->method('getEMailAddress')->willReturn('another@local');
+		$user2->method('canChangeMailAddress')->willReturn($canChangeMailAddress);
+
+		if ($isValid && $canChangeMailAddress) {
+			$user2
+				->expects($this->once())
+				->method('setEMailAddress')
+				->with(
+					$this->equalTo($mailAddress)
+				);
+		}
 
 		$this->container['UserSession']
 			->expects($this->atLeastOnce())
@@ -2215,24 +2224,26 @@ class UsersControllerTest extends TestCase {
 			->with($mailAddress)
 			->willReturn($isValid);
 
-		if ($isValid) {
-			$user->expects($this->atLeastOnce())
-				->method('canChangeMailAddress')
-				->willReturn(true);
-		}
-
 		$this->container['Config']
 			->method('getUserValue')
-			->with('foo', 'owncloud', 'changeMail')
-			->willReturn('12000:AVerySecretToken');
+			->willReturnMap([
+				['foo', 'owncloud', 'changeMail', '12000:AVerySecretToken'],
+				['anotherUserId', 'owncloud', 'changeMail', '120:ASecretToken'],
+			]);
 		$this->container['TimeFactory']
 			->method('getTime')
 			->willReturnOnConsecutiveCalls(12301, 12348);
 		$this->container['UserManager']
 			->expects($this->atLeastOnce())
 			->method('get')
-			->with('foo')
-			->willReturn($user);
+			->willReturnCallback(function ($id) use ($user, $user2) {
+				switch($id) {
+					case "foo":
+						return $user;
+					case "anotherUserId":
+						return $user2;
+				}
+			});
 		$this->container['SecureRandom']
 			->method('generate')
 			->with('21')
@@ -2265,7 +2276,7 @@ class UsersControllerTest extends TestCase {
 			->method('send')
 			->with($message);
 
-		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
+		$response = $this->container['UsersController']->setMailAddress("anotherUserId", $mailAddress);
 		$this->assertSame($responseCode, $response->getStatus());
 	}
 
