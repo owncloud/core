@@ -129,7 +129,7 @@ class UserStoragesController extends StoragesController {
 			);
 		}
 		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
-		if ($backend === 'local' && $canCreateNewLocalStorage === false) {
+		if (($backend === 'local' || $backend === '\OC\Files\Storage\Local') && $canCreateNewLocalStorage === false) {
 			return new DataResponse(
 				null,
 				Http::STATUS_FORBIDDEN

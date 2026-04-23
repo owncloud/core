@@ -111,6 +111,38 @@ class GlobalStoragesControllerTest extends StoragesControllerTest {
 		$this->assertEquals($expectedStorage, $actual);
 	}
 
+	public function testCreateLocal() {
+		$mount = 'randomMount';
+		$backend = 'local';
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		// there is already a teardown in the parent class setting this value to false
+		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $result->getStatus());
+	}
+
+	public function testCreateLocalClassname() {
+		$mount = 'randomMount';
+		$backend = '\OC\Files\Storage\Local';
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		// there is already a teardown in the parent class setting this value to false
+		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $result->getStatus());
+	}
+
 	public function testUpdate() {
 		$mount = 'randomMount';
 		$backend = 'identifier:\This\Doesnt\Exist';

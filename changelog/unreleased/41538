@@ -1,0 +1,8 @@
+Bugfix: Prevent mounting local storage if not allowed.
+
+Mounting a local storage was possible if the internal class name was used as
+backend, despite local storage not allowed to be mounted. This problem is
+fixed and the local storage can't be mounted if is was explicitly disallowed in
+the configuration.
+
+https://github.com/owncloud/core/pull/41538
