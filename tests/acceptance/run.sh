@@ -1063,10 +1063,21 @@ then
 	done
 fi
 
+if [ -z "${APP_NAME}" ]
+then
+	APP_NAME=""
+fi
+
 #Enable and disable apps as required for default
 if [ -z "${APPS_TO_DISABLE}" ]
 then
-	APPS_TO_DISABLE="firstrunwizard notifications"
+  if [[ "${APP_NAME}" == "notifications" ]]; then
+    APPS_TO_DISABLE="firstrunwizard"
+  elif [[ "${APP_NAME}" == "firstrunwizard" ]]; then
+    APPS_TO_DISABLE="notifications"
+  else
+    APPS_TO_DISABLE="firstrunwizard notifications"
+  fi
 fi
 
 if [ -z "${APPS_TO_ENABLE}" ]
