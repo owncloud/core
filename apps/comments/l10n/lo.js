@@ -1,8 +1,26 @@
 OC.L10N.register(
     "comments",
     {
+    "Type in a new comment..." : "ພິມຄວາມຄິດເຫັນໃໝ່...",
+    "Delete comment" : "ລຶບຄວາມຄິດເຫັນ",
+    "Post" : "ສົ່ງ",
     "Cancel" : "ຍົກເລີກ",
+    "Edit comment" : "ແກ້ໄຂຄວາມຄິດເຫັນ",
+    "[Deleted user]" : "[ຜູ້ໃຊ້ທີ່ຖືກລຶບແລ້ວ]",
+    "Comments" : "ຄວາມຄິດເຫັນ",
+    "No other comments available" : "ບໍ່ມີຄວາມຄິດເຫັນອື່ນ",
+    "More comments..." : "ຄວາມຄິດເຫັນເພີ່ມເຕີມ...",
     "Save" : "ບັນທຶກ",
-    "Comment" : "ຄວາມຄິດເຫັນ"
+    "Allowed characters {count} of {max}" : "ອະນຸຍາດໃຫ້ໃຊ້ຕົວອັກສອນ {count} ຈາກ {max}",
+    "Error occurred while retrieving comment with id {id}" : "ເກີດຂໍ້ຜິດພາດຂະນະທີ່ກຳລັງດຶງຂໍ້ມູນຄວາມຄິດເຫັນດ້ວຍໄອດີ {id}",
+    "Error occurred while updating comment with id {id}" : "ເກີດຂໍ້ຜິດພາດຂະນະທີ່ກຳລັງອັບເດດຄວາມຄິດເຫັນດ້ວຍໄອດີ {id}",
+    "Error occurred while posting comment" : "ເກີດຂໍ້ຜິດພາດຂະນະທີ່ກຳລັງສົ່ງຄວາມຄິດເຫັນ",
+    "{count} unread comments" : "{count} ຄວາມຄິດເຫັນທີ່ຍັງບໍ່ໄດ້ອ່ານ",
+    "Comment" : "ຄວາມຄິດເຫັນ",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>ຄວາມຄິດເຫັນ</strong> ສຳລັບໄຟລ໌ <em>(ສະແດງໃນລາຍການເຄື່ອນໄຫວສະເໝີ)</em>",
+    "You commented" : "ທ່ານໄດ້ອອກຄວາມຄິດເຫັນ",
+    "%1$s commented" : "%1$s ໄດ້ອອກຄວາມຄິດເຫັນ",
+    "You commented on %2$s" : "ທ່ານໄດ້ອອກຄວາມຄິດເຫັນໃນ %2$s",
+    "%1$s commented on %2$s" : "%1$s ໄດ້ອອກຄວາມຄິດເຫັນໃນ %2$s"
 },
 "nplurals=1; plural=0;");
