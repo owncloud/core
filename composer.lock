@@ -241,16 +241,16 @@
         },
         {
             "name": "dg/composer-cleaner",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/composer-cleaner.git",
-                "reference": "b0fc3d177a9da6c61b5176e57025654391de600c"
+                "reference": "6808c0942c1d04f594e03839b764d47a0dd1bd6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/b0fc3d177a9da6c61b5176e57025654391de600c",
-                "reference": "b0fc3d177a9da6c61b5176e57025654391de600c",
+                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/6808c0942c1d04f594e03839b764d47a0dd1bd6b",
+                "reference": "6808c0942c1d04f594e03839b764d47a0dd1bd6b",
                 "shasum": ""
             },
             "require": {
@@ -287,9 +287,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dg/composer-cleaner/issues",
-                "source": "https://github.com/dg/composer-cleaner/tree/v2.2.1"
+                "source": "https://github.com/dg/composer-cleaner/tree/v2.2.2"
             },
-            "time": "2022-04-02T16:11:52+00:00"
+            "time": "2026-04-27T09:05:14+00:00"
         },
         {
             "name": "doctrine/dbal",
