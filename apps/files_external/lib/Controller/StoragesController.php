@@ -183,7 +183,7 @@ abstract class StoragesController extends Controller {
 						$backend->getIdentifier()
 					])
 				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
+				Http::STATUS_FORBIDDEN
 			);
 		}
 		if (!$authMechanism->isVisibleFor($this->service->getVisibilityType())) {
@@ -194,7 +194,7 @@ abstract class StoragesController extends Controller {
 						$authMechanism->getIdentifier()
 					])
 				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
+				Http::STATUS_FORBIDDEN
 			);
 		}
 
