@@ -23,6 +23,7 @@ namespace Test\Files\External\Service;
 use OC\Files\Config\UserMountCache;
 use OC\Files\External\Service\DBConfigService;
 use OC\Files\External\Service\GlobalStoragesService;
+use OC\Files\External\StoragesBackendChecker;
 use OC\Files\External\StoragesBackendService;
 use OCP\Files\External\Backend\Backend;
 use OCP\IUser;
@@ -125,7 +126,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 	 * @param $storageParams
 	 */
 	public function testDeleteAllForUser($storageParams, $userId) {
-		$backendService = new StoragesBackendService(\OC::$server->getConfig());
+		$backendService = new StoragesBackendService(new StoragesBackendChecker(\OC::$server->getConfig()));
 		$dbConfigService = new DBConfigService(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
 		$userManager = \OC::$server->getUserManager();
 		$userMountCache = new UserMountCache(\OC::$server->getDatabaseConnection(), $userManager, \OC::$server->getLogger());

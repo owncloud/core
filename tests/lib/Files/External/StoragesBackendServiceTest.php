@@ -20,22 +20,21 @@
  */
 namespace Test\Files\External;
 
+use OC\Files\External\StoragesBackendChecker;
 use OC\Files\External\StoragesBackendService;
 use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\Backend\Backend;
 use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class StoragesBackendServiceTest extends \Test\TestCase {
-	/** @var \OCP\IConfig */
-	protected $config;
+	/** @var StoragesBackendChecker */
+	protected $storagesBackendChecker;
 
 	protected function setUp(): void {
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->config
-			->method('getAppValue')
-			->willReturnMap([
-				['files_external', 'user_mounting_backends', '', '']
-			]);
+		$this->storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
+		$this->storagesBackendChecker->method('isUserMountingAllowed')->willReturn(false);
+		$this->storagesBackendChecker->method('isAllowedUserBackend')->willReturn(false);
 	}
 
 	/**
@@ -67,7 +66,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testRegisterBackend() {
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($this->storagesBackendChecker);
 
 		$backend = $this->getBackendMock('\Foo\Bar');
 
@@ -94,7 +93,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testBackendProvider() {
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($this->storagesBackendChecker);
 
 		$backend1 = $this->getBackendMock('\Foo\Bar');
 		$backend2 = $this->getBackendMock('\Bar\Foo');
@@ -112,7 +111,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testAuthMechanismProvider() {
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($this->storagesBackendChecker);
 
 		$backend1 = $this->getAuthMechanismMock('\Foo\Bar');
 		$backend2 = $this->getAuthMechanismMock('\Bar\Foo');
@@ -130,7 +129,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testMultipleBackendProviders() {
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($this->storagesBackendChecker);
 
 		$backend1a = $this->getBackendMock('\Foo\Bar');
 		$backend1b = $this->getBackendMock('\Bar\Foo');
@@ -156,15 +155,17 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testUserMountingBackends() {
-		$config = $this->createMock(IConfig::class);
-		$config->expects($this->exactly(2))
-			->method('getAppValue')
-			->willReturnMap([
-				['files_external', 'allow_user_mounting', 'no', 'yes'],
-				['files_external', 'user_mounting_backends', '', 'identifier:\User\Mount\Allowed,identifier_alias']
-			]);
+		$storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
+		$storagesBackendChecker->method('isUserMountingAllowed')->willReturn(true);
+		$storagesBackendChecker->method('isAllowedUserBackend')->willReturnCallback(function (Backend $backend) {
+			$backendAliases = $backend->getIdentifierAliases();
+			if (\in_array('identifier:\User\Mount\Allowed', $backendAliases, true) || \in_array('identifier_alias', $backendAliases, true)) {
+				return true;
+			}
+			return false;
+		});
 
-		$service = new StoragesBackendService($config);
+		$service = new StoragesBackendService($storagesBackendChecker);
 
 		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
 		$backendAllowed->expects($this->never())
@@ -188,7 +189,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	}
 
 	public function testGetAvailableBackends() {
-		$service = new StoragesBackendService($this->config);
+		$service = new StoragesBackendService($this->storagesBackendChecker);
 
 		$backendAvailable = $this->getBackendMock('\Backend\Available');
 		$backendAvailable->expects($this->once())

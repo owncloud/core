@@ -53,13 +53,11 @@ class StoragesBackendChecker {
 	 */
 	public function isAllowedUserBackend(Backend $backend) {
 		$blacklistedBackendsForUsers = ['\OC\Files\Storage\Local'];
-		if (in_array($backend->getStorageClass(), $blacklistedBackendsForUsers, true)) {
+		if (\in_array($backend->getStorageClass(), $blacklistedBackendsForUsers, true)) {
 			return false;
 		}
 
-		if ($this->isUserMountingAllowed() &&
-			\array_intersect($backend->getIdentifierAliases(), $this->allowedBackendsForUsers()))
-		{
+		if ($this->isUserMountingAllowed() && \array_intersect($backend->getIdentifierAliases(), $this->allowedBackendsForUsers())) {
 			return true;
 		}
 		return false;
