@@ -24,7 +24,7 @@ class StoragesBackendChecker {
 	 * Checks if the regular users are allowed to mount external storages
 	 * @return bool
 	 */
-	public function isUserMountingAllowed() {
+	public function isUserMountingAllowed(): bool {
 		if ($this->allowUserMounting === null) {
 			$this->allowUserMounting = $this->config->getAppValue('files_external', 'allow_user_mounting', 'no') === 'yes';
 			// if no backend is in the list an empty string is in the array and user mounting is disabled
@@ -49,9 +49,10 @@ class StoragesBackendChecker {
 	/**
 	 * Checks if the regular users are allowed to mount the specified backend.
 	 * Note that the admin might still mount the backend.
+	 * @param Backend $backend
 	 * @return bool
 	 */
-	public function isAllowedUserBackend(Backend $backend) {
+	public function isAllowedUserBackend(Backend $backend): bool {
 		$blacklistedBackendsForUsers = ['\OC\Files\Storage\Local'];
 		if (\in_array($backend->getStorageClass(), $blacklistedBackendsForUsers, true)) {
 			return false;
@@ -61,5 +62,18 @@ class StoragesBackendChecker {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Checks if the admin is allowed to mount the specified backend.
+	 * @param Backend $backend
+	 * @return bool
+	 */
+	public function isAllowedAdminBackend(Backend $backend): bool {
+		$canCreateNewLocalStorage = $this->config->getSystemValue('files_external_allow_create_new_local', false);
+		if ($backend->getStorageClass() === '\OC\Files\Storage\Local' && !$canCreateNewLocalStorage) {
+			return false;
+		}
+		return true;
 	}
 }

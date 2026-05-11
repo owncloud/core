@@ -35,6 +35,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$this->storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
 		$this->storagesBackendChecker->method('isUserMountingAllowed')->willReturn(false);
 		$this->storagesBackendChecker->method('isAllowedUserBackend')->willReturn(false);
+		$this->storagesBackendChecker->method('isAllowedAdminBackend')->willReturn(true);
 	}
 
 	/**
@@ -157,6 +158,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	public function testUserMountingBackends() {
 		$storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
 		$storagesBackendChecker->method('isUserMountingAllowed')->willReturn(true);
+		$storagesBackendChecker->method('isAllowedAdminBackend')->willReturn(true);
 		$storagesBackendChecker->method('isAllowedUserBackend')->willReturnCallback(function (Backend $backend) {
 			$backendAliases = $backend->getIdentifierAliases();
 			if (\in_array('identifier:\User\Mount\Allowed', $backendAliases, true) || \in_array('identifier_alias', $backendAliases, true)) {
@@ -174,6 +176,87 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$backendNotAllowed->expects($this->once())
 			->method('removeVisibility')
 			->with(IStoragesBackendService::VISIBILITY_PERSONAL);
+
+		$backendAlias = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+			->disableOriginalConstructor()
+			->getMock();
+		$backendAlias->method('getIdentifierAliases')
+			->willReturn(['identifier_real', 'identifier_alias']);
+		$backendAlias->expects($this->never())
+			->method('removeVisibility');
+
+		$service->registerBackend($backendAllowed);
+		$service->registerBackend($backendNotAllowed);
+		$service->registerBackend($backendAlias);
+	}
+
+	public function testAdminMountingBackends() {
+		$storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
+		$storagesBackendChecker->method('isUserMountingAllowed')->willReturn(true);
+		$storagesBackendChecker->method('isAllowedUserBackend')->willReturn(true);
+		$storagesBackendChecker->method('isAllowedAdminBackend')->willReturnCallback(function (Backend $backend) {
+			$backendAliases = $backend->getIdentifierAliases();
+			if (\in_array('identifier:\User\Mount\Allowed', $backendAliases, true) || \in_array('identifier_alias', $backendAliases, true)) {
+				return true;
+			}
+			return false;
+		});
+
+		$service = new StoragesBackendService($storagesBackendChecker);
+
+		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
+		$backendAllowed->expects($this->never())
+			->method('removeVisibility');
+		$backendNotAllowed = $this->getBackendMock('\User\Mount\NotAllowed');
+		$backendNotAllowed->expects($this->once())
+			->method('removeVisibility')
+			->with(IStoragesBackendService::VISIBILITY_ADMIN);
+
+		$backendAlias = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+			->disableOriginalConstructor()
+			->getMock();
+		$backendAlias->method('getIdentifierAliases')
+			->willReturn(['identifier_real', 'identifier_alias']);
+		$backendAlias->expects($this->never())
+			->method('removeVisibility');
+
+		$service->registerBackend($backendAllowed);
+		$service->registerBackend($backendNotAllowed);
+		$service->registerBackend($backendAlias);
+	}
+
+	public function testAdminAndUserMountingBackends() {
+		$storagesBackendChecker = $this->createMock(StoragesBackendChecker::class);
+		$storagesBackendChecker->method('isUserMountingAllowed')->willReturn(true);
+		$storagesBackendChecker->method('isAllowedUserBackend')->willReturnCallback(function (Backend $backend) {
+			$backendAliases = $backend->getIdentifierAliases();
+			if (\in_array('identifier:\User\Mount\Allowed', $backendAliases, true) || \in_array('identifier_alias', $backendAliases, true)) {
+				return true;
+			}
+			return false;
+		});
+		$storagesBackendChecker->method('isAllowedAdminBackend')->willReturnCallback(function (Backend $backend) {
+			$backendAliases = $backend->getIdentifierAliases();
+			if (\in_array('identifier:\User\Mount\Allowed', $backendAliases, true) || \in_array('identifier_alias', $backendAliases, true)) {
+				return true;
+			}
+			return false;
+		});
+
+		$service = new StoragesBackendService($storagesBackendChecker);
+
+		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
+		$backendAllowed->expects($this->never())
+			->method('removeVisibility');
+		$backendNotAllowed = $this->getBackendMock('\User\Mount\NotAllowed');
+		$backendNotAllowed->expects($this->exactly(2))
+			->method('removeVisibility')
+			->with(
+				$this->logicalOr(
+					$this->identicalTo(IStoragesBackendService::VISIBILITY_ADMIN),
+					$this->identicalTo(IStoragesBackendService::VISIBILITY_PERSONAL)
+				)
+			);
 
 		$backendAlias = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
 			->disableOriginalConstructor()

@@ -104,6 +104,9 @@ class StoragesBackendService implements IStoragesBackendService {
 		if (!$this->isAllowedUserBackend($backend)) {
 			$backend->removeVisibility(IStoragesBackendService::VISIBILITY_PERSONAL);
 		}
+		if (!$this->isAllowedAdminBackend($backend)) {
+			$backend->removeVisibility(IStoragesBackendService::VISIBILITY_ADMIN);
+		}
 		foreach ($backend->getIdentifierAliases() as $alias) {
 			$this->backends[$alias] = $backend;
 		}
@@ -235,6 +238,15 @@ class StoragesBackendService implements IStoragesBackendService {
 	 */
 	protected function isAllowedUserBackend(Backend $backend) {
 		return $this->storagesBackendChecker->isAllowedUserBackend($backend);
+	}
+
+	/**
+	 * Checks if the admin is allowed to mount the backend
+	 * @param Backend $backend
+	 * @return bool
+	 */
+	protected function isAllowedAdminBackend(Backend $backend) {
+		return $this->storagesBackendChecker->isAllowedAdminBackend($backend);
 	}
 
 	/**
