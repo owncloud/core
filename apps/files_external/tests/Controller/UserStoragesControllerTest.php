@@ -39,6 +39,9 @@ use OCP\IRequest;
 use OCP\Files\External\Service\IUserStoragesService;
 
 class UserStoragesControllerTest extends StoragesControllerTest {
+	/** @var IConfig */
+	private $config;
+
 	public function setUp(): void {
 		parent::setUp();
 		$this->service = $this->createMock(IUserStoragesService::class);
@@ -115,7 +118,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			null
 		);
 
-		$this->assertEquals(Http::STATUS_UNPROCESSABLE_ENTITY, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 
 		$response = $this->controller->update(
 			1,
@@ -129,7 +132,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			null
 		);
 
-		$this->assertEquals(Http::STATUS_UNPROCESSABLE_ENTITY, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 	}
 
 	public function testCreate() {
@@ -195,30 +198,108 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 		$this->assertEquals($expectedStorage, $actual);
 	}
 
-	public function testCreateLocal() {
-		$mount = 'randomMount';
-		$backend = 'local';
-		$auth = 'identifier:\Random\Missing\Auth\Class';
-		$backendOpts = [
-			'datadir' => '/tmp',
+	public function localBackendNameProvider() {
+		return [
+			['local'],
+			['\OC\Files\Storage\Local'],
 		];
-		$priority = 3;
-
-		// there is already a teardown in the parent class setting this value to false
-		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
-
-		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
-		$this->assertEquals(Http::STATUS_FORBIDDEN, $result->getStatus());
 	}
 
-	public function testCreateLocalClassname() {
+	/**
+	 * @dataProvider localBackendNameProvider
+	 */
+	public function testCreateLocal($localBackendName) {
 		$mount = 'randomMount';
-		$backend = '\OC\Files\Storage\Local';
+		$backend = "identifier:{$localBackendName}";
 		$auth = 'identifier:\Random\Missing\Auth\Class';
 		$backendOpts = [
 			'datadir' => '/tmp',
 		];
 		$priority = 3;
+
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\OCA\Files_External\Lib\Backend',
+			'backendStorageClass' => '\OC\Files\Storage\Local',
+			'authClass' => '\Random\Missing\Auth\Class',
+			'mountPoint' => $mount,
+			'backendOpts' => $backendOpts,
+			'priority' => $priority,
+			'type' => IStorageConfig::MOUNT_TYPE_ADMIN,
+		]);
+
+		$backendMock = $storageConfig->getBackend();
+		$backendMock->method('isVisibleFor')->willReturn(true);
+		$backendMock->method('validateStorage')->willReturn(true);
+
+		$authMock = $storageConfig->getAuthMechanism();
+		$authMock->method('isVisibleFor')->willReturn(true);
+		$authMock->method('validateStorage')->willReturn(true);
+
+		$this->service->expects($this->once())
+		->method('createStorage')
+		->willReturn($storageConfig);
+		$this->service->expects($this->once())
+		->method('addStorage')
+		->will($this->returnArgument(0));
+
+		$expectedStorage = [
+			'id' => 30,
+			'mountPoint' => '/randomMount',
+			'backend' => "identifier:\OCA\Files_External\Lib\Backend",
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [
+				'datadir' => '/tmp',
+			],
+			'priority' => 3,
+			'userProvided' => false,
+			'type' => 'system',
+			'status' => StorageNotAvailableException::STATUS_SUCCESS, // status check for the storage is skipped and always returns this value
+		];
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$actual = $result->getData()->jsonSerialize();
+		$this->assertEquals(Http::STATUS_CREATED, $result->getStatus());
+		$this->assertEquals($expectedStorage, $actual);
+	}
+
+	/**
+	 * @dataProvider localBackendNameProvider
+	 */
+	public function testCreateLocalNotAllowed($localBackendName) {
+		$mount = 'randomMount';
+		$backend = $localBackendName;
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\OCA\Files_External\Lib\Backend',
+			'backendStorageClass' => '\OC\Files\Storage\Local',
+			'authClass' => '\Random\Missing\Auth\Class',
+			'mountPoint' => $mount,
+			'backendOpts' => $backendOpts,
+			'priority' => $priority,
+			'type' => IStorageConfig::MOUNT_TYPE_ADMIN,
+		]);
+
+		$backendMock = $storageConfig->getBackend();
+		$backendMock->method('isVisibleFor')->willReturn(false);
+		$backendMock->method('validateStorage')->willReturn(true);
+
+		$authMock = $storageConfig->getAuthMechanism();
+		$authMock->method('isVisibleFor')->willReturn(true);
+		$authMock->method('validateStorage')->willReturn(true);
+
+		$this->service->expects($this->once())
+		->method('createStorage')
+		->willReturn($storageConfig);
+		$this->service->expects($this->never())
+		->method('addStorage')
+		->will($this->returnArgument(0));
 
 		// there is already a teardown in the parent class setting this value to false
 		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);

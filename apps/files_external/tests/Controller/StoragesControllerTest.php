@@ -170,7 +170,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$data = $response->getData();
 		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
-		$this->assertNull($data);
+		$this->assertEquals(['message' => ''], $data);  // message comes from translatable error string, which isn't set here.
 	}
 
 	public function testUpdateStorage() {

@@ -8,9 +8,11 @@ use OCP\Files\External\Backend\Backend;
 class StoragesBackendChecker {
 	/** @var IConfig */
 	private IConfig $config;
-	/** @var bool */
+	/** @var bool|null */
+	private $canCreateNewLocalStorage = null;
+	/** @var bool|null */
 	private $allowUserMounting = null;
-	/** @var array */
+	/** @var array|null */
 	private $userMountingBackends = null;
 
 	/**
@@ -53,6 +55,9 @@ class StoragesBackendChecker {
 	 * @return bool
 	 */
 	public function isAllowedUserBackend(Backend $backend): bool {
+		// Allowing users to mount local storage is a security risk, so it's
+		// blacklisted regardless of admin's decision. The admin can still
+		// setup a local mount for everyone (or chosen users) if he wants.
 		$blacklistedBackendsForUsers = ['\OC\Files\Storage\Local'];
 		if (\in_array($backend->getStorageClass(), $blacklistedBackendsForUsers, true)) {
 			return false;
@@ -70,8 +75,11 @@ class StoragesBackendChecker {
 	 * @return bool
 	 */
 	public function isAllowedAdminBackend(Backend $backend): bool {
-		$canCreateNewLocalStorage = $this->config->getSystemValue('files_external_allow_create_new_local', false);
-		if ($backend->getStorageClass() === '\OC\Files\Storage\Local' && !$canCreateNewLocalStorage) {
+		if ($this->canCreateNewLocalStorage === null) {
+			$this->canCreateNewLocalStorage = $this->config->getSystemValue('files_external_allow_create_new_local', false);
+		}
+
+		if ($backend->getStorageClass() === '\OC\Files\Storage\Local' && !$this->canCreateNewLocalStorage) {
 			return false;
 		}
 		return true;
