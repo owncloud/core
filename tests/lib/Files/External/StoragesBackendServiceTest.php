@@ -24,7 +24,6 @@ use OC\Files\External\StoragesBackendChecker;
 use OC\Files\External\StoragesBackendService;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Backend\Backend;
-use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class StoragesBackendServiceTest extends \Test\TestCase {
