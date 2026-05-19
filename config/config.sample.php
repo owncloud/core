@@ -128,7 +128,6 @@ $CONFIG = [
  * 	- sqlite (SQLite3 - Not in Enterprise Edition)
  * 	- mysql (MySQL/MariaDB)
  * 	- pgsql (PostgreSQL)
- * 	- oci (Oracle - Enterprise Edition Only)
  */
 'dbtype' => 'mysql',
 
@@ -1421,13 +1420,11 @@ $CONFIG = [
  * 	- sqlite (SQLite3 - Not in Enterprise Edition)
  * 	- mysql (MySQL)
  * 	- pgsql (PostgreSQL)
- * 	- oci (Oracle - Enterprise Edition Only)
  */
 'supportedDatabases' => [
 	'sqlite',
 	'mysql',
 	'pgsql',
-	'oci',
   ],
 
 /**
