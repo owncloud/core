@@ -1,0 +1,520 @@
+on:
+  workflow_call:
+    inputs:
+      php-versions:
+        description: JSON array of PHP versions
+        required: false
+        type: string
+        default: '["8.3"]'
+      databases:
+        description: JSON array of databases
+        required: false
+        type: string
+        default: '["mariadb:10.6"]'
+      test-suites:
+        description: JSON array of acceptance test suite names
+        required: false
+        type: string
+        default: '[""]'
+      server-folder:
+        description: 'The folder under the Apache root in which to install owncloud core'
+        required: false
+        type: string
+        default: ''
+      federated-folder:
+        description: 'The folder under the Apache root in which to install a federated server'
+        required: false
+        type: string
+        default: ''
+      do-api-tests:
+        description: 'Run API acceptance tests'
+        required: false
+        type: boolean
+        default: false
+      do-cli-tests:
+        description: 'Run CLI acceptance tests'
+        required: false
+        type: boolean
+        default: false
+      do-webui-tests:
+        description: 'Run WebUI acceptance tests'
+        required: false
+        type: boolean
+        default: false
+      additional-app:
+        description: 'Additional app to install and enable (if needed for testing)'
+        required: false
+        type: string
+        default: ''
+      additional-app-github-token:
+        description: 'GitHub PAT to access the additional app repo - required if private'
+        required: false
+        type: string
+        default: ''
+      additional-packages:
+        description: Additional Linux packages to be installed - space separated
+        required: false
+        type: string
+        default: ''
+      filter-tags:
+        description: test tags to run (or not run)
+        required: false
+        type: string
+        default: ''
+      use-email-server:
+        description: 'Provide an email server for tests to use'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    name: Acceptance tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ${{ fromJSON(inputs.php-versions) }}
+        database: ${{ fromJSON(inputs.databases) }}
+        suite: ${{ fromJSON(inputs.test-suites) }}
+
+    services:
+      mysql:
+        image: >-
+          ${{ (startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:')) && matrix.database || '' }}
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: owncloud
+          MYSQL_USER: owncloud
+          MYSQL_PASSWORD: owncloud
+        options: >-
+          --health-cmd="mysqladmin ping -u root -ppassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+      postgres:
+        image: ${{ startsWith(matrix.database,'postgres:') && matrix.database || '' }}
+        env:
+          POSTGRES_DB: owncloud
+          POSTGRES_USER: owncloud
+          POSTGRES_PASSWORD: owncloud
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Prepend folder names with slash
+        id: prepend
+        env:
+          SERVER_FOLDER: ${{ inputs.server-folder }}
+          FEDERATED_FOLDER: ${{ inputs.federated-folder }}
+        run: |
+          if [ -n "${SERVER_FOLDER}" ]; then
+            echo "server-root=/${SERVER_FOLDER}" >> $GITHUB_OUTPUT
+          else
+            echo "server-root=" >> $GITHUB_OUTPUT
+          fi
+          if [ -n "${FEDERATED_FOLDER}" ]; then
+            echo "federated-root=/${FEDERATED_FOLDER}" >> $GITHUB_OUTPUT
+          else
+            echo "federated-root=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Clone owncloud/core ${{ inputs.core-branch-for-test-code }} branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: owncloud/core
+
+      - name: Checkout testing app
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: apps/testing
+          repository: owncloud/testing
+
+      - name: Setup testing app
+        run: |
+          cd "apps/testing"
+          make ci
+
+      - name: Checkout additional app
+        if: ${{ inputs.additional-app != '' }}
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: apps/${{ inputs.additional-app }}
+          repository: owncloud/${{ inputs.additional-app }}
+          token: ${{ inputs.additional-app-github-token || github.token }}
+
+      - name: Setup additional app
+        if: ${{ inputs.additional-app != '' }}
+        env:
+          ADDITIONAL_APP: ${{ inputs.additional-app }}
+        run: |
+          cd "apps/${ADDITIONAL_APP}"
+          make ci
+
+      - name: Install Linux packages
+        if: ${{ inputs.additional-packages }}
+        env:
+          ADDITIONAL_PACKAGES: ${{ inputs.additional-packages }}
+        run: |
+          sudo apt-get install $ADDITIONAL_PACKAGES
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # v2.37.0
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, gd, json, xml, zip, imagick
+          ini-values: "memory_limit=2048M"
+
+      - name: Install Apache
+        env:
+          PHP_VERSION: ${{ matrix.php }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y "libapache2-mod-php${PHP_VERSION}"
+          sudo apt-get install -y apache2
+          sudo a2enmod rewrite headers env dir mime ssl expires dav dav_fs
+          sudo service apache2 restart
+
+      - name: Configure Apache for single server only (no federated)
+        if: ${{ inputs.federated-folder == '' }}
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          echo "export SERVER_SUBDIR=${SERVER_ROOT}" | sudo tee -a /etc/apache2/envvars
+          sudo cp tests/acceptance/setupApache/single-server.conf /etc/apache2/sites-available
+          sudo a2dissite 000-default
+          sudo a2ensite single-server
+
+      - name: Configure Apache for dual server (federated)
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: |
+          echo "export SERVER_SUBDIR=${SERVER_ROOT}" | sudo tee -a /etc/apache2/envvars
+          echo "export FEDERATED_SUBDIR=${FEDERATED_ROOT}" | sudo tee -a /etc/apache2/envvars
+          sudo cp tests/acceptance/setupApache/dual-server.conf /etc/apache2/sites-available
+          sudo a2dissite 000-default
+          sudo a2ensite dual-server
+
+      - name: Restart Apache to get new settings
+        run: |
+          sudo systemctl restart apache2
+
+      - name: Check Apache server status
+        run: curl http://localhost:80
+
+      - name: Delete default Apache server html files
+        run: sudo rm -Rf /var/www/html/*
+
+      - name: Install dependencies
+        run: |
+          make
+
+      - name: Copy core to Apache server root
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          sudo -u www-data rm -rf /var/www/html${SERVER_ROOT}
+          sudo -u www-data mkdir /var/www/html${SERVER_ROOT}
+          sudo -u www-data cp -r * /var/www/html${SERVER_ROOT}
+          cd "/var/www/html${SERVER_ROOT}"
+
+      - name: Install Server
+        env:
+          SERVER_ROOT: /var/www/html${{ steps.prepend.outputs.server-root }}
+          DATA_DIRECTORY: /var/www/html${{ steps.prepend.outputs.server-root }}/data
+          DB: ${{ matrix.database }}
+          DB_NAME: owncloud
+          ADMIN_LOGIN: admin
+          ADMIN_PASSWORD: admin
+          DB_HOST: 127.0.0.1
+          DB_USERNAME: owncloud
+          DB_PASSWORD: owncloud
+
+        run: |
+          sudo -u www-data rm -rf ${SERVER_ROOT}
+          sudo -u www-data mkdir ${SERVER_ROOT}
+          sudo -u www-data cp -r * ${SERVER_ROOT}
+          cd "/var/www/html${SERVER_ROOT}"
+          DB_TYPE=${DB%:*}
+          if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
+          if [ $DB_TYPE == "mariadb" ] ; then DB_TYPE="mysql"; fi
+          install_cmd="maintenance:install -vvv \
+            --database=${DB_TYPE} \
+            --database-name=${DB_NAME} \
+            --admin-user=${ADMIN_LOGIN} \
+            --admin-pass=${ADMIN_PASSWORD} \
+            --data-dir=${DATA_DIRECTORY} \
+            --database-host=${DB_HOST} \
+            --database-user=${DB_USERNAME} \
+            --database-pass=${DB_PASSWORD}"
+          
+          sudo -u www-data php occ ${install_cmd}
+          echo "enabling apps"
+          sudo -u www-data php occ app:enable files_sharing
+          sudo -u www-data php occ app:enable files_trashbin
+          sudo -u www-data php occ app:enable files_versions
+          sudo -u www-data php occ app:enable provisioning_api
+          sudo -u www-data php occ app:enable federation
+          sudo -u www-data php occ app:enable federatedfilesharing
+          sudo -u www-data php occ app:enable testing
+
+      - name: Enable additional app
+        if: ${{ inputs.additional-app != '' }}
+        env:
+          ADDITIONAL_APP: ${{ inputs.additional-app }}
+        run: |
+          cd "/var/www/html${SERVER_ROOT}"
+          sudo -u www-data php occ app:enable ${ADDITIONAL_APP}
+
+      - name: Create database for federated server
+        if: ${{ inputs.federated-folder != '' }}
+        run: |
+          mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "CREATE DATABASE federateddb;"
+          mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "GRANT ALL PRIVILEGES ON federateddb.* TO 'owncloud'@'%';"
+
+      - name: Install federated owncloud/core
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+          VERSION: 'daily-master-qa'
+          CORE_PATH: /var/www/html${{ steps.prepend.outputs.federated-root }}
+          DB_TYPE: 'mysql'
+          DB_NAME: federateddb
+          DB_HOST: '127.0.0.1'
+          DB_USERNAME: 'owncloud'
+          DB_PASSWORD: 'owncloud'
+        run: |
+          docker run -v /var/www/html${FEDERATED_ROOT}:/var/www/html${FEDERATED_ROOT} \
+            --network=host \
+            -e PLUGIN_VERSION=${VERSION} \
+            -e PLUGIN_CORE_PATH=${CORE_PATH} \
+            -e PLUGIN_DB_TYPE=${DB_TYPE} \
+            -e PLUGIN_DB_NAME=${DB_NAME} \
+            -e PLUGIN_DB_HOST=${DB_HOST} \
+            -e PLUGIN_DB_USERNAME=${DB_USERNAME} \
+            -e PLUGIN_DB_PASSWORD=${DB_PASSWORD} \
+            owncloudci/core:php83
+
+      - name: Setup permissions for the backend of the Apache server
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          sudo chown -R www-data:www-data /var/www/html${SERVER_ROOT}
+          sudo chmod -R 777 /var/www/html${SERVER_ROOT}
+
+      - name: Setup permissions for the backend of the federated Apache server
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: |
+          sudo chown -R www-data:www-data /var/www/html${FEDERATED_ROOT}
+          sudo chmod -R 777 /var/www/html${FEDERATED_ROOT}
+
+      - name: Selenium
+        if: ${{ inputs.do-webui-tests }}
+        run: |
+          docker run -d --rm --network host \
+            --name selenium-chrome \
+            selenium/standalone-chrome-debug:3.141.59-oxygen
+
+      - name: Inbucket Email Server
+        if: ${{ inputs.use-email-server }}
+        run: |
+          docker run -d --rm --network host \
+            --name email \
+            inbucket/inbucket
+
+      - name: Setup additional app on federated server
+        if: ${{ inputs.additional-app != '' && inputs.federated-folder != '' }}
+        env:
+          ADDITIONAL_APP: ${{ inputs.additional-app }}
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: |
+          cd "apps/${ADDITIONAL_APP}"
+          sudo -u www-data rm -rf /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
+          sudo -u www-data mkdir /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
+          sudo -u www-data cp -r * /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
+          cd "/var/www/html${FEDERATED_ROOT}"
+          sudo -u www-data php occ a:e "${ADDITIONAL_APP}"
+
+      - name: Setup owncloud server settings
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          cd "/var/www/html${SERVER_ROOT}"
+          sudo -u www-data php occ config:system:set trusted_domains 1 --value=localhost
+          sudo -u www-data php occ config:system:set htaccess.RewriteBase --value=${SERVER_ROOT}
+          sudo -u www-data php occ maintenance:update:htaccess
+          sudo -u www-data php occ log:manage --level 2
+          sudo -u www-data php occ config:system:set csrf.disabled --value=true
+          sudo -u www-data php occ a:e testing
+          sudo -u www-data php occ a:l -e
+          sudo -u www-data php occ config:list
+
+      - name: Allow Http fallback for federation to local server
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          cd "/var/www/html${SERVER_ROOT}"
+          sudo -u www-data php occ config:system:set sharing.federation.allowHttpFallback --value="true" --type=boolean
+
+      - name: Setup owncloud federated server settings
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: |
+          cd "/var/www/html${FEDERATED_ROOT}"
+          sudo -u www-data php occ config:system:set trusted_domains 1 --value=localhost
+          sudo -u www-data php occ config:system:set sharing.federation.allowHttpFallback --value="true" --type=boolean
+          sudo -u www-data php occ config:system:set htaccess.RewriteBase --value=${FEDERATED_ROOT}
+          sudo -u www-data php occ maintenance:update:htaccess
+          sudo -u www-data php occ log:manage --level 2
+          sudo -u www-data php occ config:system:set csrf.disabled --value=true
+          sudo -u www-data php occ a:e testing
+          sudo -u www-data php occ a:l -e
+          sudo -u www-data php occ config:list
+
+      - name: Check access to status endpoint
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: curl http://localhost:80${SERVER_ROOT}/status.php
+
+      - name: Check access to login endpoint
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: curl http://localhost:80${SERVER_ROOT}/login
+
+      - name: Check content of server files
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          sudo -u www-data cat /var/www/html${SERVER_ROOT}/.htaccess
+          sudo -u www-data cat /var/www/html${SERVER_ROOT}/config/config.php
+          sudo cat /etc/apache2/apache2.conf
+          sudo cat /etc/apache2/ports.conf
+          sudo cat /etc/apache2/envvars
+          sudo ls -l /etc/apache2/sites-available
+          sudo ls -l /etc/apache2/sites-enabled
+
+      - name: Display single server site config
+        if: ${{ inputs.federated-folder == '' }}
+        run: |
+          sudo cat /etc/apache2/sites-enabled/single-server.conf
+
+      - name: Display dual server site config
+        if: ${{ inputs.federated-folder != '' }}
+        run: |
+          sudo cat /etc/apache2/sites-enabled/dual-server.conf
+
+      - name: Check access to federated status endpoint
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: curl http://localhost:80${FEDERATED_ROOT}/status.php
+
+      - name: Check access to federated login endpoint
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: curl http://localhost:80${FEDERATED_ROOT}/login
+
+      - name: Define environment variable pointing to the federated server
+        if: ${{ inputs.federated-folder != '' }}
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: echo "TEST_SERVER_FED_URL=http://localhost${FEDERATED_ROOT}" >> $GITHUB_ENV
+
+      - name: Define environment variable pointing to the email server
+        if: ${{ inputs.use-email-server  }}
+        run: echo "EMAIL_HOST=localhost" >> $GITHUB_ENV
+
+      - name: Install libxml2-utils to get xmllint used by acceptance test script
+        run: sudo apt install -y libxml2-utils
+
+      - name: Run API acceptance tests
+        if: ${{ inputs.do-api-tests }}
+        env:
+          TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-root }}
+          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+        run: |
+          make test-acceptance-api
+
+      - name: Run CLI acceptance tests
+        if: ${{ inputs.do-cli-tests }}
+        env:
+          TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-root }}
+          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+        run: |
+          make test-acceptance-cli
+
+      - name: Run WebUI acceptance tests
+        if: ${{ inputs.do-webui-tests }}
+        env:
+          TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-root }}
+          BROWSER: "chrome"
+          SELENIUM_HOST: "localhost"
+          SELENIUM_PORT: "4444"
+          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+        run: |
+          make test-acceptance-webui
+
+      - name: Display content of server settings and logs if tests failed
+        if: failure()
+        env:
+          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
+        run: |
+          echo "server .htaccess"
+          sudo -u www-data cat /var/www/html${SERVER_ROOT}/.htaccess
+          echo "server config.php"
+          sudo -u www-data cat /var/www/html${SERVER_ROOT}/config/config.php
+          echo "server directory contents"
+          sudo -u www-data ls -l /var/www/html${SERVER_ROOT}
+          sudo -u www-data ls -l /var/www/html${SERVER_ROOT}/data
+          echo "server owncloud.log"
+          sudo -u www-data cat /var/www/html${SERVER_ROOT}/data/owncloud.log
+
+      - name: Display content of federated settings and logs if tests failed
+        if: failure() && inputs.federated-folder != ''
+        env:
+          FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
+        run: |
+          echo "federated .htaccess"
+          sudo -u www-data cat /var/www/html${FEDERATED_ROOT}/.htaccess
+          echo "federated config.php"
+          sudo -u www-data cat /var/www/html${FEDERATED_ROOT}/config/config.php
+          echo "federated directory contents"
+          sudo -u www-data ls -l /var/www/html${FEDERATED_ROOT}
+          sudo -u www-data ls -l /var/www/html${FEDERATED_ROOT}/data
+          echo "federated owncloud.log"
+          sudo -u www-data cat /var/www/html${FEDERATED_ROOT}/data/owncloud.log
+
+      - name: Display Apache config and logs if tests failed
+        if: failure()
+        run: |
+          echo "apache2.conf"
+          sudo cat /etc/apache2/apache2.conf
+          echo "ports.conf"
+          sudo cat /etc/apache2/ports.conf
+          echo "envvars"
+          sudo cat /etc/apache2/envvars
+          echo "sites-available"
+          sudo ls -l /etc/apache2/sites-available
+          echo "sites-enabled"
+          sudo ls -l /etc/apache2/sites-enabled
+          echo "access log"
+          sudo cat /var/log/apache2/access.log
+          echo "error log"
+          sudo cat /var/log/apache2/error.log
