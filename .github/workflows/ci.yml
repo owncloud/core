@@ -34,5 +34,13 @@ jobs:
     with:
       do-api-tests: true
       server-folder: 'server'
-      federated-folder: 'federated'
       test-suites: "['apiComments']"
+
+  acceptance-api-federation:
+    name: API Acceptance Tests with Federation
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      federated-folder: 'federated'
+      test-suites: "['apiFederationToRoot1']"
