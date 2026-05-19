@@ -222,6 +222,9 @@ jobs:
         env:
           SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
         run: |
+          pwd
+          ls -l /var/www
+          ls -l /var/www/html
           sudo -u www-data rm -rf /var/www/html${SERVER_ROOT}
           sudo -u www-data mkdir /var/www/html${SERVER_ROOT}
           sudo -u www-data cp -r * /var/www/html${SERVER_ROOT}
