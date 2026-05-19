@@ -227,14 +227,9 @@ jobs:
         env:
           SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
         run: |
-          pwd
-          ls -l /var/www
-          ls -l /var/www/html
           sudo -u www-data rm -rf /var/www/html${SERVER_ROOT}
           sudo -u www-data mkdir /var/www/html${SERVER_ROOT}
           sudo -u www-data cp -r * /var/www/html${SERVER_ROOT}
-          ls -l /var/www/html
-          ls -l /var/www/html${SERVER_ROOT}
 
       - name: Install Server
         env:
@@ -249,10 +244,7 @@ jobs:
           DB_PASSWORD: owncloud
 
         run: |
-          sudo -u www-data rm -rf ${SERVER_ROOT}
-          sudo -u www-data mkdir ${SERVER_ROOT}
-          sudo -u www-data cp -r * ${SERVER_ROOT}
-          cd "/var/www/html${SERVER_ROOT}"
+          cd ${SERVER_ROOT}
           DB_TYPE=${DB%:*}
           if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
           if [ $DB_TYPE == "mariadb" ] ; then DB_TYPE="mysql"; fi
@@ -275,6 +267,7 @@ jobs:
           sudo -u www-data php occ app:enable federation
           sudo -u www-data php occ app:enable federatedfilesharing
           sudo -u www-data php occ app:enable testing
+          sudo -u www-data php occ app:list -e
 
       - name: Enable additional app
         if: ${{ inputs.additional-app != '' }}
