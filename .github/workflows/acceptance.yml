@@ -218,6 +218,11 @@ jobs:
         run: |
           make
 
+      - name: Setup permissions for the backend of the Apache server
+        run: |
+          sudo chown -R www-data:www-data /var/www
+          sudo chmod -R 775 /var/www
+
       - name: Copy core to Apache server root
         env:
           SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
@@ -228,7 +233,8 @@ jobs:
           sudo -u www-data rm -rf /var/www/html${SERVER_ROOT}
           sudo -u www-data mkdir /var/www/html${SERVER_ROOT}
           sudo -u www-data cp -r * /var/www/html${SERVER_ROOT}
-          cd "/var/www/html${SERVER_ROOT}"
+          ls -l /var/www/html
+          ls -l /var/www/html${SERVER_ROOT}
 
       - name: Install Server
         env:
@@ -307,20 +313,14 @@ jobs:
             -e PLUGIN_DB_PASSWORD=${DB_PASSWORD} \
             owncloudci/core:php83
 
-      - name: Setup permissions for the backend of the Apache server
-        env:
-          SERVER_ROOT: ${{ steps.prepend.outputs.server-root }}
-        run: |
-          sudo chown -R www-data:www-data /var/www/html${SERVER_ROOT}
-          sudo chmod -R 777 /var/www/html${SERVER_ROOT}
-
       - name: Setup permissions for the backend of the federated Apache server
         if: ${{ inputs.federated-folder != '' }}
         env:
           FEDERATED_ROOT: ${{ steps.prepend.outputs.federated-root }}
         run: |
+          ls -l /var/www/html${FEDERATED_ROOT}
           sudo chown -R www-data:www-data /var/www/html${FEDERATED_ROOT}
-          sudo chmod -R 777 /var/www/html${FEDERATED_ROOT}
+          sudo chmod -R 775 /var/www/html${FEDERATED_ROOT}
 
       - name: Selenium
         if: ${{ inputs.do-webui-tests }}
