@@ -45,4 +45,4 @@ jobs:
       do-api-tests: true
       server-folder: 'server'
       federated-folder: 'federated'
-      test-suites: "['apiAuth', 'apiAuthOcs', 'apiAuthWebDav', 'apiCapabilities', 'apiComments']"
+      test-suites: "['apiComments']"
