@@ -434,7 +434,21 @@ class ManagerTest extends TestCase {
 		$this->assertArrayHasKey('user', $called[1]);
 	}
 
-	public function testRemoteWithValidHttps(): void {
+	public function providesRemoteAddress() {
+		return [
+			[
+				'owncloud.com',
+			],
+			[
+				'owncloud.com/cloud',
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesRemoteAddress
+	 */
+	public function testRemoteWithValidHttps($remoteAddress): void {
 		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder(IResponse::class)
@@ -453,10 +467,13 @@ class ManagerTest extends TestCase {
 			->method('newClient')
 			->willReturn($client);
 
-		$this->assertEquals('https', $this->manager->testRemoteUrl($clientService, 'owncloud.com'));
+		$this->assertEquals('https', $this->manager->testRemoteUrl($clientService, $remoteAddress));
 	}
 
-	public function testRemoteWithWorkingHttp(): void {
+	/**
+	 * @dataProvider providesRemoteAddress
+	 */
+	public function testRemoteWithWorkingHttp($remoteAddress): void {
 		$client = $this->getMockBuilder(IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder(IResponse::class)
@@ -475,7 +492,7 @@ class ManagerTest extends TestCase {
 			->method('newClient')
 			->willReturn($client);
 
-		$this->assertEquals('http', $this->manager->testRemoteUrl($clientService, 'owncloud.com'));
+		$this->assertEquals('http', $this->manager->testRemoteUrl($clientService, $remoteAddress));
 	}
 
 	public function testRemoteWithInvalidRemote(): void {
