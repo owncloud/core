@@ -229,7 +229,7 @@ jobs:
         run: |
           sudo -u www-data rm -rf /var/www/html${SERVER_ROOT}
           sudo -u www-data mkdir /var/www/html${SERVER_ROOT}
-          sudo -u www-data cp -r * /var/www/html${SERVER_ROOT}
+          sudo -u www-data cp -r . /var/www/html${SERVER_ROOT}
 
       - name: Install Server
         env:
@@ -338,7 +338,7 @@ jobs:
           cd "apps/${ADDITIONAL_APP}"
           sudo -u www-data rm -rf /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
           sudo -u www-data mkdir /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
-          sudo -u www-data cp -r * /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
+          sudo -u www-data cp -r . /var/www/html${FEDERATED_ROOT}/apps/${ADDITIONAL_APP}
           cd "/var/www/html${FEDERATED_ROOT}"
           sudo -u www-data php occ a:e "${ADDITIONAL_APP}"
 
