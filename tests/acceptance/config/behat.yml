@@ -18,15 +18,15 @@ default:
             adminPassword: admin
             regularUserPassword: 123456
             ocPath: apps/testing/api/v1/occ
-        - AppManagementContext:
-        - AppConfigurationContext:
-        - CalDavContext:
-        - CardDavContext:
-        - ChecksumContext:
-        - FilesVersionsContext:
-        - OccContext:
-        - TransferOwnershipContext:
-        - TrashbinContext:
+        - AppManagementContext
+        - AppConfigurationContext
+        - CalDavContext
+        - CardDavContext
+        - ChecksumContext
+        - FilesVersionsContext
+        - OccContext
+        - TransferOwnershipContext
+        - TrashbinContext
 
     apiAuth:
       paths:
@@ -34,8 +34,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - CorsContext:
-        - AuthContext:
+        - CorsContext
+        - AuthContext
 
     apiAuthOcs:
       paths:
@@ -43,7 +43,7 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AuthContext:
+        - AuthContext
 
     apiAuthWebDav:
       paths:
@@ -51,12 +51,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - SearchContext:
-        - PublicWebDavContext:
-        - WebDavPropertiesContext:
-        - AuthContext:
+        - LoggingContext
+        - OccContext
+        - SearchContext
+        - PublicWebDavContext
+        - WebDavPropertiesContext
+        - AuthContext
 
     apiCapabilities:
       paths:
@@ -64,9 +64,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - CapabilitiesContext:
-        - OccContext:
-        - AppConfigurationContext:
+        - CapabilitiesContext
+        - OccContext
+        - AppConfigurationContext
 
     apiComments:
       paths:
@@ -74,8 +74,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - CommentsContext:
-        - WebDavPropertiesContext:
+        - CommentsContext
+        - WebDavPropertiesContext
 
     apiFavorites:
       paths:
@@ -83,10 +83,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FavoritesContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
-        - OccContext:
+        - FavoritesContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
+        - OccContext
 
     apiFederationToRoot1:
       paths:
@@ -94,9 +94,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - FederationContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiFederationToRoot2:
       paths:
@@ -104,9 +104,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - FederationContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiFederationToShares1:
       paths:
@@ -114,10 +114,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
-        - OccContext:
+        - FederationContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
+        - OccContext
 
     apiFederationToShares2:
       paths:
@@ -125,10 +125,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
-        - OccContext:
+        - FederationContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
+        - OccContext
 
     apiProvisioning-v1:
       paths:
@@ -136,10 +136,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - OccUsersGroupsContext:
-        - AuthContext:
-        - PublicWebDavContext:
+        - OccContext
+        - OccUsersGroupsContext
+        - AuthContext
+        - PublicWebDavContext
 
     apiProvisioning-v2:
       paths:
@@ -147,10 +147,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - OccUsersGroupsContext:
-        - AuthContext:
-        - PublicWebDavContext:
+        - OccContext
+        - OccUsersGroupsContext
+        - AuthContext
+        - PublicWebDavContext
 
     apiProvisioningGroups-v1:
       paths:
@@ -158,8 +158,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - OccUsersGroupsContext:
+        - OccContext
+        - OccUsersGroupsContext
 
     apiProvisioningGroups-v2:
       paths:
@@ -167,8 +167,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - OccUsersGroupsContext:
+        - OccContext
+        - OccUsersGroupsContext
 
     apiShareCreateSpecialToRoot1:
       paths:
@@ -176,10 +176,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareCreateSpecialToShares1:
       paths:
@@ -187,10 +187,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareCreateSpecialToRoot2:
       paths:
@@ -198,10 +198,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareCreateSpecialToShares2:
       paths:
@@ -209,10 +209,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiSharees:
       paths:
@@ -220,9 +220,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - ShareesContext:
-        - OccContext:
-        - AppConfigurationContext:
+        - ShareesContext
+        - OccContext
+        - AppConfigurationContext
 
     apiShareManagementToRoot:
       paths:
@@ -230,12 +230,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
-        - FilesVersionsContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
+        - FilesVersionsContext
 
     apiShareManagementToShares:
       paths:
@@ -243,12 +243,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
-        - FilesVersionsContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
+        - FilesVersionsContext
 
     apiShareManagementBasicToRoot:
       paths:
@@ -256,11 +256,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AuthContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AuthContext
 
     apiShareManagementBasicToShares:
       paths:
@@ -268,11 +268,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AuthContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AuthContext
 
     apiShareOperationsToRoot1:
       paths:
@@ -280,10 +280,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiShareOperationsToRoot2:
       paths:
@@ -291,10 +291,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiShareOperationsToShares1:
       paths:
@@ -302,10 +302,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiShareOperationsToShares2:
       paths:
@@ -313,10 +313,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiSharePublicLink1:
       paths:
@@ -324,11 +324,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiSharePublicLink2:
       paths:
@@ -336,11 +336,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiSharePublicLink3:
       paths:
@@ -348,11 +348,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareReshareToRoot1:
       paths:
@@ -360,10 +360,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiShareReshareToShares1:
       paths:
@@ -371,10 +371,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
 
     apiShareReshareToRoot2:
       paths:
@@ -382,11 +382,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareReshareToShares2:
       paths:
@@ -394,11 +394,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareReshareToRoot3:
       paths:
@@ -406,11 +406,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareReshareToShares3:
       paths:
@@ -418,11 +418,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareUpdateToRoot:
       paths:
@@ -430,11 +430,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiShareUpdateToShares:
       paths:
@@ -442,11 +442,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - TrashbinContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - OccContext
+        - PublicWebDavContext
+        - TrashbinContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiSharingNotificationsToRoot:
       paths:
@@ -454,8 +454,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - NotificationsCoreContext:
-        - AppConfigurationContext:
+        - NotificationsCoreContext
+        - AppConfigurationContext
 
     apiSharingNotificationsToShares:
       paths:
@@ -463,9 +463,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - NotificationsCoreContext:
-        - AppConfigurationContext:
-        - OccContext:
+        - NotificationsCoreContext
+        - AppConfigurationContext
+        - OccContext
 
     apiTags:
       paths:
@@ -473,8 +473,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - TagsContext:
-        - WebDavPropertiesContext:
+        - TagsContext
+        - WebDavPropertiesContext
 
     apiTrashbin:
       paths:
@@ -482,10 +482,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - AppConfigurationContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - TrashbinContext
+        - AppConfigurationContext
+        - WebDavPropertiesContext
 
     apiTrashbinRestore:
       paths:
@@ -493,10 +493,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - AppConfigurationContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - TrashbinContext
+        - AppConfigurationContext
+        - WebDavPropertiesContext
 
     apiVersions:
       paths:
@@ -504,12 +504,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - ChecksumContext:
-        - FilesVersionsContext:
-        - WebDavPropertiesContext:
-        - OccContext:
-        - AppConfigurationContext:
-        - TrashbinContext:
+        - ChecksumContext
+        - FilesVersionsContext
+        - WebDavPropertiesContext
+        - OccContext
+        - AppConfigurationContext
+        - TrashbinContext
 
     apiWebdavDelete:
       paths:
@@ -517,13 +517,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - SearchContext:
-        - PublicWebDavContext:
-        - WebDavPropertiesContext:
-        - TagsContext:
-        - TrashbinContext:
+        - LoggingContext
+        - OccContext
+        - SearchContext
+        - PublicWebDavContext
+        - WebDavPropertiesContext
+        - TagsContext
+        - TrashbinContext
 
     apiWebdavLocks:
       paths:
@@ -531,10 +531,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - WebDavLockingContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - WebDavLockingContext
+        - WebDavPropertiesContext
 
     apiWebdavLocks2:
       paths:
@@ -542,10 +542,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - WebDavLockingContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - WebDavLockingContext
+        - WebDavPropertiesContext
 
     apiWebdavLocks3:
       paths:
@@ -553,10 +553,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - WebDavLockingContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - WebDavLockingContext
+        - WebDavPropertiesContext
 
     apiWebdavLocksUnlock:
       paths:
@@ -564,10 +564,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - PublicWebDavContext:
-        - WebDavLockingContext:
-        - WebDavPropertiesContext:
+        - OccContext
+        - PublicWebDavContext
+        - WebDavLockingContext
+        - WebDavPropertiesContext
 
     apiWebdavMove1:
       paths:
@@ -575,9 +575,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - WebDavPropertiesContext:
+        - LoggingContext
+        - OccContext
+        - WebDavPropertiesContext
 
     apiWebdavMove2:
       paths:
@@ -585,9 +585,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - WebDavPropertiesContext:
+        - LoggingContext
+        - OccContext
+        - WebDavPropertiesContext
 
     apiWebdavOperations:
       paths:
@@ -595,13 +595,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - SearchContext:
-        - PublicWebDavContext:
-        - WebDavPropertiesContext:
-        - TagsContext:
-        - TrashbinContext:
+        - LoggingContext
+        - OccContext
+        - SearchContext
+        - PublicWebDavContext
+        - WebDavPropertiesContext
+        - TagsContext
+        - TrashbinContext
 
     apiWebdavPreviews:
       paths:
@@ -609,8 +609,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebDavPropertiesContext:
-        - OccContext:
+        - WebDavPropertiesContext
+        - OccContext
 
     apiWebdavProperties1:
       paths:
@@ -618,10 +618,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - LoggingContext
+        - OccContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiWebdavProperties2:
       paths:
@@ -629,9 +629,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - LoggingContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiWebdavUpload1:
       paths:
@@ -639,10 +639,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - WebDavPropertiesContext:
+        - LoggingContext
+        - OccContext
+        - PublicWebDavContext
+        - WebDavPropertiesContext
 
     apiWebdavUpload2:
       paths:
@@ -650,9 +650,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - LoggingContext
+        - OccContext
+        - PublicWebDavContext
 
     apiWebdavUploadTUS:
       paths:
@@ -660,12 +660,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - TUSContext:
-        - FilesVersionsContext:
-        - ChecksumContext:
+        - LoggingContext
+        - OccContext
+        - PublicWebDavContext
+        - TUSContext
+        - FilesVersionsContext
+        - ChecksumContext
 
     apiWebdavEtagPropagation1:
       paths:
@@ -673,13 +673,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - TrashbinContext:
-        - PublicWebDavContext:
-        - FilesVersionsContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - LoggingContext
+        - OccContext
+        - TrashbinContext
+        - PublicWebDavContext
+        - FilesVersionsContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiWebdavEtagPropagation2:
       paths:
@@ -687,13 +687,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - LoggingContext:
-        - OccContext:
-        - TrashbinContext:
-        - PublicWebDavContext:
-        - FilesVersionsContext:
-        - WebDavPropertiesContext:
-        - AppConfigurationContext:
+        - LoggingContext
+        - OccContext
+        - TrashbinContext
+        - PublicWebDavContext
+        - FilesVersionsContext
+        - WebDavPropertiesContext
+        - AppConfigurationContext
 
     apiTranslation:
       paths:
@@ -708,8 +708,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - LoggingContext:
+        - OccContext
+        - LoggingContext
 
     cliCreateLocalStorage:
       paths:
@@ -717,8 +717,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - AuthContext:
+        - OccContext
+        - AuthContext
 
     cliDbConversion:
       paths:
@@ -726,7 +726,7 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
+        - OccContext
 
     cliEncryption:
       paths:
@@ -734,9 +734,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - WebDavPropertiesContext:
-        - EncryptionContext:
+        - OccContext
+        - WebDavPropertiesContext
+        - EncryptionContext
 
     cliExternalStorage:
       paths:
@@ -744,10 +744,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - FederationContext:
-        - OccContext:
-        - WebDavPropertiesContext:
-        - PublicWebDavContext:
+        - FederationContext
+        - OccContext
+        - WebDavPropertiesContext
+        - PublicWebDavContext
 
     cliLocalStorage:
       paths:
@@ -755,8 +755,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - AuthContext:
+        - OccContext
+        - AuthContext
 
     cliMain:
       paths:
@@ -764,16 +764,16 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - CapabilitiesContext:
-        - CalDavContext:
-        - CardDavContext:
-        - TransferOwnershipContext:
-        - FederationContext:
-        - WebDavPropertiesContext:
-        - FilesVersionsContext:
-        - PublicWebDavContext:
-        - AppConfigurationContext:
+        - OccContext
+        - CapabilitiesContext
+        - CalDavContext
+        - CardDavContext
+        - TransferOwnershipContext
+        - FederationContext
+        - WebDavPropertiesContext
+        - FilesVersionsContext
+        - PublicWebDavContext
+        - AppConfigurationContext
 
     cliManageApps:
       paths:
@@ -781,8 +781,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - AppManagementContext:
+        - OccContext
+        - AppManagementContext
 
     cliProvisioning:
       paths:
@@ -790,10 +790,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - OccContext:
-        - OccAppManagementContext:
-        - OccUsersGroupsContext:
+        - EmailContext
+        - OccContext
+        - OccAppManagementContext
+        - OccUsersGroupsContext
 
     cliTrashbin:
       paths:
@@ -801,8 +801,8 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
+        - OccContext
+        - TrashbinContext
 
     webUIAdminSettings:
       paths:
@@ -810,18 +810,18 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - CapabilitiesContext:
-        - WebUIAdminAppsSettingsContext:
-        - WebUIAdminSharingSettingsContext:
-        - WebUIAdminGeneralSettingsContext:
-        - WebUIAdminStorageSettingsContext:
-        - WebUIFilesContext:
-        - WebUIHelpAndTipsContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
+        - EmailContext
+        - CapabilitiesContext
+        - WebUIAdminAppsSettingsContext
+        - WebUIAdminSharingSettingsContext
+        - WebUIAdminGeneralSettingsContext
+        - WebUIAdminStorageSettingsContext
+        - WebUIFilesContext
+        - WebUIHelpAndTipsContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
 
     webUIComments:
       paths:
@@ -829,10 +829,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIFilesContext
+        - WebUISharingContext
 
     webUICreateDelete:
       paths:
@@ -840,13 +840,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TagsContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - WebUINewFileMenuContext:
+        - OccContext
+        - TagsContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - WebUINewFileMenuContext
 
     webUIFavorites:
       paths:
@@ -854,9 +854,9 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
 
     webUIFiles:
       paths:
@@ -864,14 +864,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - TagsContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISearchContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - TagsContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISearchContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     webUILogin:
       paths:
@@ -879,12 +879,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - OccContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIPersonalGeneralSettingsContext:
+        - EmailContext
+        - OccContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIPersonalGeneralSettingsContext
 
     webUIMoveFilesFolders:
       paths:
@@ -892,12 +892,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     webUIPersonalSettings:
       paths:
@@ -905,15 +905,15 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIPersonalGeneralSettingsContext:
-        - WebUIPersonalSecuritySettingsContext:
-        - WebUIUserContext:
-        - OccContext:
-        - OccUsersGroupsContext:
+        - EmailContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIPersonalGeneralSettingsContext
+        - WebUIPersonalSecuritySettingsContext
+        - WebUIUserContext
+        - OccContext
+        - OccUsersGroupsContext
 
     webUIRenameFiles:
       paths:
@@ -921,12 +921,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     webUIRenameFolders:
       paths:
@@ -934,10 +934,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - OccContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - OccContext
 
     webUIRestrictSharing:
       paths:
@@ -945,10 +945,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
 
     webUISharingAcceptShares:
       paths:
@@ -956,13 +956,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - WebUIAdminSharingSettingsContext:
-        - WebUIPersonalSharingSettingsContext:
+        - OccContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - WebUIAdminSharingSettingsContext
+        - WebUIPersonalSharingSettingsContext
 
     webUISharingAutocompletion1:
       paths:
@@ -970,13 +970,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - WebUIPersonalSharingSettingsContext:
+        - AppConfigurationContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - WebUIPersonalSharingSettingsContext
 
     webUISharingAutocompletion2:
       paths:
@@ -984,13 +984,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - WebUIPersonalSharingSettingsContext:
+        - AppConfigurationContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - WebUIPersonalSharingSettingsContext
 
     webUISharingExternal1:
       paths:
@@ -998,17 +998,17 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - EmailContext:
-        - FederationContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - WebUIPersonalSharingSettingsContext:
-        - WebUIAdminSharingSettingsContext:
+        - AppConfigurationContext
+        - EmailContext
+        - FederationContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
+        - WebUIPersonalSharingSettingsContext
+        - WebUIAdminSharingSettingsContext
 
     webUISharingExternal2:
       paths:
@@ -1016,17 +1016,17 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - EmailContext:
-        - FederationContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - WebUIPersonalSharingSettingsContext:
-        - WebUIAdminSharingSettingsContext:
+        - AppConfigurationContext
+        - EmailContext
+        - FederationContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
+        - WebUIPersonalSharingSettingsContext
+        - WebUIAdminSharingSettingsContext
 
     webUISharingInternalGroups1:
       paths:
@@ -1034,13 +1034,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - EmailContext:
-        - WebUIAdminSharingSettingsContext:
-        - OccContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - EmailContext
+        - WebUIAdminSharingSettingsContext
+        - OccContext
 
     webUISharingInternalGroups2:
       paths:
@@ -1048,13 +1048,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - EmailContext:
-        - WebUIAdminSharingSettingsContext:
-        - OccContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - EmailContext
+        - WebUIAdminSharingSettingsContext
+        - OccContext
 
     webUISharingInternalUsers1:
       paths:
@@ -1062,14 +1062,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - EmailContext:
-        - WebUIAdminSharingSettingsContext:
-        - WebUIPersonalSharingSettingsContext:
-        - OccContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - EmailContext
+        - WebUIAdminSharingSettingsContext
+        - WebUIPersonalSharingSettingsContext
+        - OccContext
 
     webUISharingInternalUsers2:
       paths:
@@ -1077,14 +1077,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - EmailContext:
-        - WebUIAdminSharingSettingsContext:
-        - WebUIPersonalSharingSettingsContext:
-        - OccContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - EmailContext
+        - WebUIAdminSharingSettingsContext
+        - WebUIPersonalSharingSettingsContext
+        - OccContext
 
     webUISharingNotifications:
       paths:
@@ -1092,12 +1092,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - NotificationsCoreContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUINotificationsContext:
-        - WebUISharingContext:
+        - NotificationsCoreContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUINotificationsContext
+        - WebUISharingContext
 
     webUISharingPublic1:
       paths:
@@ -1105,14 +1105,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - EmailContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
+        - AppConfigurationContext
+        - EmailContext
+        - OccContext
+        - PublicWebDavContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
 
     webUISharingPublic2:
       paths:
@@ -1120,14 +1120,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - AppConfigurationContext:
-        - EmailContext:
-        - OccContext:
-        - PublicWebDavContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
+        - AppConfigurationContext
+        - EmailContext
+        - OccContext
+        - PublicWebDavContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
 
     webUITags:
       paths:
@@ -1135,12 +1135,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - TagsContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFilesContext:
-        - WebUISharingContext:
-        - WebUITagsContext:
+        - TagsContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIFilesContext
+        - WebUISharingContext
+        - WebUITagsContext
 
     webUITrashbin:
       paths:
@@ -1148,11 +1148,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - OccContext:
-        - TrashbinContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
+        - OccContext
+        - TrashbinContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
 
     webUIUpload:
       paths:
@@ -1160,12 +1160,12 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     # This suite is part of the user_management app in later core versions
     webUIAddUsers:
@@ -1174,14 +1174,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - WebDavPropertiesContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIPersonalGeneralSettingsContext:
-        - WebUIUsersContext:
-        - WebUIUserContext:
+        - EmailContext
+        - WebDavPropertiesContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIPersonalGeneralSettingsContext
+        - WebUIUsersContext
+        - WebUIUserContext
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:
@@ -1190,11 +1190,11 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebDavPropertiesContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIUsersContext:
+        - WebDavPropertiesContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIUsersContext
 
     # This suite is part of the user_management app in later core versions
     webUIManageUsersGroups:
@@ -1203,14 +1203,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - WebDavPropertiesContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIPersonalGeneralSettingsContext:
-        - WebUIUsersContext:
-        - WebUIUserContext:
+        - EmailContext
+        - WebDavPropertiesContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIPersonalGeneralSettingsContext
+        - WebUIUsersContext
+        - WebUIUserContext
 
     # This suite is part of the user_management app in later core versions
     webUISettingsMenu:
@@ -1219,13 +1219,13 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebDavPropertiesContext:
-        - EmailContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUISharingContext:
-        - WebUIUsersContext:
+        - WebDavPropertiesContext
+        - EmailContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUISharingContext
+        - WebUIUsersContext
 
     webUIWebdavLocks:
       paths:
@@ -1233,15 +1233,15 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebDavLockingContext:
-        - WebUIAdminGeneralSettingsContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIWebDavLockingContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - WebDavLockingContext
+        - WebUIAdminGeneralSettingsContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIWebDavLockingContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     webUIWebdavLockProtection:
       paths:
@@ -1249,14 +1249,14 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebDavLockingContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIWebDavLockingContext:
-        - WebUISharingContext:
-        - OccContext:
-        - PublicWebDavContext:
+        - WebDavLockingContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIWebDavLockingContext
+        - WebUISharingContext
+        - OccContext
+        - PublicWebDavContext
 
     webUIFileActionsMenu:
       paths:
@@ -1264,10 +1264,10 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIFileActionsMenuContext:
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIFileActionsMenuContext
 
     webUIWithCLI:
       paths:
@@ -1275,22 +1275,22 @@ default:
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
-        - EmailContext:
-        - WebUIFilesContext:
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIPersonalGeneralSettingsContext:
-        - WebUIPersonalSecuritySettingsContext:
-        - WebUIUserContext:
-        - OccContext:
-        - OccUsersGroupsContext:
-        - CapabilitiesContext:
-        - WebUIAdminAppsSettingsContext:
-        - WebUIAdminSharingSettingsContext:
-        - WebUIAdminGeneralSettingsContext:
-        - WebUIAdminStorageSettingsContext:
-        - WebUIHelpAndTipsContext:
-        - WebUISharingContext:
+        - EmailContext
+        - WebUIFilesContext
+        - WebUIGeneralContext
+        - WebUILoginContext
+        - WebUIPersonalGeneralSettingsContext
+        - WebUIPersonalSecuritySettingsContext
+        - WebUIUserContext
+        - OccContext
+        - OccUsersGroupsContext
+        - CapabilitiesContext
+        - WebUIAdminAppsSettingsContext
+        - WebUIAdminSharingSettingsContext
+        - WebUIAdminGeneralSettingsContext
+        - WebUIAdminStorageSettingsContext
+        - WebUIHelpAndTipsContext
+        - WebUISharingContext
 
   extensions:
     rdx\behatvars\BehatVariablesExtension: ~
