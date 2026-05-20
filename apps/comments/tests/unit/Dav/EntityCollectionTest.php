@@ -70,10 +70,14 @@ class EntityCollectionTest extends \Test\TestCase {
 	}
 
 	public function testGetChild(): void {
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('files');
+		$comment->method('getObjectId')->willReturn('19');
+
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')
-			->will($this->returnValue($this->createMock(IComment::class)));
+			->willReturn($comment);
 
 		$node = $this->collection->getChild('55');
 		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $node);
@@ -118,6 +122,15 @@ class EntityCollectionTest extends \Test\TestCase {
 	}
 
 	public function testChildExistsTrue(): void {
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('files');
+		$comment->method('getObjectId')->willReturn('19');
+
+		$this->commentsManager->expects($this->once())
+			->method('get')
+			->with('44')
+			->willReturn($comment);
+
 		$this->assertTrue($this->collection->childExists('44'));
 	}
 
