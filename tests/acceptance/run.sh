@@ -46,7 +46,7 @@ fi
 # BEHAT_FEATURE - see "--feature" description
 # BEHAT_FILTER_TAGS - see "--tags" description
 # BEHAT_SUITE - see "--suite" description
-# BEHAT_YML - see "--config" description
+# BEHAT_CONFIG_FILE - see "--config" description
 # BROWSER - see "--browser" description
 # NORERUN - see "--norerun" description
 # RERUN_FAILED_WEBUI_SCENARIOS - opposite of NORERUN
@@ -101,7 +101,7 @@ then
 fi
 
 # Look for command line options for:
-# -c or --config - specify a behat.yml to use
+# -c or --config - specify a behat.php to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
 # --type - api, cli or webui - if no individual feature or suite is specified, then
@@ -126,7 +126,7 @@ do
 	key="$1"
 	case ${key} in
 		-c|--config)
-			BEHAT_YML="$2"
+			BEHAT_CONFIG_FILE="$2"
 			shift
 			;;
 		--feature)
@@ -387,7 +387,7 @@ function env_alt_home_clear {
 # $PLATFORM_TEXT
 # $TEST_LOG_FILE
 # $BEHAT - behat executable
-# $BEHAT_YML
+# $BEHAT_CONFIG_FILE
 # $RUNNING_WEBUI_TESTS
 # $RERUN_FAILED_WEBUI_SCENARIOS
 #
@@ -409,7 +409,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} ${COLORS_OPTION} --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} ${COLORS_OPTION} --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_CONFIG_FILE} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -648,7 +648,7 @@ function run_behat_tests() {
 				fi
 
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
-				${BEHAT} ${COLORS_OPTION} --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+				${BEHAT} ${COLORS_OPTION} --strict -c ${BEHAT_CONFIG_FILE} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
@@ -678,7 +678,7 @@ function run_behat_tests() {
 		# Big red error output is displayed if there are no matching scenarios - send it to null
 		DRY_RUN_FILE=$(mktemp)
 		SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
-		${BEHAT} --dry-run ${COLORS_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
+		${BEHAT} --dry-run ${COLORS_OPTION} -c ${BEHAT_CONFIG_FILE} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 		then
 			# If there are no skip scenarios, then no need to report that
@@ -851,27 +851,27 @@ then
 	BEHAT_SUITE=`basename ${SUITE_PATH}`
 fi
 
-if [ -z "${BEHAT_YML}" ]
+if [ -z "${BEHAT_CONFIG_FILE}" ]
 then
-	# Look for a behat.yml somewhere below the current working directory
-	# This saves app acceptance tests being forced to specify BEHAT_YML
-	BEHAT_YML="config/behat.yml"
-	if [ ! -f "${BEHAT_YML}" ]
+	# Look for a behat.php somewhere below the current working directory
+	# This saves app acceptance tests being forced to specify BEHAT_CONFIG_FILE
+	BEHAT_CONFIG_FILE="config/behat.php"
+	if [ ! -f "${BEHAT_CONFIG_FILE}" ]
 	then
-		BEHAT_YML="acceptance/config/behat.yml"
+		BEHAT_CONFIG_FILE="acceptance/config/behat.php"
 	fi
-	if [ ! -f "${BEHAT_YML}" ]
+	if [ ! -f "${BEHAT_CONFIG_FILE}" ]
 	then
-		BEHAT_YML="tests/acceptance/config/behat.yml"
+		BEHAT_CONFIG_FILE="tests/acceptance/config/behat.php"
 	fi
-	# If no luck above, then use the core behat.yml that should live below this script
-	if [ ! -f "${BEHAT_YML}" ]
+	# If no luck above, then use the core behat.php that should live below this script
+	if [ ! -f "${BEHAT_CONFIG_FILE}" ]
 	then
-		BEHAT_YML="${SCRIPT_PATH}/config/behat.yml"
+		BEHAT_CONFIG_FILE="${SCRIPT_PATH}/config/behat.php"
 	fi
 fi
 
-BEHAT_CONFIG_DIR=$(dirname "${BEHAT_YML}")
+BEHAT_CONFIG_DIR=$(dirname "${BEHAT_CONFIG_FILE}")
 ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
 BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
 
