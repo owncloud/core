@@ -3,8 +3,7 @@ $(document).ready(function() {
 	dbtypes={
 		sqlite:!!$('#hasSQLite').val(),
 		mysql:!!$('#hasMySQL').val(),
-		postgresql:!!$('#hasPostgreSQL').val(),
-		oracle:!!$('#hasOracle').val()
+		postgresql:!!$('#hasPostgreSQL').val()
 	};
 
 	$('#selectDbType').buttonset();
@@ -13,7 +12,6 @@ $(document).ready(function() {
 
 	if($('#hasSQLite').val()){
 		$('#use_other_db').hide();
-		$('#use_oracle_db').hide();
 	} else {
 		$('#sqliteInformation').hide();
 	}
@@ -22,23 +20,14 @@ $(document).ready(function() {
 	});
 	$('#sqlite').click(function() {
 		$('#use_other_db').slideUp(250);
-		$('#use_oracle_db').slideUp(250);
 		$('#sqliteInformation').show();
 		$('#dbname').attr('pattern','[0-9a-zA-Z$_-]+');
 	});
 
 	$('#mysql,#pgsql').click(function() {
 		$('#use_other_db').slideDown(250);
-		$('#use_oracle_db').slideUp(250);
 		$('#sqliteInformation').hide();
 		$('#dbname').attr('pattern','[0-9a-zA-Z$_-]+');
-	});
-
-	$('#oci').click(function() {
-		$('#use_other_db').slideDown(250);
-		$('#use_oracle_db').show(250);
-		$('#sqliteInformation').hide();
-		$('#dbname').attr('pattern','[0-9a-zA-Z$_-.]+');
 	});
 
 	$('input[checked]').trigger('click');

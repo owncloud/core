@@ -7,7 +7,6 @@ script('core', [
 <input type='hidden' id='hasMySQL' value='<?php p($_['hasMySQL']) ?>'>
 <input type='hidden' id='hasSQLite' value='<?php p($_['hasSQLite']) ?>'>
 <input type='hidden' id='hasPostgreSQL' value='<?php p($_['hasPostgreSQL']) ?>'>
-<input type='hidden' id='hasOracle' value='<?php p($_['hasOracle']) ?>'>
 <form action="index.php" method="post" autocapitalize="none">
 <input type="hidden" name="install" value="true">
 	<?php if (\count($_['errors']) > 0): ?>
@@ -65,7 +64,7 @@ script('core', [
 
 	<?php if (!$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id='databaseBackend'>
-		<?php if ($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle']) {
+		<?php if ($_['hasMySQL'] or $_['hasPostgreSQL']) {
 			$hasOtherDB = true;
 		} else {
 			$hasOtherDB =false;
@@ -117,17 +116,6 @@ script('core', [
 					autocomplete="off" autocorrect="off"
 					pattern="[0-9a-zA-Z$_-]+">
 			</p>
-			<?php if ($_['hasOracle']): ?>
-			<div id="use_oracle_db">
-				<p class="groupmiddle">
-					<label for="dbtablespace" class="infield"><?php p($l->t('Database tablespace')); ?></label>
-					<input type="text" name="dbtablespace" id="dbtablespace"
-						placeholder="<?php p($l->t('Database tablespace')); ?>"
-						value="<?php p($_['dbtablespace']); ?>"
-						autocomplete="off" autocorrect="off">
-				</p>
-			</div>
-			<?php endif; ?>
 			<p class="groupbottom">
 				<label for="dbhost" class="infield"><?php p($l->t('Database host')); ?></label>
 				<input type="text" name="dbhost" id="dbhost"
