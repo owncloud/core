@@ -142,4 +142,60 @@ class EntityCollectionTest extends \Test\TestCase {
 
 		$this->assertFalse($this->collection->childExists('44'));
 	}
+
+	public function testGetChildWrongFile(): void {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('files');
+		$comment->method('getObjectId')->willReturn('999'); // different file
+
+		$this->commentsManager->expects($this->once())
+			->method('get')
+			->with('55')
+			->willReturn($comment);
+
+		$this->collection->getChild('55');
+	}
+
+	public function testGetChildWrongObjectType(): void {
+		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('albums'); // wrong type
+		$comment->method('getObjectId')->willReturn('19');
+
+		$this->commentsManager->expects($this->once())
+			->method('get')
+			->with('55')
+			->willReturn($comment);
+
+		$this->collection->getChild('55');
+	}
+
+	public function testChildExistsWrongFile(): void {
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('files');
+		$comment->method('getObjectId')->willReturn('999'); // different file
+
+		$this->commentsManager->expects($this->once())
+			->method('get')
+			->with('44')
+			->willReturn($comment);
+
+		$this->assertFalse($this->collection->childExists('44'));
+	}
+
+	public function testChildExistsWrongObjectType(): void {
+		$comment = $this->createMock(IComment::class);
+		$comment->method('getObjectType')->willReturn('albums'); // wrong type
+		$comment->method('getObjectId')->willReturn('19');
+
+		$this->commentsManager->expects($this->once())
+			->method('get')
+			->with('44')
+			->willReturn($comment);
+
+		$this->assertFalse($this->collection->childExists('44'));
+	}
 }
