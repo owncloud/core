@@ -9,11 +9,21 @@
         "rdx/behat-variables": "^1.2",
         "sensiolabs/behat-page-object-extension": "^2.3",
         "symfony/translation": "^5.4",
+        "symfony/yaml": "7.4.11",
         "sabre/xml": "^2.2",
         "guzzlehttp/guzzle": "^7.10",
         "phpunit/phpunit": "^9.6",
         "laminas/laminas-ldap": "^2.20",
         "ankitpokhrel/tus-php": "^2.4",
         "helmich/phpunit-json-assert": "^3.5"
+    },
+    "config": {
+        "audit": {
+            "ignore": {
+                "PKSA-v5yj-8nmz-sk2q": "We need to use more than the new collection alias limit",
+                "PKSA-ft77-7h5f-p3r6": "Not relevant to our use-case in tests only",
+                "PKSA-b14r-zh1d-vdrc": "Not relevant to our use-case in tests only"
+            }
+        }
     }
 }
