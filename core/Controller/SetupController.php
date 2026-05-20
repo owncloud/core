@@ -83,7 +83,6 @@ class SetupController {
 			'dbuser' => '',
 			'dbpass' => '',
 			'dbname' => '',
-			'dbtablespace' => '',
 			'dbhost' => 'localhost',
 			'dbtype' => '',
 		];

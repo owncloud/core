@@ -21,7 +21,7 @@ ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
 PRIMARY_STORAGE_CONFIGS="local swift"
-DBCONFIGS="sqlite mysql mariadb pgsql oci mysqlmb4"
+DBCONFIGS="sqlite mysql mariadb pgsql mysqlmb4"
 
 # $PHP_EXE is run through 'which' and as such e.g. 'php' or 'hhvm' is usually
 # sufficient. Due to the behaviour of 'which', $PHP_EXE may also be a path
@@ -33,10 +33,6 @@ PHP=$(which "$PHP_EXE")
 
 if test -z "$PHPUNIT"; then
 	PHPUNIT=$(which phpunit)
-fi
-
-if [ -z "$SQLPLUS" ]; then
-	SQLPLUS=$(which sqlplus 2>/dev/null)
 fi
 
 set -e
@@ -278,31 +274,6 @@ function execute_tests {
 			dropdb -U "$DATABASEUSER" "$DATABASENAME" || true
 		fi
 	fi
-	if [ "$DB" == "oci" ] ; then
-		echo "Fire up the oracle docker"
-		DOCKER_CONTAINER_ID=$(docker run -d deepdiver/docker-oracle-xe-11g)
-		DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
-
-		echo "Waiting for Oracle initialization ... "
-
-		if [ ! -z "$SQLPLUS" ]; then
-			# Try to connect to the OCI host via sqlplus to ensure that the connection is already running
-      		for i in {1..48}
-                do
-                        if "$SQLPLUS" "autotest/owncloud@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=$DATABASEHOST)(Port=1521))(CONNECT_DATA=(SID=XE)))" < /dev/null | grep 'Connected to'; then
-                                break;
-                        fi
-                        sleep 5
-                done
-		else
-			echo "sqlplus not found, using sleep to wait for Oracle initialization"
-			sleep 120
-		fi
-
-		DATABASEUSER=autotest
-		DATABASENAME='XE'
-	fi
-
 	# trigger installation
 	echo "Installing ...."
 	"$PHP" ./occ maintenance:install -vvv --database="$_DB" --database-name="$DATABASENAME" --database-host="$DATABASEHOST" --database-user="$DATABASEUSER" --database-pass=owncloud --database-table-prefix=oc_ --admin-user="$ADMINLOGIN" --admin-pass=admin --data-dir="$DATADIR"
@@ -373,9 +344,3 @@ fi
 #  - for parallel executor support with EXECUTOR_NUMBER=0:
 #  - createuser -P oc_autotest0 (enter password "owncloud")
 #  - psql -c 'ALTER USER oc_autotest0 CREATEDB;' (to give the user the privileged to create databases)
-#
-# NOTES on oci:
-#  - it's a pure nightmare to install Oracle on a Linux-System
-#  - DON'T TRY THIS AT HOME!
-#  - if you really need it: we feel sorry for you
-#

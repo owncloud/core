@@ -14,7 +14,7 @@ DATABASEUSER=oc_autotest$EXECUTOR_NUMBER
 ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
-DBCONFIGS="sqlite mysql pgsql oci"
+DBCONFIGS="sqlite mysql pgsql"
 if test -z "$PHPUNIT"; then
 	PHPUNIT=$(which phpunit)
 fi
@@ -118,33 +118,6 @@ function execute_tests {
 	if [ "$1" == "pgsql" ] ; then
 		dropdb -U $DATABASEUSER $DATABASENAME || true
 	fi
-	if [ "$1" == "oci" ] ; then
-		echo "drop the database"
-		sqlplus -s -l / as sysdba <<EOF
-			drop user $DATABASENAME cascade;
-EOF
-
-		echo "create the database"
-		sqlplus -s -l / as sysdba <<EOF
-			create user $DATABASENAME identified by owncloud;
-			alter user $DATABASENAME default tablespace users
-			temporary tablespace temp
-			quota unlimited on users;
-			grant create session
-			, create table
-			, create procedure
-			, create sequence
-			, create trigger
-			, create view
-			, create synonym
-			, alter session
-			to $DATABASENAME;
-			exit;
-EOF
-		DATABASEUSER=$DATABASENAME
-		DATABASENAME='XE'
-	fi
-
 	# copy autoconfig
 	cp "$BASEDIR/tests/autoconfig-$1.php" "$BASEDIR/config/autoconfig.php"
 
@@ -264,9 +237,3 @@ fi
 #
 #  - for parallel executor support with EXECUTOR_NUMBER=0:
 #  - createuser -P oc_autotest0 (enter password and enable superuser)
-#
-# NOTES on oci:
-#  - it's a pure nightmare to install Oracle on a Linux-System
-#  - DON'T TRY THIS AT HOME!
-#  - if you really need it: we feel sorry for you
-#
