@@ -573,19 +573,27 @@ class Manager {
 	public function testRemoteUrl(IClientService $clientService, string $remote) {
 		$parsed_host = parse_url($remote, PHP_URL_HOST);
 		$parsed_port = parse_url($remote, PHP_URL_PORT);
+		$parsed_path = parse_url($remote, PHP_URL_PATH);
 		if (\is_string($parsed_host)) {
 			$remote = $parsed_host;
 			if ($parsed_port !== null) {
 				$remote .= ':' . $parsed_port;
 			}
+			if ($parsed_path !== null) {
+				$remote .= $parsed_path;
+			}
 		} else {
 			$string_to_parse = 'http://' . $remote;
 			$parsed_host = parse_url($string_to_parse, PHP_URL_HOST);
 			$parsed_port = parse_url($string_to_parse, PHP_URL_PORT);
+			$parsed_path = parse_url($string_to_parse, PHP_URL_PATH);
 			if (\is_string($parsed_host)) {
 				$remote = $parsed_host;
 				if ($parsed_port !== null) {
 					$remote .= ':' . $parsed_port;
+				}
+				if ($parsed_path !== null) {
+					$remote .= $parsed_path;
 				}
 			}
 		}
