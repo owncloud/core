@@ -1,7 +1,7 @@
 {
     "require": {
-        "behat/behat": "^3.13",
-        "behat/gherkin": "^4.9",
+        "behat/behat": "^3.31",
+        "behat/gherkin": "^4.17",
         "behat/mink": "1.7.1",
         "behat/mink-extension": "^2.3",
         "behat/mink-selenium2-driver": "^1.5",
@@ -10,10 +10,10 @@
         "sensiolabs/behat-page-object-extension": "^2.3",
         "symfony/translation": "^5.4",
         "sabre/xml": "^2.2",
-        "guzzlehttp/guzzle": "^7.7",
+        "guzzlehttp/guzzle": "^7.10",
         "phpunit/phpunit": "^9.6",
-        "laminas/laminas-ldap": "^2.15",
-        "ankitpokhrel/tus-php": "^2.3",
-        "helmich/phpunit-json-assert": "^3.4"
+        "laminas/laminas-ldap": "^2.20",
+        "ankitpokhrel/tus-php": "^2.4",
+        "helmich/phpunit-json-assert": "^3.5"
     }
 }
