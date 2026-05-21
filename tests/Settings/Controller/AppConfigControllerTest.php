@@ -156,4 +156,22 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertEquals([], $response->getData());
 		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
 	}
+
+	public function testGetAppsRequiresAdmin(): void {
+		$reflection = new \ReflectionMethod(AppConfigController::class, 'getApps');
+		$docComment = (string)$reflection->getDocComment();
+		$this->assertStringNotContainsString('@NoAdminRequired', $docComment);
+	}
+
+	public function testGetKeysRequiresAdmin(): void {
+		$reflection = new \ReflectionMethod(AppConfigController::class, 'getKeys');
+		$docComment = (string)$reflection->getDocComment();
+		$this->assertStringNotContainsString('@NoAdminRequired', $docComment);
+	}
+
+	public function testGetValueRequiresAdmin(): void {
+		$reflection = new \ReflectionMethod(AppConfigController::class, 'getValue');
+		$docComment = (string)$reflection->getDocComment();
+		$this->assertStringNotContainsString('@NoAdminRequired', $docComment);
+	}
 }
