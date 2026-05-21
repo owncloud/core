@@ -2189,17 +2189,11 @@ class UsersControllerTest extends TestCase {
 	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeMailAddress, $responseCode): void {
 		$this->container['IsAdmin'] = true;
 
-		$user = $this->getMockBuilder(User::class)
-			->disableOriginalConstructor()->getMock();
-		$user
-			->method('getUID')
-			->willReturn('foo');
-		$user
-			->method('getEMailAddress')
-			->willReturn('foo@local');
-		$user
-			->method('canChangeMailAddress')
-			->willReturn($canChangeMailAddress);
+		$user = $this->createMock(User::class);
+		$user->method('getUID')->willReturn('foo');
+		$user->method('getEMailAddress')->willReturn('foo@local');
+		$user->method('canChangeMailAddress')->willReturn($canChangeMailAddress);
+		$user->expects($this->never())->method('setEmailAddress');
 
 		$user2 = $this->createMock(User::class);
 		$user2->method('getUID')->willReturn('anotherUserId');
@@ -2242,6 +2236,8 @@ class UsersControllerTest extends TestCase {
 						return $user;
 					case "anotherUserId":
 						return $user2;
+					default:
+						return null;
 				}
 			});
 		$this->container['SecureRandom']
