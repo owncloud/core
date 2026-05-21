@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      - "10.16"
+      - "release/*"
   pull_request:
     types:
       - opened
