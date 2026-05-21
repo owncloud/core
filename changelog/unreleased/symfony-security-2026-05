@@ -1,0 +1,7 @@
+Fix: Update symfony/routing to 5.4.52 for CVE-2026-45065
+
+CVE-2026-45065: UrlGenerator route-requirement bypass via unanchored regex
+alternation allowing off-site URL injection. Upgraded symfony/routing from
+5.4.48 to 5.4.52.
+
+https://symfony.com/cve-2026-45065
