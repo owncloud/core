@@ -751,18 +751,16 @@ $(document).ready(function () {
 	// TODO: move other init calls inside of initialize
 	UserList.initialize($('#userlist'));
 
-	OC.AppConfig.getValue('core', 'umgmt_set_password', 'false', function (data) {
-		var showPassword = $.parseJSON(data);
-		if (showPassword === true) {
+	(function () {
+		var showPassword = $('#CheckBoxPasswordOnUserCreate').prop('checked');
+		if (showPassword) {
 			$("#newuserpassword").show();
 			$("#newemail").hide();
-			$('#CheckBoxPasswordOnUserCreate').attr('checked', true);
 		} else {
 			$("#newemail").show();
 			$("#newuserpassword").hide();
-			$('#CheckBoxPasswordOnUserCreate').attr('checked', false);
 		}
-	});
+	}());
 
 	$userListBody.on('click', '.password', function (event) {
 		event.stopPropagation();

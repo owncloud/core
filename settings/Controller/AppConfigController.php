@@ -27,9 +27,7 @@ use OCP\AppFramework\Http\JSONResponse;
 
 /**
  * The code is mostly copied from core/ajax/appconfig.php
- * Read methods (getApps, getKeys and getValue) are available to subadmins,
- * which wasn't possible with the core/ajax/appconfig.php file. The rest of
- * the methods require admin privileges.
+ * All methods require full admin privileges.
  * Note that the "hasKey" method is missing. You can do the same in a lot of
  * cases by trying to get the value of the key.
  *
@@ -54,8 +52,6 @@ class AppConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * Get the list of apps
 	 */
 	public function getApps() {
@@ -63,8 +59,6 @@ class AppConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * Get the list of keys for that particular app
 	 * @param string $app
 	 */
@@ -73,8 +67,6 @@ class AppConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * Get the value of the key for that app, or the default value provided
 	 * if it's missing.
 	 * @param string $app
