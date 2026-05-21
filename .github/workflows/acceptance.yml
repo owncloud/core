@@ -169,8 +169,11 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # v2.37.0
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, gd, json, xml, zip, imagick
+          extensions: apcu, ctype, curl, exif, fileinfo, gd, iconv, imagick, intl, json, mbstring, memcached, pdo, posix, simplexml, xml, zip, smbclient, ldap, krb5
           ini-values: "memory_limit=2048M"
+        env:
+          fail-fast: true
+          KRB5_LINUX_LIBS: libkrb5-dev
 
       - name: Install Apache
         env:
