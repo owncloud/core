@@ -34,7 +34,7 @@ jobs:
     with:
       do-api-tests: true
       server-folder: 'server'
-      test-suites: "['apiComments']"
+      test-suites: "['apiAuth', 'apiAuthOcs', 'apiAuthWebDav', 'apiCapabilities', 'apiComments', 'apiFavorites', 'apiMain', 'apiProvisioning-v1', 'apiProvisioning-v2', 'apiProvisioningGroups-v1', 'apiProvisioningGroups-v2']"
 
   acceptance-api-federation:
     name: API Acceptance Tests with Federation
@@ -43,7 +43,7 @@ jobs:
       do-api-tests: true
       server-folder: 'server'
       federated-folder: 'federated'
-      test-suites: "['apiFederationToRoot1']"
+      test-suites: "['apiFederationToRoot1', 'apiFederationToRoot2', 'apiFederationToShares1', 'apiFederationToShares2']"
 
   acceptance-webui:
     name: WebUI Acceptance Tests
