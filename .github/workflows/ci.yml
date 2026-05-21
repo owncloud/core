@@ -44,3 +44,11 @@ jobs:
       server-folder: 'server'
       federated-folder: 'federated'
       test-suites: "['apiFederationToRoot1']"
+
+  acceptance-webui:
+    name: WebUI Acceptance Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-webui-tests: true
+      server-folder: 'server'
+      test-suites: "['webUIComments']"
