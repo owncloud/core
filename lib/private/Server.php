@@ -114,6 +114,7 @@ use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OC\Files\External\StoragesBackendService;
+use OC\Files\External\StoragesBackendChecker;
 use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\Service\UserGlobalStoragesService;
 use OC\Files\External\Service\GlobalStoragesService;
@@ -846,7 +847,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('StoragesBackendService', function (Server $c) {
-			$service = new StoragesBackendService($c->query('AllConfig'));
+			$service = new StoragesBackendService($c->query(StoragesBackendChecker::class));
 
 			// register auth mechanisms provided by core
 			$provider = new \OC\Files\External\Auth\CoreAuthMechanismProvider($c, [

@@ -111,6 +111,55 @@ class GlobalStoragesControllerTest extends StoragesControllerTest {
 		$this->assertEquals($expectedStorage, $actual);
 	}
 
+	public function localBackendNameProvider() {
+		return [
+			['local'],
+			['\OC\Files\Storage\Local'],
+		];
+	}
+
+	/**
+	 * @dataProvider localBackendNameProvider
+	 */
+	public function testCreateLocal($localBackendName) {
+		$mount = 'randomMount';
+		$backend = "identifier:{$localBackendName}";
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\OCA\Files_External\Lib\Backend',
+			'backendStorageClass' => '\OC\Files\Storage\Local',
+			'authClass' => '\Random\Missing\Auth\Class',
+			'mountPoint' => $mount,
+			'backendOpts' => $backendOpts,
+			'priority' => $priority,
+			'type' => IStorageConfig::MOUNT_TYPE_ADMIN,
+		]);
+
+		$backendMock = $storageConfig->getBackend();
+		$backendMock->method('isVisibleFor')->willReturn(false);
+		$backendMock->method('validateStorage')->willReturn(true);
+
+		$authMock = $storageConfig->getAuthMechanism();
+		$authMock->method('isVisibleFor')->willReturn(true);
+		$authMock->method('validateStorage')->willReturn(true);
+
+		$this->service->expects($this->once())
+		->method('createStorage')
+		->willReturn($storageConfig);
+		$this->service->expects($this->never())
+		->method('addStorage')
+		->will($this->returnArgument(0));
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $result->getStatus());
+	}
+
 	public function testUpdate() {
 		$mount = 'randomMount';
 		$backend = 'identifier:\This\Doesnt\Exist';
