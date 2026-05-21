@@ -112,6 +112,11 @@ class UserStoragesController extends StoragesController {
 		$backendOptions,
 		$mountOptions
 	) {
+		// NOTE: local backend isn't allowed for regular users regardless
+		// of the value of files_external_allow_create_new_local. The backend
+		// won't be visible for regular users, so the `validate` method will fail.
+		// Only admins can create local storages (if files_external_allow_create_new_local
+		// is true)
 		$newStorage = $this->createStorage(
 			$mountPoint,
 			$backend,

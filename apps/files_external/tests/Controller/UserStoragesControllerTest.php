@@ -236,7 +236,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 	 */
 	public function testCreateLocalNotAllowed($localBackendName) {
 		$mount = 'randomMount';
-		$backend = $localBackendName;
+		$backend = "identifier:{$localBackendName}";
 		$auth = 'identifier:\Random\Missing\Auth\Class';
 		$backendOpts = [
 			'datadir' => '/tmp',
