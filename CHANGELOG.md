@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
 * [Changelog for 10.16.2](#changelog-for-owncloud-core-10162-2026-04-02)
 * [Changelog for 10.16.1](#changelog-for-owncloud-core-10161-2026-02-18)
 * [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
@@ -27,6 +28,77 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.3] (2026-05-22)
+
+The following sections list the changes in ownCloud core 10.16.3 relevant to
+ownCloud admins and users.
+
+[10.16.3]: https://github.com/owncloud/core/compare/v10.16.2...v10.16.3
+
+## Summary
+
+* Security - Update phpseclib to 3.0.52 for CVE-2026-40194: [#41529](https://github.com/owncloud/core/pull/41529)
+* Security - Restrict AppConfigController read methods to full admins only: [#41550](https://github.com/owncloud/core/pull/41550)
+* Security - Update symfony/routing to 5.4.52 for CVE-2026-45065: [#41559](https://github.com/owncloud/core/pull/41559)
+* Bugfix - Prevent mounting local storage if not allowed: [#41538](https://github.com/owncloud/core/pull/41538)
+* Bugfix - Use the correct user ID when changing email via admin API: [#41539](https://github.com/owncloud/core/pull/41539)
+* Bugfix - Prevent IDOR in WebDAV comments API: [#41558](https://github.com/owncloud/core/pull/41558)
+
+## Details
+
+* Security - Update phpseclib to 3.0.52 for CVE-2026-40194: [#41529](https://github.com/owncloud/core/pull/41529)
+
+   CVE-2026-40194: Timing attack vulnerability in SSH binary packet processing.
+   Upgraded phpseclib/phpseclib from 3.0.50 to 3.0.52.
+
+   https://github.com/owncloud/core/pull/41529
+   https://github.com/owncloud/core/pull/41541
+   https://github.com/phpseclib/phpseclib/releases/tag/3.0.51
+
+* Security - Restrict AppConfigController read methods to full admins only: [#41550](https://github.com/owncloud/core/pull/41550)
+
+   Subadmin users could read all oc_appconfig values including SMTP passwords, LDAP
+   bind credentials, and encryption master keys via the Settings API. Removed
+   @NoAdminRequired from getApps, getKeys, and getValue so that the AdminMiddleware
+   enforces full-admin-only access, consistent with the write methods.
+
+   https://github.com/owncloud/core/pull/41550
+
+* Security - Update symfony/routing to 5.4.52 for CVE-2026-45065: [#41559](https://github.com/owncloud/core/pull/41559)
+
+   CVE-2026-45065: UrlGenerator route-requirement bypass via unanchored regex
+   alternation allowing off-site URL injection. Upgraded symfony/routing from
+   5.4.48 to 5.4.52.
+
+   https://github.com/owncloud/core/pull/41559
+   https://symfony.com/cve-2026-45065
+
+* Bugfix - Prevent mounting local storage if not allowed: [#41538](https://github.com/owncloud/core/pull/41538)
+
+   Mounting a local storage was possible if the internal class name was used as
+   backend, despite local storage not allowed to be mounted. This problem is fixed
+   and the local storage can't be mounted if it was explicitly disallowed in the
+   configuration.
+
+   https://github.com/owncloud/core/pull/41538
+
+* Bugfix - Use the correct user ID when changing email via admin API: [#41539](https://github.com/owncloud/core/pull/41539)
+
+   The admin API endpoint for changing a user's email address was incorrectly using
+   the requesting admin's user ID instead of the target user's ID, causing the
+   admin's email to be updated rather than the intended user's.
+
+   https://github.com/owncloud/core/pull/41539
+
+* Bugfix - Prevent IDOR in WebDAV comments API: [#41558](https://github.com/owncloud/core/pull/41558)
+
+   Authenticated users could read, edit, or delete comments on files they have no
+   access to by supplying an arbitrary comment ID in the WebDAV comments endpoint.
+   The fix verifies that a requested comment belongs to the file in the URL before
+   returning it.
+
+   https://github.com/owncloud/core/pull/41558
+
 # Changelog for ownCloud Core [10.16.2] (2026-04-02)
 
 The following sections list the changes in ownCloud core 10.16.2 relevant to

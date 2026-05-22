@@ -1,4 +1,4 @@
-Fix: Prevent IDOR in WebDAV comments API
+Bugfix: Prevent IDOR in WebDAV comments API
 
 Authenticated users could read, edit, or delete comments on files they have no access to by supplying an arbitrary comment ID in the WebDAV comments endpoint. The fix verifies that a requested comment belongs to the file in the URL before returning it.
 
