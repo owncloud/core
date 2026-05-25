@@ -138,4 +138,13 @@ jobs:
     with:
       do-cli-tests: true
       server-folder: 'server'
-      test-suites: "['cliMain', 'cliProvisioning', 'cliTrashbin']"
+      test-suites: "['cliMain', 'cliTrashbin']"
+
+  acceptance-cli-email:
+    name: CLI Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-cli-tests: true
+      use-email-server: true
+      server-folder: 'server'
+      test-suites: "['cliProvisioning']"
