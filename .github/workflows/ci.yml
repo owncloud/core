@@ -99,7 +99,6 @@ jobs:
         'apiWebdavMove1',
         'apiWebdavMove2',
         'apiWebdavOperations',
-        'apiWebdavPreviews',
         'apiWebdavProperties1',
         'apiWebdavProperties2',
         'apiWebdavUpload1',
@@ -114,6 +113,15 @@ jobs:
       server-folder: 'server'
       additional-app: 'notifications'
       test-suites: "['apiSharingNotificationsToRoot', 'apiSharingNotificationsToShares']"
+
+  acceptance-api-previews:
+    name: API Tests Previews
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      additional-packages: 'imagemagick'
+      server-folder: 'server'
+      test-suites: "['apiWebdavPreviews']"
 
   acceptance-api-federation:
     name: API Tests Federation
