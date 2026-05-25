@@ -278,6 +278,8 @@ jobs:
           ADDITIONAL_APP: ${{ inputs.additional-app }}
         run: |
           cd "/var/www/html${SERVER_ROOT}"
+          pwd
+          ls -l
           sudo -u www-data php occ app:enable ${ADDITIONAL_APP}
 
       - name: Create database for federated server
