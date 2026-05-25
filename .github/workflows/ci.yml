@@ -118,6 +118,14 @@ jobs:
       federated-folder: 'federated'
       test-suites: "['apiFederationToRoot1', 'apiFederationToRoot2', 'apiFederationToShares1', 'apiFederationToShares2']"
 
+  acceptance-cli:
+    name: CLI Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-cli-tests: true
+      server-folder: 'server'
+      test-suites: "['cliMain', 'cliProvisioning', 'cliTrashbin']"
+
   acceptance-webui:
     name: WebUI Tests
     uses: ./.github/workflows/acceptance.yml
