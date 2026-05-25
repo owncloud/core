@@ -70,10 +70,6 @@ on:
 permissions:
   contents: read
 
-env:
-  LANG: C.UTF-8
-  LC_ALL: C.UTF-8
-
 jobs:
   acceptance:
     name: Acceptance tests
@@ -129,6 +125,10 @@ jobs:
           else
             echo "federated-dir=" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set locale
+        run: |
+          cat /etc/default/locale
 
       - name: Clone owncloud/core ${{ inputs.core-branch-for-test-code }} branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
