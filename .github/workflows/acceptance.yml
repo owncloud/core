@@ -276,10 +276,9 @@ jobs:
         if: ${{ inputs.additional-app != '' }}
         env:
           ADDITIONAL_APP: ${{ inputs.additional-app }}
+          SERVER_ROOT: /var/www/html${{ steps.prepend.outputs.server-root }}
         run: |
-          cd "/var/www/html${SERVER_ROOT}"
-          pwd
-          ls -l
+          cd "${SERVER_ROOT}"
           sudo -u www-data php occ app:enable ${ADDITIONAL_APP}
 
       - name: Create database for federated server
