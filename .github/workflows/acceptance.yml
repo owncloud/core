@@ -70,6 +70,10 @@ on:
 permissions:
   contents: read
 
+env:
+  LANG: C.UTF-8
+  LC_ALL: C.UTF-8
+
 jobs:
   acceptance:
     name: Acceptance tests
