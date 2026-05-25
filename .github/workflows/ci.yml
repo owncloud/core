@@ -29,7 +29,7 @@ jobs:
       php-versions: '["8.3"]'
 
   acceptance-api:
-    name: API Acceptance Tests
+    name: API Tests
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -93,7 +93,7 @@ jobs:
         'apiWebdavUploadTUS']"
 
   acceptance-api-notifications:
-    name: API Acceptance Tests
+    name: API Tests Notifications
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -102,7 +102,7 @@ jobs:
       test-suites: "['apiSharingNotificationsToRoot', 'apiSharingNotificationsToShares']"
 
   acceptance-api-federation:
-    name: API Acceptance Tests with Federation
+    name: API Tests Federation
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -111,7 +111,7 @@ jobs:
       test-suites: "['apiFederationToRoot1', 'apiFederationToRoot2', 'apiFederationToShares1', 'apiFederationToShares2']"
 
   acceptance-webui:
-    name: WebUI Acceptance Tests
+    name: WebUI Tests
     uses: ./.github/workflows/acceptance.yml
     with:
       do-webui-tests: true
