@@ -80,8 +80,6 @@ jobs:
         'apiShareReshareToShares3',
         'apiShareUpdateToRoot',
         'apiShareUpdateToShares',
-        'apiSharingNotificationsToRoot',
-        'apiSharingNotificationsToShares',
         'apiTags',
         'apiTranslation',
         'apiTrashbin',
@@ -103,6 +101,15 @@ jobs:
         'apiWebdavUpload1',
         'apiWebdavUpload2',
         'apiWebdavUploadTUS']"
+
+  acceptance-api-notifications:
+    name: API Acceptance Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      additional-app: 'notifications'
+      test-suites: "['apiSharingNotificationsToRoot', 'apiSharingNotificationsToShares']"
 
   acceptance-api-federation:
     name: API Acceptance Tests with Federation
