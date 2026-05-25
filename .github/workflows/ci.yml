@@ -39,7 +39,7 @@ jobs:
         uses: actionhippie/calens@0b8ceba55a72f5ef8b7d910698fcd28be8bb8c19 # v1.13.4
 
   acceptance-api:
-    name: API Acceptance Tests
+    name: API Tests
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -103,7 +103,7 @@ jobs:
         'apiWebdavUploadTUS']"
 
   acceptance-api-notifications:
-    name: API Acceptance Tests
+    name: API Tests Notifications
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -112,7 +112,7 @@ jobs:
       test-suites: "['apiSharingNotificationsToRoot', 'apiSharingNotificationsToShares']"
 
   acceptance-api-federation:
-    name: API Acceptance Tests with Federation
+    name: API Tests Federation
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
