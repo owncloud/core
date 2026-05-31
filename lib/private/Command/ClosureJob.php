@@ -21,11 +21,13 @@
 
 namespace OC\Command;
 
+use Laravel\SerializableClosure\SerializableClosure;
 use OC\BackgroundJob\QueuedJob;
 
 class ClosureJob extends QueuedJob {
 	protected function run($serializedCallable) {
-		$serializedClosure = \unserialize($serializedCallable);
+		// Restrict to SerializableClosure to prevent PHP Object Injection via the job queue.
+		$serializedClosure = \unserialize($serializedCallable, ['allowed_classes' => [SerializableClosure::class]]);
 		if (\method_exists($serializedClosure, 'getClosure')) {
 			$callable = $serializedClosure->getClosure();
 			if (\is_callable($callable)) {
