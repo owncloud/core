@@ -2305,7 +2305,8 @@ class UsersControllerTest extends TestCase {
 		$this->container['UserManager']
 			->method('get')
 			->willReturnCallback(function ($id) use ($callerUser, $targetUser) {
-				return $id === 'subadmin' ? $callerUser : ($id === 'targetuser' ? $targetUser : null);
+				$userMap = ['subadmin' => $callerUser, 'targetuser' => $targetUser];
+				return $userMap[$id] ?? null;
 			});
 
 		$this->container['Mailer']
