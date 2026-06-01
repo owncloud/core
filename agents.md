@@ -53,6 +53,9 @@ make test-acceptance-api
 # Test (acceptance - CLI)
 make test-acceptance-cli
 
+# Test (acceptance - Web User Interface)
+make test-acceptance-webui
+
 # Lint (PHP)
 make test-php-style
 
