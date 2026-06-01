@@ -367,7 +367,6 @@ changelog:
 	@echo Committing changes to this file will result in merge conflicts.
 	@echo ======================================================================
 	docker run --rm -v $(work_dir):$(work_dir) -w $(work_dir) toolhippie/calens calens >| CHANGELOG.md
-	docker run --rm -v $(work_dir):$(work_dir) -w $(work_dir) toolhippie/calens calens -t changelog/CHANGELOG-html.tmpl >| CHANGELOG.html
 
 #
 # Dependency management

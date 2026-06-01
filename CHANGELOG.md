@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
 * [Changelog for 10.16.2](#changelog-for-owncloud-core-10162-2026-04-02)
 * [Changelog for 10.16.1](#changelog-for-owncloud-core-10161-2026-02-18)
 * [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
@@ -28,13 +29,12 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
-
 # Changelog for ownCloud Core [unreleased] (UNRELEASED)
 
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.16.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.16.3...master
 
 ## Summary
 
@@ -43,6 +43,7 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
+* Change - Use configurable URL for internet connectivity check: [#41506](https://github.com/owncloud/core/pull/41506)
 
 ## Details
 
@@ -61,12 +62,19 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 
    The following have been updated: - doctrine/dbal (2.13.9 to 3.10.4) -
-   google/auth (v1.50.0 to v1.50.1) - guzzlehttp/psr7 (2.8.0 to 2.9.0) -
-   phpseclib/phpseclib (3.0.49 to 3.0.50) - pimple/pimple (3.6.1 to 3.6.2)
+   google/apiclient (v2.19.0 to v2.19.3) - google/apiclient-services (v0.435.0 to
+   v0.441.1) - google/auth (v1.50.0 to v1.50.1) - guzzlehttp/psr7 (2.8.0 to 2.10.4)
+   - guzzlehttp/guzzle (7.10.0 to 7.10.5) - guzzlehttp/promises (2.3.0 to 2.4.1) -
+   laravel/serializable-closure (v2.0.10 to v2.0.13) - phpseclib/phpseclib (3.0.49
+   to 3.0.50) - pimple/pimple (3.6.1 to 3.6.2) - symfony/deprecation-contracts
+   (v3.6.0 to v3.7.0) - symfony/mailer (v7.4.6 to v7.4.12)
 
    https://github.com/owncloud/core/pull/41450
    https://github.com/owncloud/core/pull/41477
    https://github.com/owncloud/core/pull/41495
+   https://github.com/owncloud/core/pull/41561
+   https://github.com/owncloud/core/pull/41564
+   https://github.com/owncloud/core/pull/41569
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
@@ -87,6 +95,86 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41462
    https://github.com/owncloud/core/pull/41464
    https://github.com/owncloud/core/pull/41468
+
+* Change - Use configurable URL for internet connectivity check: [#41506](https://github.com/owncloud/core/pull/41506)
+
+   Default URL is now configurable and the default is set to an independent
+   resource: https://detectportal.firefox.com/success.txt This also provides an
+   IPv6 compatible URL.
+
+   https://github.com/owncloud/core/issues/41465
+   https://github.com/owncloud/core/pull/41506
+
+# Changelog for ownCloud Core [10.16.3] (2026-05-22)
+
+The following sections list the changes in ownCloud core 10.16.3 relevant to
+ownCloud admins and users.
+
+[10.16.3]: https://github.com/owncloud/core/compare/v10.16.2...v10.16.3
+
+## Summary
+
+* Security - Update phpseclib to 3.0.52 for CVE-2026-40194: [#41529](https://github.com/owncloud/core/pull/41529)
+* Security - Restrict AppConfigController read methods to full admins only: [#41550](https://github.com/owncloud/core/pull/41550)
+* Security - Update symfony/routing to 5.4.52 for CVE-2026-45065: [#41559](https://github.com/owncloud/core/pull/41559)
+* Bugfix - Prevent mounting local storage if not allowed: [#41538](https://github.com/owncloud/core/pull/41538)
+* Bugfix - Use the correct user ID when changing email via admin API: [#41539](https://github.com/owncloud/core/pull/41539)
+* Bugfix - Prevent IDOR in WebDAV comments API: [#41558](https://github.com/owncloud/core/pull/41558)
+
+## Details
+
+* Security - Update phpseclib to 3.0.52 for CVE-2026-40194: [#41529](https://github.com/owncloud/core/pull/41529)
+
+   CVE-2026-40194: Timing attack vulnerability in SSH binary packet processing.
+   Upgraded phpseclib/phpseclib from 3.0.50 to 3.0.52.
+
+   https://github.com/owncloud/core/pull/41529
+   https://github.com/owncloud/core/pull/41541
+   https://github.com/phpseclib/phpseclib/releases/tag/3.0.51
+
+* Security - Restrict AppConfigController read methods to full admins only: [#41550](https://github.com/owncloud/core/pull/41550)
+
+   Subadmin users could read all oc_appconfig values including SMTP passwords, LDAP
+   bind credentials, and encryption master keys via the Settings API. Removed
+   @NoAdminRequired from getApps, getKeys, and getValue so that the AdminMiddleware
+   enforces full-admin-only access, consistent with the write methods.
+
+   https://github.com/owncloud/core/pull/41550
+
+* Security - Update symfony/routing to 5.4.52 for CVE-2026-45065: [#41559](https://github.com/owncloud/core/pull/41559)
+
+   CVE-2026-45065: UrlGenerator route-requirement bypass via unanchored regex
+   alternation allowing off-site URL injection. Upgraded symfony/routing from
+   5.4.48 to 5.4.52.
+
+   https://github.com/owncloud/core/pull/41559
+   https://symfony.com/cve-2026-45065
+
+* Bugfix - Prevent mounting local storage if not allowed: [#41538](https://github.com/owncloud/core/pull/41538)
+
+   Mounting a local storage was possible if the internal class name was used as
+   backend, despite local storage not allowed to be mounted. This problem is fixed
+   and the local storage can't be mounted if it was explicitly disallowed in the
+   configuration.
+
+   https://github.com/owncloud/core/pull/41538
+
+* Bugfix - Use the correct user ID when changing email via admin API: [#41539](https://github.com/owncloud/core/pull/41539)
+
+   The admin API endpoint for changing a user's email address was incorrectly using
+   the requesting admin's user ID instead of the target user's ID, causing the
+   admin's email to be updated rather than the intended user's.
+
+   https://github.com/owncloud/core/pull/41539
+
+* Bugfix - Prevent IDOR in WebDAV comments API: [#41558](https://github.com/owncloud/core/pull/41558)
+
+   Authenticated users could read, edit, or delete comments on files they have no
+   access to by supplying an arbitrary comment ID in the WebDAV comments endpoint.
+   The fix verifies that a requested comment belongs to the file in the URL before
+   returning it.
+
+   https://github.com/owncloud/core/pull/41558
 
 # Changelog for ownCloud Core [10.16.2] (2026-04-02)
 
