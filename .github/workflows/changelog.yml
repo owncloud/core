@@ -1,0 +1,16 @@
+name: Changelog
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  changelog:
+    uses: owncloud/reusable-workflows/.github/workflows/calens.yml@main
+    secrets:
+      APP_ID: ${{ secrets.CHANGELOG_APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.CHANGELOG_APP_PRIVATE_KEY }}
