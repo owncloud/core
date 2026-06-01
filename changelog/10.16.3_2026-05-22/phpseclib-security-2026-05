@@ -1,0 +1,8 @@
+Security: Update phpseclib to 3.0.52 for CVE-2026-40194
+
+CVE-2026-40194: Timing attack vulnerability in SSH binary packet processing.
+Upgraded phpseclib/phpseclib from 3.0.50 to 3.0.52.
+
+https://github.com/owncloud/core/pull/41529
+https://github.com/owncloud/core/pull/41541
+https://github.com/phpseclib/phpseclib/releases/tag/3.0.51

@@ -183,7 +183,7 @@ abstract class StoragesController extends Controller {
 						$backend->getIdentifier()
 					])
 				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
+				Http::STATUS_FORBIDDEN
 			);
 		}
 		if (!$authMechanism->isVisibleFor($this->service->getVisibilityType())) {
@@ -194,7 +194,7 @@ abstract class StoragesController extends Controller {
 						$authMechanism->getIdentifier()
 					])
 				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
+				Http::STATUS_FORBIDDEN
 			);
 		}
 
@@ -308,7 +308,7 @@ abstract class StoragesController extends Controller {
 		} catch (NotFoundException $e) {
 			return new DataResponse(
 				[
-					'message' => (string)$this->l10n->t('Storage with id "%i" not found', [$id])
+					'message' => (string)$this->l10n->t('Storage with id "%d" not found', [$id])
 				],
 				Http::STATUS_NOT_FOUND
 			);
@@ -335,7 +335,7 @@ abstract class StoragesController extends Controller {
 		} catch (NotFoundException $e) {
 			return new DataResponse(
 				[
-					'message' => (string)$this->l10n->t('Storage with id "%i" not found', [$id])
+					'message' => (string)$this->l10n->t('Storage with id "%d" not found', [$id])
 				],
 				Http::STATUS_NOT_FOUND
 			);

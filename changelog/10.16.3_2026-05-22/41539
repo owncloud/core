@@ -1,0 +1,5 @@
+Bugfix: Use the correct user ID when changing email via admin API
+
+The admin API endpoint for changing a user's email address was incorrectly using the requesting admin's user ID instead of the target user's ID, causing the admin's email to be updated rather than the intended user's.
+
+https://github.com/owncloud/core/pull/41539

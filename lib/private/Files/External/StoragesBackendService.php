@@ -25,6 +25,7 @@ namespace OC\Files\External;
 
 use OCP\IConfig;
 
+use OC\Files\External\StoragesBackendChecker;
 use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Config\IBackendProvider;
@@ -35,14 +36,8 @@ use OCP\Files\External\IStoragesBackendService;
  * Service class to manage backend definitions
  */
 class StoragesBackendService implements IStoragesBackendService {
-	/** @var IConfig */
-	protected $config;
-
-	/** @var bool */
-	private $userMountingAllowed = true;
-
-	/** @var string[] */
-	private $userMountingBackends = [];
+	/** @var StoragesBackendChecker */
+	protected $storagesBackendChecker;
 
 	/** @var Backend[] */
 	private $backends = [];
@@ -57,26 +52,12 @@ class StoragesBackendService implements IStoragesBackendService {
 	private $authMechanismProviders = [];
 
 	/**
-	 * @param IConfig $config
+	 * @param StoragesBackendChecker $storagesBackendChecker
 	 */
 	public function __construct(
-		IConfig $config
+		StoragesBackendChecker $storagesBackendChecker
 	) {
-		$this->config = $config;
-
-		// Load config values
-		if ($this->config->getAppValue('files_external', 'allow_user_mounting', 'no') !== 'yes') {
-			$this->userMountingAllowed = false;
-		}
-		$this->userMountingBackends = \explode(
-			',',
-			$this->config->getAppValue('files_external', 'user_mounting_backends', '')
-		);
-
-		// if no backend is in the list an empty string is in the array and user mounting is disabled
-		if ($this->userMountingBackends === ['']) {
-			$this->userMountingAllowed = false;
-		}
+		$this->storagesBackendChecker = $storagesBackendChecker;
 	}
 
 	/**
@@ -122,6 +103,9 @@ class StoragesBackendService implements IStoragesBackendService {
 	public function registerBackend(Backend $backend) {
 		if (!$this->isAllowedUserBackend($backend)) {
 			$backend->removeVisibility(IStoragesBackendService::VISIBILITY_PERSONAL);
+		}
+		if (!$this->isAllowedAdminBackend($backend)) {
+			$backend->removeVisibility(IStoragesBackendService::VISIBILITY_ADMIN);
 		}
 		foreach ($backend->getIdentifierAliases() as $alias) {
 			$this->backends[$alias] = $backend;
@@ -243,7 +227,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return bool
 	 */
 	public function isUserMountingAllowed() {
-		return $this->userMountingAllowed;
+		return $this->storagesBackendChecker->isUserMountingAllowed();
 	}
 
 	/**
@@ -253,12 +237,16 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return bool
 	 */
 	protected function isAllowedUserBackend(Backend $backend) {
-		if ($this->userMountingAllowed &&
-			\array_intersect($backend->getIdentifierAliases(), $this->userMountingBackends)
-		) {
-			return true;
-		}
-		return false;
+		return $this->storagesBackendChecker->isAllowedUserBackend($backend);
+	}
+
+	/**
+	 * Checks if the admin is allowed to mount the backend
+	 * @param Backend $backend
+	 * @return bool
+	 */
+	protected function isAllowedAdminBackend(Backend $backend) {
+		return $this->storagesBackendChecker->isAllowedAdminBackend($backend);
 	}
 
 	/**

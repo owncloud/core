@@ -32,7 +32,6 @@ use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
 use OCP\ILogger;
-use OCP\IConfig;
 use OCP\IUserSession;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -45,42 +44,14 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 		$this->service->method('getVisibilityType')
 			->willReturn(IStoragesBackendService::VISIBILITY_PERSONAL);
 
-		$this->config = $this->createMock(IConfig::class);
-		$this->config->method('getAppValue')->willReturn('yes');
-
 		$this->controller = new UserStoragesController(
 			'files_external',
 			$this->createMock(IRequest::class),
 			$this->createMock(IL10N::class),
 			$this->service,
 			$this->createMock(IUserSession::class),
-			$this->config,
 			$this->createMock(ILogger::class)
 		);
-	}
-
-	public function testApiWhenDisabled(): void {
-		$config = $this->createMock(IConfig::class);
-		$config->method('getAppValue')->willReturn('no');
-
-		$controller = new UserStoragesController(
-			'files_external',
-			$this->createMock(IRequest::class),
-			$this->createMock(IL10N::class),
-			$this->service,
-			$this->createMock(IUserSession::class),
-			$config,
-			$this->createMock(ILogger::class)
-		);
-
-		$resp = $controller->create(
-			'',
-			'',
-			'',
-			[],
-			[],
-		);
-		$this->assertEquals(Http::STATUS_FORBIDDEN, $resp->getStatus());
 	}
 
 	public function testAddOrUpdateStorageDisallowedBackend() {
@@ -115,7 +86,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			null
 		);
 
-		$this->assertEquals(Http::STATUS_UNPROCESSABLE_ENTITY, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 
 		$response = $this->controller->update(
 			1,
@@ -129,7 +100,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			null
 		);
 
-		$this->assertEquals(Http::STATUS_UNPROCESSABLE_ENTITY, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 	}
 
 	public function testCreate() {
@@ -193,6 +164,114 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 		$actual = $result->getData()->jsonSerialize();
 		$this->assertEquals(Http::STATUS_CREATED, $result->getStatus());
 		$this->assertEquals($expectedStorage, $actual);
+	}
+
+	public function localBackendNameProvider() {
+		return [
+			['local'],
+			['\OC\Files\Storage\Local'],
+		];
+	}
+
+	/**
+	 * @dataProvider localBackendNameProvider
+	 */
+	public function testCreateLocal($localBackendName) {
+		$mount = 'randomMount';
+		$backend = "identifier:{$localBackendName}";
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\OCA\Files_External\Lib\Backend',
+			'backendStorageClass' => '\OC\Files\Storage\Local',
+			'authClass' => '\Random\Missing\Auth\Class',
+			'mountPoint' => $mount,
+			'backendOpts' => $backendOpts,
+			'priority' => $priority,
+			'type' => IStorageConfig::MOUNT_TYPE_ADMIN,
+		]);
+
+		$backendMock = $storageConfig->getBackend();
+		$backendMock->method('isVisibleFor')->willReturn(true);
+		$backendMock->method('validateStorage')->willReturn(true);
+
+		$authMock = $storageConfig->getAuthMechanism();
+		$authMock->method('isVisibleFor')->willReturn(true);
+		$authMock->method('validateStorage')->willReturn(true);
+
+		$this->service->expects($this->once())
+		->method('createStorage')
+		->willReturn($storageConfig);
+		$this->service->expects($this->once())
+		->method('addStorage')
+		->will($this->returnArgument(0));
+
+		$expectedStorage = [
+			'id' => 30,
+			'mountPoint' => '/randomMount',
+			'backend' => "identifier:\OCA\Files_External\Lib\Backend",
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [
+				'datadir' => '/tmp',
+			],
+			'priority' => 3,
+			'userProvided' => false,
+			'type' => 'system',
+			'status' => StorageNotAvailableException::STATUS_SUCCESS, // status check for the storage is skipped and always returns this value
+		];
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$actual = $result->getData()->jsonSerialize();
+		$this->assertEquals(Http::STATUS_CREATED, $result->getStatus());
+		$this->assertEquals($expectedStorage, $actual);
+	}
+
+	/**
+	 * @dataProvider localBackendNameProvider
+	 */
+	public function testCreateLocalNotAllowed($localBackendName) {
+		$mount = 'randomMount';
+		$backend = "identifier:{$localBackendName}";
+		$auth = 'identifier:\Random\Missing\Auth\Class';
+		$backendOpts = [
+			'datadir' => '/tmp',
+		];
+		$priority = 3;
+
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\OCA\Files_External\Lib\Backend',
+			'backendStorageClass' => '\OC\Files\Storage\Local',
+			'authClass' => '\Random\Missing\Auth\Class',
+			'mountPoint' => $mount,
+			'backendOpts' => $backendOpts,
+			'priority' => $priority,
+			'type' => IStorageConfig::MOUNT_TYPE_ADMIN,
+		]);
+
+		// if not allowed, the backend must return false for its visibility
+		$backendMock = $storageConfig->getBackend();
+		$backendMock->method('isVisibleFor')->willReturn(false);
+		$backendMock->method('validateStorage')->willReturn(true);
+
+		$authMock = $storageConfig->getAuthMechanism();
+		$authMock->method('isVisibleFor')->willReturn(true);
+		$authMock->method('validateStorage')->willReturn(true);
+
+		$this->service->expects($this->once())
+		->method('createStorage')
+		->willReturn($storageConfig);
+		$this->service->expects($this->never())
+		->method('addStorage')
+		->will($this->returnArgument(0));
+
+		$result = $this->controller->create($mount, $backend, $auth, $backendOpts, [], [], [], $priority);
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $result->getStatus());
 	}
 
 	public function testUpdate() {

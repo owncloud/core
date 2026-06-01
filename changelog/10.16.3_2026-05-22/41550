@@ -1,0 +1,9 @@
+Security: Restrict AppConfigController read methods to full admins only
+
+Subadmin users could read all oc_appconfig values including SMTP passwords,
+LDAP bind credentials, and encryption master keys via the Settings API.
+Removed @NoAdminRequired from getApps, getKeys, and getValue so that the
+AdminMiddleware enforces full-admin-only access, consistent with the write
+methods.
+
+https://github.com/owncloud/core/pull/41550

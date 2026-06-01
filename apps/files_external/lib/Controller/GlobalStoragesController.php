@@ -86,15 +86,10 @@ class GlobalStoragesController extends StoragesController {
 		$applicableGroups,
 		$priority
 	) {
-		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
-
-		if ($backend === 'local' && $canCreateNewLocalStorage === false) {
-			return new DataResponse(
-				null,
-				Http::STATUS_FORBIDDEN
-			);
-		}
-
+		// NOTE: files_external_allow_create_new_local is checked during backend
+		// registration, and it will remove the related storage visibility
+		// if applicable. If the storage isn't visible, the `validate` method
+		// will fail.
 		$newStorage = $this->createStorage(
 			$mountPoint,
 			$backend,
