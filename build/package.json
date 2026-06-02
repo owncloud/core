@@ -35,7 +35,7 @@
     "modclean-patterns-owncloud": "./modclean-patterns-owncloud/"
   },
   "devDependencies": {
-    "handlebars": "^4.7.8",
+    "handlebars": "^4.7.9",
     "jasmine-core": "^2.99.1",
     "jasmine-sinon": "^0.4.0",
     "karma": "^6.4.4",
