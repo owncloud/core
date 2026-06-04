@@ -290,7 +290,6 @@ OC.L10N.register(
     "Database user" : "Pengguna basis data",
     "Database password" : "Sandi basis data",
     "Database name" : "Nama basis data",
-    "Database tablespace" : "Tablespace basis data",
     "Database host" : "Host basis data",
     "Performance warning" : "Peringatan kinerja",
     "SQLite will be used as database." : "SQLite akan digunakan sebagai basis data.",

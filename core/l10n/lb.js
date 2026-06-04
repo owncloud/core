@@ -201,7 +201,6 @@ OC.L10N.register(
     "Database user" : "Datebank-Benotzer",
     "Database password" : "Datebank-Passwuert",
     "Database name" : "Datebank Numm",
-    "Database tablespace" : "Tabelle-Plaz vun der Datebank",
     "Database host" : "Datebank-Server",
     "Performance warning" : "Leeschtungs Warnung",
     "SQLite will be used as database." : "SQLite wäert als Datebank benotzt ginn.",

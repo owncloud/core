@@ -230,7 +230,6 @@ OC.L10N.register(
     "Database user" : "Datubasearen erabiltzailea",
     "Database password" : "Datubasearen pasahitza",
     "Database name" : "Datubasearen izena",
-    "Database tablespace" : "Datu basearen taula-lekua",
     "Database host" : "Datubasearen hostalaria",
     "Finish setup" : "Bukatu konfigurazioa",
     "Need help?" : "Laguntza behar al duzu?",

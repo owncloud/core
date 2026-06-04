@@ -312,7 +312,6 @@
     "Database user" : "資料庫帳戶",
     "Database password" : "資料庫密碼",
     "Database name" : "資料庫名稱",
-    "Database tablespace" : "資料庫 tablespace",
     "Database host" : "資料庫主機",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "请指定主机名和端口号（例如 localhost:5432）。",
     "Performance warning" : "效能警告",

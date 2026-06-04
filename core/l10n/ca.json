@@ -230,7 +230,6 @@
     "Database user" : "Usuari de la base de dades",
     "Database password" : "Contrasenya de la base de dades",
     "Database name" : "Nom de la base de dades",
-    "Database tablespace" : "Espai de taula de la base de dades",
     "Database host" : "Ordinador central de la base de dades",
     "Performance warning" : "Alerta de rendiment",
     "SQLite will be used as database." : "SQLite s'utilitzarà com a base de dades.",

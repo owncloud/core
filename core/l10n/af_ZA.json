@@ -216,7 +216,6 @@
     "Database user" : "Databasisgebruiker",
     "Database password" : "Databasiswagwoord",
     "Database name" : "Databasisnaam",
-    "Database tablespace" : "Databasis tabelspasie",
     "Database host" : "Databasis gasheer",
     "Finish setup" : "Maak opstelling klaar",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Goeiedag,<br><br>ons wil u laat weet dat %s <strong>%s</strong> met u gedeel het.<br><a href=\"%s\">Bekyk!</a><br><br>",

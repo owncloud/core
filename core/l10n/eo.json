@@ -162,7 +162,6 @@
     "Database user" : "Datumbaza uzanto",
     "Database password" : "Datumbaza pasvorto",
     "Database name" : "Datumbaza nomo",
-    "Database tablespace" : "Datumbaza tabelospaco",
     "Database host" : "Datumbaza gastigo",
     "SQLite will be used as database." : "SQLite uziĝos kiel datumbazo.",
     "For larger installations we recommend to choose a different database backend." : "Por pli grandaj instaloj ni rekomendas elekti malsaman datumbazomotoron.",

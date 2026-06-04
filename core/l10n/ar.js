@@ -303,7 +303,6 @@ OC.L10N.register(
     "Database user" : "مستخدم قاعدة بيانات",
     "Database password" : "كلمة مرور قاعدة البيانات",
     "Database name" : "اسم قاعدة البيانات",
-    "Database tablespace" : "بنية التخزين الجدولية لقاعدة البيانات",
     "Database host" : "مضيف قاعدة البيانات",
     "Performance warning" : "تحذير الأداء",
     "SQLite will be used as database." : "سيتم استخدام SQLite كقاعدة بيانات.",

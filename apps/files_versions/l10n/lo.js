@@ -2,6 +2,13 @@ OC.L10N.register(
     "files_versions",
     {
     "Versions" : "ເວີຊັນ",
-    "Restore" : "ກູ້ຄືນ"
+    "File {file} has been reverted and marked as new current version" : "ໄຟລ໌ {file} ຖືກກູ້ຄືນແລ້ວ ແລະ ຖືກໝາຍເປັນເວີຊັນປັດຈຸບັນໃໝ່",
+    "Failed to revert {file} to revision {timestamp}." : "ບໍ່ສາມາດກູ້ {file} ຄືນໄປເປັນສະບັບແກ້ໄຂ {timestamp} ໄດ້.",
+    "Failed to publish version" : "ບໍ່ສາມາດເຜີຍແຜ່ເວີຊັນໄດ້",
+    "_%n byte_::_%n bytes_" : ["%n ໄບທ໌"],
+    "Restore" : "ກູ້ຄືນ",
+    "persistent" : "ຄົງຕົວ",
+    "Publish version" : "ເຜີຍແຜ່ເວີຊັນ",
+    "current" : "ປັດຈຸບັນ"
 },
 "nplurals=1; plural=0;");

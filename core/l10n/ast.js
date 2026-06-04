@@ -241,7 +241,6 @@ OC.L10N.register(
     "Database user" : "Usuariu de la base de datos",
     "Database password" : "Contraseña de la base de datos",
     "Database name" : "Nome de la base de datos",
-    "Database tablespace" : "Espaciu de tables de la base de datos",
     "Database host" : "Agospiador de la base de datos",
     "Performance warning" : "Avisu de rendimientu",
     "SQLite will be used as database." : "SQLite va utilizase como base de datos.",

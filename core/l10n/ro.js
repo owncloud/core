@@ -209,7 +209,6 @@ OC.L10N.register(
     "Database user" : "Utilizatorul bazei de date",
     "Database password" : "Parola bazei de date",
     "Database name" : "Numele bazei de date",
-    "Database tablespace" : "Tabela de spațiu a bazei de date",
     "Database host" : "Bază date",
     "Performance warning" : "Alertă de performanță",
     "SQLite will be used as database." : "SQLite va fi folosit ca bază de date.",

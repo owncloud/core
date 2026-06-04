@@ -309,7 +309,6 @@ OC.L10N.register(
     "Database user" : "שם משתמש במסד הנתונים",
     "Database password" : "ססמת מסד הנתונים",
     "Database name" : "שם מסד הנתונים",
-    "Database tablespace" : "מרחב הכתובות של מסד הנתונים",
     "Database host" : "שרת בסיס נתונים",
     "Performance warning" : "אזהרת ביצועים",
     "SQLite will be used as database." : "יעשה שימוש ב- SQLite כמסד נתונים.",

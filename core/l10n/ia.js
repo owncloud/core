@@ -239,7 +239,6 @@ OC.L10N.register(
     "Database user" : "Usator de base de datos",
     "Database password" : "Contrasigno de base de datos",
     "Database name" : "Nomine de base de datos",
-    "Database tablespace" : "Spatio de tabella de base de datos",
     "Database host" : "Hospite de base de datos",
     "Performance warning" : "Aviso de rendimento",
     "SQLite will be used as database." : "SQLite essera usate pro base de datos.",

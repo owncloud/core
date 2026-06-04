@@ -316,7 +316,6 @@ OC.L10N.register(
     "Database user" : "Databasanvändare",
     "Database password" : "Lösenord till databasen",
     "Database name" : "Databasnamn",
-    "Database tablespace" : "Databas tabellutrymme",
     "Database host" : "Databasserver",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Ange portnumret tillsammans med värdnamnet (t.ex. localhost:5432).",
     "Performance warning" : "Prestanda varning",

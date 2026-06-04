@@ -317,7 +317,6 @@ OC.L10N.register(
     "Database user" : "データベースのユーザー名",
     "Database password" : "データベースのパスワード",
     "Database name" : "データベース名",
-    "Database tablespace" : "データベースの表領域",
     "Database host" : "データベースのホスト名",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "ホスト名と共にポート番号を指定してください（例：localhost:5432）。",
     "Performance warning" : "パフォーマンス警告",

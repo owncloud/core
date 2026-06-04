@@ -301,7 +301,6 @@ OC.L10N.register(
     "Database user" : "Notandi gagnagrunns",
     "Database password" : "Lykilorð gagnagrunns",
     "Database name" : "Heiti gagnagrunns",
-    "Database tablespace" : "Töflusvæði gagnagrunns",
     "Database host" : "Netþjónn gagnagrunns",
     "Performance warning" : "Afkastaviðvörun",
     "SQLite will be used as database." : "SQLite verður notað sem gagnagrunnur.",

@@ -92,7 +92,6 @@ OC.L10N.register(
     "Database user" : "ڈیٹابیس یوزر",
     "Database password" : "ڈیٹابیس پاسورڈ",
     "Database name" : "ڈیٹابیس کا نام",
-    "Database tablespace" : "ڈیٹابیس ٹیبل سپیس",
     "Database host" : "ڈیٹابیس ہوسٹ",
     "Finish setup" : "سیٹ اپ ختم کریں",
     "Log out" : "لاگ آؤٹ",

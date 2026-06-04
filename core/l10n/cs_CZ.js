@@ -298,7 +298,6 @@ OC.L10N.register(
     "Database user" : "Uživatel databáze",
     "Database password" : "Heslo databáze",
     "Database name" : "Název databáze",
-    "Database tablespace" : "Tabulkový prostor databáze",
     "Database host" : "Hostitel databáze",
     "Performance warning" : "Varování o výkonu",
     "SQLite will be used as database." : "Bude použita SQLite databáze.",

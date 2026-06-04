@@ -316,7 +316,6 @@ OC.L10N.register(
     "Database user" : "데이터베이스 사용자",
     "Database password" : "데이터베이스 암호",
     "Database name" : "데이터베이스 이름",
-    "Database tablespace" : "데이터베이스 테이블 공간",
     "Database host" : "데이터베이스 호스트",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "호스트 이름과 함께 포트 번호를 지정하십시오 (예: localhost:5432).",
     "Performance warning" : "성능 경고",

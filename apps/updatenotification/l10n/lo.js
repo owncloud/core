@@ -1,0 +1,19 @@
+OC.L10N.register(
+    "updatenotification",
+    {
+    "Update notifications" : "ການແຈ້ງເຕືອນການອັບເດດ",
+    "{version} is available. Get more information on how to update." : "ມີເວີຊັນ {version} ແລ້ວ. ຮັບຂໍ້ມູນເພີ່ມເຕີມກ່ຽວກັບວິທີການອັບເດດ.",
+    "Updated channel" : "ອັບເດດຊ່ອງທາງແລ້ວ",
+    "ownCloud core" : "ສ່ວນຫຼັກຂອງ ownCloud",
+    "Update for %1$s to version %2$s is available." : "ມີການອັບເດດສຳລັບ %1$s ເປັນເວີຊັນ %2$s ແລ້ວ.",
+    "Updater" : "ຕົວອັບເດດ",
+    "A new version is available: %s" : "ມີເວີຊັນໃໝ່ໃຫ້ໃຊ້ແລ້ວ: %s",
+    "Your version is up to date." : "ເວີຊັນຂອງທ່ານເປັນປັດຈຸບັນແລ້ວ.",
+    "Checked on %s" : "ກວດສອບເມື່ອ %s",
+    "Update channel:" : "ຊ່ອງທາງການອັບເດດ:",
+    "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "ທ່ານສາມາດອັບເດດເປັນເວີຊັນໃໝ່ກວ່າ / ຊ່ອງທາງທົດລອງໄດ້ສະເໝີ. ແຕ່ທ່ານບໍ່ສາມາດຫຼຸດເວີຊັນລົງໄປຫາຊ່ອງທາງທີ່ໝັ້ນຄົງກວ່າໄດ້.",
+    "Notify members of the following groups about available updates:" : "ແຈ້ງເຕືອນສະມາຊິກຂອງກຸ່ມຕໍ່ໄປນີ້ກ່ຽວກັບການອັບເດດທີ່ມີ:",
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "ມີພຽງແຕ່ການແຈ້ງເຕືອນສຳລັບການອັບເດດແອັບຯເທົ່ານັ້ນ, ເນື່ອງຈາກຊ່ອງທາງການອັບເດດທີ່ເລືອກສຳລັບ ownCloud ເອງນັ້ນບໍ່ອະນຸຍາດໃຫ້ມີການແຈ້ງເຕືອນ.",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "ຕົວອັບເດດອອນລາຍຖືກປິດໃຊ້ງານໂດຍອັດຕະໂນມັດ ເນື່ອງຈາກທ່ານກຳລັງໃຊ້ ownCloud ລຸ້ນ Enterprise. ກະລຸນາອັບເດດ ownCloud ຂອງທ່ານດ້ວຍຕົນເອງ."
+},
+"nplurals=1; plural=0;");

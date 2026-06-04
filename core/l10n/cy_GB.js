@@ -86,7 +86,6 @@ OC.L10N.register(
     "Database user" : "Defnyddiwr cronfa ddata",
     "Database password" : "Cyfrinair cronfa ddata",
     "Database name" : "Enw cronfa ddata",
-    "Database tablespace" : "Tablespace cronfa ddata",
     "Database host" : "Gwesteiwr cronfa ddata",
     "Finish setup" : "Gorffen sefydlu",
     "Log out" : "Allgofnodi",

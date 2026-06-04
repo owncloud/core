@@ -263,7 +263,6 @@ OC.L10N.register(
     "Database user" : "Користувач бази даних",
     "Database password" : "Пароль для бази даних",
     "Database name" : "Назва бази даних",
-    "Database tablespace" : "Таблиця бази даних",
     "Database host" : "Хост бази даних",
     "Performance warning" : "Попередження продуктивності",
     "SQLite will be used as database." : "В якості бази даних буде використана SQLite.",

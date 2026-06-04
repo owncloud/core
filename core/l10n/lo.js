@@ -317,7 +317,6 @@ OC.L10N.register(
     "Database user" : "ຜູ້ໃຊ້ຖານຂໍ້ມູນ",
     "Database password" : "ລະຫັດຜ່ານຖານຂໍ້ມູນ",
     "Database name" : "ຊື່ຖານຂໍ້ມູນ",
-    "Database tablespace" : "ພື້ນທີ່ຕາຕະລາງຖານຂໍ້ມູນ",
     "Database host" : "ໂຮສຂອງຖານຂໍ້ມູນ",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "ກະລຸນາລະບຸໝາຍເລກພອດພ້ອມກັບຊື່ໂຮສ (ຕົວຢ່າງ: localhost:5432).",
     "Performance warning" : "ຄຳເຕືອນດ້ານປະສິດທິພາບ",

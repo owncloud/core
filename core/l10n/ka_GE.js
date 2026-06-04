@@ -106,7 +106,6 @@ OC.L10N.register(
     "Database user" : "მონაცემთა ბაზის მომხმარებელი",
     "Database password" : "მონაცემთა ბაზის პაროლი",
     "Database name" : "მონაცემთა ბაზის სახელი",
-    "Database tablespace" : "ბაზის ცხრილის ზომა",
     "Database host" : "მონაცემთა ბაზის ჰოსტი",
     "Finish setup" : "კონფიგურაციის დასრულება",
     "Log out" : "გამოსვლა",

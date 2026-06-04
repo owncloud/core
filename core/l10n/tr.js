@@ -315,7 +315,6 @@ OC.L10N.register(
     "Database user" : "Veritabanı kullanıcı adı",
     "Database password" : "Veritabanı parolası",
     "Database name" : "Veritabanı adı",
-    "Database tablespace" : "Veritabanı tablo alanı",
     "Database host" : "Veritabanı sunucusu",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Lütfen bağlantı noktası numarasını ana bilgisayar adıyla birlikte belirtin (ör. localhost:5432).",
     "Performance warning" : "Performans uyarısı",

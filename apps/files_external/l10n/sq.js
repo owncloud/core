@@ -56,6 +56,7 @@ OC.L10N.register(
     "Unsatisfied authentication mechanism parameters" : "Parametra mekanizmi mirëfilltësimi të paplotësuar",
     "Insufficient data: %s" : "Të dhëna të pamjaftueshme: %s",
     "%s" : "%s",
+    "Storage with id \"%d\" not found" : "S’u gjet depozitë me ID “%d”",
     "Storage with id \"%i\" is not user editable" : "Depozita me id “%i” s’është e përpunueshme nga përdoruesi",
     "OAuth1" : "OAuth1",
     "App key" : "Kyç aplikacioni",
