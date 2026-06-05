@@ -1,0 +1,10 @@
+Security: Prevent user enumeration via differential password reset UI
+
+The login form showed a "Reset it?" link only when a valid user on a
+backend that supports password changes was detected. LDAP users produced
+a different response than non-existent users, allowing unauthenticated
+enumeration of accounts on those backends. The backend capability check
+has been removed; the reset link is now shown uniformly regardless of
+user existence or backend type.
+
+https://github.com/owncloud/core/pull/41586
