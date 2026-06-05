@@ -157,7 +157,7 @@ class LoginController extends Controller {
 	 * @param string $ip  The remote client IP
 	 * @return void
 	 */
-	protected function throttleLogin($ip) {
+	public function throttleLogin($ip) {
 		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
 			return;
 		}
@@ -201,7 +201,7 @@ class LoginController extends Controller {
 	 * @param string $ip
 	 * @return void
 	 */
-	protected function recordFailedLoginAttempt($ip) {
+	public function recordFailedLoginAttempt($ip) {
 		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
 			return;
 		}
@@ -232,7 +232,7 @@ class LoginController extends Controller {
 	 * @param string $ip
 	 * @return void
 	 */
-	protected function resetLoginThrottle($ip) {
+	public function resetLoginThrottle($ip) {
 		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
 			return;
 		}
