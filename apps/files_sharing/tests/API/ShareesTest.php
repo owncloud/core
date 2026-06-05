@@ -124,6 +124,8 @@ class ShareesTest extends TestCase {
 		$this->userSearch = $this->getMockBuilder(UserSearch::class)
 			->disableOriginalConstructor()
 			->getMock();
+		// Default: all search terms are acceptable unless a specific test overrides this.
+		$this->userSearch->method('isSearchable')->willReturn(true);
 
 		$this->customRemoteSearchMock = $this->createMock(IRemoteShareesSearch::class);
 
