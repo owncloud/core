@@ -1,0 +1,10 @@
+Security: Add per-IP brute-force throttling to the login endpoint
+
+The login endpoint had no rate limiting, account lockout, or progressive
+delay. A CSRF token obtained with a single GET request could be reused
+for unlimited password attempts. Per-IP exponential backoff has been
+added: after 10 failures within a 600-second window each subsequent
+attempt incurs an increasing delay capped at 25 seconds. The feature
+can be disabled via the login_brute_force_protection config key.
+
+https://github.com/owncloud/core/pull/41584
