@@ -1,0 +1,10 @@
+Security: Restrict unserialize() allowed classes in CommandJob
+
+CommandJob::run() called unserialize() without the allowed_classes
+option on data sourced from the oc_jobs database table. An attacker
+with database write access could inject a crafted PHP object payload
+to trigger gadget chains from bundled libraries and achieve remote
+code execution. Deserialization is now restricted to verified ICommand
+implementations only.
+
+https://github.com/owncloud/core/pull/41582
