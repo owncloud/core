@@ -1,0 +1,10 @@
+Security: Replace strcmp token oracle with hash-based comparison in federation
+
+The requestSharedSecret endpoint used strcmp() to compare caller-supplied
+and stored federation tokens, returning different HTTP responses based on
+lexicographic ordering. This allowed an unauthenticated attacker to recover
+the stored token via binary search in approximately 96 requests. Tokens are
+now compared by their SHA-256 hashes, removing the plaintext oracle while
+preserving the tiebreaking behaviour.
+
+https://github.com/owncloud/core/pull/41579
