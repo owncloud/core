@@ -159,9 +159,8 @@ class OCSAuthAPIController extends OCSController {
 		}
 
 		if ($this->isValidToken($url, $token) === false) {
-			$expectedToken = $this->dbHandler->getToken($url);
 			$this->logger->error(
-				'remote server (' . $url . ') didn\'t send a valid token (got "' . $token . '" but expected "'. $expectedToken . '") while getting shared secret',
+				'remote server (' . $url . ') didn\'t send a valid token while getting shared secret',
 				['app' => 'federation']
 			);
 			return ['statuscode' => Http::STATUS_FORBIDDEN];
