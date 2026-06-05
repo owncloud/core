@@ -67,24 +67,11 @@ class LoginController extends Controller {
 	/** @var ITimeFactory */
 	private $timeFactory;
 
-	/**
-	 * Number of failed attempts from one IP before throttling starts.
-	 * Configurable via system value 'login_brute_force_max_attempts'.
-	 */
-	const BRUTE_FORCE_MAX_ATTEMPTS = 10;
+	public const BRUTE_FORCE_MAX_ATTEMPTS = 10;
 
-	/**
-	 * Rolling window in seconds: the attempt counter resets after this period
-	 * of inactivity. Configurable via system value 'login_brute_force_time_window'.
-	 */
-	const BRUTE_FORCE_TIME_WINDOW = 600;
+	public const BRUTE_FORCE_TIME_WINDOW = 600;
 
-	/**
-	 * Maximum sleep penalty (in microseconds) applied after exceeding the
-	 * threshold. Caps the exponential back-off so legitimate users can still
-	 * recover via a valid password.  Default: 25 seconds.
-	 */
-	const BRUTE_FORCE_MAX_DELAY_US = 25000000;
+	public const BRUTE_FORCE_MAX_DELAY_US = 25000000;
 
 	/**
 	 * @param string $appName
@@ -136,7 +123,7 @@ class LoginController extends Controller {
 	 * Read the current throttle record for an IP from the persistent store.
 	 *
 	 * @param string $key
-	 * @return array{failCount: int, lastFailTime: int}
+	 * @return array
 	 */
 	protected function readThrottleRecord($key) {
 		$raw = $this->config->getAppValue('core', $key, '');
@@ -156,7 +143,7 @@ class LoginController extends Controller {
 	 * Persist an updated throttle record.
 	 *
 	 * @param string $key
-	 * @param array{failCount: int, lastFailTime: int} $record
+	 * @param array $record
 	 * @return void
 	 */
 	protected function writeThrottleRecord($key, array $record) {
