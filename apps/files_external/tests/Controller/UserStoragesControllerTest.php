@@ -31,6 +31,7 @@ use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUserSession;
 use OCP\IL10N;
@@ -50,7 +51,20 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			$this->createMock(IL10N::class),
 			$this->service,
 			$this->createMock(IUserSession::class),
-			$this->createMock(ILogger::class)
+			$this->createMock(ILogger::class),
+			$this->config
+		);
+	}
+
+	protected function rebuildControllerWithConfig(\OCP\IConfig $config) {
+		$this->controller = new UserStoragesController(
+			'files_external',
+			$this->createMock(IRequest::class),
+			$this->createMock(IL10N::class),
+			$this->service,
+			$this->createMock(IUserSession::class),
+			$this->createMock(ILogger::class),
+			$config
 		);
 	}
 
