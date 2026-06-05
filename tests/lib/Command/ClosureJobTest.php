@@ -62,16 +62,21 @@ class ClosureJobTest extends TestCase {
 	 * correctly after the fix.
 	 */
 	public function testLegitimateClosureIsExecuted() {
-		$executed = false;
-		$closure = function () use (&$executed) {
-			$executed = true;
+		// Use a static file-based flag so the closure has no $this binding and
+		// the executed state survives serialise→unserialise in the same process.
+		$flagFile = \sys_get_temp_dir() . '/closure_job_test_' . \getmypid();
+		@\unlink($flagFile);
+
+		$closure = static function () use ($flagFile) {
+			\file_put_contents($flagFile, '1');
 		};
 		$serialized = \serialize(new SerializableClosure($closure));
 
 		$job = new TestableClosureJob();
 		$job->runPublic($serialized);
 
-		$this->assertTrue($executed, 'The legitimate closure was not executed');
+		$this->assertFileExists($flagFile, 'The legitimate closure was not executed');
+		@\unlink($flagFile);
 	}
 
 	/**
