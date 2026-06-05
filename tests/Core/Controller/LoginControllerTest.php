@@ -27,6 +27,7 @@ use OC\Core\Controller\LoginController;
 use OC\User\Session;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -55,6 +56,8 @@ class LoginControllerTest extends TestCase {
 	private $twoFactorManager;
 	/** @var ILicenseManager */
 	private $licenseManager;
+	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
+	private $timeFactory;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -70,6 +73,7 @@ class LoginControllerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->licenseManager = $this->createMock(ILicenseManager::class);
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
 
 		$this->loginController = new LoginController(
 			'core',
@@ -80,7 +84,8 @@ class LoginControllerTest extends TestCase {
 			$this->userSession,
 			$this->urlGenerator,
 			$this->twoFactorManager,
-			$this->licenseManager
+			$this->licenseManager,
+			$this->timeFactory
 		);
 	}
 
@@ -468,7 +473,8 @@ class LoginControllerTest extends TestCase {
 				$this->userSession,
 				$this->urlGenerator,
 				$this->twoFactorManager,
-				$this->licenseManager
+				$this->licenseManager,
+				$this->timeFactory,
 			])
 			->getMock();
 		$this->loginController->expects($this->once())
@@ -524,8 +530,28 @@ class LoginControllerTest extends TestCase {
 		$this->userManager->expects($this->exactly($expectedGetByEmailCalls))
 			->method('getByEmail')->willReturn([]);
 
+		// Stub out brute-force throttle methods so they do not interfere with
+		// the strict config-mock expectations in this test.
+		$controller = $this->getMockBuilder(LoginController::class)
+			->setMethods(['throttleLogin', 'recordFailedLoginAttempt'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->userManager,
+				$this->config,
+				$this->session,
+				$this->userSession,
+				$this->urlGenerator,
+				$this->twoFactorManager,
+				$this->licenseManager,
+				$this->timeFactory,
+			])
+			->getMock();
+		$controller->expects($this->once())->method('throttleLogin');
+		$controller->expects($this->once())->method('recordFailedLoginAttempt');
+
 		$expected = new RedirectResponse($loginPageUrl);
-		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, '/foo'));
+		$this->assertEquals($expected, $controller->tryLogin($user, $password, '/foo'));
 	}
 
 	public function testLoginWithValidCredentials() {
@@ -554,7 +580,7 @@ class LoginControllerTest extends TestCase {
 		$expected = new RedirectResponse($indexPageUrl);
 
 		$this->loginController = $this->getMockBuilder(LoginController::class)
-			->setMethods(['getDefaultUrl'])
+			->setMethods(['getDefaultUrl', 'throttleLogin', 'resetLoginThrottle'])
 			->setConstructorArgs([
 				'core',
 				$this->request,
@@ -564,12 +590,15 @@ class LoginControllerTest extends TestCase {
 				$this->userSession,
 				$this->urlGenerator,
 				$this->twoFactorManager,
-				$this->licenseManager
+				$this->licenseManager,
+				$this->timeFactory,
 			])
 			->getMock();
 		$this->loginController->expects($this->once())
 			->method('getDefaultUrl')
 			->willReturn($indexPageUrl);
+		$this->loginController->expects($this->once())->method('throttleLogin');
+		$this->loginController->expects($this->once())->method('resetLoginThrottle');
 
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, null));
 	}
@@ -600,7 +629,7 @@ class LoginControllerTest extends TestCase {
 		$expected = new RedirectResponse($indexPageUrl);
 
 		$this->loginController = $this->getMockBuilder(LoginController::class)
-			->setMethods(['getDefaultUrl'])
+			->setMethods(['getDefaultUrl', 'throttleLogin', 'resetLoginThrottle'])
 			->setConstructorArgs([
 				'core',
 				$this->request,
@@ -610,12 +639,15 @@ class LoginControllerTest extends TestCase {
 				$this->userSession,
 				$this->urlGenerator,
 				$this->twoFactorManager,
-				$this->licenseManager
+				$this->licenseManager,
+				$this->timeFactory,
 			])
 			->getMock();
 		$this->loginController->expects($this->once())
 			->method('getDefaultUrl')
 			->willReturn($indexPageUrl);
+		$this->loginController->expects($this->once())->method('throttleLogin');
+		$this->loginController->expects($this->once())->method('resetLoginThrottle');
 
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, null, null, "1")); // "1" is expected as rememberMe value
 	}
@@ -650,10 +682,18 @@ class LoginControllerTest extends TestCase {
 			->with(\urldecode($originalUrl))
 			->will($this->returnValue($redirectUrl));
 
+		// Disable brute-force protection so the throttle helpers return
+		// immediately and do not require additional mock wiring.
+		$this->request->method('getRemoteAddress')->willReturn('127.0.0.1');
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, false],
+			]);
+
 		$expected = new RedirectResponse(\urldecode($redirectUrl));
 		$this->assertEquals($expected, $this->loginController->tryLogin('Jane', $password, $originalUrl));
 	}
-	
+
 	public function testLoginWithTwoFactorEnforced() {
 		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
@@ -689,6 +729,14 @@ class LoginControllerTest extends TestCase {
 			->with('core.TwoFactorChallenge.selectChallenge')
 			->will($this->returnValue($challengeUrl));
 
+		// Disable brute-force protection so the throttle helpers return
+		// immediately and do not require additional mock wiring.
+		$this->request->method('getRemoteAddress')->willReturn('127.0.0.1');
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, false],
+			]);
+
 		$expected = new RedirectResponse($challengeUrl);
 		$this->assertEquals($expected, $this->loginController->tryLogin('john@doe.com', $password, null));
 	}
@@ -707,7 +755,7 @@ class LoginControllerTest extends TestCase {
 				['john', 'just wrong']
 			)
 			->willReturn(false);
-		
+
 		$this->userManager->expects($this->once())
 			->method('getByEmail')
 			->with('john@doe.com')
@@ -718,7 +766,207 @@ class LoginControllerTest extends TestCase {
 			->with('core.login.showLoginForm', ['user' => 'john@doe.com'])
 			->will($this->returnValue(''));
 
+		// Disable brute-force protection so the throttle helpers return
+		// immediately and do not require additional mock wiring.
+		$this->request->method('getRemoteAddress')->willReturn('127.0.0.1');
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, false],
+				['strict_login_enforced', false, false],
+			]);
+
 		$expected = new RedirectResponse('');
 		$this->assertEquals($expected, $this->loginController->tryLogin('john@doe.com', 'just wrong', null));
+	}
+
+	// -------------------------------------------------------------------------
+	// Brute-force throttle unit tests
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Helper: build a LoginController that stubs applyDelay() so tests run
+	 * without actually sleeping, but all other throttle logic executes.
+	 *
+	 * @return LoginController|\PHPUnit\Framework\MockObject\MockObject
+	 */
+	private function buildThrottleController() {
+		return $this->getMockBuilder(LoginController::class)
+			->setMethods(['applyDelay'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->userManager,
+				$this->config,
+				$this->session,
+				$this->userSession,
+				$this->urlGenerator,
+				$this->twoFactorManager,
+				$this->licenseManager,
+				$this->timeFactory,
+			])
+			->getMock();
+	}
+
+	public function testThrottleLoginNoDelayBelowThreshold() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_max_attempts', LoginController::BRUTE_FORCE_MAX_ATTEMPTS, 10],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 5, 'lastFailTime' => 900]));
+		$this->timeFactory->method('getTime')->willReturn(1000); // within window
+
+		$controller = $this->buildThrottleController();
+		// applyDelay must NOT be called: failCount (5) <= max (10)
+		$controller->expects($this->never())->method('applyDelay');
+
+		$controller->throttleLogin('1.2.3.4');
+	}
+
+	public function testThrottleLoginDelayAppliedAboveThreshold() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_max_attempts', LoginController::BRUTE_FORCE_MAX_ATTEMPTS, 10],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		// failCount=12, excess=2 → delay = 2^2 * 1 000 000 = 4 000 000 µs
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 12, 'lastFailTime' => 900]));
+		$this->timeFactory->method('getTime')->willReturn(1000); // within window
+
+		$controller = $this->buildThrottleController();
+		$controller->expects($this->once())
+			->method('applyDelay')
+			->with(4000000);
+
+		$controller->throttleLogin('1.2.3.4');
+	}
+
+	public function testThrottleLoginNoDelayAfterWindowExpires() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_max_attempts', LoginController::BRUTE_FORCE_MAX_ATTEMPTS, 10],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		// failCount=99 but lastFailTime is outside the window
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 99, 'lastFailTime' => 1]));
+		$this->timeFactory->method('getTime')->willReturn(10000); // >> 601 seconds later
+
+		$controller = $this->buildThrottleController();
+		$controller->expects($this->never())->method('applyDelay');
+
+		$controller->throttleLogin('1.2.3.4');
+	}
+
+	public function testThrottleLoginDisabledByConfig() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, false], // disabled
+			]);
+		// getAppValue should never be reached
+		$this->config->expects($this->never())->method('getAppValue');
+
+		$controller = $this->buildThrottleController();
+		$controller->expects($this->never())->method('applyDelay');
+
+		$controller->throttleLogin('1.2.3.4');
+	}
+
+	public function testRecordFailedLoginAttemptIncrementsCounter() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		// Existing record: 3 failures, within the window
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 3, 'lastFailTime' => 950]));
+		$this->timeFactory->method('getTime')->willReturn(1000);
+
+		// Expect the incremented record to be persisted
+		$this->config->expects($this->once())
+			->method('setAppValue')
+			->with(
+				'core',
+				$this->stringContains('login_throttle_'),
+				$this->callback(function ($json) {
+					$data = \json_decode($json, true);
+					return $data['failCount'] === 4 && $data['lastFailTime'] === 1000;
+				})
+			);
+
+		$controller = $this->buildThrottleController();
+		$controller->recordFailedLoginAttempt('1.2.3.4');
+	}
+
+	public function testRecordFailedLoginAttemptResetsCounterOutsideWindow() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		// Last failure was long ago
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 50, 'lastFailTime' => 1]));
+		$this->timeFactory->method('getTime')->willReturn(10000);
+
+		// Counter should reset to 1
+		$this->config->expects($this->once())
+			->method('setAppValue')
+			->with(
+				'core',
+				$this->stringContains('login_throttle_'),
+				$this->callback(function ($json) {
+					$data = \json_decode($json, true);
+					return $data['failCount'] === 1;
+				})
+			);
+
+		$controller = $this->buildThrottleController();
+		$controller->recordFailedLoginAttempt('1.2.3.4');
+	}
+
+	public function testResetLoginThrottleClearsRecord() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+			]);
+		$this->config->expects($this->once())
+			->method('deleteAppValue')
+			->with('core', $this->stringContains('login_throttle_'));
+
+		$controller = $this->buildThrottleController();
+		$controller->resetLoginThrottle('1.2.3.4');
+	}
+
+	public function testThrottleDelayCapAtMaximum() {
+		$this->config->method('getSystemValue')
+			->willReturnMap([
+				['login_brute_force_protection', true, true],
+				['login_brute_force_max_attempts', LoginController::BRUTE_FORCE_MAX_ATTEMPTS, 10],
+				['login_brute_force_time_window', LoginController::BRUTE_FORCE_TIME_WINDOW, 600],
+			]);
+		// excess=100 → uncapped delay would be astronomical; capped at MAX_DELAY_US
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->willReturn(\json_encode(['failCount' => 110, 'lastFailTime' => 999]));
+		$this->timeFactory->method('getTime')->willReturn(1000);
+
+		$controller = $this->buildThrottleController();
+		$controller->expects($this->once())
+			->method('applyDelay')
+			->with(LoginController::BRUTE_FORCE_MAX_DELAY_US);
+
+		$controller->throttleLogin('1.2.3.4');
 	}
 }

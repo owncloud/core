@@ -33,6 +33,7 @@ use OC_User;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\License\ILicenseManager;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -63,6 +64,28 @@ class LoginController extends Controller {
 	/** @var ILicenseManager */
 	private $licenseManager;
 
+	/** @var ITimeFactory */
+	private $timeFactory;
+
+	/**
+	 * Number of failed attempts from one IP before throttling starts.
+	 * Configurable via system value 'login_brute_force_max_attempts'.
+	 */
+	const BRUTE_FORCE_MAX_ATTEMPTS = 10;
+
+	/**
+	 * Rolling window in seconds: the attempt counter resets after this period
+	 * of inactivity. Configurable via system value 'login_brute_force_time_window'.
+	 */
+	const BRUTE_FORCE_TIME_WINDOW = 600;
+
+	/**
+	 * Maximum sleep penalty (in microseconds) applied after exceeding the
+	 * threshold. Caps the exponential back-off so legitimate users can still
+	 * recover via a valid password.  Default: 25 seconds.
+	 */
+	const BRUTE_FORCE_MAX_DELAY_US = 25000000;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
@@ -72,6 +95,8 @@ class LoginController extends Controller {
 	 * @param Session $userSession
 	 * @param IURLGenerator $urlGenerator
 	 * @param Manager $twoFactorManager
+	 * @param ILicenseManager $licenseManager
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		$appName,
@@ -82,7 +107,8 @@ class LoginController extends Controller {
 		Session $userSession,
 		IURLGenerator $urlGenerator,
 		Manager $twoFactorManager,
-		ILicenseManager $licenseManager
+		ILicenseManager $licenseManager,
+		ITimeFactory $timeFactory
 	) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
@@ -92,6 +118,150 @@ class LoginController extends Controller {
 		$this->urlGenerator = $urlGenerator;
 		$this->twoFactorManager = $twoFactorManager;
 		$this->licenseManager = $licenseManager;
+		$this->timeFactory = $timeFactory;
+	}
+
+	/**
+	 * Returns the app-config key used to persist per-IP throttle data.
+	 * The IP is hashed so that raw addresses are not stored as plain text.
+	 *
+	 * @param string $ip
+	 * @return string
+	 */
+	protected function getThrottleKey($ip) {
+		return 'login_throttle_' . \hash('sha256', $ip);
+	}
+
+	/**
+	 * Read the current throttle record for an IP from the persistent store.
+	 *
+	 * @param string $key
+	 * @return array{failCount: int, lastFailTime: int}
+	 */
+	protected function readThrottleRecord($key) {
+		$raw = $this->config->getAppValue('core', $key, '');
+		if ($raw === '') {
+			return ['failCount' => 0, 'lastFailTime' => 0];
+		}
+		$data = \json_decode($raw, true);
+		if (!\is_array($data)
+			|| !isset($data['failCount'], $data['lastFailTime'])
+		) {
+			return ['failCount' => 0, 'lastFailTime' => 0];
+		}
+		return $data;
+	}
+
+	/**
+	 * Persist an updated throttle record.
+	 *
+	 * @param string $key
+	 * @param array{failCount: int, lastFailTime: int} $record
+	 * @return void
+	 */
+	protected function writeThrottleRecord($key, array $record) {
+		$this->config->setAppValue('core', $key, \json_encode($record));
+	}
+
+	/**
+	 * Apply a brute-force delay based on the current failure count.
+	 * Returns immediately when protection is disabled or below the threshold.
+	 *
+	 * @param string $ip  The remote client IP
+	 * @return void
+	 */
+	protected function throttleLogin($ip) {
+		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
+			return;
+		}
+
+		$key = $this->getThrottleKey($ip);
+		$record = $this->readThrottleRecord($key);
+
+		$maxAttempts = (int) $this->config->getSystemValue(
+			'login_brute_force_max_attempts',
+			self::BRUTE_FORCE_MAX_ATTEMPTS
+		);
+		$timeWindow = (int) $this->config->getSystemValue(
+			'login_brute_force_time_window',
+			self::BRUTE_FORCE_TIME_WINDOW
+		);
+
+		$now = $this->timeFactory->getTime();
+
+		// If the last failure is outside the rolling window, the counter has
+		// naturally expired — treat this IP as clean.
+		if (($now - $record['lastFailTime']) >= $timeWindow) {
+			return;
+		}
+
+		$excess = $record['failCount'] - $maxAttempts;
+		if ($excess <= 0) {
+			return;
+		}
+
+		// Exponential back-off: 2^excess seconds, capped at MAX_DELAY_US.
+		$delayUs = (int) \min(
+			(2 ** $excess) * 1000000,
+			self::BRUTE_FORCE_MAX_DELAY_US
+		);
+		$this->applyDelay($delayUs);
+	}
+
+	/**
+	 * Increment the failure counter for this IP in the persistent store.
+	 *
+	 * @param string $ip
+	 * @return void
+	 */
+	protected function recordFailedLoginAttempt($ip) {
+		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
+			return;
+		}
+
+		$key = $this->getThrottleKey($ip);
+		$record = $this->readThrottleRecord($key);
+
+		$timeWindow = (int) $this->config->getSystemValue(
+			'login_brute_force_time_window',
+			self::BRUTE_FORCE_TIME_WINDOW
+		);
+		$now = $this->timeFactory->getTime();
+
+		// Reset if the window has passed since the last failure.
+		if (($now - $record['lastFailTime']) >= $timeWindow) {
+			$record['failCount'] = 0;
+		}
+
+		$record['failCount']++;
+		$record['lastFailTime'] = $now;
+
+		$this->writeThrottleRecord($key, $record);
+	}
+
+	/**
+	 * Remove the throttle record for this IP upon successful authentication.
+	 *
+	 * @param string $ip
+	 * @return void
+	 */
+	protected function resetLoginThrottle($ip) {
+		if ($this->config->getSystemValue('login_brute_force_protection', true) === false) {
+			return;
+		}
+
+		$key = $this->getThrottleKey($ip);
+		$this->config->deleteAppValue('core', $key);
+	}
+
+	/**
+	 * Wrapper around usleep() to allow unit-test overriding.
+	 *
+	 * @param int $microseconds
+	 * @return void
+	 */
+	protected function applyDelay($microseconds) {
+		\usleep($microseconds);
 	}
 
 	/**
@@ -266,6 +436,13 @@ class LoginController extends Controller {
 	 */
 	public function tryLogin($user, $password, $redirect_url, $timezone = null, $remember_login = null) {
 		$originalUser = $user;
+		$ip = $this->request->getRemoteAddress();
+
+		// Apply a progressive delay when this IP has exceeded the failure
+		// threshold.  Legitimate users are unaffected until they exhaust the
+		// configurable number of free attempts.
+		$this->throttleLogin($ip);
+
 		// TODO: Add all the insane error handling
 		$loginResult = $this->userSession->login($user, $password);
 		if ($loginResult !== true && $this->config->getSystemValue('strict_login_enforced', false) !== true) {
@@ -277,6 +454,9 @@ class LoginController extends Controller {
 			}
 		}
 		if ($loginResult !== true) {
+			// Persist the failure so the delay grows on the next attempt.
+			$this->recordFailedLoginAttempt($ip);
+
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
@@ -291,6 +471,10 @@ class LoginController extends Controller {
 			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
+		// Successful login: clear the throttle record for this IP so a
+		// legitimately locked-out user is not penalised after recovery.
+		$this->resetLoginThrottle($ip);
+
 		/* @var $userObject IUser */
 		$userObject = $this->userSession->getUser();
 		// TODO: remove password checks from above and let the user session handle failures

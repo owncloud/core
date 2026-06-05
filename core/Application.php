@@ -124,7 +124,8 @@ class Application extends App {
 				$c->query('UserSession'),
 				$c->query('URLGenerator'),
 				$c->query('TwoFactorAuthManager'),
-				$c->query('ServerContainer')->getLicenseManager()
+				$c->query('ServerContainer')->getLicenseManager(),
+				$c->query('TimeFactory')
 			);
 		});
 		$container->registerService('TwoFactorChallengeController', static function (SimpleContainer $c) {
