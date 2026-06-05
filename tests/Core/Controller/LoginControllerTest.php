@@ -334,30 +334,11 @@ class LoginControllerTest extends TestCase {
 	}
 
 	/**
-	 * @return array
+	 * Verify that when lost_password_link is empty (default), canResetPassword is always
+	 * true regardless of whether the user exists or which backend they are on.
+	 * This prevents user enumeration via differential UI responses (CVE-style fix).
 	 */
-	public function passwordResetDataProvider() {
-		return [
-			[
-				true,
-				true,
-			],
-			[
-				false,
-				false,
-			],
-		];
-	}
-
-	/**
-	 * @dataProvider passwordResetDataProvider
-	 * @param $canChangePassword
-	 * @param $expectedResult
-	 */
-	public function testShowLoginFormWithPasswordResetOption(
-		$canChangePassword,
-		$expectedResult
-	) {
+	public function testShowLoginFormWithPasswordResetOptionAlwaysTrueWhenNoLostPasswordLink() {
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')
@@ -371,12 +352,14 @@ class LoginControllerTest extends TestCase {
 				['strict_login_enforced', false],
 			]);
 		$user = $this->createMock(IUser::class);
+		// canChangePassword must NOT be called — backend capability must not influence
+		// the reset-password link visibility when no custom lost_password_link is set.
 		$user
-			->expects($this->once())
-			->method('canChangePassword')
-			->willReturn($canChangePassword);
+			->expects($this->never())
+			->method('canChangePassword');
+		// userManager->get() is called once only (to resolve the display name).
 		$this->userManager
-			->expects($this->exactly(2))
+			->expects($this->once())
 			->method('get')
 			->with('LdapUser')
 			->willReturn($user);
@@ -393,7 +376,7 @@ class LoginControllerTest extends TestCase {
 				'messages' => [],
 				'loginName' => 'LdapUser',
 				'user_autofocus' => false,
-				'canResetPassword' => $expectedResult,
+				'canResetPassword' => true,
 				'alt_login' => [],
 				'rememberLoginAllowed' => \OC_Util::rememberLoginAllowed(),
 				'rememberLoginState' => 0,
@@ -403,6 +386,43 @@ class LoginControllerTest extends TestCase {
 			'guest'
 		);
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('LdapUser', '', ''));
+	}
+
+	/**
+	 * Verify user enumeration fix: a non-existent user and an LDAP user (canChangePassword=false)
+	 * must both yield canResetPassword=true when lost_password_link is empty, making the
+	 * login-failure response indistinguishable between the two cases.
+	 */
+	public function testShowLoginFormCanResetPasswordUniformForNonExistentUser() {
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(false);
+		$this->config
+			->expects($this->exactly(3))
+			->method('getSystemValue')
+			->willReturnMap([
+				['lost_password_link', false],
+				['login.alternatives', '', ''],
+				['strict_login_enforced', false],
+			]);
+		// Simulate non-existent user: userManager->get() returns null.
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('nonexistent')
+			->willReturn(null);
+
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
+
+		$response = $this->loginController->showLoginForm('nonexistent', '', '');
+		$this->assertInstanceOf(TemplateResponse::class, $response);
+		$params = $response->getParams();
+		// Must be true — same as LDAP user — so attacker cannot distinguish
+		$this->assertTrue($params['canResetPassword'], 'canResetPassword must be true for non-existent users to prevent user enumeration');
 	}
 
 	public function testShowLoginFormForUserNamedNull() {
@@ -419,12 +439,12 @@ class LoginControllerTest extends TestCase {
 				['strict_login_enforced', false],
 			]);
 		$user = $this->createMock(IUser::class);
+		// canChangePassword must NOT be called after the user-enumeration fix.
 		$user
-			->expects($this->once())
-			->method('canChangePassword')
-			->willReturn(false);
+			->expects($this->never())
+			->method('canChangePassword');
 		$this->userManager
-			->expects($this->exactly(2))
+			->expects($this->once())
 			->method('get')
 			->with('0')
 			->willReturn($user);
@@ -441,7 +461,7 @@ class LoginControllerTest extends TestCase {
 				'messages' => [],
 				'loginName' => '0',
 				'user_autofocus' => false,
-				'canResetPassword' => false,
+				'canResetPassword' => true,
 				'alt_login' => [],
 				'rememberLoginAllowed' => \OC_Util::rememberLoginAllowed(),
 				'rememberLoginState' => 0,
