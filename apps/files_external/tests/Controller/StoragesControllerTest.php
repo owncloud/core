@@ -446,6 +446,87 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * Verify that a generic \Exception thrown during updateStorageStatus does NOT leak
+	 * the raw exception class name or message into the JSON response's statusMessage
+	 * field (information-disclosure / SSRF-oracle fix).
+	 *
+	 * The vulnerability: the original catch block set statusMessage to
+	 *   get_class($e).': '.$e->getMessage()
+	 * which exposes resolved IP addresses, ports, and cURL error details to the
+	 * client when a Guzzle ConnectException is thrown.
+	 */
+	public function testUpdateStorageStatusDoesNotLeakExceptionDetailsInStatusMessage() {
+		$sensitiveMessage = 'cURL error 7: Failed to connect to 10.0.0.99 port 80: Connection refused';
+		$sensitiveClass   = 'GuzzleHttp\Exception\ConnectException';
+
+		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+			->disableOriginalConstructor()
+			->getMock();
+		$backend->method('getStorageClass')
+			->willReturn('\OCA\Files_External\Lib\Storage\SMB');
+		$backend->method('getIdentifier')
+			->willReturn('identifier:\OCA\Files_External\Lib\Backend\SMB');
+		// Simulate a Guzzle-style exception thrown during manipulateStorageConfig
+		$backend->method('manipulateStorageConfig')
+			->willThrowException(new \RuntimeException($sensitiveMessage));
+
+		$authMech = $this->getAuthMechMock();
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions([]);
+
+		$this->service->expects($this->once())
+			->method('getStorage')
+			->with(1)
+			->willReturn($storageConfig);
+
+		// Disable skipTest so the real exception path is exercised
+		\OC_Mount_Config::$skipTest = false;
+		$response = $this->controller->show(1);
+		\OC_Mount_Config::$skipTest = true;
+
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
+
+		$data = $response->getData();
+		$serialized = $data->jsonSerialize();
+
+		// The status must indicate error
+		$this->assertEquals(
+			StorageNotAvailableException::STATUS_ERROR,
+			$serialized['status'],
+			'Storage status must be STATUS_ERROR when a generic exception is thrown'
+		);
+
+		// The statusMessage MUST NOT contain the raw exception class name or message
+		$this->assertArrayHasKey('statusMessage', $serialized);
+		$statusMessage = $serialized['statusMessage'];
+
+		$this->assertStringNotContainsString(
+			$sensitiveMessage,
+			$statusMessage,
+			'statusMessage must not expose the raw exception message (network details leak)'
+		);
+		$this->assertStringNotContainsString(
+			$sensitiveClass,
+			$statusMessage,
+			'statusMessage must not expose the exception class name'
+		);
+		$this->assertStringNotContainsString(
+			'10.0.0.99',
+			$statusMessage,
+			'statusMessage must not expose internal IP addresses'
+		);
+		$this->assertStringNotContainsString(
+			'RuntimeException',
+			$statusMessage,
+			'statusMessage must not expose the exception class name'
+		);
+	}
+
 	protected function getNewStorageConfigMock($params) {
 		$backendMock = $this->getBackendMock(
 			$params['backendClass'] ?? '\Random\Missing\Class',

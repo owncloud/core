@@ -266,9 +266,14 @@ abstract class StoragesController extends Controller {
 			);
 		} catch (\Exception $e) {
 			// FIXME: convert storage exceptions to StorageNotAvailableException
+			// Log the full exception server-side but do NOT expose the message to the
+			// client: exception messages from e.g. Guzzle contain resolved IP addresses,
+			// ports and cURL error details which can be used for internal network
+			// reconnaissance (information-disclosure / SSRF oracle).
+			$this->logger->logException($e, ['app' => 'files_external']);
 			$storage->setStatus(
 				StorageNotAvailableException::STATUS_ERROR,
-				\get_class($e).': '.$e->getMessage()
+				$this->l10n->t('Storage connection error. See server log for details.')
 			);
 		}
 	}
