@@ -6,11 +6,12 @@ The following have been updated:
 - google/apiclient-services (v0.435.0 to v0.441.1)
 - google/auth (v1.50.0 to v1.50.1)
 - guzzlehttp/psr7 (2.8.0 to 2.10.4)
-- guzzlehttp/guzzle (7.10.0 to 7.10.5)
+- guzzlehttp/guzzle (7.10.0 to 7.11.0)
 - guzzlehttp/promises (2.3.0 to 2.4.1)
 - laravel/serializable-closure (v2.0.10 to v2.0.13)
 - phpseclib/phpseclib (3.0.49 to 3.0.50)
 - pimple/pimple (3.6.1 to 3.6.2)
+- sabre/vobject (4.5.8 to 4.6.0)
 - symfony/deprecation-contracts (v3.6.0 to v3.7.0)
 - symfony/mailer (v7.4.6 to v7.4.12)
 
@@ -20,3 +21,4 @@ https://github.com/owncloud/core/pull/41495
 https://github.com/owncloud/core/pull/41561
 https://github.com/owncloud/core/pull/41564
 https://github.com/owncloud/core/pull/41569
+https://github.com/owncloud/core/pull/41590
