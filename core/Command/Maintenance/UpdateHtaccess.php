@@ -32,7 +32,7 @@ class UpdateHtaccess extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		\OC\Setup::updateHtaccess();
+		\OC\Setup::updateHtaccess(\OC::$server->getConfig());
 		$output->writeln('.htaccess has been updated');
 		return 0;
 	}

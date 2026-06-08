@@ -146,7 +146,7 @@ class SetupTest extends \Test\TestCase {
 		\chmod($htaccessFile, 0400);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
-			$this->setupClass->updateHtaccess();
+			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {
 			throw $e;
 		} finally {
@@ -168,7 +168,7 @@ class SetupTest extends \Test\TestCase {
 		
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
-			$this->setupClass->updateHtaccess();
+			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {
 			throw $e;
 		} finally {
@@ -184,7 +184,7 @@ class SetupTest extends \Test\TestCase {
 		\chmod($htaccessFile, 0700);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
-			$this->setupClass->updateHtaccess();
+			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {
 			throw $e;
 		} finally {
@@ -194,6 +194,46 @@ class SetupTest extends \Test\TestCase {
 		@\unlink($htaccessFile);
 		$this->assertStringContainsString(
 			'#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####',
+			$content
+		);
+	}
+
+	public function testUpdateHtaccessWithRewriteBaseUsesFileExistenceCheck(): void {
+		$origServerRoot = \OC::$SERVERROOT;
+		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
+		\touch($htaccessFile);
+		\chmod($htaccessFile, 0700);
+		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+
+		$this->config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = null) {
+				if ($key === 'htaccess.RewriteBase') {
+					return '/owncloud';
+				}
+				if ($key === 'overwrite.cli.url') {
+					return 'http://localhost/owncloud';
+				}
+				return $default;
+			});
+
+		try {
+			$this->setupClass->updateHtaccess($this->config);
+		} catch (\Exception $e) {
+			throw $e;
+		} finally {
+			\OC::$SERVERROOT = $origServerRoot;
+		}
+		$content = \file_get_contents($htaccessFile);
+		@\unlink($htaccessFile);
+
+		// Must use file-existence check, not extension pattern
+		$this->assertStringContainsString(
+			'RewriteCond %{REQUEST_FILENAME} !-f',
+			$content
+		);
+		// Must NOT block requests based on file extension in URI
+		$this->assertStringNotContainsString(
+			'REQUEST_URI} !\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)',
 			$content
 		);
 	}
