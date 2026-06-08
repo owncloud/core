@@ -1,6 +1,7 @@
 Change: Removed legacy and deprecated code from ownCloud 11
 
 The following have been removed:
+
  * class OC_DB
 
  * class OC_DB_StatementWrapper
