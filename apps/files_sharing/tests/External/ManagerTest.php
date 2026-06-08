@@ -442,6 +442,9 @@ class ManagerTest extends TestCase {
 			[
 				'owncloud.com/cloud',
 			],
+			[
+				'owncloud.com/cloud/',
+			],
 		];
 	}
 

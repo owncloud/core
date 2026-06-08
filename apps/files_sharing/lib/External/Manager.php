@@ -580,7 +580,7 @@ class Manager {
 				$remote .= ':' . $parsed_port;
 			}
 			if ($parsed_path !== null) {
-				$remote .= $parsed_path;
+				$remote .= \rtrim($parsed_path, '/');
 			}
 		} else {
 			$string_to_parse = 'http://' . $remote;
@@ -593,7 +593,7 @@ class Manager {
 					$remote .= ':' . $parsed_port;
 				}
 				if ($parsed_path !== null) {
-					$remote .= $parsed_path;
+					$remote .= \rtrim($parsed_path, '/');
 				}
 			}
 		}
