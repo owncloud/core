@@ -1,0 +1,8 @@
+Bugfix: Fix subadmin email change updating caller's address instead of target's
+
+The verification token and confirmation link in the subadmin path of
+setMailAddress were associated with the caller's account instead of the
+target user's account. Clicking the confirmation link changed the
+subadmin's email rather than the intended target's email.
+
+https://github.com/owncloud/core/pull/41574
