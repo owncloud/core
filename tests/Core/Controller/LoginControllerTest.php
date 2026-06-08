@@ -389,6 +389,44 @@ class LoginControllerTest extends TestCase {
 	}
 
 	/**
+	 * LDAP accounts with a UUID internal username must have loginName resolved to the
+	 * human-readable display name returned by getUserName(). A duplicate loginName block
+	 * that existed after the alt_login assignment was clobbering this resolved value back
+	 * to the raw internal username — this test is the regression guard for that removal.
+	 */
+	public function testShowLoginFormLdapUsernameResolutionNotClobbered() {
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(false);
+		$this->config
+			->expects($this->exactly(3))
+			->method('getSystemValue')
+			->willReturnMap([
+				['lost_password_link', false],
+				['login.alternatives', '', ''],
+				['strict_login_enforced', false],
+			]);
+		$user = $this->createMock(IUser::class);
+		$user->method('getUserName')->willReturn('john.doe');
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('some-internal-uuid-1234')
+			->willReturn($user);
+
+		$this->licenseManager->method('getLicenseMessageFor')
+			->willReturn([
+				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
+			]);
+
+		$response = $this->loginController->showLoginForm('some-internal-uuid-1234', '', '');
+		$params = $response->getParams();
+		$this->assertSame('john.doe', $params['loginName'], 'LDAP username must be resolved to getUserName(), not the raw internal ID');
+		$this->assertFalse($params['user_autofocus']);
+	}
+
+	/**
 	 * Verify user enumeration fix: a non-existent user and an LDAP user (canChangePassword=false)
 	 * must both yield canResetPassword=true when lost_password_link is empty, making the
 	 * login-failure response indistinguishable between the two cases.
