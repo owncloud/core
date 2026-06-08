@@ -1,6 +1,7 @@
 Change: Update PHP dependencies
 
 The following have been updated:
+
  * doctrine/dbal (2.13.9 to 3.10.4)
 
  * google/apiclient (v2.19.0 to v2.19.3)
