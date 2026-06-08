@@ -985,7 +985,7 @@ class UsersController extends Controller {
 		}
 
 		try {
-			if ($this->sendEmail($userId, $mailAddress)) {
+			if ($this->sendEmail($id, $mailAddress)) {
 				return new DataResponse(
 					[
 						'status' => 'success',
