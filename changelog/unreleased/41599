@@ -1,4 +1,4 @@
-Fix: support federation between systems in subdirectories
+Bugfix: support federation between systems in subdirectories
 
 If a federated server was installed in a subdirectory like:
 
