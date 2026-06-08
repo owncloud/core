@@ -138,7 +138,7 @@ jobs:
     with:
       do-cli-tests: true
       server-folder: 'server'
-      test-suites: "['cliMain', 'cliTrashbin']"
+      test-suites: "['cliBackground', 'cliMain', 'cliManageApps', 'cliTrashbin']"
 
   acceptance-cli-email:
     name: CLI Tests
