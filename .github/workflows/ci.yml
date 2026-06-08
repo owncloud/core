@@ -22,6 +22,10 @@ jobs:
     name: Commits
     uses: owncloud/reusable-workflows/.github/workflows/semantic-git-message.yml@main
 
+  js-unit:
+    name: JavaScript Unit
+    uses: ./.github/workflows/js-unit.yml
+
   php-unit:
     name: PHP Unit
     uses: ./.github/workflows/php-unit.yml
