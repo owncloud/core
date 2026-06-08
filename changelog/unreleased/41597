@@ -1,4 +1,4 @@
-Fix: Adjust code to avoid PHP8 messages
+Bugfix: Adjust code to avoid PHP8 messages
 
 Avoid trying to access array offset on false in the encryption storage wrapper.
 
