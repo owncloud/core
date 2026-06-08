@@ -61,13 +61,33 @@ ownCloud admins and users.
 
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 
-   The following have been updated: - doctrine/dbal (2.13.9 to 3.10.4) -
-   google/apiclient (v2.19.0 to v2.19.3) - google/apiclient-services (v0.435.0 to
-   v0.441.1) - google/auth (v1.50.0 to v1.50.1) - guzzlehttp/psr7 (2.8.0 to 2.10.4)
-   - guzzlehttp/guzzle (7.10.0 to 7.10.5) - guzzlehttp/promises (2.3.0 to 2.4.1) -
-   laravel/serializable-closure (v2.0.10 to v2.0.13) - phpseclib/phpseclib (3.0.49
-   to 3.0.50) - pimple/pimple (3.6.1 to 3.6.2) - symfony/deprecation-contracts
-   (v3.6.0 to v3.7.0) - symfony/mailer (v7.4.6 to v7.4.12)
+   The following have been updated:
+
+   * doctrine/dbal (2.13.9 to 3.10.4)
+
+   * google/apiclient (v2.19.0 to v2.19.3)
+
+   * google/apiclient-services (v0.435.0 to v0.441.1)
+
+   * google/auth (v1.50.0 to v1.50.1)
+
+   * guzzlehttp/psr7 (2.8.0 to 2.10.4)
+
+   * guzzlehttp/guzzle (7.10.0 to 7.11.0)
+
+   * guzzlehttp/promises (2.3.0 to 2.4.1)
+
+   * laravel/serializable-closure (v2.0.10 to v2.0.13)
+
+   * phpseclib/phpseclib (3.0.49 to 3.0.50)
+
+   * pimple/pimple (3.6.1 to 3.6.2)
+
+   * sabre/vobject (4.5.8 to 4.6.0)
+
+   * symfony/deprecation-contracts (v3.6.0 to v3.7.0)
+
+   * symfony/mailer (v7.4.6 to v7.4.12)
 
    https://github.com/owncloud/core/pull/41450
    https://github.com/owncloud/core/pull/41477
@@ -75,6 +95,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41561
    https://github.com/owncloud/core/pull/41564
    https://github.com/owncloud/core/pull/41569
+   https://github.com/owncloud/core/pull/41590
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
@@ -84,11 +105,29 @@ ownCloud admins and users.
 
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
 
-   The following have been removed: - class OC_DB - class OC_DB_StatementWrapper -
-   class OC_Group_Backend - class OC_Group_Database - class OC_OCS_Result - class
-   \OCP\DB - class MDBSchemaWriter - interface OC_Group_Interface - interface
-   OC_User_Interface - method MDB2SchemaManager::getDbStructure() - method
-   MDB2SchemaManager::generateChangeScript()
+   The following have been removed:
+
+   * class OC_DB
+
+   * class OC_DB_StatementWrapper
+
+   * class OC_Group_Backend
+
+   * class OC_Group_Database
+
+   * class OC_OCS_Result
+
+   * class \OCP\DB
+
+   * class MDBSchemaWriter
+
+   * interface OC_Group_Interface
+
+   * interface OC_User_Interface
+
+   * method MDB2SchemaManager::getDbStructure()
+
+   * method MDB2SchemaManager::generateChangeScript()
 
    https://github.com/owncloud/core/pull/41455
    https://github.com/owncloud/core/pull/41458
