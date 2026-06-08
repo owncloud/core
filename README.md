@@ -1,57 +1,111 @@
 # ownCloud Core
 
-[![Build Status](https://drone.owncloud.com/api/badges/owncloud/core/status.svg?branch=master)](https://drone.owncloud.com/owncloud/core)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=alert_status)](https://sonarcloud.io/dashboard?id=owncloud_core)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=security_rating)](https://sonarcloud.io/dashboard?id=owncloud_core)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=coverage)](https://sonarcloud.io/dashboard?id=owncloud_core)
-[![Design](https://contribute.design/api/shield/owncloud/core)](https://contribute.design/owncloud/core)
+<!-- OSPO-managed README | Generated: 2026-04-16 | v2 -->
 
-**[ownCloud](http://ownCloud.com) offers file sharing and collaboration trusted by 200+ million users worldwide regardless of device or location.**
+[![License](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](COPYING) [![ownCloud OSPO](https://img.shields.io/badge/OSPO-ownCloud-blue)](https://kiteworks.com/opensource) [![Docker Hub](https://img.shields.io/docker/pulls/owncloud)](https://hub.docker.com/r/owncloud/server)
 
-![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
+ownCloud Core is the server-side component of ownCloud 10 (Classic), providing file storage, synchronization, and sharing trusted by over 200 million users worldwide. It includes WebDAV, CalDAV, and CardDAV servers, a plugin architecture for apps, user and group management, encryption support, external storage backends, and a comprehensive REST API. The server runs on PHP with support for MySQL, MariaDB, PostgreSQL, and SQLite databases.
 
-## Why Is This so Awesome?
-* :file_folder: **Access your Data** You can store your files, contacts, calendars and more on a server of your choosing.
-* :package: **Sync your Data** You keep your files, contacts, calendars and more synchronized amongst your devices.
-* :arrows_counterclockwise: **Share your Data** You share your data with others, and give them access to your latest photo galleries, your calendar or anything else you want them to see.
-* :rocket: **Expandable with dozens of Apps** ...like Calendar, Contacts, Mail or News.
-* :cloud: **All Benefits of the Cloud** ...on your own Server.
-* :lock: **Encryption** You can encrypt data in transit with secure https connections. You can enable the encryption app to encrypt data on storage for improved security and privacy.
-* ...
+## Part of Classic (OC10)
 
-## Installation Instructions
-For installing ownCloud, see the official
-[ownCloud 10](https://doc.owncloud.com/server/latest/admin_manual/installation/) installation manual.
+This is the main repository for [ownCloud Server (Classic)](https://github.com/owncloud/core), also known as ownCloud 10 or OC10. It is the foundation that apps like [Activity](https://github.com/owncloud/activity), [Calendar](https://github.com/owncloud/calendar), [Contacts](https://github.com/owncloud/contacts), and many others extend. The server is available as a Docker image on [Docker Hub](https://hub.docker.com/r/owncloud/server).
 
-## Development Build Prerequisites
-Note that when doing a local development build, you need to have **Composer v2** installed. If your OS provides a lower version than v2, you can install Composer v2 manually. As an example, which may be valid for other releases/distros too, see [How to install Composer on Ubuntu 22.04 | 20.04 LTS](https://www.how2shout.com/linux/how-to-install-composer-on-ubuntu-22-04-20-04-lts/).
+For the next-generation ownCloud platform, see [ownCloud Infinite Scale (oCIS)](https://github.com/owncloud/ocis).
 
-You also must have installed `yarn` and `node` (v14 or higher).
+## Getting Started
 
-## Contribution Guidelines
-https://owncloud.com/contribute/
+For installing ownCloud Server, see the official [ownCloud 10 installation manual](https://doc.owncloud.com/server/latest/admin_manual/installation/).
 
-## Commit Messages
-To ease bringing commits into context, a CI job check that the commit message satisfies a specification for adding human and machine readable meaning to commit messages. For details see: [Conventional Commits](www.conventionalcommits.org/). Note that if conventional commits are not satisfied, CI will not be green. In this case, you need to rewrite the git commit history to meet the requirement.
+### Development Build Prerequisites
 
-You must at least provide a `type` + `description` as described in the [Examples](https://www.conventionalcommits.org/en/v1.0.0/#examples) section.
+- **Composer v2**
+- **Yarn** and **Node.js** (v14 or higher)
 
-For a quickstart, the following types can be used:
+```bash
+make
+```
 
-`fix:`, `feat:`, `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`
+## Documentation
 
+- [ownCloud Server documentation](https://doc.owncloud.com)
+- [Developer documentation](https://doc.owncloud.com/server/latest/developer_manual/)
+- [CHANGELOG.md](https://github.com/owncloud/core/blob/master/CHANGELOG.md)
+- [Conventional Commits specification](https://www.conventionalcommits.org/)
 
-## Support
-Learn about the different ways you can get support for ownCloud: https://owncloud.com/support/
+## Community & Support
 
-## Get in Touch
-* :clipboard: [Forum](https://central.owncloud.org)
-* :hash: [IRC channel](https://web.libera.chat/?channels=#owncloud)
-* :busts_in_silhouette: [Facebook](https://facebook.com/ownclouders)
-* :hatching_chick: [Twitter](https://twitter.com/ownCloud)
+**[Star](https://github.com/owncloud/core)** this repo and **Watch** for release notifications!
 
-## Important Notice on Translations
-Please submit translations via Transifex:
-https://explore.transifex.com/owncloud-org/
+- [ownCloud Website](https://owncloud.com)
+- [Community Discussions](https://github.com/orgs/owncloud/discussions)
+- [Matrix Chat](https://app.element.io/#/room/#owncloud:matrix.org)
+- [Documentation](https://doc.owncloud.com)
+- [Enterprise Support](https://owncloud.com/contact-us/)
+- [OSPO Home](https://kiteworks.com/opensource)
 
-See the detailed information about [translations](https://doc.owncloud.com/server/latest/developer_manual/core/translation.html) here.
+## Contributing
+
+We welcome contributions! Please read the [Contributing Guidelines](CONTRIBUTING.md)
+and our [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
+
+### Workflow
+
+- **Rebase Early, Rebase Often!** We use a rebase workflow. Always rebase on the target branch before submitting a PR.
+- **Dependabot**: Automated dependency updates are managed via Dependabot. Review and merge dependency PRs promptly.
+- **Signed Commits**: All commits **must** be PGP/GPG signed. See [GitHub's signing guide](https://docs.github.com/en/authentication/managing-commit-signature-verification).
+- **DCO Sign-off**: Every commit must carry a `Signed-off-by` line:
+  ```
+  git commit -s -S -m "your commit message"
+  ```
+- **GitHub Actions Policy**: Workflows may only use actions that are (a) owned by `owncloud`, (b) created by GitHub (`actions/*`), or (c) verified in the GitHub Marketplace.
+
+## Translations
+
+Help translate this project on Transifex:
+**<https://explore.transifex.com/owncloud-org/owncloud/>**
+
+Please submit translations via Transifex -- do not open pull requests for translation changes.
+
+## Security
+
+**Do not open a public GitHub issue for security vulnerabilities.**
+
+Report vulnerabilities at **<https://security.owncloud.com>** -- see [SECURITY.md](SECURITY.md).
+
+Bug bounty: [YesWeHack ownCloud Program](https://yeswehack.com/programs/owncloud-bug-bounty-program)
+
+## License
+
+This project is licensed under the [AGPL-3.0](COPYING).
+
+## About the ownCloud OSPO
+
+The [Kiteworks Open Source Program Office](https://kiteworks.com/opensource), operating under
+the [ownCloud](https://owncloud.com) brand, launched on May 5, 2026, to steward the open source
+ecosystem around ownCloud's products. The OSPO ensures transparent governance, license compliance,
+community health, and sustainable collaboration between the open source community and
+[Kiteworks](https://www.kiteworks.com), which acquired ownCloud in 2023.
+
+- **OSPO Home**: <https://kiteworks.com/opensource>
+- **GitHub**: <https://github.com/owncloud>
+- **ownCloud**: <https://owncloud.com>
+
+For questions about the OSPO or licensing, contact ospo@kiteworks.com.
+
+### License Migration to Apache 2.0
+
+The OSPO is driving a strategic relicensing of ownCloud repositories toward the
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), following
+the [Apache Software Foundation's third-party license policy](https://www.apache.org/legal/resolved.html).
+
+Individual repositories will migrate as their audit is completed. The LICENSE file
+in each repo reflects its **current** license status (not the target).
+
+**Current license: AGPL-3.0** (Category X per Apache policy -- cannot be included in Apache-2.0 works).
+
+Migration prerequisites for this repository:
+
+- **CLA/DCO coverage**: All past contributors must have signed agreements permitting relicensing
+- **Copyleft dependency audit**: All AGPL/GPL dependencies must be replaced or isolated
+- **KDE heritage review**: Any code with KDE-era copyrights requires legal analysis
+- **Complete relicensing**: AGPL-3.0 is a strong copyleft license; migration requires full relicensing of all files, not just a header change
