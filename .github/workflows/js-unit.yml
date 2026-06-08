@@ -24,7 +24,12 @@ jobs:
         run: corepack enable
 
       - name: Install Firefox
-        run: sudo apt-get install -y firefox
+        run: |
+          sudo add-apt-repository ppa:mozillateam/ppa -y
+          printf 'Package: *\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 1001\n' \
+            | sudo tee /etc/apt/preferences.d/mozilla-firefox
+          sudo apt-get update -qq
+          sudo apt-get install -y firefox
 
       - name: Run JavaScript tests
         run: make test-js
