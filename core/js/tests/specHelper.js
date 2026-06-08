@@ -116,6 +116,13 @@ window.Snap.prototype = {
 
 window.isPhantom = /phantom/i.test(navigator.userAgent);
 
+// jasmine 5.x removed the global jasmine.pp utility that jasmine-sinon@0.4.0 relies on
+if (typeof jasmine !== 'undefined' && typeof jasmine.pp !== 'function') {
+	jasmine.pp = function(value) {
+		return JSON.stringify(value);
+	};
+}
+
 // global setup for all tests
 (function setupTests() {
 	var fakeServer = null,

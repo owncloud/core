@@ -101,9 +101,9 @@ describe('OC.SetupChecks tests', function() {
 		oc_dataURL = "data";
 
 		it('should return an error if data directory is not protected', function(done) {
-			suite.server.respondWith([ 200, { "Content-Type": "text/plain" }, '*cough*HTACCESSFAIL*cough*']);
 			var async = OC.SetupChecks.checkDataProtected();
-			suite.server.respond();
+
+			suite.server.requests[0].respond(200, {'Content-Type': 'text/plain'}, '*cough*HTACCESSFAIL*cough*');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([
@@ -116,9 +116,9 @@ describe('OC.SetupChecks tests', function() {
 		});
 
 		it('should not return an error if data directory is protected', function(done) {
-			suite.server.respondWith([ 403, { "Content-Type": "text/plain" }, '403']);
 			var async = OC.SetupChecks.checkDataProtected();
-			suite.server.respond();
+
+			suite.server.requests[0].respond(403);
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
@@ -127,9 +127,9 @@ describe('OC.SetupChecks tests', function() {
 		});
 
 		it('should not return an error if data directory is protected and redirects to main page', function(done) {
-			suite.server.respondWith([200, {'Content-Type': 'text/plain'}, '<html><body>blah</body></html>']);
 			var async = OC.SetupChecks.checkDataProtected();
-			suite.server.respond();
+
+			suite.server.requests[0].respond(200, {'Content-Type': 'text/plain'}, '<html><body>blah</body></html>');
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([]);
