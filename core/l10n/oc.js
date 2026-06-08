@@ -228,7 +228,6 @@ OC.L10N.register(
     "Database user" : "Utilizaire de la banca de donadas",
     "Database password" : "Senhal de la banca de donadas",
     "Database name" : "Nom de la banca de donadas",
-    "Database tablespace" : "Tablespace de la banca de donadas",
     "Database host" : "Òste de la banca de donadas",
     "Performance warning" : "Avertiment de performància",
     "SQLite will be used as database." : "SQLite serà utilizat coma gestionari de banca de donadas.",

@@ -162,7 +162,6 @@ OC.L10N.register(
     "Database user" : "Korisnik baze podataka",
     "Database password" : "Lozinka baze podataka",
     "Database name" : "Naziv baze podataka",
-    "Database tablespace" : "Tablespace (?) baze podataka",
     "Database host" : "Glavno računalo baze podataka",
     "Finish setup" : "Završite postavljanje",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hej, <br><br> vam upravo javlja da je %s podijelio <strong>%s</strong>s vama.<br><a href=\"%s\">POgledajte!</a><br><br>",

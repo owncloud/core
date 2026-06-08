@@ -312,7 +312,6 @@
     "Database user" : "数据库用户",
     "Database password" : "数据库密码",
     "Database name" : "数据库名",
-    "Database tablespace" : "数据库表空间",
     "Database host" : "数据库主机",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "请指定主机名和端口号（例如 localhost:5432）。",
     "Performance warning" : "性能警告",

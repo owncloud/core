@@ -282,7 +282,6 @@ OC.L10N.register(
     "Database user" : "Databasebruker",
     "Database password" : "Databasepassord",
     "Database name" : "Databasenavn",
-    "Database tablespace" : "Database tabellområde",
     "Database host" : "Databasevert",
     "Performance warning" : "Ytelsesadvarsel",
     "SQLite will be used as database." : "SQLite vil bli brukt som database.",

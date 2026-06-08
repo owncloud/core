@@ -151,7 +151,6 @@ OC.L10N.register(
     "Database user" : "Người dùng cơ sở dữ liệu",
     "Database password" : "Mật khẩu cơ sở dữ liệu",
     "Database name" : "Tên cơ sở dữ liệu",
-    "Database tablespace" : "Cơ sở dữ liệu tablespace",
     "Database host" : "Database host",
     "Finish setup" : "Cài đặt hoàn tất",
     "Log out" : "Đăng xuất",

@@ -308,7 +308,6 @@ OC.L10N.register(
     "Database user" : "Χρήστης της βάσης δεδομένων",
     "Database password" : "Συνθηματικό βάσης δεδομένων",
     "Database name" : "Όνομα βάσης δεδομένων",
-    "Database tablespace" : "Κενά Πινάκων Βάσης Δεδομένων",
     "Database host" : "Διακομιστής βάσης δεδομένων",
     "Performance warning" : "Προειδοποίηση απόδοσης",
     "SQLite will be used as database." : "Η SQLite θα χρησιμοποιηθεί ως βάση δεδομένων.",

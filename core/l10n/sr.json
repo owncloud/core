@@ -187,7 +187,6 @@
     "Database user" : "Корисник базе",
     "Database password" : "Лозинка базе",
     "Database name" : "Назив базе",
-    "Database tablespace" : "Радни простор базе података",
     "Database host" : "Домаћин базе",
     "Performance warning" : "Упозорење о перформансама",
     "SQLite will be used as database." : "СКуЛајт ће бити коришћен за базу података.",

@@ -313,7 +313,6 @@ OC.L10N.register(
     "Database user" : "Потребител за базата данни",
     "Database password" : "Парола за базата данни",
     "Database name" : "Име на базата данни",
-    "Database tablespace" : "Пространство за таблици на базата данни",
     "Database host" : "Хост на базата данни",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Моля, посочете номера на порта заедно с името на хоста (например, localhost:5432).",
     "Performance warning" : "Предупреждение за ефективността",

@@ -315,7 +315,6 @@
     "Database user" : "Пользователь базы данных",
     "Database password" : "Пароль базы данных",
     "Database name" : "Название базы данных",
-    "Database tablespace" : "Табличое пространство базы данных",
     "Database host" : "Хост базы данных",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Пожалуйста, вместе с именем хоста укажите и номер порта (e.g., например, localhost: 5432).",
     "Performance warning" : "Предупреждение о производительности",

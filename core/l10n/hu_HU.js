@@ -285,7 +285,6 @@ OC.L10N.register(
     "Database user" : "Adatbázis felhasználónév",
     "Database password" : "Adatbázis jelszó",
     "Database name" : "Az adatbázis neve",
-    "Database tablespace" : "Az adatbázis táblázattér (tablespace)",
     "Database host" : "Adatbázis szerver",
     "Performance warning" : "Teljesítménybeli figyelmeztetés",
     "SQLite will be used as database." : "SQLite lesz adatbázisként használva.",

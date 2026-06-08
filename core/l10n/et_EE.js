@@ -253,7 +253,6 @@ OC.L10N.register(
     "Database user" : "Andmebaasi kasutaja",
     "Database password" : "Andmebaasi parool",
     "Database name" : "Andmebasi nimi",
-    "Database tablespace" : "Andmebaasi tabeliruum",
     "Database host" : "Andmebaasi host",
     "Performance warning" : "Kiiruse hoiatus",
     "SQLite will be used as database." : "Andmebaasina kasutatakse SQLite",

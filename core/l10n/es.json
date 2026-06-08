@@ -315,7 +315,6 @@
     "Database user" : "Usuario de la base de datos",
     "Database password" : "Contraseña de la base de datos",
     "Database name" : "Nombre de la base de datos",
-    "Database tablespace" : "Espacio de tablas de la base de datos",
     "Database host" : "Host de la base de datos",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Por favor, especifique el puerto tras el nombre de la máquina (p. ej. localhost:5432)",
     "Performance warning" : "Advertencia de rendimiento",

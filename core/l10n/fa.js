@@ -311,7 +311,6 @@ OC.L10N.register(
     "Database user" : "شناسه پایگاه داده",
     "Database password" : "پسورد پایگاه داده",
     "Database name" : "نام پایگاه داده",
-    "Database tablespace" : "جدول پایگاه داده",
     "Database host" : "هاست پایگاه داده",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "لطفا شماره پورت را همراه با نام میزبان مشخص کنید (به عنوان مثال، localhost:5432).",
     "Performance warning" : "اخطار کارایی",

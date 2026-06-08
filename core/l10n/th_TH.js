@@ -307,7 +307,6 @@ OC.L10N.register(
     "Database user" : "ชื่อผู้ใช้งานฐานข้อมูล",
     "Database password" : "รหัสผ่านฐานข้อมูล",
     "Database name" : "ชื่อฐานข้อมูล",
-    "Database tablespace" : "พื้นที่ตารางในฐานข้อมูล",
     "Database host" : "Database host",
     "Performance warning" : "คำเตือนเรื่องประสิทธิภาพการทำงาน",
     "SQLite will be used as database." : "SQLite ถูกใช้เป็นฐานข้อมูลแล้ว",

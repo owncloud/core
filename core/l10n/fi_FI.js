@@ -271,7 +271,6 @@ OC.L10N.register(
     "Database user" : "Tietokannan käyttäjä",
     "Database password" : "Tietokannan salasana",
     "Database name" : "Tietokannan nimi",
-    "Database tablespace" : "Tietokannan taulukkotila",
     "Database host" : "Tietokantapalvelin",
     "Performance warning" : "Suorituskykyvaroitus",
     "SQLite will be used as database." : "SQLitea käytetään tietokantana.",

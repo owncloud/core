@@ -195,7 +195,6 @@ OC.L10N.register(
     "Database user" : "Datubāzes lietotājs",
     "Database password" : "Datubāzes parole",
     "Database name" : "Datubāzes nosaukums",
-    "Database tablespace" : "Datubāzes tabulas telpa",
     "Database host" : "Datubāzes serveris",
     "SQLite will be used as database." : "SQLite tiks izmantots kā datu bāze.",
     "Finish setup" : "Pabeigt iestatīšanu",

@@ -286,7 +286,6 @@ OC.L10N.register(
     "Database user" : "Корисник на база",
     "Database password" : "Лозинка на база",
     "Database name" : "Име на база",
-    "Database tablespace" : "Табела во базата на податоци",
     "Database host" : "Сервер со база",
     "Performance warning" : "Предупредување за перформансите",
     "SQLite will be used as database." : "SQLite ќе се користи како база на податоци.",

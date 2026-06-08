@@ -308,7 +308,6 @@ OC.L10N.register(
     "Database user" : "Użytkownik bazy danych",
     "Database password" : "Hasło do bazy danych",
     "Database name" : "Nazwa bazy danych",
-    "Database tablespace" : "Obszar tabel bazy danych",
     "Database host" : "Komputer bazy danych",
     "Performance warning" : "Ostrzeżenie o wydajności",
     "SQLite will be used as database." : "SQLite będzie używane jako baza danych.",

@@ -310,7 +310,6 @@
     "Database user" : "Utilisateur de la base de données",
     "Database password" : "Mot de passe de la base de données",
     "Database name" : "Nom de la base de données",
-    "Database tablespace" : "Tablespace de la base de données",
     "Database host" : "Hôte de la base de données",
     "Performance warning" : "Avertissement à propos des performances",
     "SQLite will be used as database." : "SQLite sera utilisé comme gestionnaire de base de données.",

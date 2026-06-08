@@ -265,7 +265,6 @@ OC.L10N.register(
     "Database user" : "Uporabnik podatkovne zbirke",
     "Database password" : "Geslo podatkovne zbirke",
     "Database name" : "Ime podatkovne zbirke",
-    "Database tablespace" : "Razpredelnica podatkovne zbirke",
     "Database host" : "Gostitelj podatkovne zbirke",
     "Performance warning" : "Opozorilo učinkovitosti delovanja",
     "SQLite will be used as database." : "Kot podatkovna zbirka bo uporabljena zbirka SQLite",

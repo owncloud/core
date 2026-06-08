@@ -317,7 +317,6 @@ OC.L10N.register(
     "Database user" : "Utente del database",
     "Database password" : "Password del database",
     "Database name" : "Nome del database",
-    "Database tablespace" : "Spazio delle tabelle del database",
     "Database host" : "Host del database",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Per favore specifica il numero di porta insieme al nome host (ad esempio, localhost:5432).",
     "Performance warning" : "Avviso di prestazioni",

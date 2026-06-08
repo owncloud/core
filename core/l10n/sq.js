@@ -317,7 +317,6 @@ OC.L10N.register(
     "Database user" : "Përdorues baze të dhënash",
     "Database password" : "Fjalëkalim baze të dhënash",
     "Database name" : "Emër baze të dhënash",
-    "Database tablespace" : "“Tablespace” baze të dhënash",
     "Database host" : "Strehë baze të dhënash",
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Ju lutemi, tok me emrin e strehës specifikoni një numër porte (p.sh., localhost:5432).",
     "Performance warning" : "Sinjalizim funksionimi",
