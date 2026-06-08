@@ -72,10 +72,6 @@ describe('OCA.Sharing.Util tests', function() {
 		fileList.destroy();
 		fileList = null;
 	});
-
-	describe('Sharing data in table row', function() {
-		// TODO: test data-permissions, data-share-owner, etc
-	});
 	describe('Share action icon', function() {
 		it('do not shows share text when not shared', function() {
 			var $action, $tr;
