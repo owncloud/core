@@ -1,0 +1,10 @@
+Fix: support federation between systems in subdirectories
+
+If a federated server was installed in a subdirectory like:
+
+mydomain.com/cloud
+
+Then checks to see that the server is up and responding would fail.
+This problem has been corrected.
+
+https://github.com/owncloud/core/pull/41599
