@@ -293,6 +293,9 @@ class DbHandler {
 	 * @return string
 	 */
 	protected function normalizeUrl($url) {
+		if ($url === null) {
+			$url = '';
+		}
 		$normalized = $url;
 
 		if (\strpos($url, 'https://') === 0) {
