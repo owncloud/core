@@ -69,14 +69,13 @@ class GeneralPersonalPanel implements ISettings {
 			$isIE8 = true;
 		}
 		$cloudID = $this->userSession->getUser()->getCloudId();
-		$url = 'https://owncloud.com/federation#' . $cloudID;
 		$ownCloudLogoPath = $this->urlGenerator->imagePath('core', 'logo-icon.svg');
 		$tmpl = new Template('federatedfilesharing', 'settings-personal-general');
 		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
-		$tmpl->assign('message_with_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID, see %s', [$url]));
+		$tmpl->assign('message_with_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID, see %s', [$cloudID]));
 		$tmpl->assign('message_without_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID', [$cloudID]));
 		$tmpl->assign('owncloud_logo_path', $ownCloudLogoPath);
-		$tmpl->assign('reference', $url);
+		$tmpl->assign('reference', $cloudID);
 		$tmpl->assign('cloudId', $cloudID);
 		$tmpl->assign('showShareIT', !$isIE8);
 		$tmpl->assign('urlGenerator', $this->urlGenerator);

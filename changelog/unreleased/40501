@@ -1,0 +1,8 @@
+Bugfix: Remove broken owncloud.com/federation link from federated cloud sharing settings
+
+The "Add to your website" feature in the personal federation settings was generating
+a link to https://owncloud.com/federation# which no longer works after owncloud.com
+was restructured. The federation Cloud ID is now displayed directly without linking
+to the defunct external page.
+
+https://github.com/owncloud/core/issues/40501
