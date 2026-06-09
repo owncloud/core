@@ -30,14 +30,18 @@ then
 	# explicitly tell Behat to not do colored output
 	COLORS_OPTION="--no-colors"
 	# Use the Bash "null" command to do nothing, rather than use tput to set a color
-	RED_COLOR=":"
-	GREEN_COLOR=":"
-	YELLOW_COLOR=":"
+	RED_COLOR=""
+	GREEN_COLOR=""
+	YELLOW_COLOR=""
 else
+	# If TERM is empty or set to "dumb" then set it to xterm so that the text
+	# color controls will be generated.
+	# In Github workflow CI, TERM is often set to "dumb".
+	[[ -z "$TERM" || "$TERM" == "dumb" ]] && export TERM=xterm
 	COLORS_OPTION="--colors"
-	RED_COLOR="tput setaf 1"
-	GREEN_COLOR="tput setaf 2"
-	YELLOW_COLOR="tput setaf 3"
+	RED_COLOR=$(tput setaf 1)
+	GREEN_COLOR=$(tput setaf 2)
+	YELLOW_COLOR=$(tput setaf 3)
 fi
 
 # The following environment variables can be specified:
@@ -46,6 +50,7 @@ fi
 # BEHAT_FEATURE - see "--feature" description
 # BEHAT_FILTER_TAGS - see "--tags" description
 # BEHAT_SUITE - see "--suite" description
+# BEHAT_SUITES_STRING - see "--suites" description
 # BEHAT_YML - see "--config" description
 # BROWSER - see "--browser" description
 # NORERUN - see "--norerun" description
@@ -104,6 +109,7 @@ fi
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
+# --suites - specify a comma-separated list of suites to run
 # --type - api, cli or webui - if no individual feature or suite is specified, then
 #          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
@@ -135,6 +141,10 @@ do
 			;;
 		--suite)
 			BEHAT_SUITE="$2"
+			shift
+			;;
+		--suites)
+			BEHAT_SUITES_STRING="$2"
 			shift
 			;;
 		--loop)
@@ -436,7 +446,7 @@ function run_behat_tests() {
 		# So exit the tests and do not lint expected failures when undefined steps exist.
 		if [[ ${SCENARIO_RESULTS} == *"undefined"* ]]
 		then
-			${RED_COLOR}; echo -e "Undefined steps: There were some undefined steps found."
+			echo -e "${RED_COLOR}Undefined steps: There were some undefined steps found."
 			exit 1
 		fi
 		# If there were no scenarios in the requested suite or feature that match
@@ -837,10 +847,13 @@ BEHAT_CONFIG_DIR=$(dirname "${BEHAT_YML}")
 ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
 BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
 
-declare -a BEHAT_SUITES
-if [[ -n "${BEHAT_SUITE}" ]]
+declare -a BEHAT_SUITES_ARRAY
+if [[ -n "${BEHAT_SUITES_STRING}" ]]
 then
-	BEHAT_SUITES+=(${BEHAT_SUITE})
+  IFS=',' read -r -a BEHAT_SUITES_ARRAY <<< "$BEHAT_SUITES_STRING"
+elif [[ -n "${BEHAT_SUITE}" ]]
+then
+	BEHAT_SUITES_ARRAY+=(${BEHAT_SUITE})
 else
 	if [[ -n "${RUN_PART}" ]]
 	then
@@ -870,7 +883,7 @@ else
 		fi
 
 		COUNT_FINISH_AND_TODO_SUITES=$((${SUITES_IN_PREVIOUS_RUNS} + ${SUITES_THIS_RUN}))
-		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_THIS_RUN}`)
+		BEHAT_SUITES_ARRAY+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_THIS_RUN}`)
 	fi
 fi
 
@@ -1224,7 +1237,7 @@ TEST_LOG_FILE=$(mktemp)
 SCENARIOS_THAT_PASSED=0
 SCENARIOS_THAT_FAILED=0
 
-if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
+if [ ${#BEHAT_SUITES_ARRAY[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
 	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
 	run_behat_tests
@@ -1245,11 +1258,11 @@ else
 	fi
 fi
 
-for i in "${!BEHAT_SUITES[@]}"
+for i in "${!BEHAT_SUITES_ARRAY[@]}"
 	do
-		BEHAT_SUITE_TO_RUN="${BEHAT_SUITES[$i]}"
+		BEHAT_SUITE_TO_RUN="${BEHAT_SUITES_ARRAY[$i]}"
 		BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE_TO_RUN}"
-		SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
+		SUITE_FEATURE_TEXT="${BEHAT_SUITES_ARRAY[$i]}"
 		for rerun_number in $(seq 1 ${BEHAT_RERUN_TIMES})
 			do
 				if ((${BEHAT_RERUN_TIMES} > 1))
@@ -1342,24 +1355,24 @@ fi
 
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
-	${YELLOW_COLOR}; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+	echo "${YELLOW_COLOR}runsh: Total unexpected failed scenarios throughout the test run:"
+	echo "${RED_COLOR}"; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
 else
-	${GREEN_COLOR}; echo "runsh: There were no unexpected failures."
+	echo "${GREEN_COLOR}runsh: There were no unexpected failures."
 fi
 
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
-	${YELLOW_COLOR}; echo "runsh: Total unexpected passed scenarios throughout the test run:"
-	${RED_COLOR}; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
+	echo "${YELLOW_COLOR}runsh: Total unexpected passed scenarios throughout the test run:"
+	echo "${RED_COLOR}"; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
 else
-	${GREEN_COLOR}; echo "runsh: There were no unexpected success."
+	echo "${GREEN_COLOR}runsh: There were no unexpected success."
 fi
 
 if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
 then
-	${YELLOW_COLOR}; echo "runsh: The following Behat test runs exited with non-zero status:"
-	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
+	echo "${YELLOW_COLOR}runsh: The following Behat test runs exited with non-zero status:"
+	echo "${RED_COLOR}"; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
 # sync the file-system so all output will be flushed to storage.
