@@ -163,7 +163,7 @@ jobs:
         env:
           ADDITIONAL_PACKAGES: ${{ inputs.additional-packages }}
         run: |
-          sudo apt-get install -y $ADDITIONAL_PACKAGES
+          sudo apt-get install -y "$ADDITIONAL_PACKAGES"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # v2.37.0
