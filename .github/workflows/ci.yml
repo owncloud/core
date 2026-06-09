@@ -41,3 +41,120 @@ jobs:
 
       - name: Validate changelog entries
         uses: actionhippie/calens@0b8ceba55a72f5ef8b7d910698fcd28be8bb8c19 # v1.13.4
+
+  acceptance-api-smoke:
+    if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
+    name: API Smoke Tests
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      federated-folder: 'federated'
+      additional-app: 'notifications'
+      additional-packages: 'imagemagick'
+      filter-tags: '@smokeTest'
+      test-suites: "[
+        'apiAuth,apiAuthOcs,apiAuthWebDav,apiCapabilities,apiComments,apiFavorites,apiFederationToRoot1,apiFederationToRoot2,apiFederationToShares1,apiFederationToShares2,apiMain',
+        'apiProvisioning-v1,apiProvisioning-v2,apiProvisioningGroups-v1,apiProvisioningGroups-v2,apiShareCreateSpecialToRoot1,apiShareCreateSpecialToRoot2,apiShareCreateSpecialToShares1,apiShareCreateSpecialToShares2,apiSharees,apiShareManagementBasicToRoot,apiShareManagementBasicToShares',
+        'apiShareManagementToRoot,apiShareManagementToShares,apiShareOperationsToRoot1,apiShareOperationsToRoot2,apiShareOperationsToShares1,apiShareOperationsToShares2,apiSharePublicLink1,apiSharePublicLink2,apiSharePublicLink3,apiShareReshareToRoot1,apiShareReshareToRoot2,apiShareReshareToRoot3',
+        'apiShareReshareToShares1,apiShareReshareToShares2,apiShareReshareToShares3,apiShareUpdateToRoot,apiShareUpdateToShares,apiSharingNotificationsToRoot,apiSharingNotificationsToShares,apiTags,apiTranslation,apiTrashbin,apiTrashbinRestore,apiVersions,apiWebdavDelete,apiWebdavEtagPropagation1,apiWebdavEtagPropagation2,apiWebdavLocks',
+        'apiWebdavLocks2,apiWebdavLocks3,apiWebdavLocksUnlock,apiWebdavMove1,apiWebdavMove2,apiWebdavOperations,apiWebdavPreviews,apiWebdavProperties1,apiWebdavProperties2,apiWebdavUpload1,apiWebdavUpload2,apiWebdavUploadTUS']"
+
+  acceptance-api:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: API Tests
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      test-suites: "[
+        'apiAuth,apiAuthOcs,apiAuthWebDav',
+        'apiCapabilities,apiComments,apiFavorites,apiMain',
+        'apiProvisioning-v1,apiProvisioning-v2',
+        'apiProvisioningGroups-v1,apiProvisioningGroups-v2',
+        'apiShareCreateSpecialToRoot1,apiShareCreateSpecialToRoot2',
+        'apiShareCreateSpecialToShares1,apiShareCreateSpecialToShares2',
+        'apiSharees,apiWebdavOperations',
+        'apiShareManagementBasicToRoot,apiShareManagementBasicToShares',
+        'apiShareManagementToRoot,apiShareManagementToShares',
+        'apiShareOperationsToRoot1,apiShareOperationsToRoot2',
+        'apiShareOperationsToShares1,apiShareOperationsToShares2',
+        'apiSharePublicLink1,apiSharePublicLink2,apiSharePublicLink3',
+        'apiShareReshareToRoot1,apiShareReshareToRoot2,apiShareReshareToRoot3',
+        'apiShareReshareToShares1,apiShareReshareToShares2,apiShareReshareToShares3',
+        'apiShareUpdateToRoot,apiShareUpdateToShares,apiTags,apiTranslation',
+        'apiTrashbin,apiTrashbinRestore',
+        'apiVersions,apiWebdavDelete',
+        'apiWebdavEtagPropagation1,apiWebdavEtagPropagation2',
+        'apiWebdavLocks,apiWebdavLocks2',
+        'apiWebdavLocks3,apiWebdavLocksUnlock',
+        'apiWebdavMove1,apiWebdavMove2',
+        'apiWebdavProperties1,apiWebdavProperties2',
+        'apiWebdavUpload1,apiWebdavUpload2,apiWebdavUploadTUS']"
+
+  acceptance-api-notifications:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: API Tests Notifications
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      additional-app: 'notifications'
+      test-suites: "['apiSharingNotificationsToRoot,apiSharingNotificationsToShares']"
+
+  acceptance-api-previews:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: API Tests Previews
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      additional-packages: 'imagemagick'
+      server-folder: 'server'
+      test-suites: "['apiWebdavPreviews']"
+
+  acceptance-api-federation:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: API Tests Federation
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      federated-folder: 'federated'
+      test-suites: "['apiFederationToRoot1,apiFederationToRoot2', 'apiFederationToShares1,apiFederationToShares2']"
+
+  acceptance-cli-smoke:
+    if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
+    name: CLI Smoke Tests
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-cli-tests: true
+      use-email-server: true
+      server-folder: 'server'
+      filter-tags: '@smokeTest'
+
+  acceptance-cli:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: CLI Tests
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-cli-tests: true
+      server-folder: 'server'
+      test-suites: "['cliBackground,cliMain,cliManageApps,cliTrashbin']"
+
+  acceptance-cli-email:
+    if: contains(github.event.pull_request.title, 'full-ci')
+    name: CLI Tests with Email
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-cli-tests: true
+      use-email-server: true
+      server-folder: 'server'
+      test-suites: "['cliProvisioning']"
