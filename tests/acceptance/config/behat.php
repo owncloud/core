@@ -27,6 +27,25 @@ use Behat\Config\Suite;
 use Cjm\Behat\StepThroughExtension\ServiceContainer\StepThroughExtension;
 use rdx\behatvars\BehatVariablesExtension;
 
+$suiteSettings = [
+	'context' => [
+		'parameters' => [
+			'ldapAdminPassword' => 'admin',
+			'ldapUsersOU' => 'TestUsers',
+			'ldapGroupsOU' => 'TestGroups',
+			'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
+		],
+	],
+];
+
+$featureContextArgs = [
+	'baseUrl' => 'http://localhost:8080',
+	'adminUsername' => 'admin',
+	'adminPassword' => 'admin',
+	'regularUserPassword' => 123456,
+	'ocPath' => 'apps/testing/api/v1/occ',
+];
+
 return (new Config())
 	->withProfile(
 		(new Profile(
@@ -42,26 +61,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiMain',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppManagementContext')
 					->addContext('AppConfigurationContext')
@@ -77,26 +81,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiAuth',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('CorsContext')
 					->addContext('AuthContext')
@@ -105,26 +94,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiAuthOcs',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AuthContext')
 					->withPaths('%paths.base%/../features/apiAuthOcs')
@@ -132,26 +106,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiAuthWebDav',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -164,26 +123,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiCapabilities',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('CapabilitiesContext')
 					->addContext('OccContext')
@@ -193,26 +137,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiComments',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('CommentsContext')
 					->addContext('WebDavPropertiesContext')
@@ -221,26 +150,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiFavorites',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FavoritesContext')
 					->addContext('WebDavPropertiesContext')
@@ -251,26 +165,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiFederationToRoot1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FederationContext')
 					->addContext('WebDavPropertiesContext')
@@ -280,26 +179,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiFederationToRoot2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FederationContext')
 					->addContext('WebDavPropertiesContext')
@@ -309,26 +193,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiFederationToShares1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FederationContext')
 					->addContext('WebDavPropertiesContext')
@@ -339,26 +208,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiFederationToShares2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FederationContext')
 					->addContext('WebDavPropertiesContext')
@@ -369,26 +223,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiProvisioning-v1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('OccUsersGroupsContext')
@@ -399,26 +238,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiProvisioning-v2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('OccUsersGroupsContext')
@@ -429,26 +253,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiProvisioningGroups-v1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('OccUsersGroupsContext')
@@ -457,26 +266,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiProvisioningGroups-v2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('OccUsersGroupsContext')
@@ -485,26 +279,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareCreateSpecialToRoot1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -515,26 +294,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareCreateSpecialToShares1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -545,26 +309,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareCreateSpecialToRoot2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -575,26 +324,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareCreateSpecialToShares2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -605,26 +339,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharees',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('ShareesContext')
 					->addContext('OccContext')
@@ -634,26 +353,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareManagementToRoot',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -666,26 +370,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareManagementToShares',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -698,26 +387,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareManagementBasicToRoot',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -729,26 +403,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareManagementBasicToShares',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -760,26 +419,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareOperationsToRoot1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -790,26 +434,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareOperationsToRoot2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -820,26 +449,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareOperationsToShares1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -850,26 +464,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareOperationsToShares2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -880,26 +479,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharePublicLink1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -911,26 +495,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharePublicLink2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -942,26 +511,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharePublicLink3',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -973,26 +527,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToRoot1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1003,26 +542,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToShares1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1033,26 +557,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToRoot2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1064,26 +573,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToShares2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1095,26 +589,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToRoot3',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1126,26 +605,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareReshareToShares3',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1157,26 +621,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareUpdateToRoot',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1188,26 +637,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiShareUpdateToShares',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1219,26 +653,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharingNotificationsToRoot',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('NotificationsCoreContext')
 					->addContext('AppConfigurationContext')
@@ -1247,26 +666,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiSharingNotificationsToShares',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('NotificationsCoreContext')
 					->addContext('AppConfigurationContext')
@@ -1276,26 +680,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiTags',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('TagsContext')
 					->addContext('WebDavPropertiesContext')
@@ -1304,26 +693,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiTrashbin',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -1334,26 +708,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiTrashbinRestore',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -1364,26 +723,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiVersions',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('ChecksumContext')
 					->addContext('FilesVersionsContext')
@@ -1396,26 +740,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavDelete',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1429,26 +758,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavLocks',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1459,26 +773,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavLocks2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1489,26 +788,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavLocks3',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1519,26 +803,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavLocksUnlock',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('PublicWebDavContext')
@@ -1549,26 +818,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavMove1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1578,26 +832,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavMove2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1607,26 +846,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavOperations',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1640,26 +864,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavPreviews',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebDavPropertiesContext')
 					->addContext('OccContext')
@@ -1668,26 +877,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavProperties1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1698,26 +892,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavProperties2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('WebDavPropertiesContext')
@@ -1727,26 +906,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavUpload1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1757,26 +921,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavUpload2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1786,26 +935,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavUploadTUS',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1818,26 +952,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavEtagPropagation1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1851,26 +970,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiWebdavEtagPropagation2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('LoggingContext')
 					->addContext('OccContext')
@@ -1884,52 +988,22 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'apiTranslation',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->withPaths('%paths.base%/../features/apiTranslation')
 			)
 			->withSuite(
 				(new Suite(
 					'cliBackground',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('LoggingContext')
@@ -1938,26 +1012,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliCreateLocalStorage',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('AuthContext')
@@ -1966,26 +1025,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliDbConversion',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->withPaths('%paths.base%/../features/cliDbConversion')
@@ -1993,26 +1037,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliEncryption',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('WebDavPropertiesContext')
@@ -2022,26 +1051,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliExternalStorage',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('FederationContext')
 					->addContext('OccContext')
@@ -2052,26 +1066,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliLocalStorage',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('AuthContext')
@@ -2080,26 +1079,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliMain',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('CapabilitiesContext')
@@ -2116,26 +1100,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliManageApps',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('AppManagementContext')
@@ -2144,26 +1113,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliProvisioning',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('OccContext')
@@ -2174,26 +1128,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'cliTrashbin',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -2202,26 +1141,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIAdminSettings',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('CapabilitiesContext')
@@ -2240,26 +1164,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIComments',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIGeneralContext')
 					->addContext('WebUILoginContext')
@@ -2270,26 +1179,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUICreateDelete',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TagsContext')
@@ -2303,26 +1197,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIFavorites',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2332,26 +1211,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIFiles',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('TagsContext')
 					->addContext('WebUIFilesContext')
@@ -2366,26 +1230,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUILogin',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('OccContext')
@@ -2398,26 +1247,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIMoveFilesFolders',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2430,26 +1264,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIPersonalSettings',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('WebUIFilesContext')
@@ -2465,26 +1284,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIRenameFiles',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2497,26 +1301,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIRenameFolders',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2527,26 +1316,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIRestrictSharing',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2557,26 +1331,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingAcceptShares',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('WebUIFilesContext')
@@ -2590,26 +1349,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingAutocompletion1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('WebUIFilesContext')
@@ -2623,26 +1367,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingAutocompletion2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('WebUIFilesContext')
@@ -2656,26 +1385,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingExternal1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('EmailContext')
@@ -2693,26 +1407,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingExternal2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('EmailContext')
@@ -2730,26 +1429,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingInternalGroups1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2763,26 +1447,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingInternalGroups2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2796,26 +1465,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingInternalUsers1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2830,26 +1484,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingInternalUsers2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -2864,26 +1503,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingNotifications',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('NotificationsCoreContext')
 					->addContext('WebUIFilesContext')
@@ -2896,26 +1520,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingPublic1',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('EmailContext')
@@ -2930,26 +1539,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISharingPublic2',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('AppConfigurationContext')
 					->addContext('EmailContext')
@@ -2964,26 +1558,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUITags',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('TagsContext')
 					->addContext('WebUIGeneralContext')
@@ -2996,26 +1575,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUITrashbin',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('OccContext')
 					->addContext('TrashbinContext')
@@ -3027,26 +1591,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIUpload',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -3059,26 +1608,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIAddUsers',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('WebDavPropertiesContext')
@@ -3093,26 +1627,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIManageQuota',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebDavPropertiesContext')
 					->addContext('WebUIFilesContext')
@@ -3124,26 +1643,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIManageUsersGroups',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('WebDavPropertiesContext')
@@ -3158,26 +1662,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUISettingsMenu',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebDavPropertiesContext')
 					->addContext('EmailContext')
@@ -3191,26 +1680,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIWebdavLocks',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebDavLockingContext')
 					->addContext('WebUIAdminGeneralSettingsContext')
@@ -3226,26 +1700,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIWebdavLockProtection',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebDavLockingContext')
 					->addContext('WebUIFilesContext')
@@ -3260,26 +1719,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIFileActionsMenu',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('WebUIFilesContext')
 					->addContext('WebUIGeneralContext')
@@ -3290,26 +1734,11 @@ return (new Config())
 			->withSuite(
 				(new Suite(
 					'webUIWithCLI',
-					[
-					'context' => [
-					'parameters' => [
-					'ldapAdminPassword' => 'admin',
-					'ldapUsersOU' => 'TestUsers',
-					'ldapGroupsOU' => 'TestGroups',
-					'ldapInitialUserFilePath' => '/../../config/ldap-users.ldif',
-					],
-					],
-					]
+					$suiteSettings
 				))
 					->addContext(
 						'FeatureContext',
-						[
-						'baseUrl' => 'http://localhost:8080',
-						'adminUsername' => 'admin',
-						'adminPassword' => 'admin',
-						'regularUserPassword' => 123456,
-						'ocPath' => 'apps/testing/api/v1/occ',
-						]
+						$featureContextArgs
 					)
 					->addContext('EmailContext')
 					->addContext('WebUIFilesContext')
