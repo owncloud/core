@@ -139,6 +139,7 @@ describe('MimeType tests', function() {
 			afterEach(function() {
 				OC.currentTheme.name = _themeFolder;
 				OC.currentTheme.directory = _themeDirectory;
+				OC.MimeType._mimeTypeIcons = {};
 			});
 
 			it('test if theme path is used if a theme icon is available', function() {
