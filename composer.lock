@@ -1268,6 +1268,12 @@
                 "url": "https://codeberg.org/icewind/SMB",
                 "reference": "97063a63b44edc6554966f6121679506b8d85103"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://codeberg.org/icewind/SMB/archive/97063a63b44edc6554966f6121679506b8d85103.zip",
+                "reference": "97063a63b44edc6554966f6121679506b8d85103",
+                "shasum": "978ab879866b09bcee82c8cf5b4c105ac29e2da0"
+            },
             "require": {
                 "icewind/streams": ">=0.7.3",
                 "php": ">=8.2"
@@ -1304,6 +1310,12 @@
                 "type": "git",
                 "url": "https://codeberg.org/icewind/streams",
                 "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://codeberg.org/icewind/streams/archive/cb2bd3ed41b516efb97e06e8da35a12ef58ba48b.zip",
+                "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b",
+                "shasum": "378a5605644b6dd2f38a0be39e7b8cf7c711455a"
             },
             "require": {
                 "php": ">=7.1"
