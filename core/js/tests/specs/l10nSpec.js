@@ -178,6 +178,7 @@ describe('OC.L10N tests', function() {
 			expect(callbackStub.calledOnce).toEqual(true);
 			expect(promiseStub.calledOnce).toEqual(true);
 			expect(fakeServer.requests.length).toEqual(0);
+			localeStub.restore();
 		});
 	});
 });

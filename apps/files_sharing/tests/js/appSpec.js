@@ -294,6 +294,10 @@ describe('OCA.Sharing.App tests', function() {
 			appReloadStub = sinon.stub(OCA.Files.App.fileList, 'reload');
 			fileListInReloadStub = sinon.stub(fileListIn, 'reload');
 
+			// Remove any handlers registered outside the test lifecycle (e.g. via
+			// $(document).ready in app.js) before adding a fresh one, to ensure
+			// exactly one handler fires per event.
+			$('body').off('OCA.Notification.Action');
 			App.registerNotificationHandler();
 		});
 		afterEach(function() {

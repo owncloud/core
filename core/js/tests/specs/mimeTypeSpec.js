@@ -125,9 +125,11 @@ describe('MimeType tests', function() {
 
 		describe('themes', function() {
 			var _themeFolder;
+			var _themeDirectory;
 
 			beforeEach(function() {
 				_themeFolder = OC.currentTheme.name;
+				_themeDirectory = OC.currentTheme.directory;
 				OC.currentTheme.name = 'abc';
 				OC.currentTheme.directory = 'themes/abc';
 				//Clear mimetypeIcons caches
@@ -136,6 +138,8 @@ describe('MimeType tests', function() {
 
 			afterEach(function() {
 				OC.currentTheme.name = _themeFolder;
+				OC.currentTheme.directory = _themeDirectory;
+				OC.MimeType._mimeTypeIcons = {};
 			});
 
 			it('test if theme path is used if a theme icon is available', function() {
