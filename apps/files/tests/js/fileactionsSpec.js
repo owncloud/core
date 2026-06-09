@@ -387,6 +387,7 @@ describe('OCA.Files.FileActions tests', function() {
 				slideUpStub.getCall(0).args[1]();
 				expect($tr.hasClass('mouseOver')).toEqual(false);
 				expect($tr.find('.fileActionsMenu').length).toEqual(0);
+				slideUpStub.restore();
 			});
 		});
 	});
