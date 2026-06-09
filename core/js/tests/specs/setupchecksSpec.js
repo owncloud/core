@@ -98,7 +98,13 @@ describe('OC.SetupChecks tests', function() {
 
 	describe('checkDataProtected', function() {
 
-		oc_dataURL = "data";
+		beforeEach(function() {
+			oc_dataURL = "data";
+		});
+
+		afterEach(function() {
+			oc_dataURL = "data";
+		});
 
 		it('should return an error if data directory is not protected', function(done) {
 			var async = OC.SetupChecks.checkDataProtected();
