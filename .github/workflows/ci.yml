@@ -44,6 +44,7 @@ jobs:
 
   acceptance-api:
     name: API Tests
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -107,6 +108,7 @@ jobs:
 
   acceptance-api-notifications:
     name: API Tests Notifications
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -116,6 +118,7 @@ jobs:
 
   acceptance-api-previews:
     name: API Tests Previews
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -125,6 +128,7 @@ jobs:
 
   acceptance-api-federation:
     name: API Tests Federation
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -134,6 +138,7 @@ jobs:
 
   acceptance-cli:
     name: CLI Tests
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
@@ -141,7 +146,8 @@ jobs:
       test-suites: "['cliBackground', 'cliMain', 'cliManageApps', 'cliTrashbin']"
 
   acceptance-cli-email:
-    name: CLI Tests
+    name: CLI Tests with Email
+    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
