@@ -50,6 +50,7 @@ fi
 # BEHAT_FEATURE - see "--feature" description
 # BEHAT_FILTER_TAGS - see "--tags" description
 # BEHAT_SUITE - see "--suite" description
+# BEHAT_SUITES_STRING - see "--suites" description
 # BEHAT_CONFIG_FILE - see "--config" description
 # BROWSER - see "--browser" description
 # NORERUN - see "--norerun" description
@@ -108,6 +109,7 @@ fi
 # -c or --config - specify a behat.php to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
+# --suites - specify a comma-separated list of suites to run
 # --type - api, cli or webui - if no individual feature or suite is specified, then
 #          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
@@ -139,6 +141,10 @@ do
 			;;
 		--suite)
 			BEHAT_SUITE="$2"
+			shift
+			;;
+		--suites)
+			BEHAT_SUITES_STRING="$2"
 			shift
 			;;
 		--loop)
@@ -879,10 +885,13 @@ BEHAT_CONFIG_DIR=$(dirname "${BEHAT_CONFIG_FILE}")
 ACCEPTANCE_DIR=$(dirname "${BEHAT_CONFIG_DIR}")
 BEHAT_FEATURES_DIR="${ACCEPTANCE_DIR}/features"
 
-declare -a BEHAT_SUITES
-if [[ -n "${BEHAT_SUITE}" ]]
+declare -a BEHAT_SUITES_ARRAY
+if [[ -n "${BEHAT_SUITES_STRING}" ]]
 then
-	BEHAT_SUITES+=(${BEHAT_SUITE})
+  IFS=',' read -r -a BEHAT_SUITES_ARRAY <<< "$BEHAT_SUITES_STRING"
+elif [[ -n "${BEHAT_SUITE}" ]]
+then
+	BEHAT_SUITES_ARRAY+=(${BEHAT_SUITE})
 else
 	if [[ -n "${RUN_PART}" ]]
 	then
@@ -912,7 +921,7 @@ else
 		fi
 
 		COUNT_FINISH_AND_TODO_SUITES=$((${SUITES_IN_PREVIOUS_RUNS} + ${SUITES_THIS_RUN}))
-		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_THIS_RUN}`)
+		BEHAT_SUITES_ARRAY+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_THIS_RUN}`)
 	fi
 fi
 
@@ -1266,7 +1275,7 @@ TEST_LOG_FILE=$(mktemp)
 SCENARIOS_THAT_PASSED=0
 SCENARIOS_THAT_FAILED=0
 
-if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
+if [ ${#BEHAT_SUITES_ARRAY[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
 	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
 	run_behat_tests
@@ -1287,11 +1296,11 @@ else
 	fi
 fi
 
-for i in "${!BEHAT_SUITES[@]}"
+for i in "${!BEHAT_SUITES_ARRAY[@]}"
 	do
-		BEHAT_SUITE_TO_RUN="${BEHAT_SUITES[$i]}"
+		BEHAT_SUITE_TO_RUN="${BEHAT_SUITES_ARRAY[$i]}"
 		BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE_TO_RUN}"
-		SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
+		SUITE_FEATURE_TEXT="${BEHAT_SUITES_ARRAY[$i]}"
 		for rerun_number in $(seq 1 ${BEHAT_RERUN_TIMES})
 			do
 				if ((${BEHAT_RERUN_TIMES} > 1))

@@ -81,7 +81,7 @@ jobs:
       matrix:
         php: ${{ fromJSON(inputs.php-versions) }}
         database: ${{ fromJSON(inputs.databases) }}
-        suite: ${{ fromJSON(inputs.test-suites) }}
+        suites: ${{ fromJSON(inputs.test-suites) }}
 
     services:
       mysql:
@@ -447,7 +447,7 @@ jobs:
         if: ${{ inputs.do-api-tests }}
         env:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
-          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
         run: |
           make test-acceptance-api
@@ -456,7 +456,7 @@ jobs:
         if: ${{ inputs.do-cli-tests }}
         env:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
-          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
         run: |
           make test-acceptance-cli
@@ -468,7 +468,7 @@ jobs:
           BROWSER: "chrome"
           SELENIUM_HOST: "localhost"
           SELENIUM_PORT: "4444"
-          BEHAT_SUITE: ${{ matrix.suite }}
+          BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
         run: |
           make test-acceptance-webui
