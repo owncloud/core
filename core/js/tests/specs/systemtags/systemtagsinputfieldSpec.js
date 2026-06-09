@@ -65,6 +65,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 				var $el = view.$el.find('input');
 				$el.val('1');
 
+				view.collection.reset();
 				view.collection.add([
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
@@ -243,6 +244,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 			beforeEach(function() {
 				opts = select2Stub.getCall(0).args[0];
 
+				view.collection.reset();
 				view.collection.add([
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 				]);
@@ -373,6 +375,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 				fetchStub = sinon.stub(OC.SystemTags.SystemTagsCollection.prototype, 'fetch');
 				opts = select2Stub.getCall(0).args[0];
 
+				view.collection.reset();
 				view.collection.add([
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
@@ -558,6 +561,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 				view.render();
 				opts = select2Stub.getCall(0).args[0];
 
+				view.collection.reset();
 				view.collection.add([
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
