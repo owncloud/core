@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-namespace Settings\Panels\Personal;
+namespace Tests\Settings\Panels\Personal;
 
 use OC\Settings\Panels\Personal\Cors;
 use OCP\IConfig;
