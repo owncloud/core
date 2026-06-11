@@ -36,7 +36,7 @@ if ($_['showShareIT']) {
 				Diaspora
 			</button>
 			<button class="social-twitter pop-up"
-				data-url='https://twitter.com/intent/tweet?text=<?php p(\urlencode($_['message_without_URL'])); ?>'>
+				data-url='https://twitter.com/intent/tweet?text=<?php p(\urlencode($_['message_with_URL'])); ?>'>
 				Twitter
 			</button>
 			<button class="social-facebook pop-up"
