@@ -79,6 +79,7 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$mockUser = $this->getMockBuilder(IUser::class)->getMock();
+		$mockUser->method('getCloudId')->willReturn('user@cloud.example.com');
 		$agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12';
 		$this->request->expects($this->once())->method('getHeader')->with('User-Agent')->willReturn($agent);
 		$this->userSession->expects($this->once())->method('getUser')->willReturn($mockUser);
