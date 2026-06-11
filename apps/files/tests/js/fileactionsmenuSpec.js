@@ -93,6 +93,7 @@ describe('OCA.Files.FileActionsMenu tests', function() {
 		fileActions = null;
 		fileList.destroy();
 		fileList = undefined;
+		OC.hideMenus();
 		menu.remove();
 		$('#dir, #permissions, #filestable').remove();
 	});

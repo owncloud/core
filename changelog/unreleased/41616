@@ -1,0 +1,10 @@
+Bugfix: Fix JS test isolation bugs exposed by Jasmine 5 random test ordering
+
+Several JS test specs left shared singleton state dirty between tests,
+causing intermittent failures when Jasmine 5 ran tests in random order.
+Fixed OC._currentMenu leak in fileactionsmenuSpec, stale OCA.Files.fileActions
+reference causing infinite recursion in files_sharing/appSpec, and stale
+models in the OC.SystemTags.collection singleton in systemtagsinfoviewSpec
+and systemtagsinputfieldSpec.
+
+https://github.com/owncloud/core/pull/41616
