@@ -99,18 +99,34 @@ $CONFIG = [
  *
  * Possible key: `versions_retention_obligation` STRING
  *
- * Use following values to configure the retention behaviour. Replace `D` with the number of days.
+ * Define the files versions retention obligation
+ * If the versions app is enabled (default), this setting defines the policy
+ * for when versions will be permanently deleted.
+ * The app allows for two settings, a minimum time for version retention,
+ * and a maximum time for version retention.
+ * Minimum time is the number of days a version will be kept, after which it
+ * may be deleted. Maximum time is the number of days at which it is guaranteed
+ * to be deleted.
+ * Both minimum and maximum times can be set together to explicitly define
+ * version deletion. For migration purposes, this setting is installed
+ * initially set to "auto", which is equivalent to the default setting in
+ * ownCloud 8.1 and before.
  *
- * auto::
- * Default value if nothing is set
- * D, auto::
- * Keep versions at least for D days, apply expiration rules to all versions that are older than D days
- * auto, D::
- * Delete all versions that are older than D days automatically, delete other versions according to expiration rules
- * D1, D2::
- * Keep versions for at least D1 days and delete when they exceed D2 days
- * disabled::
- * Disable Versions; no files will be deleted.
+ * Available values:
+ * `auto`
+ * default setting. Automatically expire versions according to expire
+ * rules. Please refer to https://doc.owncloud.com/server/latest/admin_manual/configuration/files/file_versioning.html
+ * for more information.
+ * `D, auto`
+ * keep versions at least for D days, apply expiry rules to all versions
+ * that are older than D days
+ * `auto, D`
+ * delete all versions that are older than D days automatically, delete
+ * other versions according to expire rules
+ * `D1, D2`
+ * keep versions for at least D1 days and delete when exceeds D2 days
+ * `disabled`
+ * versions auto clean disabled, versions will be kept forever
  */
 
 /**
