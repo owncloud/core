@@ -339,6 +339,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					new OC.SystemTags.SystemTagModel({id: '3', name: 'test3', userAssignable: false, canAssign: false}),
 					new OC.SystemTags.SystemTagModel({id: '4', name: 'test4', userAssignable: false, canAssign: true})
 				];
+				view.collection.reset();
 			});
 			afterEach(function() {
 				fetchStub.restore();
@@ -522,6 +523,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					new OC.SystemTags.SystemTagModel({id: '3', name: 'test3', userAssignable: false, canAssign: false}),
 					new OC.SystemTags.SystemTagModel({id: '4', name: 'test4', userAssignable: false, canAssign: true})
 				];
+				view.collection.reset();
 				view.render();
 			});
 			afterEach(function() {

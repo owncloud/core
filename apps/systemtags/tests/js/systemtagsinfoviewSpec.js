@@ -53,6 +53,7 @@ describe('OCA.SystemTags.SystemTagsInfoView tests', function() {
 		var allTagsCollection;
 		beforeEach(function() {
 			allTagsCollection = view._inputView.collection;
+			allTagsCollection.reset();
 
 			allTagsCollection.add([
 				{id: '1', name: 'test1'},
@@ -67,6 +68,9 @@ describe('OCA.SystemTags.SystemTagsInfoView tests', function() {
 				{id: '3', name: 'test3'}
 			]);
 			view.render();
+		});
+		afterEach(function() {
+			allTagsCollection.reset();
 		});
 		it('add tag to list view', function() {
 			view.selectedTagsCollection.add([{id: '4', name: 'test4'}]);
