@@ -1150,7 +1150,7 @@ $CONFIG = [
  * * Used for installation-specific data, e.g., database caching
  * * If unset, defaults to the value of memcache.local
  */
-'memcache.distributed' => '\OC\Memcache\Memcached',
+'memcache.distributed' => '\OC\Memcache\Redis',
 
 /**
  * Define Redis connection details
