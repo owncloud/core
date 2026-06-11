@@ -751,7 +751,7 @@ $CONFIG = [
  * Define ownCloud operation modes
  * This defines the mode of operations. The default value is `single-instance`
  * which means that ownCloud is running on a single node, which might be the
- * most common operation's mode. The only other possible value for now is
+ * most common operating mode. The only other possible value for now is
  * `clustered-instance` which means that ownCloud is running on at least 2
  * nodes. The mode of operations has various impacts on the behavior of ownCloud.
  * The primary impact is that clustered instances won't download apps from the
@@ -1526,7 +1526,7 @@ $CONFIG = [
  * compatible with the server. The version number seen here does not imply official
  * support or test coverage on behalf of ownCloud.
  *
- * NOTE: Lowering this value may lead to unexpected behaviour and can include data loss.
+ * NOTE: Lowering this value may lead to unexpected behavior and can include data loss.
  */
 'minimum.supported.desktop.version' => '3.2.1',
 
@@ -1628,7 +1628,7 @@ $CONFIG = [
   ],
 
 /**
- * Define the maximum filesize for animated GIF's
+ * Define the maximum filesize for animated GIFs
  * Max file size for animating GIFs on public-sharing-site.
  * If the GIF is bigger, it'll show a static preview.
  *
@@ -1743,7 +1743,7 @@ $CONFIG = [
 
 /**
  * Show the grace period popup
- * Decide whether to show or not the grace period popup. There is no change in the
+ * Decide whether to show the grace period popup or not. There is no change in the
  * behavior of the grace period.
  */
 'grace_period.demo_key.show_popup' => true,

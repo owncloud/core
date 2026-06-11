@@ -83,7 +83,7 @@ $CONFIG = [
  * PDF files may contain JavaScript, which, for example, can be necessary to process editable fields.
  * Under normal circumstances and for security reasons, scripts are not allowed to be processed. To allow
  * processing these scripts, the following config key can be set. Note that enabling scripting can be
- * a major security issue and should be considered as a possible thread vector.
+ * a major security issue and should be considered as a possible threat vector.
  *
  */
 
