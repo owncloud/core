@@ -43,7 +43,7 @@ $CONFIG = [
 'log.conditions' => [
   [
 	'apps' => ['admin_audit'],
-	  // Adjust the path below, to match your setup
+	  // Adjust the path below to match your setup
 	'logfile' => '/var/www/owncloud/data/admin_audit.log'
   ],
 ],
@@ -62,7 +62,7 @@ $CONFIG = [
  */
 
 /**
- * Default path to the _clamscan_ command line anti-virus scanner.
+ * The default path to the _clamscan_ command line anti-virus scanner.
  * This setting only applies when the operating mode of the `files_antivirus` app is set to executable mode.
  * See the documentation for more details.
  */
@@ -80,10 +80,10 @@ $CONFIG = [
  *
  * Possible key: `files_pdfviewer.enableScripting` STRING
  *
- * PDF files may contain JavaScript which for example can be necessary to process editable fields.
+ * PDF files may contain JavaScript, which, for example, can be necessary to process editable fields.
  * Under normal circumstances and for security reasons, scripts are not allowed to be processed. To allow
  * processing these scripts, the following config key can be set. Note that enabling scripting can be
- * a major security issue and should be considered as possible thread vector.
+ * a major security issue and should be considered as a possible threat vector.
  *
  */
 
@@ -99,18 +99,34 @@ $CONFIG = [
  *
  * Possible key: `versions_retention_obligation` STRING
  *
- * Use following values to configure the retention behaviour. Replace `D` with the number of days.
+ * Define the files versions retention obligation
+ * If the versions app is enabled (default), this setting defines the policy
+ * for when versions will be permanently deleted.
+ * The app allows for two settings, a minimum time for version retention,
+ * and a maximum time for version retention.
+ * Minimum time is the number of days a version will be kept, after which it
+ * may be deleted. Maximum time is the number of days at which it is guaranteed
+ * to be deleted.
+ * Both minimum and maximum times can be set together to explicitly define
+ * version deletion. For migration purposes, this setting is installed
+ * initially set to "auto", which is equivalent to the default setting in
+ * ownCloud 8.1 and before.
  *
- * auto::
- * Default value if nothing is set
- * D, auto::
- * Keep versions at least for D days, apply expiration rules to all versions that are older than D days
- * auto, D::
- * Delete all versions that are older than D days automatically, delete other versions according to expiration rules
- * D1, D2::
- * Keep versions for at least D1 days and delete when they exceed D2 days
- * disabled::
- * Disable Versions; no files will be deleted.
+ * Available values:
+ * `auto`
+ * default setting. Automatically expire versions according to expire
+ * rules. Please refer to https://doc.owncloud.com/server/latest/admin_manual/configuration/files/file_versioning.html
+ * for more information.
+ * `D, auto`
+ * keep versions at least for D days, apply expiry rules to all versions
+ * that are older than D days
+ * `auto, D`
+ * delete all versions that are older than D days automatically, delete
+ * other versions according to expire rules
+ * `D1, D2`
+ * keep versions for at least D1 days and delete when exceeds D2 days
+ * `disabled`
+ * versions auto clean disabled, versions will be kept forever
  */
 
 /**
@@ -164,14 +180,14 @@ $CONFIG = [
 
 /**
  * Kerberos SPNEGO Timeout
- * Timeout before re-enabling SPNEGO based authentication after logout, defaults to 60 seconds.
+ * Timeout before re-enabling SPNEGO-based authentication after logout, defaults to 60 seconds.
  */
 
 'kerberos.suppress.timeout' => 60,
 
 /**
  * Kerberos Domain
- * The domain name - remove from principals to match the pure user name.
+ * The domain name is removed from principals to match the pure username.
  * Example: 'alice@corp.dir' will look for the user 'alice' in LDAP if 'kerberos.domain' is set to 'corp.dir'.
  */
 
@@ -305,7 +321,7 @@ $CONFIG = [
  *
  * Possible key: `msteamsbridge` ARRAY
  *
- * Sub key: `loginButtonName` STRING
+ * Subkey: `loginButtonName` STRING
  */
 
 /**
@@ -325,34 +341,34 @@ $CONFIG = [
  * Possible key: `openid-connect` ARRAY
  *
  *
- * **Configure OpenID Connect - all possible sub-keys**
+ * **Configure OpenID Connect - all possible subkeys**
  *
- * _You have to use the main key `openid-connect` together with sub keys listed below, see code samples._
+ * _You have to use the main key `openid-connect` together with subkeys listed below, see code samples._
  *
  * allowed-user-backends::
- * Limit the users which are allowed to login to a specific user backend - e.g. LDAP
+ * Limit the users which are allowed to log in to a specific user backend - e.g. LDAP
  * (`'allowed-user-backends' ⇒ ['LDAP']`)
  *
  * auth-params::
- * Additional parameters which are sent to the IdP during the auth requests
+ * Additional parameters, which are sent to the IdP during the auth requests
  *
  * autoRedirectOnLoginPage::
  * If `true`, the ownCloud login page will redirect directly to the Identity Provider
  * login without requiring the user to click a button. The default is `false`.
  *
  * auto-provision::
- * If `auto-provision` is setup, an ownCloud user will be created if not exists, after successful
+ * If `auto-provision` is set up, an ownCloud user will be created if not exists, after successful
  * login using openid connect. The config parameters `mode` and `search-attribute` will be used
  * to create a unique user so that the lookup mechanism can find the user again. This is where
  * an LDAP setup is usually required. The profile picture will only be transferred upon account
  * creation, but will not be updated afterwards if it changes in the connected IdP.
- * If `auto-provision` is not setup or required, it is expected that the user exists and you
+ * If `auto-provision` is not set up or required, it is expected that the user exists, and you
  * MUST declare this with `['enabled' => false]` like shown in the Easy Setup example.
- * `auto-provision` holds several sub keys, see the example setup with the explanations below.
+ * `auto-provision` holds several subkeys, see the example setup with the explanations below.
  *
  * auto-update::
  * When using the provisioning mode `auto-update`, user account info will update with the current
- * information provided by the OpenID Connect provider upon each user log in.
+ * information provided by the OpenID Connect provider upon each user login.
  *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
@@ -380,7 +396,7 @@ $CONFIG = [
  * Additional config array depending on the IdP to be entered here - usually only necessary if
  * the IdP does not support service discovery.
  *
- * provider-url, client-id and client-secret::
+ * provider-url, client-id, and client-secret::
  * Variables are to be taken from the OpenID Connect Provider's setup.
  * For the `provider-url`, the URL where the IdP is living.
  * In some cases (KeyCloak, Azure AD) this holds more than just a domain but also a path.
@@ -406,8 +422,8 @@ $CONFIG = [
  * Client secret to be used with the token introspection endpoint.
  *
  * use-access-token-payload-for-user-info::
- * If set to `true` any user information will be read from the access token.
- * If set to `false` the userinfo endpoint is used (starting app version 1.1.0).
+ * If set to `true`, any user information will be read from the access token.
+ * If set to `false`, the userinfo endpoint is used (starting app version 1.1.0).
  *
  */
 
@@ -450,7 +466,7 @@ $CONFIG = [
 		  // no provisioning will be made, "User not found" will be returned
 		'provisioning-attribute' => 'owncloud',
 		  // auto-update user account info with current information provided by the
-		  // OpenID Connect provider account attributes, that will be updated,
+		  // OpenID Connect provider account attributes that will be updated
 		  // can be specified in `attributes` config option
 		'update' => ['enabled' => true],
 		  // enable the user info auto-update mode
@@ -571,7 +587,7 @@ $CONFIG = [
 
 /**
  * Enable to Push WND Events to the Activity App
- * Register WND as extension into the Activity app in order to send information about what
+ * Register WND as extension into the Activity app to send information about what
  * the `wnd:process-queue` command is doing. The activity sent will be based on what
  * the `wnd:process-queue` detects, and the activity will be sent to each affected user. There
  * won't be any activity being sent outside of the `wnd:process-queue` command.
@@ -602,7 +618,7 @@ $CONFIG = [
 /**
  * Reset the Password When Receiving Any of the Following Error Codes.
  * By default, we will reset the password with error code 13, which means
- * access denied. Depending on circumstances, you might want to add the
+ * access is denied. Depending on circumstances, you might want to add the
  * error code 1, which means an operation not permitted (although there could
  * be cases where this "operation not permitted" might not be caused by a wrong
  * password).
@@ -617,7 +633,7 @@ $CONFIG = [
  * - `'wnd.errorCodes.passwordReset' => [],`
  *
  * Note that disabling the password reset feature can lead to an account lockout
- * if such feature is enabled in the target windows / samba machine.
+ * if this feature is enabled in the target windows / samba machine.
  */
 'wnd.errorCodes.passwordReset' => [13],
 
@@ -663,7 +679,7 @@ $CONFIG = [
  * Enable or Disable the WND In-Memory Notifier for Password Changes
  * Having this feature enabled implies that whenever a WND process detects a
  * wrong password in the storage - maybe the password has changed in the
- * backend - all WND storages that are in-memory will be notified in order to reset
+ * backend - all WND storages that are in-memory will be notified to reset
  * their passwords if applicable and not to requery again.
  * The intention is to prevent a potential password lockout for the user in the backend.
  * As with PHP lower than 7.4, this feature can take a lot of memory resources.
@@ -679,7 +695,7 @@ $CONFIG = [
  * A map of servers with the required data to get the Kerberos credentials
  * in order to access them.
  *
- * Each key of the map must be unique and identifies a server. This ID will
+ * Each key of the map must be unique and identify a server. This ID will
  * be used in the web UI to configure the mount points to use the Kerberos
  * authentication. You can use any ID (choose one meaningful and easy to remember).
  *
@@ -693,7 +709,7 @@ $CONFIG = [
  * the file manually before the expiration. See the Kerberos documentation for details.
  *
  * - `ocservice` (required): The name of the service of the account. This matches
- * the SPN of the Windows / Samba account. It usually is in the form "HTTP/<hostname>",
+ * the SPN of the Windows / Samba account. It is usually in the form "HTTP/<hostname>",
  * but it might be different. See the Kerberos documentation for details.
  *
  * - `usermapping` (optional): The ownCloud-to-windows user mapping to be used. See below
@@ -714,11 +730,11 @@ $CONFIG = [
  *
  * - `RemoveDomain`: Remove the domain (if any) from the ownCloud user ID.
  * This means that "user001@my.dom.com" will map to "user001". Note that
- * it's assumed that all users belong to the same domain, otherwise
- * "user001@my.dom.com" will be mapped to the same windows user as
+ * it's assumed that all users belong to the same domain. Otherwise
+ * "user001@my.dom.com" will be mapped to the same Windows user as
  * "user001@not.mine.eu".
  *
- * - `EALdapAttr`: Use ownCloud's user extended attributes to map the ownCloud
+ * - `EALdapAttr`: Use ownCloud's user-extended attributes to map the ownCloud
  * user to the target LDAP attribute. The mapping has 2 parameters:
  * * `attr`: in order to select the LDAP attribute you want to use. Note
  * that it's required that the user_ldap app exposes the chosen attribute which
@@ -789,7 +805,7 @@ $CONFIG = [
 
 /**
  * Manage UTF-8 Glyph Normalization on macOS
- * A glyph is a character like `&#xF1;` as used in the spanish word `se&#xF1;orita` which can be composed by two different byte sequences.
+ * A glyph is a character like `&#xF1;` as used in the Spanish word `se&#xF1;orita` which can be composed by two different byte sequences.
  * With https://www.utf8-chartable.de/unicode-utf8-table.pl?number=1024&unicodeinhtml=hex[UTF-8], glyphs can have two valid representations of these sequences in filesystems.
  * https://unicode.org/reports/tr15/#Norm_Forms[Normalization] makes it possible to determine whether any two Unicode strings are equivalent.
  * The most used normalization forms are NFC and NFD. By default, ownCloud usually normalizes names to NFC.
@@ -808,8 +824,8 @@ $CONFIG = [
  * cache wrapper implementation. The value will be used by all WND2 storages. Although the
  * cache isn't exactly per user but per storage id, consider the cache to be per user, because
  * it will be like that for common use cases. Data will remain in the cache and won't
- * be removed by ownCloud. Aim for a low TTL value in order to not fill the memcache
- * completely. In order to properly disable caching, use -1 or any negative value. 0 (zero)
+ * be removed by ownCloud. Aim for a low TTL value to not fill the memcache.
+ * To properly disable caching, use -1 or any negative value. 0 (zero)
  * isn't considered a valid TTL value and will also disable caching.
  */
 'wnd2.cachewrapper.ttl' => 1800,  // 30 minutes
@@ -824,7 +840,7 @@ $CONFIG = [
 
 /**
  * Provide Advanced Management of File Tagging
- * Enables admins to specify rules and conditions (file size, file mimetype, group membership and more)
+ * Enables admins to specify rules and conditions (file size, file mimetype, group membership, and more)
  * to automatically assign tags to uploaded files. Values: `tagbased` (default) or `userbased`.
  */
 

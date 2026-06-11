@@ -49,18 +49,18 @@ $CONFIG = [
 'passwordsalt' => '',
 
 /**
- * Define list of trusted domains that users can log into
+ * Define the list of trusted domains that users can log into
  * Specifying trusted domains prevents host header poisoning.
- * This parameter reperesents a white list of approved IP addresses and
+ * This parameter represents a whitelist of approved IP addresses and
  * hostnames that this server is known by / is used to access it.
- * Wildcards, slash notation and ports are not supported.
+ * Wildcards, slash notation, and ports are not supported.
  * Do not remove this, as it performs necessary security checks.
  * Please consider that for backend processes like background jobs or occ commands,
- * the URL parameter in key `overwrite.cli.url` is used. For more details, please see that key.
+ * the URL parameter in the key `overwrite.cli.url` is used. For more details, please see that key.
 
  * NOTE: When defined via the `OWNCLOUD_TRUSTED_DOMAINS` property in docker, the values should be
- * a comma delimited list without white space. like `OWNCLOUD_TRUSTED_DOMAINS=localhost,10.10.1.1`.
- * Wildcards, slash notation and ports are not supported.
+ * a comma-delimited list without white space (e.g., `OWNCLOUD_TRUSTED_DOMAINS=localhost,10.10.1.1`).
+ * Wildcards, slash notation, and ports are not supported.
  */
 'trusted_domains' => [
 	'demo.example.org',
@@ -68,7 +68,7 @@ $CONFIG = [
   ],
 
 /**
- * Define global list of CORS domains
+ * Define the global list of CORS domains
  * All users can use tools running CORS (Cross-Origin Resource Sharing) requests
  * from the listed domains.
  */
@@ -79,7 +79,7 @@ $CONFIG = [
 /**
  * Define the directory where user files are stored
  * This defaults to `data/` in the ownCloud directory.
- * The SQLite database is also stored here, when you use SQLite.
+ * The SQLite database is also stored here when you use SQLite.
  * (SQLite is not available in ownCloud Enterprise Edition)
  */
 'datadirectory' => '/var/www/owncloud/data',
@@ -91,7 +91,7 @@ $CONFIG = [
  * Note that crashes are extremely rare (although they can come in burst due to
  * multiple requests), so the default location is usually fine.
  * Also note that the log can contain sensitive information, but it should be useful
- * to pinpoint where is the problem.
+ * to pinpoint where the problem is.
  */
 'crashdirectory' => '/var/www/owncloud/data',
 
@@ -122,7 +122,7 @@ $CONFIG = [
 
 /**
  * Identify the database used with this installation
- * See also config option `supportedDatabases`
+ * See also the config option `supportedDatabases`
  *
  * Available:
  * 	- sqlite (SQLite3 - Not in Enterprise Edition)
@@ -190,9 +190,9 @@ $CONFIG = [
 /**
  * Define the default app to open on user login
  * Use the app names as they appear in the URL after clicking them in the Apps menu,
- * such as files, documents or calendar etc. You can use a comma-separated list of app names,
+ * such as files, documents or calendar, etc. You can use a comma-separated list of app names,
  * so if the first app is not enabled for a user then ownCloud will try the second one, and so
- * on. If no enabled apps are found it defaults to the Files app.
+ * on. If no enabled apps are found, it defaults to the Files app.
  */
 'defaultapp' => 'files',
 
@@ -200,7 +200,7 @@ $CONFIG = [
  * Enable or disable avatars or user profile photos
  * `true` enables avatars, or user profile photos, `false` disables them.
  * These appear on the User page, on user's Personal pages and are used by some apps
- * (contacts, mail, etc).
+ * (contacts, mail, etc.).
  */
 'enable_avatars' => true,
 
@@ -228,7 +228,7 @@ $CONFIG = [
 /**
  * Define the lifetime of a session after inactivity
  * The web UI might send a "heartbeat" based on the activity happening
- * in order to extend the session lifetime and keeping it from timing out
+ * to extend the session lifetime and keeping it from timing out
  * prematurely. If there is no activity happening and the lifetime is
  * reached, you'll have to log in again.
  * The default is 20 minutes, expressed in seconds.
@@ -261,16 +261,16 @@ $CONFIG = [
 'session_forced_logout_timeout' => 0,
 
 /**
- * Enforce token only authentication for apps and clients connecting to ownCloud
+ * Enforce token-only authentication for apps and clients connecting to ownCloud
  * If enabled, all access requests using the user's password are blocked for enhanced security.
  * Users have to generate special app-passwords (tokens) for their apps or clients in their personal
- * settings which are further used for app or client authentication. Browser logon is not affected.
+ * settings, which are further used for app or client authentication. Browser logon is not affected.
  */
 'token_auth_enforced' => false,
 
 /**
- * Enforce strict login check with user backend
- * If enabled, strict login check for password in user backend will be enforced,
+ * Enforce a strict login check with the user backend
+ * If enabled, a strict login check for password in the user backend will be enforced,
  * meaning only the login name typed by the user would  be validated. With this
  * configuration enabled, e.g. an additional check for email will not be performed.
  */
@@ -308,15 +308,15 @@ $CONFIG = [
 'csrf.disabled' => false,
 
 /**
- * Define how to relax same site cookie settings
+ * Define how to relax the same site cookie settings
  * Possible values: `Strict`, `Lax` or `None`.
- * Setting the same site cookie to `None` is necessary in case of OpenID Connect.
- * For more information about the impact of the values see:
+ * Setting the same site cookie to `None` is necessary in the case of OpenID Connect.
+ * For more information about the impact of the values, see:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#values and
  * https://web.dev/schemeful-samesite/
  *
  * * Use 'strict' whenever possible
- * * If necessary relax to 'lax'
+ * * If necessary, relax to 'lax'
  * * Use 'none' if it needs to be relaxed even further
  */
 
@@ -326,7 +326,7 @@ $CONFIG = [
  * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
  * Set this to the empty string if you do not want to copy any skeleton files.
- * A valid path must be given for this key otherwise errors will be generated in owncloud.log.
+ * A valid path must be given for this key, otherwise errors will be generated in owncloud.log.
  */
 'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 
@@ -345,7 +345,7 @@ $CONFIG = [
 
 /**
  * Define a custom link to reset passwords
- * If your user backend does not allow password resets (e.g. when it's a read-only
+ * If your user backend does not allow password resets (e.g., when it's a read-only
  * user backend like LDAP), you can specify a custom link, where the user is
  * redirected to, when clicking the "reset password" link after a failed login-attempt.
  * If you do not want to provide any link, replace the URL with 'disabled'.
@@ -364,7 +364,7 @@ $CONFIG = [
  * Allow medial search on the group id
  * Allows finding 'test' in groups when searching for 'es'.
  * This is only used in the DB group backend (local groups).
- * This won't be used against LDAP, Shibboleth or any other group backend.
+ * This won't be used against LDAP, Shibboleth, or any other group backend.
  */
 'groups.enable_medial_search' => true,
 
@@ -372,7 +372,7 @@ $CONFIG = [
  * Define minimum characters entered before a search returns results
  * Defines the minimum characters entered before a search returns results for
  * users or groups in the share autocomplete form. Lower values increase search
- * time especially for large backends.
+ * time, especially for large backends.
  * Any exact matches to a user or group will be returned, even though less than
  * the minimum characters have been entered. The search is case-insensitive.
  * For example, entering "tom" will always return "Tom" if there is an exact match.
@@ -410,7 +410,7 @@ $CONFIG = [
  *
  * If you are using local or remote SMTP, set this to `smtp`.
  *
- * If you are using PHP mail you must have an installed and working email system
+ * If you are using PHP mail, you must have an installed and working email system
  * on the server. The program used to send email is defined in the `php.ini` file.
  *
  * For the `sendmail` option you need an installed and working email system on
@@ -483,7 +483,7 @@ $CONFIG = [
  * Override automatic proxy detection
  * The automatic hostname detection of ownCloud can fail in certain reverse
  * proxy and CLI/cron situations. This option allows you to manually override
- * the automatic detection; for example `www.example.com`, or specify the port
+ * the automatic detection; for example, `www.example.com`, or specify the port
  * `www.example.com:8080`.
  */
 'overwritehost' => '',
@@ -503,7 +503,7 @@ $CONFIG = [
  * ownCloud attempts to detect the webroot for generating URLs automatically.
  * For example, if `www.example.com/owncloud` is the URL pointing to the
  * ownCloud instance, the webroot is `/owncloud`. When proxies are in use, it
- * may be difficult for ownCloud to detect this parameter, resulting in invalid URLs.
+ * may be challenging for ownCloud to detect this parameter, resulting in invalid URLs.
  */
 'overwritewebroot' => '',
 
@@ -512,14 +512,14 @@ $CONFIG = [
  * This option allows you to define a manual override condition as a regular
  * expression for the remote IP address. The keys `overwritewebroot`,
  * `overwriteprotocol`, and `overwritehost` are subject to this condition.
- * For example, defining a range of IP  addresses starting with `10.0.0.`
+ * For example, defining a range of IP addresses starting with `10.0.0.`
  * and ending with 1 to 3: * `^10\.0\.0\.[1-3]$`
  */
 'overwritecondaddr' => '',
 
 /**
  * Override cli URL
- * Use this configuration parameter to specify the base URL for any URLs which
+ * Use this configuration parameter to specify the base URL for any URLs that
  * are generated within ownCloud using any kind of command line tools (cron or occ).
  * The value should contain the full base URL: `https://www.example.com/owncloud`
  * As an example, alerts shown in the browser to upgrade an app are triggered by
@@ -539,7 +539,7 @@ $CONFIG = [
 /**
  * Define rewrite private and public links
  * Rewrite private and public links to the new ownCloud Web UI (if available).
- * If web.rewriteLinks is set to 'true', public and private links will be redirected to this url.
+ * If 'web.rewriteLinks' is set to 'true', public and private links will be redirected to this url.
  * The Web UI will handle these links accordingly.
  *
  * As an example, in case 'web.baseUrl' is set to 'http://web.example.com',
@@ -552,7 +552,7 @@ $CONFIG = [
  * Define clean URLs without `/index.php`
  * This parameter will be written as `RewriteBase` on update and installation of
  * ownCloud to your `.htaccess` file. While this value is often simply the URL
- * path of the ownCloud installation it cannot be set automatically properly in
+ * path of the ownCloud installation, it cannot be set automatically properly in
  * every scenario and needs thus some manual configuration.
  *
  * In a standard Apache setup this usually equals the folder that ownCloud is
@@ -561,10 +561,10 @@ $CONFIG = [
  * under `https://mycloud.org/` then it would be `/`.
  *
  * Note that the above rule is not valid in every case, as there are some rare setup
- * cases where this may not apply. However, to avoid any update problems this
+ * cases where this may not apply. However, to avoid any update problems, this
  * configuration value is explicitly opt-in.
  *
- * After setting this value run `{occ-command-example-prefix} maintenance:update:htaccess`. Now, when the
+ * After setting this value, run `{occ-command-example-prefix} maintenance:update:htaccess`. Now, when the
  * following conditions are met ownCloud URLs won't contain `index.php`:
  *
  * - `mod_rewrite` is installed
@@ -623,14 +623,14 @@ $CONFIG = [
  *     30 days, automatically deleting them (at any time) if space is needed.
  *     Note: files may not be removed if space is not required.
  * * `D, auto`
- *     keeps files and folders in the trash bin for D+ days, delete anytime if
- *     space needed (Note: files may not be deleted if space is not needed)
+ *     keeps files and folders in the trash bin for D+ days, delete files anytime if
+ *      space is needed (Note: files may not be deleted if space is not needed)
  * * `auto, D`
  *     delete all files in the trash bin that are older than D days
- *     automatically, delete other files anytime if space needed
+ *     automatically, delete other files anytime if space is needed
  * * `D1, D2`
  *     keep files and folders in the trash bin for at least D1 days and
- *     delete when exceeds D2 days
+ *     delete when it exceeds D2 days
  * * `disabled`
  *     trash bin auto clean disabled, files and folders will be kept forever
  */
@@ -647,9 +647,9 @@ $CONFIG = [
  * Define trashbin directory skip list
  * Define a list of directories that will skip the trashbin and therefore be deleted immediately.
  * Only defined directories and only in the root of a mount will skip the trashbin.
- * Consider not to use reserved directory names when using snapshot capable storage systems.
- * The setting expects folder names with or without trailing slash.
- * All the content of such directories including their subdirectories will also skip the trashbin.
+ * Consider not using reserved directory names when using snapshot-capable storage systems.
+ * The setting expects folder names with or without a trailing slash.
+ * All the content of such directories, including their subdirectories will also skip the trashbin.
  *
  */
 'trashbin_skip_directories' => [
@@ -676,7 +676,7 @@ $CONFIG = [
  * Once the size of a resource is greater than or equal the given value, the trashbin will be skipped.
  * File sizes are valid for all mount points, take care when defining the threshold.
  *
- * All positive numbers and zero is allowed. Append one of the following options directly and without space:
+ * All positive numbers and zero are allowed. Append one of the following options directly and without space:
  * B, K, KB, MB, M, GB, G, TB, T, PB, P
  *
  */
@@ -687,39 +687,6 @@ $CONFIG = [
  *
  * These parameters control the Versions app.
  */
-
-/**
- * Define the files versions retention obligation
- * If the versions app is enabled (default), this setting defines the policy
- * for when versions will be permanently deleted.
- * The app allows for two settings, a minimum time for version retention,
- * and a maximum time for version retention.
- * Minimum time is the number of days a version will be kept, after which it
- * may be deleted. Maximum time is the number of days at which it is guaranteed
- * to be deleted.
- * Both minimum and maximum times can be set together to explicitly define
- * version deletion. For migration purposes, this setting is installed
- * initially set to "auto", which is equivalent to the default setting in
- * ownCloud 8.1 and before.
- *
- * Available values:
- *
- * * `auto`
- *     default setting. Automatically expire versions according to expire
- *     rules. Please refer to https://doc.owncloud.com/server/latest/admin_manual/configuration/files/file_versioning.html
- *    for more information.
- * * `D, auto`
- *     keep versions at least for D days, apply expiry rules to all versions
- *     that are older than D days
- * * `auto, D`
- *     delete all versions that are older than D days automatically, delete
- *     other versions according to expire rules
- * * `D1, D2`
- *     keep versions for at least D1 days and delete when exceeds D2 days
- * * `disabled`
- *     versions auto clean disabled, versions will be kept forever
- */
-'versions_retention_obligation' => 'auto',
 
 /**
  * Save additional metadata for versions
@@ -740,7 +707,7 @@ $CONFIG = [
 
 /**
  * Enable or disable updatechecker
- * Check if ownCloud is up-to-date and shows a notification if a new version is available.
+ * Check if ownCloud is up to date and shows a notification if a new version is available.
  * This option is only applicable to ownCloud core. It is not applicable to app updates.
  */
 'updatechecker' => true,
@@ -770,7 +737,7 @@ $CONFIG = [
 'check_for_working_wellknown_setup' => true,
 
 /**
- * Define if config.php is read only
+ * Define if config.php is read-only
  * In certain environments it is desired to have a read-only configuration file.
  * When this switch is set to `true` ownCloud will not verify whether the
  * configuration is writable. However, it will not be possible to configure
@@ -783,12 +750,12 @@ $CONFIG = [
 /**
  * Define ownCloud operation modes
  * This defines the mode of operations. The default value is `single-instance`
- * which means, that ownCloud is running on a single node, which might be the
- * most common operations mode. The only other possible value for now is
- * `clustered-instance` which means, that ownCloud is running on at least 2
+ * which means that ownCloud is running on a single node, which might be the
+ * most common operating mode. The only other possible value for now is
+ * `clustered-instance` which means that ownCloud is running on at least 2
  * nodes. The mode of operations has various impacts on the behavior of ownCloud.
- * The primary impact is, that clustered instances won't download apps from the
- * marketplace and install in one server. Instead the admin has to ensure that
+ * The primary impact is that clustered instances won't download apps from the
+ * marketplace and install in one server. Instead, the admin has to ensure that
  * this happens manually on all servers. The same applies to config.php configuration
  * settings done via `occ`.
  */
@@ -804,8 +771,8 @@ $CONFIG = [
  */
 
 /**
- * Define the log type
- * By default the ownCloud logs are sent to the `owncloud.log` file in the
+ * Define the log type,
+ * By default, the ownCloud logs are sent to the `owncloud.log` file in the
  * default ownCloud data directory.
  * If syslogging is desired, set this parameter to `syslog`.
  * Setting this parameter to `errorlog` will use the PHP error_log function
@@ -839,7 +806,7 @@ $CONFIG = [
 /**
  * Define the syslog format
  * The syslog format can be changed to remove or add information.
- * In addition to the %replacements% below %level% can be used, but it is used
+ * In addition to the %replacements% below, %level% can be used, but it is used
  * as a dedicated parameter to the syslog logging facility anyway.
  */
 'log.syslog.format' => '[%reqId%][%remoteAddr%][%user%][%app%][%method%][%url%] %message%',
@@ -847,17 +814,17 @@ $CONFIG = [
 /**
  * Define log conditions
  * Log condition for log level increase based on conditions. Once one of these
- * conditions is met, the required log level is set to debug. This allows to
- * debug specific requests, users or apps
+ * conditions is met, the required log level is set to debug. This allows
+ * debugging specific requests, users, or apps
  *
  * Supported conditions:
  *  - `shared_secret`: If a request parameter with the name `log_secret` is set to
- *                     this value the condition is met
+ *                     this value, the condition is met
  *  - `users`:         If the current request is done by one of the specified users,
  *                     this condition is met
  *  - `apps`:          If the log message is invoked by one of the specified apps,
  *                     this condition is met
- *  - `logfile`:       The log message invoked by the specified apps get redirected to
+ *  - `logfile`:       The log message invoked by the specified apps gets redirected to
  *		               this logfile, this condition is met
  *		               Note: Not applicable when using syslog
  *
@@ -905,8 +872,8 @@ $CONFIG = [
 /**
  * Define the maximum log rotation file size
  * Enables log rotation and limits the total size of the logfiles.
- * The default is 0 or false which disables log rotation.
- * Specify a size in bytes, for example 104857600
+ * The default is 0 or false, which disables log rotation.
+ * Specify a size in bytes, for example, 104857600
  * (100 megabytes = 100 * 1024 * 1024 bytes).
  * A new logfile is created with a new name when the old logfile reaches the defined limit.
  * If a rotated log file is already present, it will be overwritten.
@@ -935,7 +902,7 @@ $CONFIG = [
  * Here, new apps and updates are only written to the `/apps-external` directory.
  * This eases upgrade procedures of owncloud where shipped apps are delivered to apps/ by default.
  * `OC::$SERVERROOT` points to the web root of your instance.
- * Please see the Apps Management description on how to move custom apps properly.
+ * Please see the Apps' Management description on how to move custom apps properly.
  */
 'apps_paths' => [
 	0 =>
@@ -978,7 +945,7 @@ $CONFIG = [
  * `$previews_path/$user` where `$previews_path` is the configured previews base directory
  * and `$user` will be substituted with the user id automatically.
  *
- * For example if `previews_path` is `/var/cache/owncloud/thumbnails` then for a logged-in
+ * For example, if `previews_path` is `/var/cache/owncloud/thumbnails`, then for a logged-in
  * user `user1` the thumbnail path will be `/var/cache/owncloud/thumbnails/user1`.
  */
 'previews_path' => '',
@@ -1007,7 +974,7 @@ $CONFIG = [
 
 /**
  * Define the maximum preview filesize limit
- * Max file size for generating image previews with imagegd (default behaviour)
+ * Max file size for generating image previews with imagegd (default behavior)
  * If the image is bigger, it will try other preview generators,
  * but will most likely show the default mimetype icon
  *
@@ -1057,7 +1024,7 @@ $CONFIG = [
  *  - OC\Preview\MP3
  *  - OC\Preview\TXT
  *
- * See the Previews Configuration documentation for more details.
+ * See the Preview Configuration documentation for more details.
  */
 'enabledPreviewProviders' => [
 	'OC\Preview\PDF',
@@ -1084,7 +1051,7 @@ $CONFIG = [
  * image quality.
  *
  * Note that any value over 80 may result in an unnecessary increase of the
- * displayed image and has larger responses sizes when requesting images,
+ * displayed image and has larger response sizes when requesting images,
  * without much increase of the image quality.
  *
  * For more information see:
@@ -1165,25 +1132,25 @@ $CONFIG = [
  * Advice on choosing between the various backends:
  *
  * * APCu should be easiest to install. Almost all distributions have packages.
- *   Use this for single user environment for all caches.
+ *   Use this for a single-user environment for all caches.
  * * Use Redis or Memcached for distributed environments.
  *   For the local cache (you can configure two) take APCu.
  */
 
 /**
- * Memory caching backend for locally stored data
+ * Memory-caching backend for locally stored data
  *
- * * Used for host-specific data, e.g. file paths
+ * * Used for host-specific data, e.g., file paths
  */
 'memcache.local' => '\OC\Memcache\APCu',
 
 /**
  * Memory caching backend for distributed data
  *
- * * Used for installation-specific data, e.g. database caching
+ * * Used for installation-specific data, e.g., database caching
  * * If unset, defaults to the value of memcache.local
  */
-'memcache.distributed' => '\OC\Memcache\Memcached',
+'memcache.distributed' => '\OC\Memcache\Redis',
 
 /**
  * Define Redis connection details
@@ -1217,7 +1184,7 @@ $CONFIG = [
 /**
  * Define Redis Cluster connection details
  * Only for use with Redis Clustering, for Sentinel-based setups use the single
- * server configuration above, and perform HA on the hostname.
+ * server configuration above and perform HA on the hostname.
  *
  * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
  *
@@ -1328,7 +1295,7 @@ $CONFIG = [
 
 /**
  * Allow schema fallback for federated sharing servers
- * When talking with federated sharing server, allow falling back to HTTP
+ * When talking with a federated sharing server, allow falling back to HTTP
  * instead of hard forcing HTTPS
  */
 'sharing.federation.allowHttpFallback' => false,
@@ -1336,7 +1303,7 @@ $CONFIG = [
 /**
  * Show a quick action for the public link creation
  * Set this to true to display a quick action for creating public links
- * in the filelist. A public link created this way will be read-only per default.
+ * in the file list. A public link created this way will be read-only per default.
  *
  * Note: if enforced password protection for read-only links is enabled, the
  * quick action will not be displayed!
@@ -1349,7 +1316,7 @@ $CONFIG = [
 
 /**
  * Define additional database driver options
- * Additional driver options for the database connection, e.g. to enable SSL
+ * Additional driver options for the database connection, e.g., to enable SSL
  * encryption in MySQL or specify a custom wait timeout on a cheap hoster.
  */
 'dbdriveroptions' => [
@@ -1369,7 +1336,7 @@ $CONFIG = [
  * During setup, if requirements are met (see below), this setting is set to true
  * and MySQL can handle 4 byte characters instead of 3 byte characters.
  *
- * If you want to convert an existing 3-byte setup into a 4-byte setup please
+ * If you want to convert an existing 3-byte setup into a 4-byte setup, please
  * set the parameters in MySQL as mentioned below and run the migration command:
  * `{occ-command-example-prefix} db:convert-mysql-charset`
  * The config setting will be set automatically after a successful run.
@@ -1404,7 +1371,7 @@ $CONFIG = [
  * Force a specific database platform class
  * False means that autodetection will take place.
  *
- * E.g. to fix MariaDB 1.2.7+ taken for MySQL
+ * E.g., to fix MariaDB 1.2.7+ taken for MySQL
  * 'db.platform' => '\Doctrine\DBAL\Platforms\MariaDb1027Platform',
  *
  * See:
@@ -1471,12 +1438,12 @@ $CONFIG = [
 
 /**
  * Define excluded directories
- * Exclude specific directory names and disallow scanning, creating and renaming
+ * Exclude specific directory names and disallow scanning, creating, and renaming
  * using these names. The matching is case-insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
- * in the middle or at the end and will not be further processed if found.
+ * in the middle, or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
- * Use when the storage backend supports, e.g. snapshot directories to be excluded.
+ * Use when the storage backend supports, e.g., snapshot directories to be excluded.
  *
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
@@ -1488,12 +1455,12 @@ $CONFIG = [
 /**
  * Define excluded directories regular expression(s)
  * Exclude directory names that match any of the given regular expressions and
- * disallow scanning, creating and renaming using these names. The matching is
+ * disallow scanning, creating, and renaming using these names. The matching is
  * case-insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
- * in the middle or at the end and will not be further processed if found.
+ * in the middle, or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
- * Use when the storage backend supports, e.g. snapshot directories to be excluded.
+ * Use when the storage backend supports, e.g., snapshot directories to be excluded.
  *
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
@@ -1519,8 +1486,8 @@ $CONFIG = [
  * Define apps or themes that are excluded from integrity checking
  * The list of apps that are allowed and must not have a signature.json file present.
  * Besides ownCloud apps, this is particularly useful when creating ownCloud themes,
- * because themes are treated as apps. The app is identified with it´s app-id.
- * The app-id can be identified by the folder name of the app in your apps directory.
+ * because themes are treated as apps. The app is identified with its app-id.
+ * The app-id can be identified by the folder name of the app in your apps' directory.
  * The following example allows app-1 and theme-2 to have no signature.json file.
  */
 'integrity.ignore.missing.app.signature' => [
@@ -1559,7 +1526,7 @@ $CONFIG = [
  * compatible with the server. The version number seen here does not imply official
  * support or test coverage on behalf of ownCloud.
  *
- * NOTE: Lowering this value may lead to unexpected behaviour, and can include data loss.
+ * NOTE: Lowering this value may lead to unexpected behavior and can include data loss.
  */
 'minimum.supported.desktop.version' => '3.2.1',
 
@@ -1600,18 +1567,18 @@ $CONFIG = [
  * This config value avoids infinite loops for seldom cases where a file renaming
  * conflict between different share backends could occur.
  * The value defines how many unsuccessful mountpoint rename attempts are allowed.
- * e.g. target mountpoint name could be claimed as unused by the filesystem but
+ * e.g. target mountpoint name could be claimed as unused by the filesystem, but
  * renaming to this target name will fail due to some other reasons like database
  * constraints.
- * Change this value only under supervision of ownCloud support.
+ * Change this value only under the supervision of ownCloud support.
  */
 'filesystem.max_mountpoint_move_attempts' => 10,
 
 /**
- * Define where part files are located
- * By default ownCloud will store the part files created during upload in the
+ * Define where part files are located,
+ * By default, ownCloud will store the part files created during upload in the
  * same storage as the upload target. Setting this to false will store the part
- * files in the root of the user's folder which might be required to work with certain
+ * files in the root of the user's folder, which might be required to work with certain
  * external storage setups that have limited rename capabilities.
  *
  * Note that setting this to false causes issues with the following apps: Encryption,
@@ -1628,15 +1595,15 @@ $CONFIG = [
 
 /**
  * Define ownClouds internal secret
- * Secret used by ownCloud for various purposes, e.g. to encrypt data.
- * If you lose this string there will be data corruption.
+ * Secret used by ownCloud for various purposes, e.g., to encrypt data.
+ * If you lose this string, there will be data corruption.
  */
 'secret' => '',
 
 /**
  * Define list of trusted proxy servers
  *
- * If you configure these also consider setting `forwarded_for_headers` which
+ * If you configure these, also consider setting `forwarded_for_headers` which
  * otherwise defaults to `HTTP_X_FORWARDED_FOR` (the `X-Forwarded-For` header).
  */
 'trusted_proxies' => [
@@ -1661,9 +1628,9 @@ $CONFIG = [
   ],
 
 /**
- * Define the maximum filesize for animated GIF´s
- * Max file size for animating gifs on public-sharing-site.
- * If the gif is bigger, it'll show a static preview.
+ * Define the maximum filesize for animated GIFs
+ * Max file size for animating GIFs on public-sharing-site.
+ * If the GIF is bigger, it'll show a static preview.
  *
  * Value represents the maximum filesize in megabytes.
  * Default is `10`. Set to `-1` for no limit.
@@ -1691,7 +1658,7 @@ $CONFIG = [
 'filelocking.ttl' => 3600,
 
 /**
- * Define the memory caching backend for file locking
+ * Define the memory-caching backend for file locking
  *
  * Because most memcache backends can clean values without warning,
  * using redis is highly recommended to *avoid data loss*.
@@ -1699,16 +1666,10 @@ $CONFIG = [
 'memcache.locking' => '\\OC\\Memcache\\Redis',
 
 /**
- * Disable the web based updater
- * The web based updater is enabled by default.
+ * Disable the web-based updater
+ * The web-based updater is enabled by default.
  */
 'upgrade.disable-web' => false,
-
-/**
- * Explicitly enable the web updater - used by /updater/
- * By default, it is disabled.
- */
-'web-updater.enabled' => false,
 
 /**
  * Define whether to enable automatic update of market apps
@@ -1724,7 +1685,7 @@ $CONFIG = [
  * WARNING:
  *    Be warned that, if you set this to `true`, exceptions display
  *    stack traces on the web interface, *including passwords*, — **in plain text!**.
- *    Furthermore the content-disposition header will be lost and thus files will be
+ *    Furthermore, the content-disposition header will be lost, and thus files will be
  *    displayed in the browser rather than downloaded.
  *    We strongly encourage you never to use it in production.
  */
@@ -1733,7 +1694,7 @@ $CONFIG = [
 /**
  * Define the data-fingerprint of the current data served
  * This is a property used by the clients to find out if a backup has been
- * restored on the server. Once a backup is restored run
+ * restored on the server. Once a backup is restored, run
  * {occ-command-example-prefix} maintenance:data-fingerprint
  * To set this to a new value.
  *
@@ -1747,7 +1708,7 @@ $CONFIG = [
  * This entry is just here to show a warning in case somebody copied the sample configuration.
  * WARNING: DO NOT ADD THIS SWITCH TO YOUR CONFIGURATION!
  *
- * If you, brave person, have read until here be aware that you should not
+ * If you, brave person, have read until here, be aware that you should not
  * modify *ANY* settings in this file without reading the documentation.
  */
 'copied_sample_config' => true,
@@ -1782,13 +1743,13 @@ $CONFIG = [
 
 /**
  * Show the grace period popup
- * Decide whether show or not the grace period popup. There is no change in the
- * behaviour of the grace period.
+ * Decide whether to show the grace period popup or not. There is no change in the
+ * behavior of the grace period.
  */
 'grace_period.demo_key.show_popup' => true,
 
 /**
- * Link to get a demo key during active grace period
+ * Link to get a demo key during the active grace period
  * The admin will be directed to that web page when they click on the "get a demo key"
  * link in the grace period popup. It's expected that the web page contains instructions
  * on how to get a valid demo key to be used in the ownCloud server.
@@ -1799,7 +1760,7 @@ $CONFIG = [
 /**
  * Order of login policies
  * The order of the login policies that will be checked, if any.
- * Policies must be registered in order to use / activate them. This is usually
+ * Policies must be registered to use / activate them. This is usually
  * done automatically by core or the app containing the policy.
  *
  * The names of the policies must be documented if they come from an app.
@@ -1807,7 +1768,7 @@ $CONFIG = [
  *
  * - 'OC\Authentication\LoginPolicies\GroupLoginPolicy'
  *
- * In order to use / activate the policy, include the name in the policy
+ * To use / activate the policy, include the name in the policy
  * order below, such as:
  *
  * 'loginPolicy.order' => ['OC\Authentication\LoginPolicies\GroupLoginPolicy'],
@@ -1858,7 +1819,7 @@ $CONFIG = [
  * only allowed to log in using that login type, and also a list of
  * groups that will be rejected from using that login type.
  * Note that this applies to users belonging to those groups. If a user
- * is member of an "allowOnly" group and also of a "reject" group,
+ * is a member of an "allowOnly" group and also of a "reject" group,
  * the "reject" will take priority, so the user won't be able to log in
  * using that login type.
  *
