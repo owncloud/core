@@ -165,11 +165,9 @@ class LoginController extends Controller {
 			// if the user exists, replace the userid with the username, e.g. for LDAP accounts
 			// that have the owncloud internal username set to a uuid.
 			$u = $this->userManager->get($user);
-			if ($u !== null) {
+			$parameters['loginName'] = $user;
+			if ($u !== null && \is_string($u->getUserName()) && $u->getUserName() !== '') {
 				$parameters['loginName'] = $u->getUserName();
-			}
-			if (!\is_string($parameters['loginName']) || $parameters['loginName'] === '') {
-				$parameters['loginName'] = $user;
 			}
 			$parameters['user_autofocus'] = false;
 		} else {
@@ -182,14 +180,7 @@ class LoginController extends Controller {
 
 		$parameters['canResetPassword'] = true;
 		$parameters['resetPasswordLink'] = $this->config->getSystemValue('lost_password_link', '');
-		if (!$parameters['resetPasswordLink']) {
-			if ($user !== null && $user !== '') {
-				$userObj = $this->userManager->get($user);
-				if ($userObj instanceof IUser) {
-					$parameters['canResetPassword'] = $userObj->canChangePassword();
-				}
-			}
-		} elseif ($parameters['resetPasswordLink'] === 'disabled') {
+		if ($parameters['resetPasswordLink'] === 'disabled') {
 			$parameters['canResetPassword'] = false;
 		}
 
@@ -201,14 +192,6 @@ class LoginController extends Controller {
 		$parameters['alt_login'] = $altLogins;
 		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
 		$parameters['rememberLoginState'] = !empty($remember_login) ? $remember_login : 0;
-
-		if ($user !== null && $user !== '') {
-			$parameters['loginName'] = $user;
-			$parameters['user_autofocus'] = false;
-		} else {
-			$parameters['loginName'] = '';
-			$parameters['user_autofocus'] = true;
-		}
 
 		/**
 		 * If redirect_url is not empty and remember_login is null and
