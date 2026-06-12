@@ -1,4 +1,4 @@
---
+-- 
 <?php p($theme->getName() . ' - ' . $theme->getSlogan()); ?>
 <?php
 p("\n" . $theme->getBaseUrl());

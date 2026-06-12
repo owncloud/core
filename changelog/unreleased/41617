@@ -1,0 +1,9 @@
+Bugfix: Add missing space to mail footer signature delimiter
+
+We've fixed the signature delimiter in the email footer templates. The delimiter
+on the first line was missing the trailing space required by the signature block
+convention (RFC 3676), so mail clients were unable to recognize and collapse the
+signature. The delimiter is now correctly written as "-- " (dash-dash-space).
+
+https://github.com/owncloud/core/issues/41364
+https://github.com/owncloud/core/pull/41617
