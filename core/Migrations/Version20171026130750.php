@@ -1,5 +1,5 @@
 <?php
-namespace OC\Migrations;
+namespace OC\Core\Migrations;
 
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;

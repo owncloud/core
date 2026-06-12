@@ -1,6 +1,6 @@
 <?php
 
-namespace OC\Migrations;
+namespace OC\Core\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
