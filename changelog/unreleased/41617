@@ -6,3 +6,4 @@ convention (RFC 3676), so mail clients were unable to recognize and collapse the
 signature. The delimiter is now correctly written as "-- " (dash-dash-space).
 
 https://github.com/owncloud/core/issues/41364
+https://github.com/owncloud/core/pull/41617
