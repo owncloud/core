@@ -1,0 +1,10 @@
+Security: Sanitize storage connection error messages returned to clients
+
+The external storage status handler returned raw exception messages
+including Guzzle cURL error details such as resolved IP addresses and
+port numbers in the JSON response. This allowed authenticated users to
+distinguish connection states and map internal network topology. The
+full exception is now logged server-side only; a generic message is
+returned to the client.
+
+https://github.com/owncloud/core/pull/41585
