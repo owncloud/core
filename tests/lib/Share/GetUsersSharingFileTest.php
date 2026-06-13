@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\Share;
+namespace Test\Share;
 
 use OC;
 use OC\Share\Constants;

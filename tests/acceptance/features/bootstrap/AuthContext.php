@@ -19,6 +19,8 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\HttpRequestHelper;
 use Behat\Gherkin\Node\TableNode;

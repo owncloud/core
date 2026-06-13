@@ -19,6 +19,8 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;

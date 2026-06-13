@@ -21,7 +21,7 @@
  *
  */
 
-namespace Page\FilesPageElement;
+namespace Tests\Acceptance\Page\FilesPageElement;
 
 /**
  * Object of a row on the Shared with others page

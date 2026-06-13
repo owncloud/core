@@ -20,12 +20,14 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\LoginPage;
-use Page\PersonalSecuritySettingsPage;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\LoginPage;
+use Tests\Acceptance\Page\PersonalSecuritySettingsPage;
 
 require_once 'bootstrap.php';
 

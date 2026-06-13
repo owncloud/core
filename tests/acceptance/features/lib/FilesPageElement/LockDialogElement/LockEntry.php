@@ -21,12 +21,12 @@
  *
  */
 
-namespace Page\FilesPageElement\LockDialogElement;
+namespace Tests\Acceptance\Page\FilesPageElement\LockDialogElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Exception;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\OwncloudPage;
 
 /**
  * A single Lock Entry
