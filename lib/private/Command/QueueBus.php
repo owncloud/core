@@ -57,7 +57,8 @@ class QueueBus implements IBus {
 			if (\strlen($serialized) > 4000) {
 				throw new \InvalidArgumentException('Trying to push a command which serialized form can not be stored in the database (>4000 character)');
 			}
-			$unserialized = \unserialize($serialized);
+			// Restrict to ICommand; the serialized value was just created from $command above.
+			$unserialized = \unserialize($serialized, ['allowed_classes' => [ICommand::class]]);
 			$unserialized->handle();
 		} else {
 			$command();
