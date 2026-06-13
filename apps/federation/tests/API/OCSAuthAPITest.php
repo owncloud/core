@@ -112,11 +112,63 @@ class OCSAuthAPITest extends TestCase {
 	}
 
 	public function dataTestRequestSharedSecret() {
+		// Token pairs are chosen so that hash('sha256', $token) vs hash('sha256', $localToken)
+		// ordering matches the expected response.  Using raw strcmp() on the tokens
+		// would give different results for the first two cases, which is exactly the
+		// behaviour that the oracle-prevention fix changes.
+		//
+		// Case 1: hash(token) > hash(localToken) => remote wins, we schedule GetSharedSecret => 200
+		//   token=0eihx/zCxwyV  localToken=hgSXvmcFnOp+
+		//   strcmp(token, localToken) < 0  (old code would return 403, NEW code returns 200)
+		//
+		// Case 2: hash(token) < hash(localToken) => we win, remote backs off => 403
+		//   token=Dvu0e+f+cC5F  localToken=FBv96rzfQZB0
+		//   strcmp(token, localToken) < 0  (both old and new code agree here)
+		//
+		// Case 3: server not trusted => always 403 regardless of tokens
 		return [
-			['token2', 'token1', true, Http::STATUS_OK],
-			['token1', 'token2', false, Http::STATUS_FORBIDDEN],
-			['token1', 'token2', true, Http::STATUS_FORBIDDEN],
+			['0eihx/zCxwyV', 'hgSXvmcFnOp+', true, Http::STATUS_OK],
+			['Dvu0e+f+cC5F', 'FBv96rzfQZB0', false, Http::STATUS_FORBIDDEN],
+			['Dvu0e+f+cC5F', 'FBv96rzfQZB0', true, Http::STATUS_FORBIDDEN],
 		];
+	}
+
+	/**
+	 * Regression test: the old strcmp()-based comparison leaked ordering information
+	 * about the stored localToken to unauthenticated callers (binary search oracle).
+	 *
+	 * This test uses a concrete token pair where strcmp(localToken, token) > 0
+	 * (old code would return 403) but strcmp(hash(localToken), hash(token)) <= 0
+	 * (new code returns 200), demonstrating that the fix changes the behaviour
+	 * for cases that would have been exploitable as an oracle while still
+	 * producing the correct deterministic tiebreak result.
+	 *
+	 * Without the fix this test would return STATUS_FORBIDDEN for a case where
+	 * the hash-based comparison says the remote server's token wins.
+	 */
+	public function testRequestSharedSecretNoOracleLeakage() {
+		// strcmp('DD7EOAhPjsziDBGa', '/Ewru/vr674cUicB') = 21  (localToken > token, old code: 403)
+		// strcmp(hash256('DD7EOAhPjsziDBGa'), hash256('/Ewru/vr674cUicB')) = -48 (new code: 200)
+		$url        = 'https://remote.example.com';
+		$localToken = 'DD7EOAhPjsziDBGa';
+		$token      = '/Ewru/vr674cUicB';
+
+		$this->trustedServers
+			->expects($this->once())
+			->method('isTrustedServer')->with($url)->willReturn(true);
+		$this->dbHandler
+			->expects($this->any())
+			->method('getToken')->with($url)->willReturn($localToken);
+
+		// With the fix the hash of $token > hash of $localToken, so the remote server
+		// wins the tiebreak and we must schedule GetSharedSecret (=> 200).
+		$this->jobList->expects($this->once())->method('add')
+			->with('OCA\Federation\BackgroundJob\GetSharedSecret', ['url' => $url, 'token' => $token]);
+		$this->jobList->expects($this->once())->method('remove')
+			->with('OCA\Federation\BackgroundJob\RequestSharedSecret', ['url' => $url, 'token' => $localToken]);
+
+		$result = $this->ocsAuthApi->requestSharedSecret($url, $token);
+		$this->assertSame(Http::STATUS_OK, $result['statuscode']);
 	}
 
 	/**
