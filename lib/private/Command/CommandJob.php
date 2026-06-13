@@ -29,7 +29,8 @@ use OCP\Command\ICommand;
  */
 class CommandJob extends QueuedJob {
 	protected function run($serializedCommand) {
-		$command = \unserialize($serializedCommand);
+		// Only ICommand implementations are legitimate payloads here.
+		$command = \unserialize($serializedCommand, ['allowed_classes' => [ICommand::class]]);
 		if ($command instanceof ICommand) {
 			$command->handle();
 		} else {
