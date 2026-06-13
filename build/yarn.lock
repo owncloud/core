@@ -195,9 +195,10 @@
   dependencies:
     underscore ">=1.8.3"
 
-"@bower_components/blueimp-md5@blueimp/JavaScript-MD5#1.0.1":
-  version "1.0.1"
-  resolved "https://codeload.github.com/blueimp/JavaScript-MD5/tar.gz/b84e37f2574f57be6b06d9690da865b6546b4d76"
+"@bower_components/blueimp-md5@blueimp/JavaScript-MD5#v2.19.0":
+  version "2.19.0"
+  uid "458b6624c39df94cd938db3303ef77aa1e7a6800"
+  resolved "https://codeload.github.com/blueimp/JavaScript-MD5/tar.gz/458b6624c39df94cd938db3303ef77aa1e7a6800"
 
 "@bower_components/bootstrap@twbs/bootstrap#3.4.1":
   version "3.4.1"
