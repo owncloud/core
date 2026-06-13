@@ -84,6 +84,42 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals('updater.secret does not match the provided token', $responseData['details']);
 	}
 
+	/**
+	 * Ensure that a 'command' key inside params cannot override the validated
+	 * command (CVE allowlist-bypass via array_merge key collision).
+	 */
+	public function testParamsCommandKeyCannotOverrideValidatedCommand() {
+		$this->getControllerMock('localhost');
+
+		// Track which command the console is actually asked to run
+		$capturedInput = null;
+		$this->console->expects($this->once())->method('run')
+			->willReturnCallback(
+				function ($input, $output) use (&$capturedInput) {
+					$capturedInput = $input;
+					return 0;
+				}
+			);
+
+		// 'status' is an allowed command; 'user:resetpassword' is not.
+		// The attacker embeds 'command' => 'user:resetpassword' inside params.
+		$response = $this->controller->execute(
+			'status',
+			self::TEMP_SECRET,
+			['command' => 'user:resetpassword', '--output' => 'json']
+		);
+		$responseData = $response->getData();
+
+		// Request must succeed (the validated command ran)
+		$this->assertArrayHasKey('exitCode', $responseData);
+		$this->assertEquals(0, $responseData['exitCode']);
+
+		// The ArrayInput actually passed to the console must carry 'status',
+		// not the attacker-supplied 'user:resetpassword'.
+		$this->assertNotNull($capturedInput);
+		$this->assertEquals('status', $capturedInput->getFirstArgument());
+	}
+
 	public function testSuccess() {
 		$this->getControllerMock('localhost');
 		$this->console->expects($this->once())->method('run')

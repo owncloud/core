@@ -106,6 +106,8 @@ class OccController extends Controller {
 			$this->console->setAutoExit(false);
 			$this->console->loadCommands(new ArrayInput([]), $output);
 
+			// Prevent user-supplied params from overriding the validated command
+			unset($params['command']);
 			$inputArray = \array_merge(['command' => $command], $params);
 			$input = new ArrayInput($inputArray);
 
