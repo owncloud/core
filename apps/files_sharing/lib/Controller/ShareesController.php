@@ -170,6 +170,10 @@ class ShareesController extends OCSController {
 			$this->result['users'] = [];
 			return;
 		}
+		if (!$this->userSearch->isSearchable($search)) {
+			$this->result['users'] = [];
+			return;
+		}
 
 		$userGroups = [];
 		if ($this->shareWithGroupOnly || $this->shareeEnumerationGroupMembers) {
@@ -307,6 +311,10 @@ class ShareesController extends OCSController {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
 
 		if (\strlen(\trim($search)) === 0 && $this->userSearch->getSearchMinLength() > 0) {
+			$this->result['groups'] = [];
+			return;
+		}
+		if (!$this->userSearch->isSearchable($search)) {
 			$this->result['groups'] = [];
 			return;
 		}
