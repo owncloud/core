@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Validate changelog entries
-        uses: actionhippie/calens@0b8ceba55a72f5ef8b7d910698fcd28be8bb8c19 # v1.13.4
+        uses: actionhippie/calens@6340fdcb8b9ed26c84fe067d901efb89611ed23c # v1.13.5
 
   acceptance-api-smoke:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
