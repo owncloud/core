@@ -59,12 +59,12 @@ class DisableTest extends TestCase {
 
 	public function dataDisable() {
 		return [
-			['yes', true, '1', false, 'Encryption disabled'],
-			['yes', true, '', false, 'Encryption disabled'],
-			['no', false, false, false, 'Encryption is already disabled'],
-			['yes', true, '1', true, 'Encryption disabled'],
-			['yes', true, '', true, 'Encryption disabled'],
-			['no', false, false, true, 'Encryption is already disabled'],
+			['yes', true, '1', [], 'Encryption disabled'],
+			['yes', true, '', [], 'Encryption disabled'],
+			['no', false, false, [], 'Encryption is already disabled'],
+			['yes', true, '1', ['files_versions/foo.txt'], 'Encryption disabled'],
+			['yes', true, '', ['files_trashbin/files/bar.txt.d123'], 'Encryption disabled'],
+			['no', false, false, ['files/baz.txt'], 'Encryption is already disabled'],
 		];
 	}
 
@@ -74,13 +74,13 @@ class DisableTest extends TestCase {
 	 * @param string $oldStatus
 	 * @param bool $isUpdating
 	 * @param bool $masterKeyEnabled
-	 * @param int $hasEncryptedFiles
+	 * @param string[] $encryptedPaths paths still flagged as encrypted in the file cache
 	 * @param string $expectedString
 	 */
-	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $hasEncryptedFiles, $expectedString) {
+	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $encryptedPaths, $expectedString) {
 		$stmt = $this->createMock(Result::class);
-		$stmt->method('fetchOne')
-			->willReturn($hasEncryptedFiles);
+		$stmt->method('fetchFirstColumn')
+			->willReturn($encryptedPaths);
 		$qbExpr = $this->createMock(ExpressionBuilder::class);
 		$qbMock = $this->createMock(QueryBuilder::class);
 		$qbMock->method('expr')
@@ -91,12 +91,14 @@ class DisableTest extends TestCase {
 			->willReturnSelf();
 		$qbMock->method('where')
 			->willReturnSelf();
+		$qbMock->method('setMaxResults')
+			->willReturnSelf();
 		$qbMock->method('execute')
 			->willReturn($stmt);
 		$this->db->method('getQueryBuilder')
 			->willReturn($qbMock);
 
-		if ($hasEncryptedFiles === false) {
+		if (\count($encryptedPaths) === 0) {
 			$this->config->expects($this->exactly(1))
 				->method('getAppValue')
 				->willReturnMap(
@@ -129,13 +131,24 @@ class DisableTest extends TestCase {
 			}
 			$expectedExitCode = 0;
 		} else {
-			$this->consoleOutput->expects($this->once())
+			$writtenLines = [];
+			$this->consoleOutput->expects($this->atLeastOnce())
 				->method('writeln')
-				->with($this->stringContains('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>'));
+				->willReturnCallback(function ($line) use (&$writtenLines) {
+					$writtenLines[] = $line;
+				});
 			$expectedExitCode = 1;
 		}
 
 		$exitCode = self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 		$this->assertEquals($expectedExitCode, $exitCode);
+
+		if (\count($encryptedPaths) > 0) {
+			$output = \implode("\n", $writtenLines);
+			$this->assertStringContainsString('The system still has encrypted files.', $output);
+			foreach ($encryptedPaths as $path) {
+				$this->assertStringContainsString($path, $output);
+			}
+		}
 	}
 }

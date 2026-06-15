@@ -214,7 +214,15 @@ class DecryptAll {
 	protected function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
 		$this->setupUserFS($uid);
 		$directories = [];
-		$directories[] = '/' . $uid . '/files';
+		// also decrypt files stored outside of the regular "files" folder,
+		// otherwise their filecache "encrypted" flag survives and blocks
+		// "occ encryption:disable" afterwards
+		foreach (['files', 'files_versions', 'files_trashbin'] as $folder) {
+			$root = '/' . $uid . '/' . $folder;
+			if ($this->rootView->is_dir($root)) {
+				$directories[] = $root;
+			}
+		}
 
 		while ($root = \array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);

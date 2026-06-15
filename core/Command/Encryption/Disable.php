@@ -28,6 +28,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Disable extends Command {
+	/**
+	 * Maximum number of still-encrypted paths to print so the output stays
+	 * readable on systems with many leftover entries.
+	 */
+	private const MAX_REPORTED_PATHS = 50;
+
 	/** @var IDBConnection */
 	protected $db;
 	/** @var IConfig */
@@ -52,15 +58,26 @@ class Disable extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select($qb->expr()->literal('1'))
+		$qb->select('fc.path')
 			->from('filecache', 'fc')
 			->where($qb->expr()->gte('fc.encrypted', $qb->expr()->literal('1')))
-			->setMaxResults(1);
+			->setMaxResults(self::MAX_REPORTED_PATHS + 1);
 		$results = $qb->execute();
-		$hasEncryptedFiles = (bool) $results->fetchOne();
+		$encryptedPaths = $results->fetchFirstColumn();
 		$results->free();
-		if ($hasEncryptedFiles !== false) {
-			$output->writeln('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>');
+		if (\count($encryptedPaths) > 0) {
+			$output->writeln('<error>The system still has encrypted files. Please decrypt them all before disabling encryption.</error>');
+			$output->writeln('The following paths in the file cache are still flagged as encrypted:');
+			foreach (\array_slice($encryptedPaths, 0, self::MAX_REPORTED_PATHS) as $path) {
+				$output->writeln("    $path");
+			}
+			if (\count($encryptedPaths) > self::MAX_REPORTED_PATHS) {
+				$output->writeln('    ... (more paths are still encrypted)');
+			}
+			$output->writeln('');
+			$output->writeln('Run "occ encryption:decrypt-all" to decrypt these. Entries on shared or');
+			$output->writeln('external storage are skipped by decrypt-all and have to be decrypted by');
+			$output->writeln('their owner, e.g. via "occ encryption:decrypt-all <user>".');
 			return 1;
 		}
 

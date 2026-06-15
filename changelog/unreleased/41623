@@ -1,0 +1,14 @@
+Bugfix: Decrypt versions and trashbin so encryption can be disabled
+
+"occ encryption:decrypt-all" only walked the regular "files" folder, leaving the
+"encrypted" flag set on entries in "files_versions" and "files_trashbin". Because
+"occ encryption:disable" refuses while any file cache row is still flagged as
+encrypted, administrators were left unable to disable encryption even though
+decrypt-all reported success.
+
+decrypt-all now also descends into "files_versions" and "files_trashbin", and the
+disable command now lists the paths that are still flagged as encrypted together
+with a hint on how to clean them up, instead of printing a generic message.
+
+https://github.com/owncloud/core/issues/41623
+https://github.com/owncloud/core/pull/41624
