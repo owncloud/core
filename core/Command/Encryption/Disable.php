@@ -29,10 +29,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Disable extends Command {
 	/**
-	 * Maximum number of still-encrypted paths to print so the output stays
-	 * readable on systems with many leftover entries.
+	 * Maximum number of still-encrypted paths to print so the output fits
+	 * on screen on systems with many leftover entries. The remaining count
+	 * is reported as a summary.
 	 */
-	private const MAX_REPORTED_PATHS = 50;
+	private const MAX_REPORTED_PATHS = 20;
 
 	/** @var IDBConnection */
 	protected $db;
@@ -58,21 +59,30 @@ class Disable extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('fc.path')
+		$qb->select($qb->createFunction('COUNT(*)'))
 			->from('filecache', 'fc')
-			->where($qb->expr()->gte('fc.encrypted', $qb->expr()->literal('1')))
-			->setMaxResults(self::MAX_REPORTED_PATHS + 1);
+			->where($qb->expr()->gte('fc.encrypted', $qb->expr()->literal('1')));
 		$results = $qb->execute();
-		$encryptedPaths = $results->fetchFirstColumn();
+		$encryptedCount = (int) $results->fetchOne();
 		$results->free();
-		if (\count($encryptedPaths) > 0) {
+		if ($encryptedCount > 0) {
+			$qb = $this->db->getQueryBuilder();
+			$qb->select('fc.path')
+				->from('filecache', 'fc')
+				->where($qb->expr()->gte('fc.encrypted', $qb->expr()->literal('1')))
+				->setMaxResults(self::MAX_REPORTED_PATHS);
+			$results = $qb->execute();
+			$encryptedPaths = $results->fetchFirstColumn();
+			$results->free();
+
 			$output->writeln('<error>The system still has encrypted files. Please decrypt them all before disabling encryption.</error>');
 			$output->writeln('The following paths in the file cache are still flagged as encrypted:');
-			foreach (\array_slice($encryptedPaths, 0, self::MAX_REPORTED_PATHS) as $path) {
+			foreach ($encryptedPaths as $path) {
 				$output->writeln("    $path");
 			}
-			if (\count($encryptedPaths) > self::MAX_REPORTED_PATHS) {
-				$output->writeln('    ... (more paths are still encrypted)');
+			$remaining = $encryptedCount - \count($encryptedPaths);
+			if ($remaining > 0) {
+				$output->writeln("    ... and $remaining more still encrypted");
 			}
 			$output->writeln('');
 			$output->writeln('Run "occ encryption:decrypt-all" to decrypt these. Entries on shared or');

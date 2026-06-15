@@ -59,12 +59,15 @@ class DisableTest extends TestCase {
 
 	public function dataDisable() {
 		return [
-			['yes', true, '1', [], 'Encryption disabled'],
-			['yes', true, '', [], 'Encryption disabled'],
-			['no', false, false, [], 'Encryption is already disabled'],
-			['yes', true, '1', ['files_versions/foo.txt'], 'Encryption disabled'],
-			['yes', true, '', ['files_trashbin/files/bar.txt.d123'], 'Encryption disabled'],
-			['no', false, false, ['files/baz.txt'], 'Encryption is already disabled'],
+			// [oldStatus, isUpdating, masterKeyEnabled, encryptedCount, reportedPaths, expectedString]
+			['yes', true, '1', 0, [], 'Encryption disabled'],
+			['yes', true, '', 0, [], 'Encryption disabled'],
+			['no', false, false, 0, [], 'Encryption is already disabled'],
+			['yes', true, '1', 1, ['files_versions/foo.txt'], 'Encryption disabled'],
+			['yes', true, '', 1, ['files_trashbin/files/bar.txt.d123'], 'Encryption disabled'],
+			['no', false, false, 1, ['files/baz.txt'], 'Encryption is already disabled'],
+			// more rows encrypted than are reported -> "... and N more" summary
+			['no', false, false, 25, ['files/a.txt', 'files_versions/b.txt'], 'Encryption is already disabled'],
 		];
 	}
 
@@ -74,17 +77,23 @@ class DisableTest extends TestCase {
 	 * @param string $oldStatus
 	 * @param bool $isUpdating
 	 * @param bool $masterKeyEnabled
-	 * @param string[] $encryptedPaths paths still flagged as encrypted in the file cache
+	 * @param int $encryptedCount number of file cache rows still flagged as encrypted
+	 * @param string[] $reportedPaths capped list of paths the command prints
 	 * @param string $expectedString
 	 */
-	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $encryptedPaths, $expectedString) {
+	public function testDisable($oldStatus, $isUpdating, $masterKeyEnabled, $encryptedCount, $reportedPaths, $expectedString) {
 		$stmt = $this->createMock(Result::class);
+		// first query counts the encrypted rows, second fetches the capped path list
+		$stmt->method('fetchOne')
+			->willReturn($encryptedCount);
 		$stmt->method('fetchFirstColumn')
-			->willReturn($encryptedPaths);
+			->willReturn($reportedPaths);
 		$qbExpr = $this->createMock(ExpressionBuilder::class);
 		$qbMock = $this->createMock(QueryBuilder::class);
 		$qbMock->method('expr')
 			->willReturn($qbExpr);
+		$qbMock->method('createFunction')
+			->willReturnArgument(0);
 		$qbMock->method('select')
 			->willReturnSelf();
 		$qbMock->method('from')
@@ -98,7 +107,7 @@ class DisableTest extends TestCase {
 		$this->db->method('getQueryBuilder')
 			->willReturn($qbMock);
 
-		if (\count($encryptedPaths) === 0) {
+		if ($encryptedCount === 0) {
 			$this->config->expects($this->exactly(1))
 				->method('getAppValue')
 				->willReturnMap(
@@ -143,11 +152,17 @@ class DisableTest extends TestCase {
 		$exitCode = self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 		$this->assertEquals($expectedExitCode, $exitCode);
 
-		if (\count($encryptedPaths) > 0) {
+		if ($encryptedCount > 0) {
 			$output = \implode("\n", $writtenLines);
 			$this->assertStringContainsString('The system still has encrypted files.', $output);
-			foreach ($encryptedPaths as $path) {
+			foreach ($reportedPaths as $path) {
 				$this->assertStringContainsString($path, $output);
+			}
+			$remaining = $encryptedCount - \count($reportedPaths);
+			if ($remaining > 0) {
+				$this->assertStringContainsString("... and $remaining more still encrypted", $output);
+			} else {
+				$this->assertStringNotContainsString('more still encrypted', $output);
 			}
 		}
 	}
