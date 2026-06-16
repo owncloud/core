@@ -808,7 +808,7 @@ then
 	#get the sub path of the webserver and set the correct RewriteBase
 	WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_URL})
 	HTACCESS_UPDATE_FAILURE_MSG="Could not update .htaccess in local server. Some tests might fail as a result."
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}"
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
 	[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG}"; }
 	# check if mod_rewrite module is enabled
@@ -817,7 +817,7 @@ then
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
 		WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_FED_URL})
-		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
+		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}"
 		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
 		[[ $? -eq 0 ]] || { echo "${HTACCESS_UPDATE_FAILURE_MSG/local/federated}"; }
 		# check if mod_rewrite module is enabled
