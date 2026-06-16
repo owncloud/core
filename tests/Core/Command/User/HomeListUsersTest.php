@@ -114,7 +114,10 @@ class HomeListUsersTest extends TestCase {
 			->getMock();
 		$userObject->method('getHome')->willReturn($path . '/' . $uid);
 		$userObject->method('getUID')->willReturn($uid);
-		$this->userManager->method('search')->willReturn([$uid => $userObject]);
+		$this->userManager->expects($this->once())
+			->method('search')
+			->with($this->identicalTo(''), null, null, true)
+			->willReturn([$uid => $userObject]);
 
 		$this->commandTester->execute(['--all' => true]);
 		$output = $this->commandTester->getDisplay();

@@ -70,7 +70,10 @@ class HomeListDirsTest extends TestCase {
 		$user2Mock = $this->createMock(IUser::class);
 		$user2Mock->method('getHome')->willReturn("$homePath/user2");
 
-		$this->userManager->method('search')->willReturn([$user1Mock, $user2Mock]);
+		$this->userManager->expects($this->once())
+			->method('search')
+			->with($this->identicalTo(''))
+			->willReturn([$user1Mock, $user2Mock]);
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString($homePath, $output);

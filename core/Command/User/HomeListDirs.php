@@ -52,7 +52,7 @@ class HomeListDirs extends Base {
 			$output->writeln('<info>We detected that the instance is running on a S3 primary object storage, home directories might not be accurate</info>');
 		}
 
-		$users = $this->userManager->search(null);
+		$users = $this->userManager->search('');
 		$homePaths = [];
 		foreach ($users as $user) {
 			$home = $user->getHome();
