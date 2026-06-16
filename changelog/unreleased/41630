@@ -1,0 +1,10 @@
+Bugfix: Fix user:home:list-dirs and user:home:list-users crashing on PHP 8
+
+The occ commands user:home:list-dirs and user:home:list-users --all passed
+null as the search pattern to IUserManager::search() to mean "all users".
+On PHP 8 the null reached Connection::escapeLikeParameter(string $param) and
+raised a TypeError, aborting the command. Both commands now pass the empty
+string, which is the established "match all" sentinel used by every other
+caller.
+
+https://github.com/owncloud/core/issues/41630

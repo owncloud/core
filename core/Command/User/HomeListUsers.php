@@ -79,7 +79,7 @@ class HomeListUsers extends Base {
 				$output->writeln('<error>--all and path option cannot be given together</error>');
 				return 1;
 			}
-			$users = $this->userManager->search(null, null, null, true);
+			$users = $this->userManager->search('', null, null, true);
 			$outputData = [];
 			foreach ($users as $user) {
 				$home = $user->getHome();
