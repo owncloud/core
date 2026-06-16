@@ -1189,6 +1189,7 @@ $CONFIG = [
  * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
  *
  * Available failover modes:
+ *
  *  - \RedisCluster::FAILOVER_NONE       - only send commands to primary nodes (default)
  *  - \RedisCluster::FAILOVER_ERROR      - failover to replicas for read commands if primary is unavailable
  *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across primary and replica nodes
