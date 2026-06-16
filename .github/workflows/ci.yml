@@ -151,3 +151,12 @@ jobs:
       use-email-server: true
       server-folder: 'server'
       test-suites: "['cliProvisioning']"
+
+  acceptance-webui:
+    name: WebUI Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-webui-tests: true
+      use-email-server: true
+      server-folder: 'server'
+      test-suites: "['webUILogin']"
