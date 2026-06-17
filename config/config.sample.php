@@ -219,6 +219,19 @@ $CONFIG = [
 'allow_user_to_change_mail_address' => true,
 
 /**
+ * Allow or disallow the group administrator (subadmin) feature
+ * `true` allows administrators to delegate user management of specific groups
+ * to non-admin users (group admins / subadmins).
+ * `false` (default) disables the feature entirely: existing group-admin
+ * assignments are ignored and no new ones can be created.
+ *
+ * SECURITY NOTE: this feature is disabled by default as a risk-mitigation.
+ * Only enable it if you require delegated group administration and understand
+ * that group admins can manage users within their groups.
+ */
+'allow_subadmins' => false,
+
+/**
  * Define the lifetime of the remember-login cookie
  * The remember-login cookie is set when the user clicks the `remember` checkbox
  * on the login screen. The default is 15 days, expressed in seconds.
