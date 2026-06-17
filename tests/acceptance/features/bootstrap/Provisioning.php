@@ -49,6 +49,12 @@ trait Provisioning {
 	private array $createdRemoteUsers = [];
 	private array $enabledApps = [];
 	private array $disabledApps = [];
+
+	/**
+	 * Whether this scenario enabled the group admin (subadmin) feature, which
+	 * is disabled by default. Used to revert the config after the scenario.
+	 */
+	private bool $subadminFeatureEnabled = false;
 	private array $startingGroups = [];
 	private array $createdRemoteGroups = [];
 	private array $createdGroups = [];
@@ -4262,6 +4268,9 @@ trait Provisioning {
 		string $otherUser,
 		string $group
 	):void {
+		// The subadmin feature is disabled by default; enable it so these
+		// scenarios can exercise it. Reverted in cleanupSubadminFeature().
+		$this->enableSubadminFeature();
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualSubadminUsername = $this->getActualUsername($otherUser);
@@ -4277,6 +4286,43 @@ trait Provisioning {
 			null,
 			$body
 		);
+	}
+
+	/**
+	 * The group admin (subadmin) feature is disabled by default. Enable it so
+	 * scenarios that exercise subadmins keep working. Tracked so it can be
+	 * reverted after the scenario.
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function enableSubadminFeature():void {
+		if ($this->subadminFeatureEnabled) {
+			return;
+		}
+		SetupHelper::setSystemConfig(
+			'allow_subadmins',
+			'true',
+			$this->getStepLineRef(),
+			'boolean'
+		);
+		$this->subadminFeatureEnabled = true;
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function cleanupSubadminFeature():void {
+		if ($this->subadminFeatureEnabled) {
+			SetupHelper::deleteSystemConfig(
+				'allow_subadmins',
+				$this->getStepLineRef()
+			);
+			$this->subadminFeatureEnabled = false;
+		}
 	}
 
 	/**

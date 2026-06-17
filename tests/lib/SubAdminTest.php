@@ -34,12 +34,15 @@ class SubAdminTest extends TestCase {
 	/** @var \OCP\IDBConnection */
 	private $dbConn;
 
+	/** @var \OCP\IConfig */
+	private $config;
+
 	/** @var \OCP\IUser[] */
 	private $users;
 
 	/** @var \OCP\IGroup[] */
 	private $groups;
-	
+
 	public function setUp(): void {
 		$this->users = [];
 		$this->groups = [];
@@ -47,6 +50,12 @@ class SubAdminTest extends TestCase {
 		$this->userManager = \OC::$server->getUserManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->dbConn = \OC::$server->getDatabaseConnection();
+		$this->config = \OC::$server->getConfig();
+
+		// The subadmin feature is disabled by default; enable it so the
+		// existing assertions exercise the feature. Individual tests that
+		// verify the disabled behavior set the value explicitly.
+		$this->config->setSystemValue('allow_subadmins', true);
 
 		// Create 3 users and 3 groups
 		for ($i = 0; $i < 3; $i++) {
@@ -96,6 +105,8 @@ class SubAdminTest extends TestCase {
 			->where($qb->expr()->eq('uid', $qb->createNamedParameter('orphanedUser')))
 			->orWhere($qb->expr()->eq('gid', $qb->createNamedParameter('orphanedGroup')))
 			->execute();
+
+		$this->config->deleteSystemValue('allow_subadmins');
 	}
 
 	public function testCreateSubAdmin() {
@@ -115,7 +126,7 @@ class SubAdminTest extends TestCase {
 				$calledAfterCreate[] = $event;
 			}
 		);
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
@@ -162,7 +173,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testDeleteSubAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$calledBeforeCreate = [];
 		\OC::$server->getEventDispatcher()->addListener(
@@ -215,7 +226,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetSubAdminsGroups() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[1]));
 
@@ -231,7 +242,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetGroupsSubAdmins() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[1], $this->groups[0]));
 
@@ -247,7 +258,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetAllSubAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[1], $this->groups[1]));
@@ -262,7 +273,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdminofGroup() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		$this->assertTrue($subAdmin->isSubAdminOfGroup($this->users[0], $this->groups[0]));
@@ -273,7 +284,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		$this->assertTrue($subAdmin->isSubAdmin($this->users[0]));
@@ -283,14 +294,14 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdminAsAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->groupManager->get('admin')->addUser($this->users[0]);
 
 		$this->assertTrue($subAdmin->isSubAdmin($this->users[0]));
 	}
 
 	public function testIsUserAccessible() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->groups[0]->addUser($this->users[1]);
 		$this->groups[1]->addUser($this->users[1]);
 		$this->groups[1]->addUser($this->users[2]);
@@ -306,12 +317,12 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsUserAccessibleAsUser() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], $this->users[1]));
 	}
 
 	public function testIsUserAccessibleAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->groupManager->get('admin')->addUser($this->users[1]);
 
@@ -319,7 +330,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testPostDeleteUser() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 
 		$user = \array_shift($this->users);
 		foreach ($this->groups as $group) {
@@ -331,7 +342,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testPostDeleteGroup() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 
 		$group = \array_shift($this->groups);
 		foreach ($this->users as $user) {
@@ -343,7 +354,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testHooks() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
 
 		$test = $this;
 		$u = $this->users[0];
@@ -367,5 +378,62 @@ class SubAdminTest extends TestCase {
 
 		$this->assertTrue($subAdmin->deleteSubAdmin($u, $g));
 		$this->assertEquals(2, $count);
+	}
+
+	public function testCreateSubAdminThrowsWhenDisabled() {
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
+		$this->config->setSystemValue('allow_subadmins', false);
+
+		$this->expectException(\OC\HintException::class);
+		$subAdmin->createSubAdmin($this->users[0], $this->groups[0]);
+	}
+
+	public function testReadMethodsReturnEmptyWhenDisabled() {
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
+		// Create an assignment while enabled
+		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
+
+		// Disable the feature: reads must behave as if no subadmins exist
+		$this->config->setSystemValue('allow_subadmins', false);
+
+		$this->assertSame([], $subAdmin->getSubAdminsGroups($this->users[0]));
+		$this->assertSame([], $subAdmin->getGroupsSubAdmins($this->groups[0]));
+		$this->assertSame([], $subAdmin->getAllSubAdmins());
+		$this->assertFalse($subAdmin->isSubAdminOfGroup($this->users[0], $this->groups[0]));
+		$this->assertFalse($subAdmin->isSubAdmin($this->users[0]));
+		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], $this->users[1]));
+
+		// Cleanup the dormant row (deletion stays enabled)
+		$this->config->setSystemValue('allow_subadmins', true);
+		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
+	}
+
+	public function testIsSubAdminAsAdminWhenDisabled() {
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
+		$this->groupManager->get('admin')->addUser($this->users[0]);
+
+		$this->config->setSystemValue('allow_subadmins', false);
+
+		// Real admins keep their privileges even when the feature is disabled
+		$this->assertTrue($subAdmin->isSubAdmin($this->users[0]));
+	}
+
+	public function testDeleteSubAdminWorksWhenDisabled() {
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn, $this->config);
+		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
+
+		$this->config->setSystemValue('allow_subadmins', false);
+
+		// Deletion reduces privilege, so it must remain possible when disabled
+		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$result = $qb->select(['gid', 'uid'])
+			->from('group_admin')
+			->where($qb->expr()->eq('gid', $qb->createNamedParameter($this->groups[0]->getGID())))
+			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($this->users[0]->getUID())))
+			->execute()
+			->fetchAssociative();
+		$this->assertEmpty($result);
 	}
 }
