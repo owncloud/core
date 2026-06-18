@@ -25,6 +25,15 @@ Feature: create a subadmin
     And the HTTP status code should be "200"
     And user "nonexistentuser" should not be a subadmin of group "brand-new-group"
 
+  @smokeTest
+  Scenario: admin tries to create a subadmin when the subadmin feature is disabled
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
+    And group "brand-new-group" has been created
+    When the administrator tries to make user "brand-new-user" a subadmin of group "brand-new-group" using the provisioning API with the subadmin feature disabled
+    Then the OCS status code should be "103"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should not be a subadmin of group "brand-new-group"
+
 
   Scenario: admin tries to create a subadmin using a group which does not exist
     Given user "brand-new-user" has been created with default attributes and without skeleton files
