@@ -487,7 +487,8 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$this->subAdmin = new \OC\SubAdmin(
 				$this->userManager,
 				$this,
-				\OC::$server->getDatabaseConnection()
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getConfig()
 			);
 		}
 

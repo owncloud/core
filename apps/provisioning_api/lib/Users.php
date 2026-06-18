@@ -600,10 +600,14 @@ class Users {
 			return new Result(null, 100);
 		}
 		// Go
-		if ($subAdminManager->createSubAdmin($user, $group)) {
-			return new Result(null, 100);
-		} else {
-			return new Result(null, 103, 'Unknown error occurred');
+		try {
+			if ($subAdminManager->createSubAdmin($user, $group)) {
+				return new Result(null, 100);
+			} else {
+				return new Result(null, 103, 'Unknown error occurred');
+			}
+		} catch (\OC\HintException $e) {
+			return new Result(null, 103, $e->getHint());
 		}
 	}
 

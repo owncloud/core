@@ -39,7 +39,12 @@ if ($targetUserObject !== null && $targetGroupObject !== null) {
 if ($isSubAdminOfGroup) {
 	$subAdminManager->deleteSubAdmin($targetUserObject, $targetGroupObject);
 } else {
-	$subAdminManager->createSubAdmin($targetUserObject, $targetGroupObject);
+	try {
+		$subAdminManager->createSubAdmin($targetUserObject, $targetGroupObject);
+	} catch (\OC\HintException $e) {
+		OC_JSON::error(['data' => ['message' => $e->getHint()]]);
+		exit();
+	}
 }
 
 OC_JSON::success();

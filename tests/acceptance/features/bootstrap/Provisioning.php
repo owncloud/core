@@ -49,6 +49,12 @@ trait Provisioning {
 	private array $createdRemoteUsers = [];
 	private array $enabledApps = [];
 	private array $disabledApps = [];
+
+	/**
+	 * Whether this scenario enabled the group admin (subadmin) feature, which
+	 * is disabled by default. Used to revert the config after the scenario.
+	 */
+	private bool $subadminFeatureEnabled = false;
 	private array $startingGroups = [];
 	private array $createdRemoteGroups = [];
 	private array $createdGroups = [];
@@ -4248,11 +4254,33 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator tries to make user "([^"]*)" a subadmin of group "([^"]*)" using the provisioning API with the subadmin feature disabled$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function adminTriesToMakeUserSubadminOfGroupUsingTheProvisioningApiWithSubadminFeatureDisabled(
+		string $user,
+		string $group
+	):void {
+		$user = $this->getActualUsername($user);
+		$this->userMakesUserASubadminOfGroupUsingTheProvisioningApi(
+			$this->getAdminUsername(),
+			$user,
+			$group,
+			false
+		);
+	}
+
+	/**
 	 * @When user :user makes user :otherUser a subadmin of group :group using the provisioning API
 	 *
 	 * @param string $user
 	 * @param string $otherUser
 	 * @param string $group
+	 * @param bool $enableSubadminFeature
 	 *
 	 * @return void
 	 * @throws Exception
@@ -4260,8 +4288,17 @@ trait Provisioning {
 	public function userMakesUserASubadminOfGroupUsingTheProvisioningApi(
 		string $user,
 		string $otherUser,
-		string $group
+		string $group,
+		bool $enableSubadminFeature = true
 	):void {
+		if ($enableSubadminFeature) {
+			// The subadmin feature is disabled by default; enable it so these
+			// scenarios can exercise it. Reverted in cleanupSubadminFeature().
+			$this->enableSubadminFeature();
+		} else {
+			// Make sure that the Subadmin feature is disabled.
+			$this->cleanupSubadminFeature();
+		}
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualSubadminUsername = $this->getActualUsername($otherUser);
@@ -4277,6 +4314,43 @@ trait Provisioning {
 			null,
 			$body
 		);
+	}
+
+	/**
+	 * The group admin (subadmin) feature is disabled by default. Enable it so
+	 * scenarios that exercise subadmins keep working. Tracked so it can be
+	 * reverted after the scenario.
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function enableSubadminFeature():void {
+		if ($this->subadminFeatureEnabled) {
+			return;
+		}
+		SetupHelper::setSystemConfig(
+			'allow_subadmins',
+			'true',
+			$this->getStepLineRef(),
+			'boolean'
+		);
+		$this->subadminFeatureEnabled = true;
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function cleanupSubadminFeature():void {
+		if ($this->subadminFeatureEnabled) {
+			SetupHelper::deleteSystemConfig(
+				'allow_subadmins',
+				$this->getStepLineRef()
+			);
+			$this->subadminFeatureEnabled = false;
+		}
 	}
 
 	/**

@@ -28,6 +28,7 @@ namespace OC;
 
 use OC\Hooks\PublicEmitter;
 use OCP\Events\EventEmitterTrait;
+use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IGroup;
@@ -45,21 +46,27 @@ class SubAdmin extends PublicEmitter {
 	/** @var IDBConnection */
 	private $dbConn;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
 	 * @param IDBConnection $dbConn
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		IUserManager $userManager,
 		IGroupManager $groupManager,
-		IDBConnection $dbConn
+		IDBConnection $dbConn,
+		IConfig $config
 	) {
 		'@phan-var \OC\User\Manager $userManager';
 		$this->userManager = $userManager;
 		'@phan-var \OC\Group\Manager $groupManager';
 		$this->groupManager = $groupManager;
 		$this->dbConn = $dbConn;
+		$this->config = $config;
 
 		$this->userManager->listen('\OC\User', 'postDelete', function ($user) {
 			$this->post_deleteUser($user);
@@ -70,12 +77,32 @@ class SubAdmin extends PublicEmitter {
 	}
 
 	/**
+	 * Whether the group admin (subadmin) feature is enabled.
+	 *
+	 * Disabled by default as a security risk-mitigation; admins opt in via the
+	 * `allow_subadmins` system config.
+	 *
+	 * @return bool
+	 */
+	public function isEnabled() {
+		return $this->config->getSystemValue('allow_subadmins', false) === true;
+	}
+
+	/**
 	 * add a SubAdmin
 	 * @param IUser $user user to be SubAdmin
 	 * @param IGroup $group group $user becomes subadmin of
 	 * @return bool
+	 * @throws \OC\HintException if the subadmin feature is disabled
 	 */
 	public function createSubAdmin(IUser $user, IGroup $group) {
+		if (!$this->isEnabled()) {
+			$l = \OC::$server->getL10N('lib');
+			throw new \OC\HintException(
+				$l->t('Group admin feature is disabled'),
+				$l->t('The group admin (subadmin) feature has been disabled by the administrator')
+			);
+		}
 		return $this->emittingCall(function () use (&$user, &$group) {
 			$qb = $this->dbConn->getQueryBuilder();
 
@@ -125,6 +152,9 @@ class SubAdmin extends PublicEmitter {
 	 * @return IGroup[]
 	 */
 	public function getSubAdminsGroups(IUser $user) {
+		if (!$this->isEnabled()) {
+			return [];
+		}
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$result = $qb->select('gid')
@@ -150,6 +180,9 @@ class SubAdmin extends PublicEmitter {
 	 * @return IUser[]
 	 */
 	public function getGroupsSubAdmins(IGroup $group) {
+		if (!$this->isEnabled()) {
+			return [];
+		}
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$result = $qb->select('uid')
@@ -174,6 +207,9 @@ class SubAdmin extends PublicEmitter {
 	 * @return array
 	 */
 	public function getAllSubAdmins() {
+		if (!$this->isEnabled()) {
+			return [];
+		}
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$result = $qb->select('*')
@@ -203,6 +239,9 @@ class SubAdmin extends PublicEmitter {
 	 * @return bool
 	 */
 	public function isSubAdminofGroup(IUser $user, IGroup $group) {
+		if (!$this->isEnabled()) {
+			return false;
+		}
 		$qb = $this->dbConn->getQueryBuilder();
 
 		/*
@@ -230,6 +269,12 @@ class SubAdmin extends PublicEmitter {
 		// Check if the user is already an admin
 		if ($this->groupManager->isAdmin($user->getUID())) {
 			return true;
+		}
+
+		// When the feature is disabled, group-admin-only users have no
+		// elevated rights (real admins are handled by the short-circuit above)
+		if (!$this->isEnabled()) {
+			return false;
 		}
 
 		$qb = $this->dbConn->getQueryBuilder();
