@@ -84,8 +84,8 @@ class SubAdmin extends PublicEmitter {
 	 *
 	 * @return bool
 	 */
-	private function isEnabled() {
-		return $this->config->getSystemValue('allow_subadmins', false) !== false;
+	public function isEnabled() {
+		return $this->config->getSystemValue('allow_subadmins', false) === true;
 	}
 
 	/**

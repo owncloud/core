@@ -4,5 +4,7 @@ Disable the subadmin (group-admin) feature by default behind a new
 allow_subadmins system config, as a security risk-mitigation.
 The feature's code path has known security shortcomings; deployments
 that rely on it can opt back in with 'allow_subadmins' => true in config.php.
+On upgrade, existing group-admin assignments are ignored until an admin
+sets 'allow_subadmins' => true in config.php.
 
 https://github.com/owncloud/core/pull/41634

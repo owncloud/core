@@ -72,7 +72,7 @@ list($adminGroup, $groups) = $groupsInfo->get();
 $recoveryAdminEnabled = OC_App::isEnabled('encryption') &&
 						$config->getAppValue('encryption', 'recoveryAdminEnabled', null);
 
-if ($isAdmin && $config->getSystemValue('allow_subadmins', false) !== false) {
+if ($isAdmin && \OC::$server->getGroupManager()->getSubAdmin()->isEnabled()) {
 	$subAdmins = \OC::$server->getGroupManager()->getSubAdmin()->getAllSubAdmins();
 	// New class returns IUser[] so convert back
 	$result = [];
