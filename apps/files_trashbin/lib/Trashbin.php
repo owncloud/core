@@ -680,7 +680,7 @@ class Trashbin {
 					$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
 				}
 
-				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user);
+				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user, $dir);
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp;
@@ -846,7 +846,7 @@ class Trashbin {
 					$filenameOnlyWithoutTimestamp = $filenameOnly;
 					$dirAndFilename = "{$dir}/{$filenameOnly}";
 				}
-				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user);
+				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user, $dir);
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$size += $view->filesize('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp);
@@ -957,9 +957,14 @@ class Trashbin {
 	 *
 	 * @param string $filename name of the file which should be restored
 	 * @param int $timestamp timestamp when the file was deleted
+	 * @param string $user
+	 * @param string $dir directory the file lives in, relative to the
+	 *                     "files_trashbin/versions" root ('', '/' or '.' for the
+	 *                     root itself). For deleted files that were inside a
+	 *                     folder, their version files live in that same folder.
 	 * @return array
 	 */
-	private static function getVersionsFromTrash($filename, $timestamp, $user) {
+	private static function getVersionsFromTrash($filename, $timestamp, $user, $dir = '') {
 		$view = new View('/' . $user . '/files_trashbin/versions');
 		$versions = [];
 
@@ -971,24 +976,41 @@ class Trashbin {
 			self::$scannedVersions = true;
 		}
 
+		// The version files for a deleted file all live in a single, known
+		// directory under "files_trashbin/versions" (the folder the file was in,
+		// or the versions root). Instead of running a non-sargable
+		// trailing-wildcard name search across the whole filecache (full table
+		// scan on MySQL, see issue #31682), list that one directory using the
+		// index-backed (parent, name) lookup and filter the matching
+		// "<filename>.v<version>[.d<timestamp>]" entries in PHP.
+		$lookupDir = ($dir === '/' || $dir === '.') ? '' : \ltrim($dir, '/');
+		$prefix = $filename . '.v';
+
 		if ($timestamp) {
-			// fetch for old versions
-			$matches = $view->searchRaw($filename . '.v%.d' . $timestamp);
+			// match "<filename>.v<version>.d<timestamp>"
+			$suffix = '.d' . $timestamp;
 			$offset = -\strlen($timestamp) - 2;
 		} else {
-			$matches = $view->searchRaw($filename . '.v%');
+			// match "<filename>.v<version>"
+			$suffix = '';
+			$offset = 0;
 		}
 
-		if (\is_array($matches)) {
-			foreach ($matches as $ma) {
-				if ($timestamp) {
-					$parts = \explode('.v', \substr($ma['path'], 0, $offset));
-					$versions[] = (\end($parts));
-				} else {
-					$parts = \explode('.v', $ma['path']);
-					$versions[] = (\end($parts));
-				}
+		foreach ($view->getDirectoryContent($lookupDir) as $entry) {
+			$name = $entry->getName();
+			if (\strpos($name, $prefix) !== 0) {
+				continue;
 			}
+			if ($suffix !== '') {
+				// must end with the deletion timestamp suffix
+				if (\substr($name, $offset) !== $suffix) {
+					continue;
+				}
+				$parts = \explode('.v', \substr($name, 0, $offset));
+			} else {
+				$parts = \explode('.v', $name);
+			}
+			$versions[] = (\end($parts));
 		}
 		return $versions;
 	}
