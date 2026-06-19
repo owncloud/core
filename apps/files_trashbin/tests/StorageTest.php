@@ -956,10 +956,11 @@ class StorageTest extends TestCase {
 		$scannedVersions->setAccessible(true);
 
 		// timestamped lookup in the versions root
+		// (sort() uses SORT_REGULAR, so the numeric version strings sort numerically)
 		$scannedVersions->setValue(null, false);
 		$versions = $method->invoke(null, 'test.txt', $timestamp, $this->user);
 		\sort($versions);
-		$this->assertEquals(['1', '10', '2'], $versions);
+		$this->assertEquals(['1', '2', '10'], $versions);
 
 		// non-timestamped lookup inside a sub-folder (issue #31682 regression:
 		// the previous whole-cache name search found these, the directory
@@ -968,6 +969,11 @@ class StorageTest extends TestCase {
 		$versions = $method->invoke(null, 'nested.txt', null, $this->user, 'folder');
 		\sort($versions);
 		$this->assertEquals(['5', '6'], $versions);
+
+		// a file with no stored versions yields an empty result
+		$scannedVersions->setValue(null, false);
+		$versions = $method->invoke(null, 'no-such-file.txt', $timestamp, $this->user);
+		$this->assertEquals([], $versions);
 	}
 
 	private function markTestSkippedIfStorageHasOwnVersioning() {
