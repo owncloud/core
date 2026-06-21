@@ -581,6 +581,17 @@ class Trashbin {
 		if (!$view->file_exists($source)) {
 			return false;
 		}
+
+		// Data-loss guard for issue #35974: when an explicit target location is
+		// given (e.g. WebDAV "restore to a different place"), the unique-name
+		// logic above is skipped. Refuse to overwrite an already existing target
+		// instead of silently clobbering it; the caller is informed via the
+		// boolean return value. The default (null target) path already resolves
+		// to a unique, non-existing name, so this never blocks a normal restore.
+		if ($view->file_exists($target)) {
+			return false;
+		}
+
 		$mtime = $view->filemtime($source);
 
 		// restore file
