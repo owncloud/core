@@ -1,5 +1,5 @@
 {
     "require": {
-        "phan/phan": "^5.5"
+        "phan/phan": "^6.0.7"
     }
 }

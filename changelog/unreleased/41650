@@ -1,0 +1,10 @@
+Change: use phan major version 6 code analysis
+
+Now that PHP 7 support has been dropped, we can use the latest release of the
+phan code analyser.
+
+Patch releases before 6.0.7 had a problem with the function signatures for some
+Redis methods. That was corrected in https://github.com/phan/phan/pull/5546 and
+released in phan version 6.0.7. So that version is required as the minimum here.
+
+https://github.com/owncloud/core/pull/41650

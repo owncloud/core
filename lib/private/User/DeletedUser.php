@@ -33,8 +33,7 @@ use OCP\Files\NotFoundException;
  * This class is intended to be used internally.
  */
 class DeletedUser implements IUser {
-	/** @var Emitter */
-	private $emitter;
+	private Manager $emitter;
 	/** @var IConfig */
 	private $config;
 	/** @var IURLGenerator */
