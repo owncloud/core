@@ -4,17 +4,17 @@
 
 [![License](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](COPYING) [![ownCloud OSPO](https://img.shields.io/badge/OSPO-ownCloud-blue)](https://kiteworks.com/opensource) [![Docker Hub](https://img.shields.io/docker/pulls/owncloud)](https://hub.docker.com/r/owncloud/server)
 
-ownCloud Core is the server-side component of ownCloud 10 (Classic), providing file storage, synchronization, and sharing trusted by over 200 million users worldwide. It includes WebDAV, CalDAV, and CardDAV servers, a plugin architecture for apps, user and group management, encryption support, external storage backends, and a comprehensive REST API. The server runs on PHP with support for MySQL, MariaDB, PostgreSQL, and SQLite databases.
+ownCloud Core is the server-side component of ownCloud Classic 10, providing file storage, synchronization, and sharing trusted by over 200 million users worldwide. It includes WebDAV, CalDAV, and CardDAV servers, a plugin architecture for apps, user and group management, encryption support, external storage backends, and a comprehensive REST API. The server runs on PHP with support for MySQL, MariaDB, PostgreSQL, and SQLite databases.
 
-## Part of Classic (OC10)
+## Part of ownCloud Classic
 
-This is the main repository for [ownCloud Server (Classic)](https://github.com/owncloud/core), also known as ownCloud 10 or OC10. It is the foundation that apps like [Activity](https://github.com/owncloud/activity), [Calendar](https://github.com/owncloud/calendar), [Contacts](https://github.com/owncloud/contacts), and many others extend. The server is available as a Docker image on [Docker Hub](https://hub.docker.com/r/owncloud/server).
+This is the main repository for [ownCloud Classic](https://github.com/owncloud/core), also known as ownCloud Classic 10. It is the foundation that apps like [Activity](https://github.com/owncloud/activity), [Calendar](https://github.com/owncloud/calendar), [Contacts](https://github.com/owncloud/contacts), and many others extend. The server is available as a Docker image on [Docker Hub](https://hub.docker.com/r/owncloud/server).
 
 For the next-generation ownCloud platform, see [ownCloud Infinite Scale (oCIS)](https://github.com/owncloud/ocis).
 
 ## Getting Started
 
-For installing ownCloud Server, see the official [ownCloud 10 installation manual](https://doc.owncloud.com/server/latest/admin_manual/installation/).
+For installing ownCloud Classic, see the official [ownCloud Classic 10 installation manual](https://doc.owncloud.com/server/latest/admin_manual/installation/).
 
 ### Development Build Prerequisites
 
@@ -27,7 +27,7 @@ make
 
 ## Documentation
 
-- [ownCloud Server documentation](https://doc.owncloud.com)
+- [ownCloud Classic documentation](https://doc.owncloud.com)
 - [Developer documentation](https://doc.owncloud.com/server/latest/developer_manual/)
 - [CHANGELOG.md](https://github.com/owncloud/core/blob/master/CHANGELOG.md)
 - [Conventional Commits specification](https://www.conventionalcommits.org/)
