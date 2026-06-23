@@ -38,10 +38,10 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Alice" deletes the file with original path "textfile1.txt" from the trashbin using the trashbin API
     Then the HTTP status code should be "204"
-    And as "Alice" the file with original path "/textfile1.txt" should not exist in the trashbin
-    But as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile1.txt" should not exist in the trashbin
+    But as "Alice" the file with original path "textfile0.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -60,10 +60,10 @@ Feature: files and folders can be deleted from the trashbin
     When user "Alice" deletes the file with original path "/PARENT/textfile0.txt" from the trashbin using the trashbin API
     And user "Alice" deletes the file with original path "/PARENT/CHILD/child.txt" from the trashbin using the trashbin API
     Then the HTTP status code of responses on all endpoints should be "204"
-    And as "Alice" the file with original path "/PARENT/textfile0.txt" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
-    But as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/textfile0.txt" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should not exist in the trashbin
+    But as "Alice" the file with original path "textfile0.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -78,10 +78,10 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Brian" tries to delete the file with original path "textfile1.txt" from the trashbin of user "Alice" using the trashbin API
     Then the HTTP status code should be "<status-code>"
-    And as "Alice" the file with original path "/textfile1.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile1.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile0.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path | status-code |
       | new      | 401         |
@@ -96,10 +96,10 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Brian" tries to delete the file with original path "textfile1.txt" from the trashbin of user "Alice" using the password "invalid" and the trashbin API
     Then the HTTP status code should be "401"
-    And as "Alice" the file with original path "/textfile1.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile1.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile0.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -114,10 +114,10 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Brian" tries to delete the file with original path "textfile1.txt" from the trashbin of user "Alice" using the password "" and the trashbin API
     Then the HTTP status code should be "401"
-    And as "Alice" the file with original path "/textfile1.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile1.txt" should exist in the trashbin
+    And as "Alice" the file with original path "textfile0.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -133,11 +133,11 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted folder "/FOLDER"
     When user "Alice" deletes the folder with original path "/PARENT" from the trashbin using the trashbin API
     Then the HTTP status code should be "204"
-    And as "Alice" the file with original path "/PARENT/parent.txt" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
-    And as "Alice" the folder with original path "/PARENT/CHILD/" should not exist in the trashbin
-    But as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/FOLDER/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/parent.txt" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should not exist in the trashbin
+    And as "Alice" the folder with original path "PARENT/CHILD/" should not exist in the trashbin
+    But as "Alice" the file with original path "FOLDER/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "FOLDER/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -153,11 +153,11 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted folder "/FOLDER"
     When user "Alice" deletes the folder with original path "/PARENT/CHILD" from the trashbin using the trashbin API
     Then the HTTP status code should be "204"
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
-    And as "Alice" the folder with original path "/PARENT/CHILD/" should not exist in the trashbin
-    But as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/FOLDER/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/CHILD/child.txt" should not exist in the trashbin
+    And as "Alice" the folder with original path "PARENT/CHILD/" should not exist in the trashbin
+    But as "Alice" the file with original path "PARENT/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "FOLDER/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "FOLDER/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |

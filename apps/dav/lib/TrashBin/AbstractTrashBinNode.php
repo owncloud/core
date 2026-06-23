@@ -110,7 +110,7 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 			$originalPath = $location . '/' . $originalPath;
 		}
 
-		return $originalPath;
+		return ltrim($originalPath, '/');
 	}
 
 	public function getDeleteTimestamp() : int {

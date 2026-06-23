@@ -1,0 +1,8 @@
+Bugfix: normalise trashbin original-location PROPFIND response
+
+In certain situations the trashbin original-location in a PROPFIND response
+contained a leading slash. This change ensures that a relative path (without
+a leading slash) is always returned.
+
+https://github.com/owncloud/core/issues/39337
+https://github.com/owncloud/core/pull/41649
