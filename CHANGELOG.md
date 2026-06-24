@@ -50,12 +50,14 @@ ownCloud admins and users.
 * Bugfix - Fix JS test isolation bugs exposed by Jasmine 5 random test ordering: [#41616](https://github.com/owncloud/core/pull/41616)
 * Bugfix - Decrypt versions and trashbin so encryption can be disabled: [#41623](https://github.com/owncloud/core/issues/41623)
 * Bugfix - Fix user:home:list-dirs and user:home:list-users crashing on PHP 8: [#41630](https://github.com/owncloud/core/issues/41630)
+* Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
 * Change - Use configurable URL for internet connectivity check: [#41506](https://github.com/owncloud/core/pull/41506)
+* Change - Use phan major version 6 code analysis: [#41650](https://github.com/owncloud/core/pull/41650)
 
 ## Details
 
@@ -189,6 +191,18 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41630
 
+* Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
+
+   Add MIME type mappings for additional OpenDocument formats for file types odc,
+   odi, odm, otc, otg, oth, oti, otp, ots and ott.
+
+   Add MIME type aliases for chart and image formats that were currently missing in
+   the default mimetypealiases.dist.json file.
+
+   Update mimetypelist.js using ./occ maintenance:mimetype:update-js
+
+   https://github.com/owncloud/core/pull/41648
+
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
    Icons have been updated according to the M$ cloud storage partner program
@@ -307,6 +321,17 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41465
    https://github.com/owncloud/core/pull/41506
+
+* Change - Use phan major version 6 code analysis: [#41650](https://github.com/owncloud/core/pull/41650)
+
+   Now that PHP 7 support has been dropped, we can use the latest release of the
+   phan code analyser.
+
+   Patch releases before 6.0.7 had a problem with the function signatures for some
+   Redis methods. That was corrected in https://github.com/phan/phan/pull/5546 and
+   released in phan version 6.0.7. So that version is required as the minimum here.
+
+   https://github.com/owncloud/core/pull/41650
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
