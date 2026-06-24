@@ -1,0 +1,11 @@
+Bugfix: add MIME types for OpenDocument formats
+
+Add MIME type mappings for additional OpenDocument formats for file types
+odc, odi, odm, otc, otg, oth, oti, otp, ots and ott.
+
+Add MIME type aliases for chart and image formats that were currently missing
+in the default mimetypealiases.dist.json file.
+
+Update mimetypelist.js using ./occ maintenance:mimetype:update-js
+
+https://github.com/owncloud/core/pull/41648
