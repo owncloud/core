@@ -22,7 +22,6 @@
 namespace OC\User;
 
 use OC\Files\Cache\Storage;
-use OC\Hooks\Emitter;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;
@@ -33,8 +32,7 @@ use OCP\Files\NotFoundException;
  * This class is intended to be used internally.
  */
 class DeletedUser implements IUser {
-	/** @var Emitter */
-	private $emitter;
+	private Manager $emitter;
 	/** @var IConfig */
 	private $config;
 	/** @var IURLGenerator */
