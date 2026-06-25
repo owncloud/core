@@ -56,6 +56,8 @@ OC.L10N.register(
     "Unsatisfied authentication mechanism parameters" : "Parâmetros do mecanismo de autenticação inválidos",
     "Insufficient data: %s" : "Dados insuficientes: %s",
     "%s" : "%s",
+    "Storage connection error. See server log for details." : "Erro de conexão de armazenamento. Consulte o log do servidor para obter detalhes.",
+    "Storage with id \"%d\" not found" : "Armazenamento com ID \"1%d\" não encontrado",
     "Storage with id \"%i\" is not user editable" : "Armazenamento com id \"%i\" não é editável pelo utilizador",
     "OAuth1" : "OAuth1",
     "App key" : "Chave da Aplicação",
