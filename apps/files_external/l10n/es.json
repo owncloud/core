@@ -54,6 +54,8 @@
     "Unsatisfied authentication mechanism parameters" : "Los parámetros del mecanismo de autentificación no son válidos",
     "Insufficient data: %s" : "Datos insuficientes: %s",
     "%s" : "%s",
+    "Storage connection error. See server log for details." : "Error de conexión con el almacenamiento. Consulte el registro del servidor para obtener más detalles..",
+    "Storage with id \"%d\" not found" : "Almacenamiento con id \"%d\" no encontrado",
     "Storage with id \"%i\" is not user editable" : "El almacenamiento con id \"%i\" no es editable por usuarios",
     "OAuth1" : "OAuth1",
     "App key" : "App principal",
