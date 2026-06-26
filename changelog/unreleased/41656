@@ -1,0 +1,5 @@
+Bugfix: handle deprecated code related to comments app
+
+Code paths that caused deprecation warnings in PHP 8 have been corrected.
+
+https://github.com/owncloud/core/pull/41656

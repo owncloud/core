@@ -171,7 +171,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	 * @return bool
 	 */
 	public function setReadMarker($value) {
-		$dateTime = new \DateTime($value);
+		$dateTime = new \DateTime($value ?? 'now');
 		$user = $this->userSession->getUser();
 		$this->commentsManager->setReadMark($this->name, $this->id, $dateTime, $user);
 		return true;
