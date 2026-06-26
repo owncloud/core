@@ -138,6 +138,8 @@
     "Cannot set the requested share attributes for %s" : "S’caktohen dot atributet e domosdoshme pjesësh për %s",
     "Expiration date is in the past" : "Data e skadimit bie në të kaluarën",
     "Cannot set expiration date more than %s days in the future" : "S’mund të caktohet data e skadimit më shumë se %s ditë në të ardhmen",
+    "Group admin feature is disabled" : "Veçoria për përgjegjës grupi është e çaktivizuar",
+    "The group admin (subadmin) feature has been disabled by the administrator" : "Veçoria për përgjegjës grupi (nënpërgjegjës) është çaktivizuar nga përgjegjësi",
     "Could not find category \"%s\"" : "S’u gjet kategori “%s”",
     "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"+_.@-'\"" : "Në një emër përdoruesi lejohen vetëm shenjat vijuese: “a-z”, “A-Z”, “0-9”, dhe “+_.@-'”",
     "A valid username must be provided" : "Duhet dhënë një emër i vlefshëm përdoruesi",
