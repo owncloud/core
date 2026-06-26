@@ -51,6 +51,7 @@ ownCloud admins and users.
 * Bugfix - Decrypt versions and trashbin so encryption can be disabled: [#41623](https://github.com/owncloud/core/issues/41623)
 * Bugfix - Fix user:home:list-dirs and user:home:list-users crashing on PHP 8: [#41630](https://github.com/owncloud/core/issues/41630)
 * Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
+* Bugfix - Handle deprecated code related to comments app: [#41656](https://github.com/owncloud/core/pull/41656)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
@@ -202,6 +203,12 @@ ownCloud admins and users.
    Update mimetypelist.js using ./occ maintenance:mimetype:update-js
 
    https://github.com/owncloud/core/pull/41648
+
+* Bugfix - Handle deprecated code related to comments app: [#41656](https://github.com/owncloud/core/pull/41656)
+
+   Code paths that caused deprecation warnings in PHP 8 have been corrected.
+
+   https://github.com/owncloud/core/pull/41656
 
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
