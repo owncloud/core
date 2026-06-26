@@ -210,18 +210,30 @@ export LANG=C
 function remote_occ() {
 	COMMAND=`echo $3 | xargs`
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "command=${COMMAND}"`
-	# xargs is (miss)used to trim the output
-	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | xargs`
-	# We could not find a proper return of the testing app, so something went wrong
-	if [ -z "${RETURN}" ]
+	if echo "${CURL_OCC_RESULT}" | xmllint --noout - > /dev/null 2>&1;
 	then
+		# xargs is (miss)used to trim the output
+		RETURN=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string(ocs/data/code)" - | xargs`
+		# We could not find a proper return of the testing app, so something went wrong
+		if [ -z "${RETURN}" ]
+		then
+			RETURN=1
+			REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+		else
+			REMOTE_OCC_STDOUT=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string(ocs/data/stdOut)" - | xargs`
+			REMOTE_OCC_STDERR=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string(ocs/data/stdErr)" - | xargs`
+		fi
+	else
+		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
+		# That will give the caller a chance to understand what is wrong.
+		echo "The result of the remote_occ cURL command '${COMMAND}' was not valid XML"
+		echo "--------"
+		echo $CURL_OCC_RESULT
+		echo "--------"
 		RETURN=1
 		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
-	else
-		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" - | xargs`
-		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" - | xargs`
 	fi
-	return ${RETURN}
+	return "${RETURN}"
 }
 
 # @param $1 admin authentication string username:password
@@ -230,21 +242,33 @@ function remote_occ() {
 # exists with 1 and sets $REMOTE_OCC_STDERR if any of the occ commands returned a non-zero code
 function remote_bulk_occ() {
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2/bulk -d "${3}"`
-	COUNT_RESULTS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "ocs/data/element/code" - | wc -l`
+	if echo "${CURL_OCC_RESULT}" | xmllint --noout - > /dev/null 2>&1;
+	then
+		COUNT_RESULTS=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "ocs/data/element/code" - | wc -l`
 
-	RETURN=0
-	REMOTE_OCC_STDERR=""
-	for ((n=1;n<=${COUNT_RESULTS};n++))
-	do
-		EXIT_CODE=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string((ocs/data/element/code)[${n}])" -`
-		if [ ${EXIT_CODE} -ne 0 ]
-		then
-			REMOTE_OCC_STDERR+=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string((ocs/data/element/stdErr)[${n}])" - | xargs`
-			REMOTE_OCC_STDERR+="\n"
-			RETURN=1
-		fi
+		RETURN=0
+		REMOTE_OCC_STDERR=""
+		for ((n=1;n<=${COUNT_RESULTS};n++))
+		do
+			EXIT_CODE=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string((ocs/data/element/code)[${n}])" -`
+			if [ ${EXIT_CODE} -ne 0 ]
+			then
+				REMOTE_OCC_STDERR+=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string((ocs/data/element/stdErr)[${n}])" - | xargs`
+				REMOTE_OCC_STDERR+="\n"
+				RETURN=1
+			fi
 
-	done
+		done
+	else
+		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
+		# That will give the caller a chance to understand what is wrong.
+		echo "The result of the remote_bulk_occ cURL command '${3}' was not valid XML"
+		echo "--------"
+		echo "${CURL_OCC_RESULT}"
+		echo "--------"
+		RETURN=1
+		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+	fi
 	return ${RETURN}
 }
 
@@ -256,21 +280,33 @@ function remote_bulk_occ() {
 function remote_dir() {
 	COMMAND=`echo $3 | xargs`
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "dir=${COMMAND}"`
-	# xargs is (miss)used to trim the output
-	HTTP_STATUS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" - | xargs`
-	# We could not find a proper return of the testing app, so something went wrong
-	if [ -z "${HTTP_STATUS}" ]
+	if echo "${CURL_OCC_RESULT}" | xmllint --noout - > /dev/null 2>&1;
 	then
-		RETURN=1
-		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
-	else
-		if [ "${HTTP_STATUS}" = 200 ]
+		# xargs is (miss)used to trim the output
+		HTTP_STATUS=`echo "${CURL_OCC_RESULT}" | xmllint --xpath "string(ocs/meta/statuscode)" - | xargs`
+		# We could not find a proper return of the testing app, so something went wrong
+		if [ -z "${HTTP_STATUS}" ]
 		then
-			RETURN=0
-		else
 			RETURN=1
 			REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+		else
+			if [ "${HTTP_STATUS}" = 200 ]
+			then
+				RETURN=0
+			else
+				RETURN=1
+				REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
+			fi
 		fi
+	else
+		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
+		# That will give the caller a chance to understand what is wrong.
+		echo "The result of the remote_dir cURL command '${COMMAND}' was not valid XML"
+		echo "--------"
+		echo "${CURL_OCC_RESULT}"
+		echo "--------"
+		RETURN=1
+		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
 	fi
 	return ${RETURN}
 }
@@ -835,15 +871,20 @@ else
 	php -S localhost:${PORT} -t "${OC_PATH}" &
 	PHPPID=$!
 	echo ${PHPPID}
-
-	PORT_FED=$((8180 + ${EXECUTOR_NUMBER}))
-	echo ${PORT_FED}
-	php -S localhost:${PORT_FED} -t ../.. &
-	PHPPID_FED=$!
-	echo ${PHPPID_FED}
-
 	export TEST_SERVER_URL="http://localhost:${PORT}"
-	export TEST_SERVER_FED_URL="http://localhost:${PORT_FED}"
+
+	if [ "${TEST_WITH_FED_PHPDEVSERVER}" == "true" ]
+	then
+		# This runs a 2nd server, but serving the code from the same location
+		# as the 1st server at TEST_SERVER_URL. It cannot operate reliably, because
+		# it will share the filesystem, database etc.
+		PORT_FED=$((8180 + ${EXECUTOR_NUMBER}))
+		echo ${PORT_FED}
+		php -S localhost:${PORT_FED} -t ../.. &
+		PHPPID_FED=$!
+		echo ${PHPPID_FED}
+		export TEST_SERVER_FED_URL="http://localhost:${PORT_FED}"
+	fi
 
 	# The endpoint to use to do occ commands via the testing app
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
