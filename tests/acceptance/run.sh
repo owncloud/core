@@ -742,14 +742,14 @@ function teardown() {
 	# Enable any apps that were disabled for the test run
 	for i in "${!APPS_TO_REENABLE[@]}"
 	do
-		read -r -a APP <<< "${APPS_TO_REENABLE[$i]}"
+		read -r -a APP <<< ${APPS_TO_REENABLE[$i]}
 		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:enable ${APP[1]}"
 	done
 
 	# Disable any apps that were enabled for the test run
 	for i in "${!APPS_TO_REDISABLE[@]}"
 	do
-		read -r -a APP <<< "${APPS_TO_REDISABLE[$i]}"
+		read -r -a APP <<< ${APPS_TO_REDISABLE[$i]}
 		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:disable ${APP[1]}"
 	done
 
