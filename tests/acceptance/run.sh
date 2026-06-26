@@ -226,7 +226,7 @@ function remote_occ() {
 	else
 		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
 		# That will give the caller a chance to understand what is wrong.
-		echo "The result of the remote_occ cURL command '${COMMAND}' was not valid XML"
+		echo "The result of the remote_occ cURL command '${COMMAND}' to '${2}' with auth '${1}' was not valid XML"
 		echo "--------"
 		echo $CURL_OCC_RESULT
 		echo "--------"
@@ -262,7 +262,7 @@ function remote_bulk_occ() {
 	else
 		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
 		# That will give the caller a chance to understand what is wrong.
-		echo "The result of the remote_bulk_occ cURL command '${3}' was not valid XML"
+		echo "The result of the remote_bulk_occ cURL commands '${3}' to '${2}/bulk' with auth '${1}' was not valid XML"
 		echo "--------"
 		echo "${CURL_OCC_RESULT}"
 		echo "--------"
@@ -301,7 +301,7 @@ function remote_dir() {
 	else
 		# The CURL_OCC_RESULT was not valid XML, so echo it to the running console.
 		# That will give the caller a chance to understand what is wrong.
-		echo "The result of the remote_dir cURL command '${COMMAND}' was not valid XML"
+		echo "The result of the remote_dir cURL command 'dir=${COMMAND}' to '${2}' with auth '${1}' was not valid XML"
 		echo "--------"
 		echo "${CURL_OCC_RESULT}"
 		echo "--------"
