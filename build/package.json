@@ -51,8 +51,8 @@
     "qs": "6.7.3"
   },
   "engines": {
-    "node": ">= 14.17.0",
-    "yarn": ">= 1.0.0"
+    "node": ">= 18.20.0",
+    "yarn": ">= 1.22.0"
   },
   "scripts": {
     "clean-modules": "modclean -r --patterns=\"default:safe,owncloud:basic\"",
