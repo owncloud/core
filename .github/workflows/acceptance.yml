@@ -237,31 +237,26 @@ jobs:
       - name: Install Server
         env:
           SERVER_ROOT: /var/www/html${{ steps.prepend.outputs.server-dir }}
-          DATA_DIRECTORY: /var/www/html${{ steps.prepend.outputs.server-dir }}/data
-          DB: ${{ matrix.database }}
-          DB_NAME: owncloud
-          ADMIN_LOGIN: admin
-          ADMIN_PASSWORD: admin
+          GIT_REFERENCE: ${{ github.head_ref || github.ref_name }}
+          CORE_PATH: /var/www/html${{ steps.prepend.outputs.server-dir }}
+          DB_TYPE: 'mysql'
+          DB_NAME: 'owncloud'
           DB_HOST: 127.0.0.1
-          DB_USERNAME: owncloud
-          DB_PASSWORD: owncloud
+          DB_USERNAME: 'owncloud'
+          DB_PASSWORD: 'owncloud'
 
         run: |
+          docker run -v ${SERVER_ROOT}:${SERVER_ROOT} \
+            --network=host \
+            -e PLUGIN_GIT_REFERENCE=${GIT_REFERENCE} \
+            -e PLUGIN_CORE_PATH=${CORE_PATH} \
+            -e PLUGIN_DB_TYPE=${DB_TYPE} \
+            -e PLUGIN_DB_NAME=${DB_NAME} \
+            -e PLUGIN_DB_HOST=${DB_HOST} \
+            -e PLUGIN_DB_USERNAME=${DB_USERNAME} \
+            -e PLUGIN_DB_PASSWORD=${DB_PASSWORD} \
+            owncloudci/core:php83
           cd ${SERVER_ROOT}
-          DB_TYPE=${DB%:*}
-          if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
-          if [ $DB_TYPE == "mariadb" ] ; then DB_TYPE="mysql"; fi
-          install_cmd="maintenance:install -vvv \
-            --database=${DB_TYPE} \
-            --database-name=${DB_NAME} \
-            --admin-user=${ADMIN_LOGIN} \
-            --admin-pass=${ADMIN_PASSWORD} \
-            --data-dir=${DATA_DIRECTORY} \
-            --database-host=${DB_HOST} \
-            --database-user=${DB_USERNAME} \
-            --database-pass=${DB_PASSWORD}"
-          
-          sudo -u www-data php occ ${install_cmd}
           echo "enabling apps"
           sudo -u www-data php occ app:enable files_sharing
           sudo -u www-data php occ app:enable files_trashbin
