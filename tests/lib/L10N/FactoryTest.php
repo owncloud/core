@@ -404,8 +404,13 @@ class FactoryTest extends TestCase {
 			[null, 'de', null, ['de'], 'de', 'de'],
 			[null, 'de,en', null, ['de'], 'de', 'de'],
 			[null, 'de-DE,en-US;q=0.8,en;q=0.6', null, ['de'], 'de', 'de'],
-			// Language is not available
-			[null, 'de', null, ['ru'], 'en', 'en'],
+			// No matchable language and 'en' is neither requested nor available →
+			// last-resort 'en' is returned but must NOT be cached as the request
+			// language (caching it would defeat default_language on a later lookup
+			// — see issue #41618).
+			[null, 'de', null, ['ru'], 'en', ''],
+			// 'en' is explicitly requested AND available → a real match, which IS
+			// cached as the request language (correct behavior, not the #41618 bug).
 			[null, 'de,en', null, ['ru', 'en'], 'en', 'en'],
 			[null, 'de-DE,en-US;q=0.8,en;q=0.6', null, ['ru', 'en'], 'en', 'en'],
 			// Language is available, but request language is set
