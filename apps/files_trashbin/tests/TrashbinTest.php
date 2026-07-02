@@ -456,6 +456,47 @@ class TrashbinTest extends TestCase {
 	}
 
 	/**
+	 * Test restoring a file to an explicit target location that already holds a
+	 * different file. Regression test for issue #35974: the restore must NOT
+	 * overwrite the existing target (which would cause data loss). It must fail
+	 * (return false) and leave the existing target file untouched.
+	 */
+	public function testRestoreToExplicitTargetDoesNotOverwriteExisting() {
+		$userFolder = \OC::$server->getUserFolder();
+		$file = $userFolder->newFile('file1.txt');
+		$file->putContent('foo');
+
+		$this->assertTrue($userFolder->nodeExists('file1.txt'));
+
+		$file->delete();
+
+		$this->assertFalse($userFolder->nodeExists('file1.txt'));
+
+		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'mtime');
+		$this->assertCount(1, $filesInTrash);
+
+		/** @var FileInfo */
+		$trashedFile = $filesInTrash[0];
+
+		// create a DIFFERENT existing file at the explicit target location
+		$existingTarget = $userFolder->newFile('existing.txt');
+		$existingTarget->putContent('do-not-overwrite');
+
+		// restore to the explicit target that already exists: must fail
+		$this->assertFalse(
+			Trashbin::restore(
+				'file1.txt.d' . $trashedFile->getMtime(),
+				'existing.txt'
+			)
+		);
+
+		// the existing target file must be untouched (no data loss)
+		/** @var File $stillThere */
+		$stillThere = $userFolder->get('existing.txt');
+		$this->assertEquals('do-not-overwrite', $stillThere->getContent());
+	}
+
+	/**
 	 * Test restoring a nonexistent file from trashbin, returns false
 	 */
 	public function testRestoreUnexistingFile() {
