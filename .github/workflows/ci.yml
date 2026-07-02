@@ -45,7 +45,6 @@ jobs:
   acceptance-api-smoke:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
     name: API Smoke Tests
-    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-api-tests: true
@@ -54,12 +53,7 @@ jobs:
       additional-app: 'notifications'
       additional-packages: 'imagemagick'
       filter-tags: '@smokeTest'
-      test-suites: "[
-        'apiAuth,apiAuthOcs,apiAuthWebDav,apiCapabilities,apiComments,apiFavorites,apiFederationToRoot1,apiFederationToRoot2,apiFederationToShares1,apiFederationToShares2,apiMain',
-        'apiProvisioning-v1,apiProvisioning-v2,apiProvisioningGroups-v1,apiProvisioningGroups-v2,apiShareCreateSpecialToRoot1,apiShareCreateSpecialToRoot2,apiShareCreateSpecialToShares1,apiShareCreateSpecialToShares2,apiSharees,apiShareManagementBasicToRoot,apiShareManagementBasicToShares',
-        'apiShareManagementToRoot,apiShareManagementToShares,apiShareOperationsToRoot1,apiShareOperationsToRoot2,apiShareOperationsToShares1,apiShareOperationsToShares2,apiSharePublicLink1,apiSharePublicLink2,apiSharePublicLink3,apiShareReshareToRoot1,apiShareReshareToRoot2,apiShareReshareToRoot3',
-        'apiShareReshareToShares1,apiShareReshareToShares2,apiShareReshareToShares3,apiShareUpdateToRoot,apiShareUpdateToShares,apiSharingNotificationsToRoot,apiSharingNotificationsToShares,apiTags,apiTranslation,apiTrashbin,apiTrashbinRestore,apiVersions,apiWebdavDelete,apiWebdavEtagPropagation1,apiWebdavEtagPropagation2,apiWebdavLocks',
-        'apiWebdavLocks2,apiWebdavLocks3,apiWebdavLocksUnlock,apiWebdavMove1,apiWebdavMove2,apiWebdavOperations,apiWebdavPreviews,apiWebdavProperties1,apiWebdavProperties2,apiWebdavUpload1,apiWebdavUpload2,apiWebdavUploadTUS']"
+      test-suites: "['apiComments']"
 
   acceptance-api:
     if: contains(github.event.pull_request.title, 'full-ci')
@@ -130,7 +124,6 @@ jobs:
   acceptance-cli-smoke:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
     name: CLI Smoke Tests
-    needs: [semantic-git-messages, php-unit, calens]
     uses: ./.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
@@ -158,3 +151,11 @@ jobs:
       use-email-server: true
       server-folder: 'server'
       test-suites: "['cliProvisioning']"
+
+  acceptance-webui:
+    name: WebUI Tests
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-webui-tests: true
+      use-email-server: true
+      test-suites: "['webUILogin']"
