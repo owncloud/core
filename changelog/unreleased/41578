@@ -1,0 +1,10 @@
+Security: Remove plaintext federation auth token from error log
+
+When getSharedSecret received an invalid token it logged both the
+submitted value and the expected valid token in plaintext. Since the
+endpoint is public, any unauthenticated caller could trigger this log
+entry at will for any trusted server URL, exposing the valid token to
+anyone with log-read access. The token values have been removed from
+the log message.
+
+https://github.com/owncloud/core/pull/41578
