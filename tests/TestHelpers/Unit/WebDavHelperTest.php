@@ -20,6 +20,9 @@
  *
  */
 
+namespace TestHelpers\Unit;
+
+use PHPUnit;
 use TestHelpers\WebDavHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -61,7 +64,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
-	public function testUrlIsSanitizedByMakeDavRequestForNewerDav():void {
+	public function testUrlIsSanitizedByMakeDavRequestForNewerDav(): void {
 		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
@@ -99,7 +102,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
-	public function testUrlIsSanitizedByMakeDavRequestForOlderDavPath():void {
+	public function testUrlIsSanitizedByMakeDavRequestForOlderDavPath(): void {
 		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
@@ -137,7 +140,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
-	public function testMakeDavRequestReplacesAsteriskAndHashesOnUrls():void {
+	public function testMakeDavRequestReplacesAsteriskAndHashesOnUrls(): void {
 		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
@@ -180,7 +183,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
-	public function testMakeDavRequestOnBearerAuthorization():void {
+	public function testMakeDavRequestOnBearerAuthorization(): void {
 		WebDavHelper::makeDavRequest(
 			'http://own.cloud/core',
 			'user1',
@@ -221,7 +224,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testSanitizationOnDefault(?string $unsanitizedUrl, ?string $expectedUrl):void {
+	public function testSanitizationOnDefault(?string $unsanitizedUrl, ?string $expectedUrl): void {
 		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl);
 		$this->assertEquals($expectedUrl, $sanitizedUrl);
 	}
@@ -236,7 +239,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testSanitizationWhenTrailingSlashIsSetToFalse(?string $unsanitizedUrl, ?string $expectedUrl):void {
+	public function testSanitizationWhenTrailingSlashIsSetToFalse(?string $unsanitizedUrl, ?string $expectedUrl): void {
 		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl);
 		$this->assertEquals($expectedUrl, $sanitizedUrl);
 	}
@@ -251,7 +254,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testSanitizationWhenTrailingSlashIsSetToTrue(?string $unsanitizedUrl, ?string $expectedUrl):void {
+	public function testSanitizationWhenTrailingSlashIsSetToTrue(?string $unsanitizedUrl, ?string $expectedUrl): void {
 		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl, true);
 		$this->assertEquals($expectedUrl, $sanitizedUrl);
 	}
@@ -261,7 +264,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testGetDavPathForOlderDavVersion():void {
+	public function testGetDavPathForOlderDavVersion(): void {
 		$davPath = WebDavHelper::getDavPath('user1', 1);
 		$this->assertEquals('remote.php/webdav/', $davPath);
 
@@ -279,7 +282,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testGetDavPathForNewerDavPath():void {
+	public function testGetDavPathForNewerDavPath(): void {
 		// `type` should be `files` by default.
 		// check that both returns same thing.
 		$davPath = WebDavHelper::getDavPath('user1', 2);
@@ -295,7 +298,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testGetDavPathForNewerDavPathButNotForFiles():void {
+	public function testGetDavPathForNewerDavPathButNotForFiles(): void {
 		$davPath = WebDavHelper::getDavPath('user1', 2, null);
 		$this->assertEquals('remote.php/dav', $davPath);
 
@@ -309,7 +312,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testGetDavPathForInvalidVersionsShouldThrowException():void {
+	public function testGetDavPathForInvalidVersionsShouldThrowException(): void {
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage("DAV path version 3 is unknown");
 
@@ -322,7 +325,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return array
 	 */
-	public function withoutTrailingSlashUrlsProvider():array {
+	public function withoutTrailingSlashUrlsProvider(): array {
 		return [
 			['http://own.cloud/', 'http://own.cloud'],
 			['http://own.cloud//index.php', 'http://own.cloud/index.php'],
@@ -344,7 +347,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return string[][]
 	 */
-	public function withTrailingSlashUrlsProvider():array {
+	public function withTrailingSlashUrlsProvider(): array {
 		return [
 			['http://own.cloud/', 'http://own.cloud/'],
 			['http://own.cloud', 'http://own.cloud/'],

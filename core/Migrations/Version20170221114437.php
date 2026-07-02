@@ -1,5 +1,5 @@
 <?php
-namespace OC\Migrations;
+namespace OC\Core\Migrations;
 
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;

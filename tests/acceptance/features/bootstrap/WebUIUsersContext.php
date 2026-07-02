@@ -20,17 +20,19 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\DisabledUserPage;
-use Page\GeneralErrorPage;
-use Page\LoginPage;
-use Page\UsersPage;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\DisabledUserPage;
+use Tests\Acceptance\Page\GeneralErrorPage;
+use Tests\Acceptance\Page\LoginPage;
+use Tests\Acceptance\Page\UsersPage;
+use Tests\Acceptance\Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use WebDriver\Exception\ElementNotVisible;

@@ -22,6 +22,8 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;

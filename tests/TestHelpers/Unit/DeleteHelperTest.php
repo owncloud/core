@@ -20,6 +20,9 @@
  *
  */
 
+namespace TestHelpers\Unit;
+
+use PHPUnit;
 use TestHelpers\DeleteHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -42,7 +45,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 */
 	public function setUp(): void {
 		$mock = new MockHandler(
-			[ new Response(204, [])]
+			[new Response(204, [])]
 		);
 		$handler = HandlerStack::create($mock);
 		$history = Middleware::history($this->container);
@@ -56,7 +59,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperWithOlderDavVersion():void {
+	public function testDeleteHelperWithOlderDavVersion(): void {
 		DeleteHelper::delete(
 			'http://localhost',
 			'user',
@@ -86,7 +89,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperWithNewerDavVersion():void {
+	public function testDeleteHelperWithNewerDavVersion(): void {
 		DeleteHelper::delete(
 			'http://localhost',
 			'user',
@@ -116,7 +119,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperSendsWithGivenHeaders():void {
+	public function testDeleteHelperSendsWithGivenHeaders(): void {
 		$headers = ["Cache-Control" => "no-cache"];
 		DeleteHelper::delete(
 			'http://localhost',

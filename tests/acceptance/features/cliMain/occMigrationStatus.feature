@@ -8,16 +8,16 @@ Feature: Migration status of apps
     When the administrator lists migration status of app "core"
     Then the command should have been successful
     And the following migration status should have been listed
-      | App                             | core          |
-      | Version Table Name              | oc_migrations |
-      | Migrations Namespace            | OC\Migrations |
-      | Migrations Directory            | /\S/          |
-      | Previous Version                | /\d+/         |
-      | Current Version                 | /\d+/         |
-      | Next Version                    | /\S+/         |
-      | Latest Version                  | /\d+/         |
-      | Executed Migrations             | /\d+/         |
-      | Executed Unavailable Migrations | 0             |
-      | Available Migrations            | /\d+/         |
-      | New Migrations                  | 0             |
+      | App                             | core               |
+      | Version Table Name              | oc_migrations      |
+      | Migrations Namespace            | OC\Core\Migrations |
+      | Migrations Directory            | /\S/               |
+      | Previous Version                | /\d+/              |
+      | Current Version                 | /\d+/              |
+      | Next Version                    | /\S+/              |
+      | Latest Version                  | /\d+/              |
+      | Executed Migrations             | /\d+/              |
+      | Executed Unavailable Migrations | 0                  |
+      | Available Migrations            | /\d+/              |
+      | New Migrations                  | 0                  |
     And the Executed Migrations should equal the Available Migrations

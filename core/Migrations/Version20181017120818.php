@@ -19,7 +19,7 @@
  *
  */
 
-namespace OC\Migrations;
+namespace OC\Core\Migrations;
 
 use OCP\IDBConnection;
 use OCP\Migration\ISqlMigration;

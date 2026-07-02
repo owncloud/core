@@ -19,8 +19,10 @@
  *
  */
 
-namespace OC\User\Sync;
+namespace Test\User\Sync;
 
+use OC\User\Sync\BackendUsersIterator;
+use OC\User\Sync\UsersIterator;
 use OCP\UserInterface;
 use Test\TestCase;
 

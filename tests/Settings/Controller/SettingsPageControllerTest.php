@@ -19,7 +19,7 @@
  *
  */
 
-namespace Test;
+namespace Tests\Settings\Controller;
 
 use OC\Helper\LocaleHelper;
 use OC\Settings\Controller\SettingsPageController;
@@ -33,6 +33,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\L10N\IFactory;
 use OCP\Settings\ISettingsManager;
+use Test\TestCase;
 
 class SettingsPageControllerTest extends TestCase {
 	protected $settingsManager;
