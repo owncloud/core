@@ -910,6 +910,72 @@ class StorageTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Regression test for issue #31682.
+	 *
+	 * Trashbin::getVersionsFromTrash() must return the versions of one specific
+	 * deleted file living in "files_trashbin/versions" and ignore version files
+	 * that belong to other (similarly named) files or other deletion timestamps.
+	 * This is exercised here against the real filecache, independent of the
+	 * lookup strategy (index-backed directory listing instead of a wildcard
+	 * name search).
+	 */
+	public function testGetVersionsFromTrash() {
+		$timestamp = 1234567890;
+		$versionsDir = $this->user . '/files_trashbin/versions';
+		$this->rootView->mkdir($versionsDir);
+
+		// versions of the file we want to look up
+		$this->rootView->file_put_contents($versionsDir . '/test.txt.v1.d' . $timestamp, 'v1');
+		$this->rootView->file_put_contents($versionsDir . '/test.txt.v2.d' . $timestamp, 'v2');
+		$this->rootView->file_put_contents($versionsDir . '/test.txt.v10.d' . $timestamp, 'v10');
+
+		// entries that must be ignored:
+		// - same file name but a different deletion timestamp
+		$this->rootView->file_put_contents($versionsDir . '/test.txt.v3.d999', 'other-ts');
+		// - a different file whose name shares the prefix
+		$this->rootView->file_put_contents($versionsDir . '/test.txt.backup.v9.d' . $timestamp, 'other-file');
+		// - an unrelated file
+		$this->rootView->file_put_contents($versionsDir . '/unrelated.txt.v1.d' . $timestamp, 'unrelated');
+
+		// a file deleted from inside a folder keeps its versions in that same
+		// sub-folder of "files_trashbin/versions" (non-timestamped lookup path).
+		$this->rootView->mkdir($versionsDir . '/folder');
+		$this->rootView->file_put_contents($versionsDir . '/folder/nested.txt.v5', 'nested-v5');
+		$this->rootView->file_put_contents($versionsDir . '/folder/nested.txt.v6', 'nested-v6');
+
+		// make sure the cache knows about the files we just created
+		list($storage, ) = $this->rootView->resolvePath($versionsDir);
+		$storage->getScanner()->scan('files_trashbin/versions');
+
+		$method = new \ReflectionMethod(\OCA\Files_Trashbin\Trashbin::class, 'getVersionsFromTrash');
+		$method->setAccessible(true);
+
+		// reset the per-request "already scanned" guard so the lookup re-scans
+		$scannedVersions = new \ReflectionProperty(\OCA\Files_Trashbin\Trashbin::class, 'scannedVersions');
+		$scannedVersions->setAccessible(true);
+
+		// timestamped lookup in the versions root
+		// (sort() uses SORT_REGULAR, so the numeric version strings sort numerically)
+		$scannedVersions->setValue(null, false);
+		$versions = $method->invoke(null, 'test.txt', $timestamp, $this->user);
+		\sort($versions);
+		$this->assertEquals(['1', '2', '10'], $versions);
+
+		// non-timestamped lookup inside a sub-folder (issue #31682 regression:
+		// the previous whole-cache name search found these, the directory
+		// listing must look in the right sub-folder, not just the root)
+		$scannedVersions->setValue(null, false);
+		$versions = $method->invoke(null, 'nested.txt', null, $this->user, 'folder');
+		\sort($versions);
+		$this->assertEquals(['5', '6'], $versions);
+
+		// a file with no stored versions yields an empty result
+		$scannedVersions->setValue(null, false);
+		$versions = $method->invoke(null, 'no-such-file.txt', $timestamp, $this->user);
+		$this->assertEquals([], $versions);
+	}
+
 	private function markTestSkippedIfStorageHasOwnVersioning() {
 		/** @var Storage $storage */
 		list($storage, $internalPath) = $this->userView->resolvePath('folder/inside.txt');
