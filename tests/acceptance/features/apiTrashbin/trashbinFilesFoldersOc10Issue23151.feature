@@ -37,7 +37,7 @@ Feature: files and folders exist in the trashbin after being deleted
 #    And as "Alice" the folder with original path "/folderB/textfile0.txt" should not exist in the trashbin
 #    And as "Alice" the folder with original path "/folderC/textfile0.txt" should not exist in the trashbin
 #    And as "Alice" the folder with original path "/folderD/textfile0.txt" should not exist in the trashbin
-    And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "textfile0.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | new      |

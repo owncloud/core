@@ -33,9 +33,9 @@ Feature: files and folders can be deleted completely skipping the trashbin
     Then the HTTP status code of responses on all endpoints should be "204"
     And as "Alice" file "sample.txt" should exist in the trashbin
     And as "Alice" file "sample.py" should exist in the trashbin
-    But as "Alice" the file with original path "/sample.dat" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.php" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
+    But as "Alice" the file with original path "sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -61,11 +61,11 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | PARENT/sample.go  |
       | PARENT/sample.py  |
     Then the HTTP status code of responses on all endpoints should be "204"
-    And as "Alice" the file with original path "/PARENT/sample.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/sample.py" should exist in the trashbin
-    But as "Alice" the file with original path "/PARENT/sample.dat" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/sample.php" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/sample.go" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.py" should exist in the trashbin
+    But as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -101,16 +101,16 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | sample.PY  |
       | sample.py  |
     Then the HTTP status code of responses on all endpoints should be "204"
-    And as "Alice" the file with original path "/sample.TXT" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.PY" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.py" should exist in the trashbin
-    But as "Alice" the file with original path "/sample.DAT" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.dat" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.PHP" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.php" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.GO" should not exist in the trashbin
-    And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.TXT" should exist in the trashbin
+    And as "Alice" the file with original path "sample.txt" should exist in the trashbin
+    And as "Alice" the file with original path "sample.PY" should exist in the trashbin
+    And as "Alice" the file with original path "sample.py" should exist in the trashbin
+    But as "Alice" the file with original path "sample.DAT" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.PHP" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.GO" should not exist in the trashbin
+    And as "Alice" the file with original path "sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
       | new      |
@@ -166,7 +166,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "simple-folder/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
-      | new      |
+      | new      |lk
 
 
   Scenario Outline: Skip trashbin based on directory should match only the root folder name
@@ -197,8 +197,8 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And user "Alice" has uploaded file with content "sample delete file 2" to "PARENT/sample.dat"
     When user "Alice" deletes file "PARENT/sample.dat" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "Alice" the file with original path "/PARENT" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
     Examples:
       | dav-path |
       | new      |
