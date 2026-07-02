@@ -25,7 +25,8 @@ use OC\BackgroundJob\QueuedJob;
 
 class CallableJob extends QueuedJob {
 	protected function run($serializedCallable) {
-		$callable = \unserialize($serializedCallable);
+		// Restrict to prevent PHP Object Injection; arbitrary PHP objects cannot be callables.
+		$callable = \unserialize($serializedCallable, ['allowed_classes' => false]);
 		if (\is_callable($callable)) {
 			$callable();
 		} else {
