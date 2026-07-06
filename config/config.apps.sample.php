@@ -317,25 +317,6 @@ $CONFIG = [
 'wopi.business-flow.enabled' => 'no',
 
 /**
- * App: Microsoft Teams Bridge
- *
- * Possible key: `msteamsbridge` ARRAY
- *
- * Subkey: `loginButtonName` STRING
- */
-
-/**
- * Login Button Label
- * This key is necessary for security reasons. Users will be asked to click a login
- * button each time when accessing the ownCloud app after a fresh start of their
- * Microsoft Teams app or after idle time. This behavior is by design. The button
- * name can be freely set based on your requirements.
- */
-'msteamsbridge' => [
-   "loginButtonName" => "Login to ownCloud with Azure AD",
-],
-
-/**
  * App: OpenID Connect (OIDC)
  *
  * Possible key: `openid-connect` ARRAY
