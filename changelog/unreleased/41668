@@ -1,0 +1,8 @@
+Change: Remove msteamsbridge config sample
+
+The owncloud/msteamsbridge integration app is being archived and is no
+longer maintained. Its Microsoft Teams Bridge config sample block has been
+removed from config.apps.sample.php so the config-to-docs sync no longer
+re-adds the parameters to the admin documentation.
+
+https://github.com/owncloud/core/pull/41668
