@@ -236,7 +236,7 @@ ownCloud admins and users.
 
    * google/auth (v1.50.0 to v1.52.0)
 
-   * guzzlehttp/guzzle (7.10.0 to 7.13.1)
+   * guzzlehttp/guzzle (7.10.0 to 7.13.2)
 
    * guzzlehttp/promises (2.3.0 to 2.4.1)
 
@@ -288,6 +288,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41639
    https://github.com/owncloud/core/pull/41652
    https://github.com/owncloud/core/pull/41660
+   https://github.com/owncloud/core/pull/41666
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
