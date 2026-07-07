@@ -233,7 +233,7 @@ ownCloud admins and users.
 
    * google/apiclient (v2.19.0 to v2.19.4)
 
-   * google/apiclient-services (v0.435.0 to v0.448.0)
+   * google/apiclient-services (v0.435.0 to v0.449.0)
 
    * google/auth (v1.50.0 to v1.52.0)
 
@@ -249,9 +249,11 @@ ownCloud admins and users.
 
    * pimple/pimple (3.6.1 to 3.6.2)
 
+   * sabre/dav (4.7.0 to 4.7.1)
+
    * sabre/event (5.1.7 to 5.1.8)
 
-   * sabre/vobject (4.5.8 to 4.6.0)
+   * sabre/vobject (4.5.8 to 4.6.1)
 
    * symfony/console (v7.4.7 to v7.4.14)
 
@@ -290,6 +292,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41652
    https://github.com/owncloud/core/pull/41660
    https://github.com/owncloud/core/pull/41666
+   https://github.com/owncloud/core/pull/41670
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
