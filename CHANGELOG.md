@@ -59,6 +59,7 @@ ownCloud admins and users.
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
 * Change - Use configurable URL for internet connectivity check: [#41506](https://github.com/owncloud/core/pull/41506)
 * Change - Use phan major version 6 code analysis: [#41650](https://github.com/owncloud/core/pull/41650)
+* Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
 
 ## Details
 
@@ -347,6 +348,15 @@ ownCloud admins and users.
    released in phan version 6.0.7. So that version is required as the minimum here.
 
    https://github.com/owncloud/core/pull/41650
+
+* Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
+
+   The owncloud/msteamsbridge integration app is being archived and is no longer
+   maintained. Its Microsoft Teams Bridge config sample block has been removed from
+   config.apps.sample.php so the config-to-docs sync no longer re-adds the
+   parameters to the admin documentation.
+
+   https://github.com/owncloud/core/pull/41668
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
