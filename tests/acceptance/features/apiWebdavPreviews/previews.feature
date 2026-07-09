@@ -207,14 +207,14 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
 
-  @issue-41480 @skip
+
   Scenario: it should update the preview content if the file content is updated (content with UTF chars)
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "Alice" has uploaded file with content "सिमसिमे पानी" to "/lorem.txt"
-    When user "Alice" downloads the preview of "/lorem.txt" with width "32" and height "32" using the WebDAV API
+    And user "Alice" has uploaded file with content "मेरो पानी" to "/lorem.txt"
+    When user "Alice" downloads the preview of "/lorem.txt" with width "64" and height "64" using the WebDAV API
     Then the HTTP status code should be "200"
-    And the downloaded image should be "32" pixels wide and "32" pixels high
-    And the downloaded preview content should match with "सिमसिमे-पानी.png" fixtures preview content
+    And the downloaded image should be "64" pixels wide and "64" pixels high
+    And the downloaded preview content should match with "मेरो-पानी.png" fixtures preview content
 
 
   Scenario: updates to a file should change the preview for both sharees and sharers
