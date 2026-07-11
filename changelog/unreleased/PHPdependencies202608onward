@@ -10,6 +10,8 @@ The following have been updated:
 
  * phpseclib/phpseclib (3.0.55 to 3.0.56)
 
+ * sabre/event (5.1.8 to 5.1.9)
+
  * symfony/console (v7.4.14 to v7.4.16)
 
  * symfony/event-dispatcher (v7.4.14 to v7.4.15)
@@ -24,5 +26,6 @@ The following have been updated:
 
  * symfony/translation (v7.4.14 to v7.4.16)
 
+https://github.com/owncloud/core/pull/41676
 https://github.com/owncloud/core/pull/41775
 https://github.com/owncloud/core/pull/41791
