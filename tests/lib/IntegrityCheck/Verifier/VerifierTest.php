@@ -281,6 +281,38 @@ class VerifierTest extends TestCase {
 		);
 	}
 
+	public function testRevokedIntermediate(): void {
+		$appTreePath = $this->basePath . '/app-tree';
+		$signaturePath = $appTreePath . '/signature.json';
+
+		// Set up correct hashes
+		$expectedHashes = [
+			'appinfo/info.xml' => '7a16ce201bdc596b32f6a01c9648f18e504eddd6cd3530b01dd2a7d15db9ae5459d82576445f2d20d0be9cb45f2f1e4e9e4067f8774d11eddf2c35b52b778274',
+			'test-file-1.txt' => 'd63734aa1fd2aedf1e69361710dda058b7d02305185db688add40fb18e525cd9352b62a2002c027aaba0bdcbecea71dcd07b0e951c9265fa52d3b591212bfa7b',
+			'test-file-2.txt' => '379cd32e670f68777a99d0930512b3056fd5c729df572232e2f1d00c23bfaf8c3b0d0f4bbb3ff01588536bdee1d6bdbe78e783f395cc43c1ba756fb9f2926f91',
+		];
+		$this->fakeHasher->setHashes($expectedHashes);
+
+		// Put the intermediate-revoked CRL into the temp crl directory.
+		// This CRL is signed by root-g2 and revokes the intermediate-g2 certificate.
+		// It simulates the intermediate.crl that would be published by the CA ceremony (spec §2).
+		// NOTE: Residual gap - in production, the verifier would need separate logic to fetch
+		// and check intermediate-specific CRLs (currently only developers.crl is fetched).
+		// This test verifies that IF such a CRL is made available, the revocation check works.
+		$intermediateRevokedCrlPath = $this->crlDir . '/intermediate-revoked.crl';
+		$tempCrlPath = $this->tempServerRoot . '/resources/codesigning/crl/developers.crl';
+		\copy($intermediateRevokedCrlPath, $tempCrlPath);
+
+		$this->expectException(RevokedException::class);
+		$this->verifier->verify(
+			$signaturePath,
+			$appTreePath,
+			'example-app',
+			false,
+			$this->now
+		);
+	}
+
 	public function testBadSignature(): void {
 		$appTreePath = $this->basePath . '/app-tree';
 		$signaturePath = $appTreePath . '/signature.json';
