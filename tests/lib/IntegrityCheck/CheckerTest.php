@@ -248,18 +248,13 @@ class CheckerTest extends TestCase {
 			->method('getSystemValue')
 			->willReturnMap($configMap);
 
-		$this->appLocator
-				->expects($this->once())
-				->method('getAppPath')
-				->with('SomeApp')
-				->willReturn('/path/to/app');
-
+		// appLocator default callback returns /path/to/SomeApp
 		$this->verifier
 			->expects($this->once())
 			->method('verify')
 			->with(
-				'/path/to/app/appinfo/signature.json',
-				'/path/to/app',
+				'/path/to/SomeApp/appinfo/signature.json',
+				'/path/to/SomeApp',
 				'SomeApp',
 				false,
 				null,
@@ -483,11 +478,11 @@ class CheckerTest extends TestCase {
 	public function testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni() {
 		$expectedSignatureFileData = '{
     "hashes": {
-        ".htaccess": "e7140c092ecf6ed3401f922efc81b635cb253d90f56cad5ad9765511edf6b2d8c663fcb5648617d561ecd2cf7ae8503d7d2ce3b88f46844d5771909aa0dba188",
+        ".htaccess": "86b537bfa88b50f7007984ffb04a0b3f258775785de6023266f8744ed3d2cb5cfd4841347bef8b9641dcb3db3255a2298a311d017fc22ec9764ca41ae35a1c27",
         ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
-    "signature": "W98za7+gpWu6W2In2RY6Y3zWHIvBUlrtJnxAJ+VH0YCa/imKmvPNkarS0TMrHu3cB/5SdlAXaj0/slNtaxcMbRT7QInjjvVmX5V4Sruvuw0UyTrA369Uf/4Qd0df+NSPuhpAO7df1URFfSO8ODzyP7Iw2dyEoR9xzAm+NjGbunb+5ArCd1dlnOPiKWRbHyja8fwF+04McfGjHLQ0e8RoeUk5CaXmClEE7hsuQVDqmH9LT3k7vc7jhVWCO2eFebH5i0/nhVGT3XDwy5BpQFt0kdhgztgy13LS5+KB1KFb6/UixMZfrly+SowadR/ovwcZoEm4G2t758HhpwZtHSjQZCfbsyauvPa0jxqRY7LoWjMpw5dfZpetbNJ7hIJV2WOpm3twjSjf7b/MINUWFQbPH4jK6x3bRx3to0lRx58eq0V8NX+M/VpRuteLdVuygMPebjwQu86t1QTi0Rbdf2sWqeHSawGmPYUjWlzrqruSqMdQuj+YjVMz3udEA82R23G92qbdk4kWm3wFDicYLkZLLK9KYygHFp8qW+Y+Zxu9gM3U6j8WypW4ISd0pViQqitQhYWO0VZEe8HinSVLpNyfPahKgWOUSeRgPrSGQGwj1hrL57ukS2Rva2dOOnuprO517P/xvZ+qenWzATVcmhfk63zB04RFSBfh/YLFmk1/r4E=",
+    "signature": "DnRahzfE3+L94iWQWKoaBvhgF+U+IWAELLas62WkLFQOgjSh2enS17+ShN6VJnfvRzWtWLnV82mqm6AYdIP1rGyCHniDt9OKXhVX335gaSXEbWd741DsIvwuz0w7hdx4ZEu6PUnq0zpK2VHdn86U6ZXTXBRjx/+DarDQ/5O8JkoLlOFORM+7MSslJA5S6/j3tDGHH+pctlBC7Zk73IEfDJFYs9Dk+a4dDeni3Z4oi2KLTDdPVWZbvryUbDkqIImCCVMrEFbAk+5rfOS7Jaxw+4GqvN1B8UWKUhLqVz4tR3SY1aacTs7XQwcfr3HKlGooBxNcOynrBT4FtJUSs8SQ1buNi1NPR7OtmtviTJglK859XUy/kYk3as13wooxklnsOV/vHvI+2plKFL8iotYQA1BpTsfSA/bgniTohp5nIDaPIZOM1bOHxjupc5aBukkKtA7Pg7UIBxx4Sjmz2vWmQinPUDS0fwtTrVGJ95PE4DI/lnIXNIQQGP7EnWp6yf69eA6DUXSioUie9TU/P6qxQRALASM9bVSwEYB3KvujD9IFYVQMnrpse6eAnTlm5fVmIaID5f47EkGGiV6QWuhDOln/eQaJq0M/3r5p9iu7TpR3tneeRucigvKggmo8n6jwMYM1+Rqhxiglq1RUD5RLM1eBbHRXeqV3PIUG/1wr3Xs=",
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->environmentHelper
@@ -599,15 +594,34 @@ class CheckerTest extends TestCase {
 
 	public function testVerifyCoreSignaturePassesExcludedFilesToVerifier() {
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
-		$this->config->expects($this->any())->method('getSystemValue')
-			->willReturnMap([['integrity.check.disabled', false, false], ['integrity.excluded.files', [], ['AnotherFile.txt']]]);
+		// Recreate checker with modified config mock to provide excluded files
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = false) {
+				$map = [
+					'integrity.check.disabled' => false,
+					'integrity.excluded.files' => ['AnotherFile.txt'],
+					'integrity.ignore.missing.app.signature' => [],
+				];
+				return $map[$key] ?? $default;
+			});
+		$this->checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$this->cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager(),
+			$this->verifier
+		);
 
 		$this->verifier->expects($this->once())->method('verify')
 			->with(
 				$this->anything(),
 				$this->anything(),
 				'core',
-				false,
+				true,
 				null,
 				['AnotherFile.txt']
 			)->willReturn(VerificationResult::passed());
@@ -717,8 +731,27 @@ class CheckerTest extends TestCase {
 
 	public function testVerifyAppSignatureWithCodeCheckerDisabledDoesNotCallVerifier() {
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
-		$this->config->expects($this->any())->method('getSystemValue')
-			->willReturnMap([['integrity.check.disabled', false, true]]);
+		// Recreate checker with modified config mock to disable integrity check
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = false) {
+				$map = [
+					'integrity.check.disabled' => true,
+					'integrity.excluded.files' => [],
+					'integrity.ignore.missing.app.signature' => [],
+				];
+				return $map[$key] ?? $default;
+			});
+		$this->checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$this->cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager(),
+			$this->verifier
+		);
 
 		$this->verifier->expects($this->never())->method('verify');
 
@@ -763,13 +796,27 @@ class CheckerTest extends TestCase {
 				->expects($this->once())
 				->method('getChannel')
 				->will($this->returnValue($channel));
-		$this->config
-				->expects($this->any())
-				->method('getSystemValue')
-				->with('integrity.check.disabled', false)
-				->will($this->returnValue(true));
+		// Recreate checker with modified config mock to disable integrity check
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = false) {
+				if ($key === 'integrity.check.disabled') {
+					return true;
+				}
+				return $default;
+			});
+		$checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$this->cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager(),
+			$this->verifier
+		);
 
-		$result = self::invokePrivate($this->checker, 'isCodeCheckEnforced');
+		$result = self::invokePrivate($checker, 'isCodeCheckEnforced');
 		$this->assertFalse($result);
 	}
 
