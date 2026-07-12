@@ -333,6 +333,40 @@ class LegacyTransitionTest extends TestCase {
 	}
 
 	/**
+	 * Test not-yet-valid G1 leaf: future-dated cert (now < notBefore) is HARD-BLOCKED, not warn.
+	 * Expected: throws BadChainException (not returns legacyWarn).
+	 *
+	 * Uses the existing leaf-g1-expired fixture but injects now=2019-01-01 (before cert's 2020 notBefore).
+	 * This reinterprets the fixture cert as "not yet valid" instead of expired.
+	 */
+	public function testNotYetValidG1HardBlocks(): void {
+		$appTreePath = $this->basePath . '/app-tree-g1';
+		$signaturePath = $appTreePath . '/signature.json';
+
+		// Set up hashes matching the G1 fixture
+		$expectedHashes = [
+			'appinfo/info.xml' => '7872e7c14041563509bdd9382462c7baf19ea100218a43ab84732ded3a6ed4d51cf63fe9cdd7594fbf51bbbc82283a9dedbef4ccf7a56475ff31e859c34778e3',
+			'test-file-1.txt' => 'd63734aa1fd2aedf1e69361710dda058b7d02305185db688add40fb18e525cd9352b62a2002c027aaba0bdcbecea71dcd07b0e951c9265fa52d3b591212bfa7b',
+			'test-file-2.txt' => '379cd32e670f68777a99d0930512b3056fd5c729df572232e2f1d00c23bfaf8c3b0d0f4bbb3ff01588536bdee1d6bdbe78e783f395cc43c1ba756fb9f2926f91',
+		];
+		$this->fakeHasher->setHashes($expectedHashes);
+
+		// Inject now = 2019-01-01 (BEFORE the cert's notBefore of 2020-01-01, making it not-yet-valid)
+		// This is still before sunset (2026-12-31) and uses legacy alg, but cert is not-yet-valid, so should hard-block
+		$now = new \DateTimeImmutable('2019-01-01T00:00:00Z');
+
+		// Not-yet-valid cert must throw BadChainException, NOT return legacyWarn
+		$this->expectException(BadChainException::class);
+		$this->verifier->verify(
+			$signaturePath,
+			$appTreePath,
+			'example-app',
+			false,
+			$now
+		);
+	}
+
+	/**
 	 * Test G2 regression: valid non-expired G2 app still returns passed() (not legacyWarn).
 	 */
 	public function testG2RegressionUnaffected(): void {

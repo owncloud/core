@@ -162,20 +162,26 @@ class Verifier {
 
 		if (!$dateValid) {
 			// Leaf is expired or not-yet-valid. Check for case-2 eligibility.
-			// Case 2: Valid G1 chain, expired cert, before sunset, legacy alg.
-			// All three must be true: G1, legacy alg, and now < sunset.
+			// Case 2: Valid G1 chain, EXPIRED cert (not just invalid), before sunset, legacy alg.
+			// Spec §8 case 2 applies ONLY to expired certs (now AFTER notAfter).
+			// A not-yet-valid cert (now BEFORE notBefore) must be hard-blocked.
+
+			// Extract notAfter to distinguish expired from not-yet-valid
+			$notAfter = $this->extractNotAfterFromLeaf($leaf);
+			$isExpired = $now->getTimestamp() > $notAfter->getTimestamp();
+
 			$isG1 = $chain->isG1();
 			$isLegacyAlg = $alg === VerifierConstants::ALG_LEGACY_RSA_PSS_SHA1;
 			$sunset = new \DateTimeImmutable(VerifierConstants::LEGACY_SUNSET);
 			$beforeSunset = $now->getTimestamp() < $sunset->getTimestamp();
 
-			if ($isG1 && $isLegacyAlg && $beforeSunset) {
-				// Case 2: Legacy G1 app, expired cert, before sunset.
+			if ($isExpired && $isG1 && $isLegacyAlg && $beforeSunset) {
+				// Case 2: Legacy G1 app, EXPIRED cert, before sunset.
 				// Skip the expiry check and set flag for legacy-warn result.
 				// All other checks (revocation, identity, diff) still apply.
 				$legacyWarn = true;
 			} else {
-				// Case 1/3: Hard block (expired/not-yet-valid, not eligible for case-2)
+				// Case 1/3: Hard block (not-yet-valid, or expired+ineligible)
 				throw new BadChainException('Leaf certificate is expired or not yet valid');
 			}
 		}
@@ -207,5 +213,42 @@ class Verifier {
 		}
 
 		return VerificationResult::passed();
+	}
+
+	/**
+	 * Extract the notAfter date from a loaded phpseclib X509 leaf certificate.
+	 *
+	 * Accesses the internal tbsCertificate.validity.notAfter field via reflection
+	 * and parses it into a \DateTimeImmutable for timestamp comparison.
+	 *
+	 * @param \phpseclib3\File\X509 $leaf Loaded leaf certificate (via ChainResult::getLeaf())
+	 * @return \DateTimeImmutable The notAfter date in UTC
+	 * @throws \RuntimeException If unable to extract or parse notAfter
+	 */
+	private function extractNotAfterFromLeaf(\phpseclib3\File\X509 $leaf): \DateTimeImmutable {
+		// Use reflection to access the internal certificate data structure
+		$reflection = new \ReflectionClass($leaf);
+		$certProperty = $reflection->getProperty('currentCert');
+		$certProperty->setAccessible(true);
+		$cert = $certProperty->getValue($leaf);
+
+		if (!isset($cert['tbsCertificate']['validity']['notAfter'])) {
+			throw new \RuntimeException('Unable to extract notAfter from leaf certificate.');
+		}
+
+		$notAfterData = $cert['tbsCertificate']['validity']['notAfter'];
+
+		// phpseclib stores validity dates in a structure with either 'utcTime' or 'generalTime'
+		$notAfterString = $notAfterData['utcTime'] ?? $notAfterData['generalTime'] ?? null;
+		if ($notAfterString === null) {
+			throw new \RuntimeException('Unable to parse notAfter (neither utcTime nor generalTime found).');
+		}
+
+		// Parse the date string (e.g., "Wed, 09 Jul 2036 14:58:13 +0000")
+		try {
+			return new \DateTimeImmutable($notAfterString, new \DateTimeZone('UTC'));
+		} catch (\Throwable $e) {
+			throw new \RuntimeException('Failed to parse notAfter date: ' . $e->getMessage());
+		}
 	}
 }
