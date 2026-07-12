@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<info>
+	<name>Missing ID App</name>
+	<summary>An app without ID element</summary>
+	<description>Test fixture</description>
+	<version>1.0.0</version>
+	<licence>AGPL-3.0</licence>
+	<author>Test</author>
+</info>

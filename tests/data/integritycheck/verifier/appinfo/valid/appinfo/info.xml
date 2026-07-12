@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<info>
+	<id>example-app</id>
+	<name>Example App</name>
+	<summary>An example app for testing</summary>
+	<description>Test fixture</description>
+	<version>1.0.0</version>
+	<licence>AGPL-3.0</licence>
+	<author>Test</author>
+</info>
