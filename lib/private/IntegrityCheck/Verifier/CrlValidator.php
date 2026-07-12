@@ -44,10 +44,14 @@ class CrlValidator {
 	 * Loads the CRL into a fresh X509 instance with all trust-store roots and bundled
 	 * intermediates loaded as CAs, then validates the CRL's signature.
 	 *
+	 * SECURITY: Disables phpseclib URL fetch to prevent SSRF attacks via AIA caIssuers URLs.
+	 *
 	 * @param string $crlData CRL data in PEM or DER format
 	 * @return ParsedCrl|null A valid ParsedCrl on success, null if invalid/unparseable
 	 */
 	public function parseAndValidate(string $crlData): ?ParsedCrl {
+		// SECURITY: Disable URL fetch in phpseclib to prevent SSRF via AIA caIssuers
+		X509::disableURLFetch();
 		try {
 			// Create a fresh X509 instance for this CRL
 			$x509 = new X509();

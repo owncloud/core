@@ -186,11 +186,15 @@ class Verifier {
 			}
 		}
 
-		// Check CRL for revocation (applies to both case-2 and regular paths)
+		// Check CRL for revocation of ANY certificate in the chain (spec §4 step 4)
+		// Applies to both case-2 and regular paths
 		$crl = $this->crlProvider->getCurrentCrl($chain->isG1());
-		if ($crl->isRevoked($chain->getLeafSerial())) {
-			throw new RevokedException('Certificate has been revoked');
+		foreach ($chain->getChainSerials() as $serial) {
+			if ($crl->isRevoked($serial)) {
+				throw new RevokedException('Certificate has been revoked');
+			}
 		}
+		// TODO: check intermediate serials against intermediate.crl once the CA ceremony publishes it (spec §2)
 
 		// Step 7: Validate identity (app ID or core)
 		if ($coreMode) {

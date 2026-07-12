@@ -32,7 +32,7 @@ use OC\IntegrityCheck\Helpers\FileAccessHelper;
  * @package OC\IntegrityCheck\Verifier
  */
 class AppIdResolver {
-	private const APPID_PATTERN = '/^[a-z][a-z0-9_.-]{2,63}$/';
+	private const APPID_PATTERN = '/^[a-z][a-z0-9_.-]{2,63}\z/';
 	private const CORE_IDENTITY = 'core';
 
 	private FileAccessHelper $fileAccessHelper;

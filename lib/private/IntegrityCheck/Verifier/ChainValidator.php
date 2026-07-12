@@ -53,12 +53,16 @@ class ChainValidator {
 	/**
 	 * Validate a leaf certificate against the trusted PKI.
 	 *
+	 * SECURITY: Disables phpseclib URL fetch to prevent SSRF attacks via AIA caIssuers URLs.
+	 *
 	 * @param string $leafPem PEM-encoded leaf certificate
 	 * @param array $chainPems Array of PEM-encoded intermediates from the signature envelope
 	 * @return ChainResult Immutable result containing validated leaf and anchor generation
 	 * @throws BadChainException On any validation failure
 	 */
 	public function validate(string $leafPem, array $chainPems): ChainResult {
+		// SECURITY: Disable URL fetch in phpseclib to prevent SSRF via AIA caIssuers
+		X509::disableURLFetch();
 		// Step 1: Get trusted roots
 		$roots = $this->trustStore->getRoots();
 		if (empty($roots)) {
@@ -71,15 +75,18 @@ class ChainValidator {
 		$candidateIntermediates = array_merge($chainPems, $bundledIntermediates);
 
 		// Step 3: Verify each candidate intermediate chains to a trusted root
+		// Also collect serials from verified intermediates
 		$verifiedIntermediates = [];
+		$verifiedIntermediateSerials = [];
 		foreach ($candidateIntermediates as $candidateIntermediate) {
 			foreach ($roots as $root) {
 				$x509 = new X509();
 				$x509->loadCA($root['pem']);
 
 				if ($x509->loadX509($candidateIntermediate) && $x509->validateSignature()) {
-					// This candidate chains to this root; keep it
+					// This candidate chains to this root; keep it and extract its serial
 					$verifiedIntermediates[] = $candidateIntermediate;
+					$verifiedIntermediateSerials[] = $this->extractSerialFromPem($candidateIntermediate);
 					break; // Found a valid chain, no need to test against other roots
 				}
 			}
@@ -120,7 +127,10 @@ class ChainValidator {
 		// Extract serial number using openssl (since phpseclib doesn't expose it directly)
 		$leafSerial = $this->extractSerialFromPem($leafPem);
 
-		return new ChainResult($leafX509, $anchorGeneration, $leafCn, $leafSerial);
+		// Build chain serials array: leaf first, then intermediates
+		$chainSerials = \array_merge([$leafSerial], $verifiedIntermediateSerials);
+
+		return new ChainResult($leafX509, $anchorGeneration, $leafCn, $leafSerial, $chainSerials);
 	}
 
 	/**

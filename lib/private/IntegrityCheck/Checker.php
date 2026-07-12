@@ -142,7 +142,7 @@ class Checker implements OnDiskHasher {
 			$this->environmentHelper
 		);
 
-		$appIdResolver = new \OC\IntegrityCheck\Verifier\AppIdResolver();
+		$appIdResolver = new \OC\IntegrityCheck\Verifier\AppIdResolver($this->fileAccessHelper);
 		$integrityDiffer = new \OC\IntegrityCheck\Verifier\IntegrityDiffer();
 
 		$this->verifier = new Verifier(
@@ -448,13 +448,20 @@ class Checker implements OnDiskHasher {
 			return true;
 		}
 
-		// Check if results only contain LEGACY_ACCEPTED_WARN markers (treated as passed)
+		// Check each result scope
 		foreach ($results as $scope => $result) {
-			if (\is_array($result) && \array_key_exists('LEGACY_ACCEPTED_WARN', $result) && \count($result) === 1) {
+			if (!\is_array($result) || empty($result)) {
+				// Empty result for this scope; continue
+				continue;
+			}
+
+			// If the result contains only LEGACY_ACCEPTED_WARN, treat as passed
+			if (\array_key_exists('LEGACY_ACCEPTED_WARN', $result) && \count($result) === 1) {
 				// This scope has only the warn marker; continue checking others
 				continue;
 			}
-			// This scope has a real failure or exception
+
+			// Any other result (EXCEPTION, FILE_MISSING, EXTRA_FILE, INVALID_HASH, etc.) is a failure
 			return false;
 		}
 
@@ -647,7 +654,7 @@ class Checker implements OnDiskHasher {
 			} else {
 				$result = [];
 			}
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			$result = [
 					'EXCEPTION' => [
 							'class' => \get_class($e),
@@ -700,7 +707,7 @@ class Checker implements OnDiskHasher {
 				$this->environmentHelper->getServerRoot(),
 				'core'
 			);
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			$result = [
 					'EXCEPTION' => [
 							'class' => \get_class($e),

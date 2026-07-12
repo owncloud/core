@@ -904,4 +904,102 @@ class CheckerTest extends TestCase {
 		$expected = [];
 		$this->assertSame($expected, $this->checker->getVerifiedAppsFromCache('SomeApp'));
 	}
+
+	/**
+	 * Test hasPassedCheck treats EXCEPTION results as failures (FIX 1)
+	 */
+	public function testHasPassedCheckWithExceptionResult() {
+		// Mock config to return results with EXCEPTION
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->any())
+			->method('getAppValue')
+			->with('core', 'oc.integritycheck.checker', '{}')
+			->willReturn(\json_encode([
+				'SomeApp' => [
+					'EXCEPTION' => ['class' => 'SomeException', 'message' => 'An error occurred'],
+				]
+			]));
+
+		$cacheFactory = $this->createMock(ICacheFactory::class);
+		$cacheFactory->expects($this->any())
+			->method('create')
+			->willReturn(new NullCache());
+
+		$checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager()
+		);
+
+		// hasPassedCheck should return false when EXCEPTION is stored
+		$this->assertFalse($checker->hasPassedCheck());
+	}
+
+	/**
+	 * Test hasPassedCheck returns true for empty results (FIX 1)
+	 */
+	public function testHasPassedCheckWithEmptyResults() {
+		// Mock config to return empty results
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->any())
+			->method('getAppValue')
+			->with('core', 'oc.integritycheck.checker', '{}')
+			->willReturn('{}');
+
+		$cacheFactory = $this->createMock(ICacheFactory::class);
+		$cacheFactory->expects($this->any())
+			->method('create')
+			->willReturn(new NullCache());
+
+		$checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager()
+		);
+
+		// hasPassedCheck should return true for empty results
+		$this->assertTrue($checker->hasPassedCheck());
+	}
+
+	/**
+	 * Test hasPassedCheck returns false for FILE_MISSING (FIX 1)
+	 */
+	public function testHasPassedCheckWithFileMissing() {
+		// Mock config to return results with FILE_MISSING
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->any())
+			->method('getAppValue')
+			->with('core', 'oc.integritycheck.checker', '{}')
+			->willReturn(\json_encode([
+				'core' => [
+					'FILE_MISSING' => ['file.txt' => ['expected' => 'hash1', 'current' => '']],
+				]
+			]));
+
+		$cacheFactory = $this->createMock(ICacheFactory::class);
+		$cacheFactory->expects($this->any())
+			->method('create')
+			->willReturn(new NullCache());
+
+		$checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$config,
+			$cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager()
+		);
+
+		// hasPassedCheck should return false when FILE_MISSING is stored
+		$this->assertFalse($checker->hasPassedCheck());
+	}
 }

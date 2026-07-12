@@ -62,7 +62,7 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	 * @var array
 	 */
 	private $excludedFilePathPatterns = [
-		'|/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
+		'|^/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
 	];
 
 	public function accept(): bool {

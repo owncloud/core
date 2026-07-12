@@ -36,18 +36,23 @@ class ChainResult {
 	private string $anchorGeneration;
 	private string $leafCn;
 	private string $leafSerial;
+	/** @var array Chain serials (leaf first, then intermediates) */
+	private array $chainSerials;
 
 	/**
 	 * @param X509 $leaf Loaded and validated leaf certificate
 	 * @param string $anchorGeneration 'g1' or 'g2'
 	 * @param string $leafCn Common Name of the leaf cert
 	 * @param string $leafSerial Decimal string serial number
+	 * @param array $chainSerials Array of all chain certificate serials (leaf first, then intermediates)
 	 */
-	public function __construct(X509 $leaf, string $anchorGeneration, string $leafCn, string $leafSerial) {
+	public function __construct(X509 $leaf, string $anchorGeneration, string $leafCn, string $leafSerial, array $chainSerials = []) {
 		$this->leaf = $leaf;
 		$this->anchorGeneration = $anchorGeneration;
 		$this->leafCn = $leafCn;
 		$this->leafSerial = $leafSerial;
+		// If chainSerials is empty, default to just the leaf serial for backward compatibility
+		$this->chainSerials = !empty($chainSerials) ? $chainSerials : [$leafSerial];
 	}
 
 	/**
@@ -95,5 +100,16 @@ class ChainResult {
 	 */
 	public function getLeafSerial(): string {
 		return $this->leafSerial;
+	}
+
+	/**
+	 * Get all serials in the validated chain (leaf first, then intermediates).
+	 *
+	 * Used to check if ANY certificate in the chain is revoked, per spec §4.
+	 *
+	 * @return array Array of decimal string serials
+	 */
+	public function getChainSerials(): array {
+		return $this->chainSerials;
 	}
 }

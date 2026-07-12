@@ -198,6 +198,13 @@ class AppIdResolverTest extends TestCase {
 	}
 
 	/**
+	 * Test isValidId: with trailing newline (FIX 4 - regex hardening)
+	 */
+	public function testIsValidIdTrailingNewline(): void {
+		$this->assertFalse($this->resolver->isValidId("example-app\n"));
+	}
+
+	/**
 	 * Test XXE safety: external entity is NOT expanded
 	 */
 	public function testXxeSafety(): void {
