@@ -73,12 +73,6 @@ class CheckerTest extends TestCase {
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->verifier = $this->createMock(Verifier::class);
 
-		// Default getServerRoot() mock for verifyCoreSignature calls
-		$this->environmentHelper
-			->expects($this->any())
-			->method('getServerRoot')
-			->willReturn(\OC::$SERVERROOT);
-
 		// Stub config with defaults (tests can add expects to override)
 		$this->config
 			->method('getSystemValue')
@@ -382,9 +376,8 @@ class CheckerTest extends TestCase {
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->environmentHelper
-				->expects($this->any())
 				->method('getServerRoot')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/app/'));
+				->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/app/');
 		$this->fileAccessHelper
 				->expects($this->once())
 				->method('file_put_contents')
@@ -418,9 +411,8 @@ class CheckerTest extends TestCase {
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->environmentHelper
-				->expects($this->any())
 				->method('getServerRoot')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified/'));
+				->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified/');
 		$this->fileAccessHelper
 				->expects($this->once())
 				->method('file_put_contents')
@@ -452,6 +444,9 @@ class CheckerTest extends TestCase {
     "signature": "qpDddYGgAKNR3TszOgjPXRphUl2P9Ym5OQaetltocgZASGDkOun5D64+1D0QJRKb4SG2+48muxGOHyL2Ngos4NUrrSR+SIkywZacay82YQBCEdr7\/4MjW1WHRPjvboLwEJwViw0EdAjsWRpD68aPnzUGrGsy2BsCo06P5iwjk9cXcHxdjC9R39npvoC3QNvQ2jmNIbh1Lc4U97dbb+CsXEQCLU1OSa9p3q6cEFV98Easwt7uF\/DzHK+CbeZlxVZ0DwLh2\/ylT1PyGou8QC1b3vKAnPjLWMO+UsCPpCKhk3C5pV+5etQ8puGd+0x2t5tEU+qXxLzek91zWNC+rqgC\/WlqLKbwPb\/BCHs4zLGV55Q2fEQmT21x0KCUELdPs4dBnYP4Ox5tEDugtJujWFzOHzoY6gGa\/BY\/78pSZXmq9o8dWkBEtioWWvaNZ1rM0ddE83GBlBTgjigi9Ay1D++bUW\/FCBB7CMk6qyNlV81H+cBuIEODw2aymmkM9LLDD2Qbmvo8gHEPRjiQxPC5OpDlcdSNiL+zcxVxeuX4FpT+9xzz\/\/DRONhufxRpsbuCOMxd96RW7y9U2N2Uxb3Bzn\/BIqEayUUsdgZjfaGcXXYKR+chu\/LOwNYN6RlnLsgqL\/dhGKwlRVKXw1RA2\/af\/CpqyR7uVP6al1YJo\/YJ+5XJ6zE=",
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
+		$this->environmentHelper
+			->method('getServerRoot')
+			->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent/');
 		$this->fileAccessHelper
 				->expects($this->once())
 				->method('file_put_contents')
@@ -478,11 +473,11 @@ class CheckerTest extends TestCase {
 	public function testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni() {
 		$expectedSignatureFileData = '{
     "hashes": {
-        ".htaccess": "86b537bfa88b50f7007984ffb04a0b3f258775785de6023266f8744ed3d2cb5cfd4841347bef8b9641dcb3db3255a2298a311d017fc22ec9764ca41ae35a1c27",
+        ".htaccess": "e7140c092ecf6ed3401f922efc81b635cb253d90f56cad5ad9765511edf6b2d8c663fcb5648617d561ecd2cf7ae8503d7d2ce3b88f46844d5771909aa0dba188",
         ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
-    "signature": "DnRahzfE3+L94iWQWKoaBvhgF+U+IWAELLas62WkLFQOgjSh2enS17+ShN6VJnfvRzWtWLnV82mqm6AYdIP1rGyCHniDt9OKXhVX335gaSXEbWd741DsIvwuz0w7hdx4ZEu6PUnq0zpK2VHdn86U6ZXTXBRjx/+DarDQ/5O8JkoLlOFORM+7MSslJA5S6/j3tDGHH+pctlBC7Zk73IEfDJFYs9Dk+a4dDeni3Z4oi2KLTDdPVWZbvryUbDkqIImCCVMrEFbAk+5rfOS7Jaxw+4GqvN1B8UWKUhLqVz4tR3SY1aacTs7XQwcfr3HKlGooBxNcOynrBT4FtJUSs8SQ1buNi1NPR7OtmtviTJglK859XUy/kYk3as13wooxklnsOV/vHvI+2plKFL8iotYQA1BpTsfSA/bgniTohp5nIDaPIZOM1bOHxjupc5aBukkKtA7Pg7UIBxx4Sjmz2vWmQinPUDS0fwtTrVGJ95PE4DI/lnIXNIQQGP7EnWp6yf69eA6DUXSioUie9TU/P6qxQRALASM9bVSwEYB3KvujD9IFYVQMnrpse6eAnTlm5fVmIaID5f47EkGGiV6QWuhDOln/eQaJq0M/3r5p9iu7TpR3tneeRucigvKggmo8n6jwMYM1+Rqhxiglq1RUD5RLM1eBbHRXeqV3PIUG/1wr3Xs=",
+    "signature": "W98za7+gpWu6W2In2RY6Y3zWHIvBUlrtJnxAJ+VH0YCa/imKmvPNkarS0TMrHu3cB/5SdlAXaj0/slNtaxcMbRT7QInjjvVmX5V4Sruvuw0UyTrA369Uf/4Qd0df+NSPuhpAO7df1URFfSO8ODzyP7Iw2dyEoR9xzAm+NjGbunb+5ArCd1dlnOPiKWRbHyja8fwF+04McfGjHLQ0e8RoeUk5CaXmClEE7hsuQVDqmH9LT3k7vc7jhVWCO2eFebH5i0/nhVGT3XDwy5BpQFt0kdhgztgy13LS5+KB1KFb6/UixMZfrly+SowadR/ovwcZoEm4G2t758HhpwZtHSjQZCfbsyauvPa0jxqRY7LoWjMpw5dfZpetbNJ7hIJV2WOpm3twjSjf7b/MINUWFQbPH4jK6x3bRx3to0lRx58eq0V8NX+M/VpRuteLdVuygMPebjwQu86t1QTi0Rbdf2sWqeHSawGmPYUjWlzrqruSqMdQuj+YjVMz3udEA82R23G92qbdk4kWm3wFDicYLkZLLK9KYygHFp8qW+Y+Zxu9gM3U6j8WypW4ISd0pViQqitQhYWO0VZEe8HinSVLpNyfPahKgWOUSeRgPrSGQGwj1hrL57ukS2Rva2dOOnuprO517P/xvZ+qenWzATVcmhfk63zB04RFSBfh/YLFmk1/r4E=",
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->environmentHelper
@@ -517,6 +512,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWhenVerifierThrowsMissingSignature() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -532,6 +528,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWithValidSignatureData() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -542,6 +539,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWithValidModifiedHtaccessAndUserIni() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -552,6 +550,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWithValidSignatureDataAndNotAlphabeticOrder() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -562,6 +561,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWhenVerifierThrowsInvalidSignature() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -576,6 +576,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignatureWhenVerifierReturnsDiffFailure() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -593,6 +594,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreSignaturePassesExcludedFilesToVerifier() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		// Recreate checker with modified config mock to provide excluded files
 		$config = $this->createMock(IConfig::class);
@@ -630,6 +632,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreWithInvalidCertificate() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
@@ -644,6 +647,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testVerifyCoreWithDifferentScope() {
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
 		$this->environmentHelper->expects($this->once())->method('getChannel')->willReturn('stable');
 		$this->config->expects($this->any())->method('getSystemValue')
 			->willReturnMap([['integrity.check.disabled', false, false]]);
