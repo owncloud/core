@@ -58,11 +58,18 @@ class SignatureEnvelopeTest extends TestCase {
 	}
 
 	public function testParseV2WithHostileHashesKey(): void {
-		// Craft a v2 envelope where a filename KEY contains characters that could confuse parsing
-		// Use json_encode to ensure valid JSON
+		// Craft a v2 envelope where filename KEYs contain characters that could confuse parsing:
+		// - A closing brace: "file}name"
+		// - The literal text "hashes": "nested-hashes-file"
+		// - A double-quote: "weird\"key" (json_encode will escape it to weird\"key in JSON)
+		// - Plus a normal key for sanity
+		// Use json_encode to ensure valid JSON; the braces, "hashes", and quotes will land inside
+		// string values where they cannot break the brace-balanced scan logic.
 		$hashes = [
-			'.hidden-config' => '419d2b26aa9a7065a6a588e108587e631cf676c8366bb28fe5c4868c9290387b5cfcb3e9a08c220d852cabea5b58b66e12c53c65df2d16680ff6003172d18abf',
-			'appinfo/info.xml' => '2fafbce4571514444b5edd26e4ff01e42ddf0e81aacc15fda63f304ff019cff260bd4e5625aac4ac9efe81cbf38086f920ff3b7ba264048b7d62185cbded402a'
+			'file}name' => '419d2b26aa9a7065a6a588e108587e631cf676c8366bb28fe5c4868c9290387b5cfcb3e9a08c220d852cabea5b58b66e12c53c65df2d16680ff6003172d18abf',
+			'nested-hashes-file' => '2fafbce4571514444b5edd26e4ff01e42ddf0e81aacc15fda63f304ff019cff260bd4e5625aac4ac9efe81cbf38086f920ff3b7ba264048b7d62185cbded402a',
+			'weird"key' => 'deadbeefcafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafebeef',
+			'normal.txt' => 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01'
 		];
 
 		$envelope = [
@@ -80,14 +87,17 @@ class SignatureEnvelopeTest extends TestCase {
 		$parsed = SignatureEnvelope::parse($json);
 		$rawBytes = $parsed->getRawHashesBytes();
 
-		// The scan must extract exactly the hashes value
+		// The scan must extract exactly the hashes value despite hostile keys
 		$this->assertStringStartsWith('{', $rawBytes);
 		$this->assertStringEndsWith('}', $rawBytes);
 
-		// Should be valid JSON
+		// Should be valid JSON and decode to exact original hashes
 		$decoded = json_decode($rawBytes, true);
 		$this->assertIsArray($decoded);
 		$this->assertSame($hashes, $decoded);
+
+		// getHashesMap() must also equal the same map
+		$this->assertSame($hashes, $parsed->getHashesMap());
 	}
 
 	public function testParseLegacy(): void {
