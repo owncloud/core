@@ -705,7 +705,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$config,
 				$c->getMemCacheFactory(),
 				$appManager,
-				$c->getTempManager()
+				$c->getTempManager(),
+				null,
+				$c->getHTTPClientService()
 			);
 		});
 		$this->registerService('Request', function ($c) {
