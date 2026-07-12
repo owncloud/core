@@ -32,10 +32,12 @@ namespace OC\IntegrityCheck\Verifier;
 class VerificationResult {
 	private bool $passed;
 	private array $diff;
+	private bool $isLegacyWarn;
 
-	private function __construct(bool $passed, array $diff = []) {
+	private function __construct(bool $passed, array $diff = [], bool $isLegacyWarn = false) {
 		$this->passed = $passed;
 		$this->diff = $diff;
+		$this->isLegacyWarn = $isLegacyWarn;
 	}
 
 	/**
@@ -44,7 +46,7 @@ class VerificationResult {
 	 * @return self
 	 */
 	public static function passed(): self {
-		return new self(true, []);
+		return new self(true, [], false);
 	}
 
 	/**
@@ -54,7 +56,20 @@ class VerificationResult {
 	 * @return self
 	 */
 	public static function diffFailure(array $diff): self {
-		return new self(false, $diff);
+		return new self(false, $diff, false);
+	}
+
+	/**
+	 * Create a result indicating a legacy (G1) app with an expired cert was allowed.
+	 *
+	 * This represents the warn-and-allow case from spec §8 case 2: a valid but
+	 * expired G1 app is allowed until LEGACY_SUNSET (2026-12-31), provided all
+	 * other checks pass (chain, signature, revocation, identity, diff).
+	 *
+	 * @return self
+	 */
+	public static function legacyWarn(): self {
+		return new self(true, [], true);
 	}
 
 	/**
@@ -67,7 +82,16 @@ class VerificationResult {
 	}
 
 	/**
-	 * Get the integrity diff (empty array if passed).
+	 * Check if this is a legacy-warn result (expired G1 app, allowed until sunset).
+	 *
+	 * @return bool
+	 */
+	public function isLegacyWarn(): bool {
+		return $this->isLegacyWarn;
+	}
+
+	/**
+	 * Get the integrity diff (empty array if passed or legacy-warn).
 	 *
 	 * @return array
 	 */
@@ -78,11 +102,21 @@ class VerificationResult {
 	/**
 	 * Convert to legacy result array format.
 	 *
-	 * Returns [] when passed, else the structured diff array.
+	 * Returns:
+	 * - [] for a clean pass (isPassed && !isLegacyWarn)
+	 * - ['LEGACY_ACCEPTED_WARN' => true] for a legacy-warn result
+	 * - The structured diff array for an integrity diff failure
+	 *
+	 * NOTE: Task 12 must special-case the LEGACY_ACCEPTED_WARN marker, as the legacy
+	 * hasPassedCheck() treats a non-empty results array as FAILED. But legacyWarn is a
+	 * pass-with-warning, so Task 12 should treat this marker as passed.
 	 *
 	 * @return array
 	 */
 	public function toLegacyResultArray(): array {
+		if ($this->isLegacyWarn) {
+			return ['LEGACY_ACCEPTED_WARN' => true];
+		}
 		return $this->passed ? [] : $this->diff;
 	}
 }

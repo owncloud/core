@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<info>
+	<id>example-app</id>
+	<name>Example App (G1 Legacy)</name>
+	<version>1.0.0</version>
+	<description>Test application for legacy G1 verification</description>
+</info>

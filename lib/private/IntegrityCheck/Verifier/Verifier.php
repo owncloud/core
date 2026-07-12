@@ -156,12 +156,31 @@ class Verifier {
 		// Step 6: Check leaf validity and revocation
 		$leaf = $chain->getLeaf();
 
-		// Validate leaf certificate is not expired
-		if (!$leaf->validateDate($now)) {
-			throw new BadChainException('Leaf certificate is expired or not yet valid');
+		// Validate leaf certificate is not expired, with case-2 (legacy-warn) branch
+		$dateValid = $leaf->validateDate($now);
+		$legacyWarn = false;
+
+		if (!$dateValid) {
+			// Leaf is expired or not-yet-valid. Check for case-2 eligibility.
+			// Case 2: Valid G1 chain, expired cert, before sunset, legacy alg.
+			// All three must be true: G1, legacy alg, and now < sunset.
+			$isG1 = $chain->isG1();
+			$isLegacyAlg = $alg === VerifierConstants::ALG_LEGACY_RSA_PSS_SHA1;
+			$sunset = new \DateTimeImmutable(VerifierConstants::LEGACY_SUNSET);
+			$beforeSunset = $now->getTimestamp() < $sunset->getTimestamp();
+
+			if ($isG1 && $isLegacyAlg && $beforeSunset) {
+				// Case 2: Legacy G1 app, expired cert, before sunset.
+				// Skip the expiry check and set flag for legacy-warn result.
+				// All other checks (revocation, identity, diff) still apply.
+				$legacyWarn = true;
+			} else {
+				// Case 1/3: Hard block (expired/not-yet-valid, not eligible for case-2)
+				throw new BadChainException('Leaf certificate is expired or not yet valid');
+			}
 		}
 
-		// Check CRL for revocation
+		// Check CRL for revocation (applies to both case-2 and regular paths)
 		$crl = $this->crlProvider->getCurrentCrl($chain->isG1());
 		if ($crl->isRevoked($chain->getLeafSerial())) {
 			throw new RevokedException('Certificate has been revoked');
@@ -182,7 +201,11 @@ class Verifier {
 			return VerificationResult::diffFailure($diff);
 		}
 
-		// All clean
+		// All checks passed
+		if ($legacyWarn) {
+			return VerificationResult::legacyWarn();
+		}
+
 		return VerificationResult::passed();
 	}
 }
