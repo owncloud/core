@@ -27,4 +27,7 @@ namespace OC\IntegrityCheck\Exceptions;
  * @package OC\IntegrityCheck\Exceptions
  */
 class MissingSignatureException extends InvalidSignatureException {
+	public function getReasonCode(): string {
+		return 'MISSING_SIGNATURE';
+	}
 }

@@ -29,10 +29,10 @@ use OCP\Http\Client\IClientService;
  * Never throws for network problems; the caller's fallback policy decides.
  */
 class CrlFetcher {
-	/** @var IClientService */
+	/** @var IClientService|null */
 	private $clientService;
 
-	public function __construct(IClientService $clientService) {
+	public function __construct(?IClientService $clientService = null) {
 		$this->clientService = $clientService;
 	}
 
@@ -43,6 +43,11 @@ class CrlFetcher {
 	 * @return string|null Raw CRL bytes on 200, null on any failure
 	 */
 	public function fetch(string $url): ?string {
+		// If no client service, cannot fetch
+		if ($this->clientService === null) {
+			return null;
+		}
+
 		// Only allow HTTPS URLs
 		if (\strpos($url, 'https://') !== 0) {
 			return null;
