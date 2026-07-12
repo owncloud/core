@@ -40,4 +40,30 @@ class FileAccessHelperTest extends TestCase {
 		$this->fileAccessHelper->file_put_contents($filePath, $data);
 		$this->assertSame($data, $this->fileAccessHelper->file_get_contents($filePath));
 	}
+
+	public function testGetDirectoryContent() {
+		$tempManager = \OC::$server->getTempManager();
+		$tempDir = $tempManager->getTemporaryFolder();
+
+		// Create some test files
+		$this->fileAccessHelper->file_put_contents($tempDir . '/file1.txt', 'content1');
+		$this->fileAccessHelper->file_put_contents($tempDir . '/file2.txt', 'content2');
+
+		// Create a subdirectory (should not be listed)
+		\mkdir($tempDir . '/subdir');
+
+		$files = $this->fileAccessHelper->getDirectoryContent($tempDir);
+
+		$this->assertContains('file1.txt', $files);
+		$this->assertContains('file2.txt', $files);
+		$this->assertNotContains('subdir', $files);
+		$this->assertNotContains('.', $files);
+		$this->assertNotContains('..', $files);
+	}
+
+	public function testGetDirectoryContentNonExistentDir() {
+		$result = $this->fileAccessHelper->getDirectoryContent('/nonexistent/directory/path');
+		$this->assertIsArray($result);
+		$this->assertEmpty($result);
+	}
 }
