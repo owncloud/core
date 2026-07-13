@@ -50,17 +50,27 @@ class AppIdResolver {
 			throw new CnMismatchException('Failed to read or empty appinfo/info.xml');
 		}
 
-		// Parse XML safely (guard against XXE)
-		$libxmlPreviousState = \libxml_use_internal_errors(true);
-		// Disable external entity loading
+		// Parse XML safely (guard against XXE). Both libxml_use_internal_errors()
+		// and libxml_set_external_entity_loader() set PROCESS-GLOBAL state, so we
+		// must restore it in a finally block — otherwise our no-op entity loader
+		// would leak and break XML parsing elsewhere in the same process (e.g.
+		// app info.xml / sabre plugin parsing).
+		//
+		// Note: libxml_set_external_entity_loader() cannot reliably round-trip its
+		// previous value (in PHP 8.x it returns bool(true) for the default loader,
+		// which is not a valid argument to set it back), so we reset to the default
+		// by passing null. ownCloud does not install a global custom entity loader.
+		$libxmlPreviousErrors = \libxml_use_internal_errors(true);
 		\libxml_set_external_entity_loader(function () {
+			// Disable external entity loading (XXE guard).
 			return true;
 		});
-
-		$xml = \simplexml_load_string($xmlContent);
-
-		// Restore previous libxml state
-		\libxml_use_internal_errors($libxmlPreviousState);
+		try {
+			$xml = \simplexml_load_string($xmlContent);
+		} finally {
+			\libxml_use_internal_errors($libxmlPreviousErrors);
+			\libxml_set_external_entity_loader(null);
+		}
 
 		if ($xml === false) {
 			throw new CnMismatchException('Failed to parse appinfo/info.xml');
