@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Bugfix - Support federation between systems in subdirectories: [#41599](https://github.com/owncloud/core/pull/41599)
 * Bugfix - Remove owncloud.com/federation link from federated cloud settings: [#41608](https://github.com/owncloud/core/pull/41608)
 * Bugfix - Fix JS test isolation bugs exposed by Jasmine 5 random test ordering: [#41616](https://github.com/owncloud/core/pull/41616)
+* Bugfix - Honor language on anonymous pages: [#41618](https://github.com/owncloud/core/issues/41618)
 * Bugfix - Decrypt versions and trashbin so encryption can be disabled: [#41623](https://github.com/owncloud/core/issues/41623)
 * Bugfix - Fix user:home:list-dirs and user:home:list-users crashing on PHP 8: [#41630](https://github.com/owncloud/core/issues/41630)
 * Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
@@ -167,6 +168,18 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41616
 
+* Bugfix - Honor language on anonymous pages: [#41618](https://github.com/owncloud/core/issues/41618)
+
+   Anonymous pages (the login page and the password-protected public share page)
+   always rendered in English even when default_language was configured or the
+   browser sent a matching Accept-Language header, while authenticated pages were
+   translated correctly. The language factory cached the "en" last-resort fallback
+   as the per-request language, which then short-circuited every later lookup
+   before default_language or Accept-Language could be consulted. The fallback is
+   no longer cached, so anonymous pages honor default_language and Accept-Language.
+
+   https://github.com/owncloud/core/issues/41618
+
 * Bugfix - Decrypt versions and trashbin so encryption can be disabled: [#41623](https://github.com/owncloud/core/issues/41623)
 
    "occ encryption:decrypt-all" only walked the regular "files" folder, leaving the
@@ -237,13 +250,15 @@ ownCloud admins and users.
 
    * google/auth (v1.50.0 to v1.52.0)
 
-   * guzzlehttp/guzzle (7.10.0 to 7.14.0)
+   * guzzlehttp/guzzle (7.10.0 to 7.14.1)
 
    * guzzlehttp/promises (2.3.0 to 2.5.1)
 
-   * guzzlehttp/psr7 (2.8.0 to 2.12.4)
+   * guzzlehttp/psr7 (2.8.0 to 2.12.5)
 
    * laravel/serializable-closure (v2.0.10 to v2.0.13)
+
+   * league/mime-type-detection (1.16.0 to 1.17.0)
 
    * phpseclib/phpseclib (3.0.49 to 3.0.55)
 
@@ -294,6 +309,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41666
    https://github.com/owncloud/core/pull/41670
    https://github.com/owncloud/core/pull/41677
+   https://github.com/owncloud/core/pull/41681
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
