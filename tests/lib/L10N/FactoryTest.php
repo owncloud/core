@@ -271,6 +271,56 @@ class FactoryTest extends TestCase {
 	}
 
 	/**
+	 * Regression test for #41618: on an anonymous request the first no-app
+	 * findLanguage() falls through to the 'en' last-resort fallback (no
+	 * Accept-Language match, no default_language yet). This must NOT poison the
+	 * per-request Factory singleton — a later findLanguage() has to re-evaluate
+	 * default_language instead of short-circuiting on a cached 'en'.
+	 */
+	public function testFindLanguageDoesNotCacheFallbackAcrossAnonymousLookups(): void {
+		$factory = $this->getFactory(['languageExists']);
+
+		// Only the second lookup resolves a language (default_language 'de').
+		$factory
+			->expects($this->once())
+			->method('languageExists')
+			->with(null, 'de')
+			->willReturn(true);
+
+		// installed=true and getUser()=null on both lookups (anonymous). The
+		// first lookup sees no default_language, the second one does.
+		$this->config
+			->expects($this->exactly(4))
+			->method('getSystemValue')
+			->withConsecutive(
+				['installed', false],
+				['default_language', false],
+				['installed', false],
+				['default_language', false],
+			)
+			->willReturnOnConsecutiveCalls(true, false, true, 'de');
+		$this->userSession
+			->expects($this->exactly(2))
+			->method('getUser')
+			->willReturn(null);
+
+		// Accept-Language header is not forwarded (e.g. official Docker/Apache
+		// image), so the first lookup can only reach the 'en' fallback.
+		$this->request
+			->expects($this->once())
+			->method('getHeader')
+			->with('ACCEPT_LANGUAGE')
+			->willReturn('');
+
+		// First lookup: nothing matchable -> last-resort 'en'.
+		$this->assertSame('en', $factory->findLanguage(), 'First lookup falls back to en');
+		// The fallback must not have been cached.
+		$this->assertSame('', self::invokePrivate($factory, 'requestLanguage'), 'Fallback en is not cached');
+		// Second lookup: default_language is now honored instead of cached 'en'.
+		$this->assertSame('de', $factory->findLanguage(), 'Second lookup honors default_language');
+	}
+
+	/**
 	 * @dataProvider dataFindAvailableLanguages
 	 *
 	 * @param string|null $app
@@ -404,8 +454,13 @@ class FactoryTest extends TestCase {
 			[null, 'de', null, ['de'], 'de', 'de'],
 			[null, 'de,en', null, ['de'], 'de', 'de'],
 			[null, 'de-DE,en-US;q=0.8,en;q=0.6', null, ['de'], 'de', 'de'],
-			// Language is not available
-			[null, 'de', null, ['ru'], 'en', 'en'],
+			// No matchable language and 'en' is neither requested nor available →
+			// last-resort 'en' is returned but must NOT be cached as the request
+			// language (caching it would defeat default_language on a later lookup
+			// — see issue #41618).
+			[null, 'de', null, ['ru'], 'en', ''],
+			// 'en' is explicitly requested AND available → a real match, which IS
+			// cached as the request language (correct behavior, not the #41618 bug).
 			[null, 'de,en', null, ['ru', 'en'], 'en', 'en'],
 			[null, 'de-DE,en-US;q=0.8,en;q=0.6', null, ['ru', 'en'], 'en', 'en'],
 			// Language is available, but request language is set

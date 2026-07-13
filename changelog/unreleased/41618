@@ -1,0 +1,11 @@
+Bugfix: Honor language on anonymous pages
+
+Anonymous pages (the login page and the password-protected public share page)
+always rendered in English even when default_language was configured or the
+browser sent a matching Accept-Language header, while authenticated pages were
+translated correctly. The language factory cached the "en" last-resort fallback
+as the per-request language, which then short-circuited every later lookup
+before default_language or Accept-Language could be consulted. The fallback is
+no longer cached, so anonymous pages honor default_language and Accept-Language.
+
+https://github.com/owncloud/core/issues/41618

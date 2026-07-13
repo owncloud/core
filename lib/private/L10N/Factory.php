@@ -251,9 +251,12 @@ class Factory implements IFactory {
 			}
 		}
 
-		if ($app === null && !$this->requestLanguage) {
-			$this->requestLanguage = 'en';
-		}
+		// Do NOT cache the 'en' last-resort fallback in requestLanguage: doing so
+		// poisons the per-request Factory singleton so that a later findLanguage()
+		// returns 'en' before ever consulting default_language or Accept-Language.
+		// This broke anonymous pages (login / public-share password page) whenever
+		// the first no-app lookup ran without a visible Accept-Language header
+		// (e.g. the header not forwarded by the web server) — see issue #41618.
 		return 'en'; // Last try: English
 	}
 
