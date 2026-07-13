@@ -57,7 +57,12 @@ class QueueBus implements IBus {
 			if (\strlen($serialized) > 4000) {
 				throw new \InvalidArgumentException('Trying to push a command which serialized form can not be stored in the database (>4000 character)');
 			}
-			$unserialized = \unserialize($serialized);
+			// allowed_classes => true: PHP's allowed_classes does not resolve interface
+			// hierarchies, so passing ICommand::class (an interface) would produce
+			// __PHP_Incomplete_Class. The serialized value was just produced from
+			// $command above in this same method — it is a pure in-memory round-trip
+			// and not an external attack surface.
+			$unserialized = \unserialize($serialized, ['allowed_classes' => true]);
 			$unserialized->handle();
 		} else {
 			$command();

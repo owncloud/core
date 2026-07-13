@@ -29,7 +29,12 @@ use OCP\Command\ICommand;
  */
 class CommandJob extends QueuedJob {
 	protected function run($serializedCommand) {
-		$command = \unserialize($serializedCommand);
+		// allowed_classes => true: PHP's allowed_classes performs exact class-name
+		// matching and does not resolve interface hierarchies. Passing ICommand::class
+		// (an interface) would silently produce __PHP_Incomplete_Class for every real
+		// payload. The existing instanceof check below still ensures only valid
+		// ICommand objects are handled.
+		$command = \unserialize($serializedCommand, ['allowed_classes' => true]);
 		if ($command instanceof ICommand) {
 			$command->handle();
 		} else {

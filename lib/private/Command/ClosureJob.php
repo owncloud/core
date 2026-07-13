@@ -25,7 +25,11 @@ use OC\BackgroundJob\QueuedJob;
 
 class ClosureJob extends QueuedJob {
 	protected function run($serializedCallable) {
-		$serializedClosure = \unserialize($serializedCallable);
+		// Use allowed_classes => true: SerializableClosure's serialized form nests internal
+		// classes (e.g. Laravel\SerializableClosure\Serializers\Native) that would be blocked
+		// by a strict allow-list, silently producing __PHP_Incomplete_Class. The existing
+		// method_exists('getClosure') guard below prevents execution of any non-closure object.
+		$serializedClosure = \unserialize($serializedCallable, ['allowed_classes' => true]);
 		if (\method_exists($serializedClosure, 'getClosure')) {
 			$callable = $serializedClosure->getClosure();
 			if (\is_callable($callable)) {
