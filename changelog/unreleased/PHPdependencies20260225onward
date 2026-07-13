@@ -12,13 +12,15 @@ The following have been updated:
 
  * google/auth (v1.50.0 to v1.52.0)
 
- * guzzlehttp/guzzle (7.10.0 to 7.14.0)
+ * guzzlehttp/guzzle (7.10.0 to 7.14.1)
 
  * guzzlehttp/promises (2.3.0 to 2.5.1)
 
- * guzzlehttp/psr7 (2.8.0 to 2.12.4)
+ * guzzlehttp/psr7 (2.8.0 to 2.12.5)
 
  * laravel/serializable-closure (v2.0.10 to v2.0.13)
+
+ * league/mime-type-detection (1.16.0 to 1.17.0)
 
  * phpseclib/phpseclib (3.0.49 to 3.0.55)
 
@@ -69,3 +71,4 @@ https://github.com/owncloud/core/pull/41660
 https://github.com/owncloud/core/pull/41666
 https://github.com/owncloud/core/pull/41670
 https://github.com/owncloud/core/pull/41677
+https://github.com/owncloud/core/pull/41681
