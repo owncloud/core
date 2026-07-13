@@ -80,7 +80,7 @@ class CanonicalManifestTest extends TestCase {
 
 		// Test 3: Verify the decoded hashes have the expected structure
 		$this->assertIsArray($hashes);
-		$this->assertGreaterThan(0, count($hashes), "Decoded hashes map should not be empty for $treeDir");
+		$this->assertGreaterThan(0, \count($hashes), "Decoded hashes map should not be empty for $treeDir");
 	}
 
 	/**
@@ -143,7 +143,7 @@ class CanonicalManifestTest extends TestCase {
 	 * Test escaping of control byte 0x01
 	 */
 	public function testEscapeControlByte() {
-		$controlByte = chr(0x01);
+		$controlByte = \chr(0x01);
 		$hashes = ["key{$controlByte}byte" => "value{$controlByte}byte"];
 		$result = CanonicalManifest::serialize($hashes);
 		// Verify that control byte is escaped as  (lowercase)

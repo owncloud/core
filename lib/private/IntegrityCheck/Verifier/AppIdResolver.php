@@ -134,12 +134,12 @@ class AppIdResolver {
 	 */
 	public function asciiFold(string $id): string {
 		$result = '';
-		$len = strlen($id);
+		$len = \strlen($id);
 		for ($i = 0; $i < $len; $i++) {
-			$byte = ord($id[$i]);
+			$byte = \ord($id[$i]);
 			// If uppercase ASCII letter, add 0x20 to convert to lowercase
 			if ($byte >= 0x41 && $byte <= 0x5A) {
-				$result .= chr($byte + 0x20);
+				$result .= \chr($byte + 0x20);
 			} else {
 				$result .= $id[$i];
 			}

@@ -77,12 +77,12 @@ class SignatureEnvelope {
 		}
 
 		$data = @json_decode($json, true);
-		if (!is_array($data)) {
+		if (!\is_array($data)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
 
 		// Extract raw hashes bytes (string-aware, brace-balanced scan)
-		if (!isset($data['hashes']) || !is_array($data['hashes'])) {
+		if (!isset($data['hashes']) || !\is_array($data['hashes'])) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
 
@@ -108,7 +108,7 @@ class SignatureEnvelope {
 
 		if ($isLegacy) {
 			// Legacy format: requires "certificate" field
-			if (!isset($data['certificate']) || !is_string($data['certificate'])) {
+			if (!isset($data['certificate']) || !\is_string($data['certificate'])) {
 				throw new MissingSignatureException('Signature data not found.');
 			}
 
@@ -124,15 +124,15 @@ class SignatureEnvelope {
 			);
 		} else {
 			// V2 format: requires "certificates" object with at least "leaf"
-			if (!isset($data['certificates']) || !is_array($data['certificates'])) {
+			if (!isset($data['certificates']) || !\is_array($data['certificates'])) {
 				throw new MissingSignatureException('Signature data not found.');
 			}
-			if (!isset($data['certificates']['leaf']) || !is_string($data['certificates']['leaf'])) {
+			if (!isset($data['certificates']['leaf']) || !\is_string($data['certificates']['leaf'])) {
 				throw new MissingSignatureException('Signature data not found.');
 			}
 
 			$chainPems = [];
-			if (isset($data['certificates']['chain']) && is_array($data['certificates']['chain'])) {
+			if (isset($data['certificates']['chain']) && \is_array($data['certificates']['chain'])) {
 				$chainPems = $data['certificates']['chain'];
 			}
 
@@ -161,7 +161,7 @@ class SignatureEnvelope {
 	 * @throws MissingSignatureException if "hashes" not found or not an object
 	 */
 	private static function extractRawHashesBytes(string $json): string {
-		$len = strlen($json);
+		$len = \strlen($json);
 		$i = 0;
 		$inString = false;
 
@@ -273,7 +273,7 @@ class SignatureEnvelope {
 	 * @return string The exact substring from opening { to matching closing }
 	 */
 	private static function extractBraceBalancedValue(string $json, int $startPos): string {
-		$len = strlen($json);
+		$len = \strlen($json);
 		$depth = 0;
 		$inString = false;
 		$escapeNext = false;

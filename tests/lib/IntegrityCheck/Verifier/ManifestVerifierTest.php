@@ -61,7 +61,7 @@ class ManifestVerifierTest extends TestCase {
 		$M = \file_get_contents($basePath . '/golden/tree-basic/manifest.canonical.json');
 		$sigBase64 = \file_get_contents($basePath . '/verifier/sig-ec-p384-tree-basic.b64');
 		$sig = \base64_decode($sigBase64);
-		$sig[0] = chr((ord($sig[0]) + 1) % 256); // Corrupt signature
+		$sig[0] = \chr((\ord($sig[0]) + 1) % 256); // Corrupt signature
 		$leafPem = \file_get_contents($basePath . '/verifier/ec-leaf.crt');
 
 		$this->expectException(BadSignatureException::class);
