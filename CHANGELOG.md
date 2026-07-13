@@ -237,11 +237,11 @@ ownCloud admins and users.
 
    * google/auth (v1.50.0 to v1.52.0)
 
-   * guzzlehttp/guzzle (7.10.0 to 7.13.2)
+   * guzzlehttp/guzzle (7.10.0 to 7.14.0)
 
-   * guzzlehttp/promises (2.3.0 to 2.4.1)
+   * guzzlehttp/promises (2.3.0 to 2.5.1)
 
-   * guzzlehttp/psr7 (2.8.0 to 2.12.3)
+   * guzzlehttp/psr7 (2.8.0 to 2.12.4)
 
    * laravel/serializable-closure (v2.0.10 to v2.0.13)
 
@@ -293,6 +293,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41660
    https://github.com/owncloud/core/pull/41666
    https://github.com/owncloud/core/pull/41670
+   https://github.com/owncloud/core/pull/41677
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
