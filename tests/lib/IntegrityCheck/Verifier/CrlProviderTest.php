@@ -1,11 +1,10 @@
 <?php
+/**
+ * SPDX-FileCopyrightText: 2026 ownCloud GmbH
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
 
 declare(strict_types=1);
-
-/**
- * @copyright Copyright (c) 2026 ownCloud GmbH
- * @license AGPL-3.0-only
- */
 
 namespace Test\IntegrityCheck\Verifier;
 
