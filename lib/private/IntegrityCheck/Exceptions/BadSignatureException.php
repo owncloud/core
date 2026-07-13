@@ -26,7 +26,7 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class BadSignatureException extends InvalidSignatureException {
+class BadSignatureException extends InvalidSignatureException implements ReasonCodeException {
 	public function getReasonCode(): string {
 		return 'BAD_SIGNATURE';
 	}

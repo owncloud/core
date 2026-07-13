@@ -27,7 +27,7 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class CrlUnavailableException extends InvalidSignatureException {
+class CrlUnavailableException extends InvalidSignatureException implements ReasonCodeException {
 	public function getReasonCode(): string {
 		return 'CRL_UNAVAILABLE';
 	}

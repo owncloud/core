@@ -27,6 +27,7 @@ namespace OC\IntegrityCheck;
 
 use OC\IntegrityCheck\Exceptions\InvalidSignatureException;
 use OC\IntegrityCheck\Exceptions\MissingSignatureException;
+use OC\IntegrityCheck\Exceptions\ReasonCodeException;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
@@ -661,7 +662,7 @@ class Checker implements OnDiskHasher {
 							'message' => $e->getMessage(),
 					],
 			];
-			if (\method_exists($e, 'getReasonCode')) {
+			if ($e instanceof ReasonCodeException) {
 				$result['REASON'] = $e->getReasonCode();
 			}
 		}
@@ -714,7 +715,7 @@ class Checker implements OnDiskHasher {
 							'message' => $e->getMessage(),
 					],
 			];
-			if (\method_exists($e, 'getReasonCode')) {
+			if ($e instanceof ReasonCodeException) {
 				$result['REASON'] = $e->getReasonCode();
 			}
 		}

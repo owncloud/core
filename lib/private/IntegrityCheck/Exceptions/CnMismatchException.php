@@ -27,7 +27,7 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class CnMismatchException extends InvalidSignatureException {
+class CnMismatchException extends InvalidSignatureException implements ReasonCodeException {
 	public function getReasonCode(): string {
 		return 'CN_MISMATCH';
 	}

@@ -22,12 +22,17 @@
 namespace OC\IntegrityCheck\Exceptions;
 
 /**
- * Class BadChainException is thrown when X.509 chain validation fails.
+ * Implemented by verification exceptions that carry a machine-readable failure
+ * reason code (spec §9), e.g. BAD_CHAIN, REVOKED, CN_MISMATCH. Used by the
+ * Checker to surface a non-breaking REASON key alongside the legacy EXCEPTION
+ * result. A plain InvalidSignatureException does not implement this and thus
+ * produces no REASON key, preserving the legacy result shape.
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class BadChainException extends InvalidSignatureException implements ReasonCodeException {
-	public function getReasonCode(): string {
-		return 'BAD_CHAIN';
-	}
+interface ReasonCodeException {
+	/**
+	 * @return string the §9 reason code for this failure
+	 */
+	public function getReasonCode(): string;
 }

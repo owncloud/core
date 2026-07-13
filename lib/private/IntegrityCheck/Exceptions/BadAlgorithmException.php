@@ -26,7 +26,7 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class BadAlgorithmException extends InvalidSignatureException {
+class BadAlgorithmException extends InvalidSignatureException implements ReasonCodeException {
 	public function getReasonCode(): string {
 		return 'BAD_ALGORITHM';
 	}

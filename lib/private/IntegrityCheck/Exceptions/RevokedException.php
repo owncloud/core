@@ -27,7 +27,7 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class RevokedException extends InvalidSignatureException {
+class RevokedException extends InvalidSignatureException implements ReasonCodeException {
 	public function getReasonCode(): string {
 		return 'REVOKED';
 	}
