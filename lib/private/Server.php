@@ -688,14 +688,22 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new TrustedDomainHelper($this->getConfig());
 		});
 		$this->registerService('IntegrityCodeChecker', function (Server $c) {
-			// IConfig and IAppManager requires a working database. This code
-			// might however be called when ownCloud is not yet setup.
+			// IConfig, IAppManager and the HTTP client service all require a
+			// working database (the HTTP client resolves a Files\View which
+			// pulls in the user manager and thus the DB connection). This code
+			// might however be called when ownCloud is not yet setup (e.g. occ
+			// maintenance:install registers commands before the DB exists), so
+			// only resolve those dependencies once the instance is installed.
+			// The Checker only touches the client lazily when it actually
+			// verifies a signature, which never happens before install.
 			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
 				$config = $c->getConfig();
 				$appManager = $c->getAppManager();
+				$clientService = $c->getHTTPClientService();
 			} else {
 				$config = null;
 				$appManager = null;
+				$clientService = null;
 			}
 
 			return new Checker(
@@ -707,7 +715,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$appManager,
 				$c->getTempManager(),
 				null,
-				$c->getHTTPClientService()
+				$clientService
 			);
 		});
 		$this->registerService('Request', function ($c) {
