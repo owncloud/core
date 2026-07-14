@@ -41,6 +41,7 @@ ownCloud admins and users.
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
 * Security - Prevent user enumeration via differential password reset UI: [#41586](https://github.com/owncloud/core/pull/41586)
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
+* Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
 * Bugfix - Fix htaccess RewriteBase rules blocking API requests by file extension: [#41418](https://github.com/owncloud/core/issues/41418)
 * Bugfix - Fix subadmin email change updating caller's address instead of target's: [#41574](https://github.com/owncloud/core/pull/41574)
@@ -94,6 +95,15 @@ ownCloud admins and users.
    true in config.php.
 
    https://github.com/owncloud/core/pull/41634
+
+* Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
+
+   In certain situations the trashbin original-location in a PROPFIND response
+   contained a leading slash. This change ensures that a relative path (without a
+   leading slash) is always returned.
+
+   https://github.com/owncloud/core/issues/39337
+   https://github.com/owncloud/core/pull/41649
 
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
 
