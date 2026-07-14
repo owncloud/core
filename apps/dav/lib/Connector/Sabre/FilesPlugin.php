@@ -166,7 +166,9 @@ class FilesPlugin extends ServerPlugin {
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
 		$this->server->on('validateTokens', [$this, 'validateTokens'], 0);
-		$this->server->on('method:PROPFIND', [$this, 'checkPropFind']);
+		// checkPropFind has to be done before other events such as httpPropFind
+		// so set its priority below the default of 100
+		$this->server->on('method:PROPFIND', [$this, 'checkPropFind'], 99);
 	}
 
 	/**
