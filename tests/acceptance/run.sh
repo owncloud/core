@@ -771,7 +771,7 @@ function teardown() {
 declare -x TEST_SERVER_URL
 declare -x TEST_SERVER_FED_URL
 declare -x TEST_WITH_PHPDEVSERVER
-[[ -z "${TEST_SERVER_URL}" && -z "${TEST_SERVER_FED_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
+[[ -z "${TEST_SERVER_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
 
 if [ -z "${IPV4_URL}" ]
 then
@@ -836,14 +836,7 @@ else
 	PHPPID=$!
 	echo ${PHPPID}
 
-	PORT_FED=$((8180 + ${EXECUTOR_NUMBER}))
-	echo ${PORT_FED}
-	php -S localhost:${PORT_FED} -t ../.. &
-	PHPPID_FED=$!
-	echo ${PHPPID_FED}
-
 	export TEST_SERVER_URL="http://localhost:${PORT}"
-	export TEST_SERVER_FED_URL="http://localhost:${PORT_FED}"
 
 	# The endpoint to use to do occ commands via the testing app
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
