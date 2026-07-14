@@ -1,0 +1,10 @@
+Security: Prevent params body from overriding validated occ command
+
+OccController validated the URL-path command against an allowlist but
+then merged it with user-supplied params via array_merge, allowing a
+command key in the request body to overwrite the validated value. An
+authenticated caller with the updater secret could use this to execute
+any occ command regardless of the allowlist. The params array is now
+stripped of any command key before the merge.
+
+https://github.com/owncloud/core/pull/41577
