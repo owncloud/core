@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\TrashBin;
 
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
@@ -40,6 +41,41 @@ class TrashBinPlugin extends ServerPlugin {
 		$this->server = $server;
 
 		$this->server->on('propFind', [$this, 'propFind']);
+		$this->server->on('beforeMove', [$this, 'beforeMove']);
+	}
+
+	/**
+	 * Refuse a trashbin restore MOVE when the destination already exists.
+	 *
+	 * A restore is a WebDAV MOVE whose source node lives in the trash-bin tree.
+	 * Sabre's CorePlugin::httpMove() deletes an already existing destination
+	 * before it performs the move (the Overwrite header defaults to "T"), so a
+	 * guard further down the restore chain would run too late and the existing
+	 * file would already be gone. This handler runs on the beforeMove event,
+	 * i.e. before that pre-delete, and refuses the restore with "403 Forbidden"
+	 * when the destination is occupied - leaving the existing file untouched
+	 * instead of silently overwriting it. See issue #35974.
+	 *
+	 * @param string $sourcePath source path of the MOVE
+	 * @param string $destinationPath destination path of the MOVE
+	 * @return bool true to continue with the default handling
+	 * @throws Forbidden when the restore would overwrite an existing target
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 */
+	public function beforeMove($sourcePath, $destinationPath) {
+		$sourceNode = $this->server->tree->getNodeForPath($sourcePath);
+		if (!($sourceNode instanceof ITrashBinNode)) {
+			// not a restore - let the default MOVE handling proceed
+			return true;
+		}
+
+		if ($this->server->tree->nodeExists($destinationPath)) {
+			throw new Forbidden(
+				'Could not restore, target "' . $destinationPath . '" already exists'
+			);
+		}
+
+		return true;
 	}
 
 	public function propFind(PropFind $propFind, INode $node) {

@@ -92,17 +92,18 @@ Feature: Restore deleted files/folders
       | old      | /textfile0.txt          | PARENT/textfile0.txt |
       | new      | /textfile0.txt          | PARENT/textfile0.txt |
 
-  @skipOnOcV10 @issue-35974 @skipOnOcV11
-  Scenario Outline: restoring a file to an already existing path overrides the file
+  @issue-35974
+  Scenario Outline: restoring a file to an already existing path is refused and does not overwrite the file
     Given user "Alice" has uploaded file with content "file to delete" to "/.hiddenfile0.txt"
     And using <dav-path> DAV path
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "PARENT file content" to <upload-path>
     And user "Alice" has deleted file <delete-path>
     When user "Alice" restores the file with original path <delete-path> to <upload-path> using the trashbin API
-    Then the HTTP status code should be "204"
+    Then the HTTP status code should be "403"
     And as "Alice" file <upload-path> should exist
-    And the content of file <upload-path> for user "Alice" should be "file to delete"
+    And the content of file <upload-path> for user "Alice" should be "PARENT file content"
+    And as "Alice" the file with original path <delete-path> should exist in the trashbin
     Examples:
       | dav-path | upload-path                | delete-path        |
       | old      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
