@@ -1,0 +1,10 @@
+Bugfix: Point documentation help links at the latest server docs
+
+Contextual documentation links (setup checks, help & tips, app info.xml keys)
+were built as /server/<version>/go.php?to=<key> using the running server's
+concrete version, e.g. /server/10.16/. The documentation site publishes the
+current stable release only under /server/latest/, so those links resolved to
+a non-existent version path and 404'd. The version segment now defaults to
+'latest'; callers may still pass an explicit published version.
+
+https://github.com/owncloud/docs/issues/5132
