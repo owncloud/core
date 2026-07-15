@@ -19,9 +19,11 @@
  *
  */
 
-namespace OC\User\Sync;
+namespace Test\User\Sync;
 
 use OC\User\AccountMapper;
+use OC\User\Sync\SeenUsersIterator;
+use OC\User\Sync\UsersIterator;
 use Test\TestCase;
 
 /**

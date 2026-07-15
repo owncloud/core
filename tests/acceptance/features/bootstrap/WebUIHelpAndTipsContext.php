@@ -21,10 +21,12 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\HelpAndTipsPage;
+use Tests\Acceptance\Page\HelpAndTipsPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
 

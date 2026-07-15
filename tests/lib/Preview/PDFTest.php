@@ -19,7 +19,7 @@
  *
  */
 
-namespace lib\Preview;
+namespace Test\Preview;
 
 use OC\Preview\PDF;
 use OCP\Files\NotFoundException;

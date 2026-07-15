@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OC\Migrations;
+namespace OC\Core\Migrations;
 
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;

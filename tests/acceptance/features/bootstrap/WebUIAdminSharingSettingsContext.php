@@ -21,13 +21,15 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\AdminSharingSettingsPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\SetupHelper;
+use Tests\Acceptance\Page\AdminSharingSettingsPage;
 
 require_once 'bootstrap.php';
 
