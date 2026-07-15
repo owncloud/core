@@ -8,3 +8,4 @@ a non-existent version path and 404'd. The version segment now defaults to
 'latest'; callers may still pass an explicit published version.
 
 https://github.com/owncloud/docs/issues/5132
+https://github.com/owncloud/core/pull/41688
