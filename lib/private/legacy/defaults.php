@@ -46,7 +46,6 @@ class OC_Defaults {
 	private $defaultiTunesAppId;
 	private $defaultAndroidClientUrl;
 	private $defaultDocBaseUrl;
-	private $defaultDocVersion;
 	private $defaultSlogan;
 	private $defaultLogoClaim;
 	private $defaultMailHeaderColor;
@@ -58,8 +57,6 @@ class OC_Defaults {
 	public function __construct() {
 		$this->l = \OC::$server->getL10N('lib');
 		$this->config = \OC::$server->getConfig();
-		$version = \OCP\Util::getVersion();
-
 		$this->defaultEntity = 'ownCloud'; /* e.g. company name, used for footers and copyright notices */
 		$this->defaultName = 'ownCloud'; /* short name, used when referring to the software */
 		$this->defaultTitle = 'ownCloud'; /* can be a longer name, for titles */
@@ -69,7 +66,6 @@ class OC_Defaults {
 		$this->defaultiTunesAppId = '1359583808';
 		$this->defaultAndroidClientUrl = 'https://play.google.com/store/apps/details?id=com.owncloud.android';
 		$this->defaultDocBaseUrl = 'https://doc.owncloud.com';
-		$this->defaultDocVersion = $version[0] . '.' . $version[1]; // used to generate doc links
 		$this->defaultSlogan = $this->l->t('A safe home for all your data');
 		$this->defaultLogoClaim = '';
 		$this->defaultMailHeaderColor = '#041e42'; /* header color of mail notifications */
@@ -285,18 +281,18 @@ class OC_Defaults {
 
 	/**
 	 * @param string $key
-	 * @param string|null $ocVersion ownCloud version to look for in the docs. Defaults to the version of this onwCloud instance
+	 * @param string|null $ocVersion ownCloud version to look for in the docs.
+	 *        Defaults to 'latest'. The documentation site publishes the current
+	 *        stable release only under /server/latest/ (older minor versions
+	 *        such as 10.16 have no dedicated path), so a concrete version would
+	 *        404. Callers may still pass an explicit published version.
 	 */
 	public function buildDocLinkToKey($key, $ocVersion = null) {
 		if ($this->themeExist('buildDocLinkToKey')) {
 			return $this->theme->buildDocLinkToKey($key);
 		}
 
-		if ($ocVersion) {
-			$version = $ocVersion;
-		} else {
-			$version = $this->defaultDocVersion;
-		}
+		$version = $ocVersion ?: 'latest';
 
 		return $this->getDocBaseUrl() . '/server/' . $version . '/go.php?to=' . $key;
 	}
