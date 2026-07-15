@@ -31,6 +31,8 @@
 	 * @property {number} share_type
 	 * @property {string} share_with
 	 * @property {string} displayname_owner
+	 * @property {string} uid_file_owner
+	 * @property {string} displayname_file_owner
 	 * @property {number} permissions
 	 * @property {OC.Share.Types.ShareAttribute[]} attributes
 	 */
@@ -372,6 +374,20 @@
 		 */
 		getReshareOwnerDisplayname: function() {
 			return this.get('reshare').displayname_owner;
+		},
+
+		/**
+		 * @returns {string}
+		 */
+		getReshareFileOwner: function() {
+			return this.get('reshare').uid_file_owner;
+		},
+
+		/**
+		 * @returns {string}
+		 */
+		getReshareFileOwnerDisplayname: function() {
+			return this.get('reshare').displayname_file_owner;
 		},
 
 		/**
