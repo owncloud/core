@@ -38,6 +38,9 @@ ownCloud admins and users.
 
 ## Summary
 
+* Security - Prevent params body from overriding validated occ command: [#41577](https://github.com/owncloud/core/pull/41577)
+* Security - Replace strcmp token oracle with hash-based comparison in federation: [#41579](https://github.com/owncloud/core/pull/41579)
+* Security - Restrict unserialize() allowed classes in CommandJob: [#41582](https://github.com/owncloud/core/pull/41582)
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
 * Security - Prevent user enumeration via differential password reset UI: [#41586](https://github.com/owncloud/core/pull/41586)
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
@@ -64,6 +67,37 @@ ownCloud admins and users.
 * Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
 
 ## Details
+
+* Security - Prevent params body from overriding validated occ command: [#41577](https://github.com/owncloud/core/pull/41577)
+
+   OccController validated the URL-path command against an allowlist but then
+   merged it with user-supplied params via array_merge, allowing a command key in
+   the request body to overwrite the validated value. An authenticated caller with
+   the updater secret could use this to execute any occ command regardless of the
+   allowlist. The params array is now stripped of any command key before the merge.
+
+   https://github.com/owncloud/core/pull/41577
+
+* Security - Replace strcmp token oracle with hash-based comparison in federation: [#41579](https://github.com/owncloud/core/pull/41579)
+
+   The requestSharedSecret endpoint used strcmp() to compare caller-supplied and
+   stored federation tokens, returning different HTTP responses based on
+   lexicographic ordering. This allowed an unauthenticated attacker to recover the
+   stored token via binary search in approximately 96 requests. Tokens are now
+   compared by their SHA-256 hashes, removing the plaintext oracle while preserving
+   the tiebreaking behaviour.
+
+   https://github.com/owncloud/core/pull/41579
+
+* Security - Restrict unserialize() allowed classes in CommandJob: [#41582](https://github.com/owncloud/core/pull/41582)
+
+   CommandJob::run() called unserialize() without the allowed_classes option on
+   data sourced from the oc_jobs database table. An attacker with database write
+   access could inject a crafted PHP object payload to trigger gadget chains from
+   bundled libraries and achieve remote code execution. Deserialization is now
+   restricted to verified ICommand implementations only.
+
+   https://github.com/owncloud/core/pull/41582
 
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
 
