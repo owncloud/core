@@ -158,3 +158,75 @@ jobs:
       use-email-server: true
       server-folder: 'server'
       test-suites: "['cliProvisioning']"
+
+  acceptance-api-pass:
+    if: always()
+    name: API Acceptance Tests
+    needs: [acceptance-api, acceptance-api-federation, acceptance-api-notifications, acceptance-api-previews, acceptance-api-smoke]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check status of API Acceptance Tests
+        env:
+          API_RESULT: ${{ needs.acceptance-api.result }}
+          API_FEDERATION_RESULT: ${{ needs.acceptance-api-federation.result }}
+          API_NOTIFICATIONS_RESULT: ${{ needs.acceptance-api-notifications.result }}
+          API_PREVIEWS_RESULT: ${{ needs.acceptance-api-previews.result }}
+          API_SMOKE_RESULT: ${{ needs.acceptance-api-smoke.result }}
+        run: |
+          RETURN_STATUS=0
+          if [[ "${API_RESULT}" != "success" && "${API_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-api job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_FEDERATION_RESULT}" != "success" && "${API_FEDERATION_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-api-federation job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_NOTIFICATIONS_RESULT}" != "success" && "${API_NOTIFICATIONS_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-api-notifications job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_PREVIEWS_RESULT}" != "success" && "${API_PREVIEWS_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-api-previews job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_SMOKE_RESULT}" != "success" && "${API_SMOKE_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-api-smoke job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_RESULT}" == "skipped" && "${API_FEDERATION_RESULT}" == "skipped" && "${API_NOTIFICATIONS_RESULT}" == "skipped" && "${API_PREVIEWS_RESULT}" == "skipped" && "${API_SMOKE_RESULT}" == "skipped" ]]; then
+            echo "All the API Acceptance jobs were skipped"
+            RETURN_STATUS=1
+          fi
+          exit ${RETURN_STATUS}
+
+  acceptance-cli-pass:
+    if: always()
+    name: CLI Acceptance Tests
+    needs: [acceptance-cli, acceptance-cli-email, acceptance-cli-smoke]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check status of CLI Acceptance Tests
+        env:
+          CLI_RESULT: ${{ needs.acceptance-cli.result }}
+          CLI_EMAIL_RESULT: ${{ needs.acceptance-cli-email.result }}
+          CLI_SMOKE_RESULT: ${{ needs.acceptance-cli-smoke.result }}
+        run: |
+          RETURN_STATUS=0
+          if [[ "${CLI_RESULT}" != "success" && "${CLI_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-cli job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${CLI_EMAIL_RESULT}" != "success" && "${CLI_EMAIL_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-cli-email job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${CLI_SMOKE_RESULT}" != "success" && "${CLI_SMOKE_RESULT}" != "skipped" ]]; then
+            echo "The acceptance-cli-smoke job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${CLI_RESULT}" == "skipped" && "${CLI_EMAIL_RESULT}" == "skipped" && "${CLI_SMOKE_RESULT}" == "skipped" ]]; then
+            echo "All the CLI Acceptance jobs were skipped"
+            RETURN_STATUS=1
+          fi
+          exit ${RETURN_STATUS}
