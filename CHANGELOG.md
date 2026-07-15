@@ -44,6 +44,7 @@ ownCloud admins and users.
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
 * Security - Prevent user enumeration via differential password reset UI: [#41586](https://github.com/owncloud/core/pull/41586)
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
+* Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
 * Bugfix - Fix htaccess RewriteBase rules blocking API requests by file extension: [#41418](https://github.com/owncloud/core/issues/41418)
@@ -129,6 +130,18 @@ ownCloud admins and users.
    true in config.php.
 
    https://github.com/owncloud/core/pull/41634
+
+* Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
+
+   Contextual documentation links (setup checks, help & tips, app info.xml keys)
+   were built as /server/<version>/go.php?to=<key> using the running server's
+   concrete version, e.g. /server/10.16/. The documentation site publishes the
+   current stable release only under /server/latest/, so those links resolved to a
+   non-existent version path and 404'd. The version segment now defaults to
+   'latest'; callers may still pass an explicit published version.
+
+   https://github.com/owncloud/docs/issues/5132
+   https://github.com/owncloud/core/pull/41688
 
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 
