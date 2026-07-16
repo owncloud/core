@@ -66,17 +66,51 @@ abstract class Storage extends \Test\TestCase {
 	 * @dataProvider directoryProvider
 	 */
 	public function testDirectories($directory) {
-		$this->assertFalse($this->instance->file_exists('/' . $directory));
+		$this->assertFalse(
+			$this->instance->file_exists('/' . $directory),
+			"The folder '$directory' already exists at the start of the test"
+		);
 
-		$this->assertTrue($this->instance->mkdir('/' . $directory));
+		$this->assertTrue(
+			$this->instance->mkdir('/' . $directory),
+			"The folder '$directory' could not be created"
+		);
 
-		$this->assertTrue($this->instance->file_exists('/' . $directory));
-		$this->assertTrue($this->instance->is_dir('/' . $directory));
-		$this->assertFalse($this->instance->is_file('/' . $directory));
-		$this->assertEquals('dir', $this->instance->filetype('/' . $directory));
-		$this->assertEquals(0, $this->instance->filesize('/' . $directory));
-		$this->assertTrue($this->instance->isReadable('/' . $directory));
-		$this->assertTrue($this->instance->isUpdatable('/' . $directory));
+		$this->assertTrue(
+			$this->instance->file_exists('/' . $directory),
+			"The folder '$directory' does not exist"
+		);
+		$this->assertTrue(
+			$this->instance->is_dir('/' . $directory),
+			"The folder '$directory' is not a directory"
+		);
+		$this->assertFalse(
+			$this->instance->is_file('/' . $directory),
+			"The folder '$directory' is actually a file"
+		);
+		$fileType = $this->instance->filetype('/' . $directory);
+		if ($fileType === false) {
+			$this->fail("The file type of folder '$directory' could not be determined");
+		}
+		$this->assertEquals(
+			'dir',
+			$fileType,
+			"The folder '$directory' is file type $fileType, not 'dir'"
+		);
+		$fileSize = $this->instance->filesize('/' . $directory);
+		$this->assertEquals(
+			0,
+			$fileSize,
+			"The empty folder '$directory' has non-zero size " . (string) $fileSize
+		);
+		$this->assertTrue(
+			$this->instance->isReadable('/' . $directory),
+			"The folder '$directory' is not readable"
+		);
+		$this->assertTrue(
+			$this->instance->isUpdatable('/' . $directory),
+			"The folder '$directory' is not updatable"
+		);
 
 		$dh = $this->instance->opendir('/');
 		$content = [];
@@ -87,13 +121,25 @@ abstract class Storage extends \Test\TestCase {
 		}
 		$this->assertEquals([$directory], $content);
 
-		$this->assertFalse($this->instance->mkdir('/' . $directory)); //can't create existing folders
-		$this->assertTrue($this->instance->rmdir('/' . $directory));
+		$this->assertFalse(
+			$this->instance->mkdir('/' . $directory),
+			"The folder '$directory' could be created again when it already exists"
+		); //can't create existing folders
+		$this->assertTrue(
+			$this->instance->rmdir('/' . $directory),
+			"The folder '$directory' could not be deleted"
+		);
 
 		$this->wait();
-		$this->assertFalse($this->instance->file_exists('/' . $directory));
+		$this->assertFalse(
+			$this->instance->file_exists('/' . $directory),
+			"The folder '$directory' still exists after deleting it"
+		);
 
-		$this->assertFalse($this->instance->rmdir('/' . $directory)); //can't remove non existing folders
+		$this->assertFalse(
+			$this->instance->rmdir('/' . $directory),
+			"The folder '$directory' could be deleted again even though it was just deleted"
+		); //can't remove non-existing folders
 
 		$dh = $this->instance->opendir('/');
 		$content = [];
