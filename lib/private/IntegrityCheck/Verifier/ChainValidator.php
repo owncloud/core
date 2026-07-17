@@ -20,8 +20,10 @@ use phpseclib3\File\X509;
  * 1. Collect candidate intermediates = envelope chain PEMs + bundled intermediates
  * 2. For EACH candidate, verify it chains to SOME trusted root (fresh X509 per candidate)
  * 3. Build leaf-validation X509 with ALL trusted roots + verified intermediates as CAs
- * 4. Validate leaf signature and constraints (basicConstraints.cA==false, keyUsage has digitalSignature, extKeyUsage has codeSigning)
- * 5. Determine which root anchored the chain by testing each root in isolation
+ * 4. Validate leaf signature, then determine which root anchored the chain
+ * 5. Enforce the strict leaf profile (basicConstraints.cA==false, keyUsage has digitalSignature,
+ *    extKeyUsage has codeSigning) for G2 leaves only; legacy G1 leaves are extension-less by
+ *    design and the old verifier enforced no leaf constraints on them
  *
  * @package OC\IntegrityCheck\Verifier
  */
@@ -46,13 +48,34 @@ class ChainValidator {
 	 * @throws BadChainException On any validation failure
 	 */
 	public function validate(string $leafPem, array $chainPems): ChainResult {
-		// SECURITY: Disable URL fetch in phpseclib to prevent SSRF via AIA caIssuers
+		// SECURITY: Disable URL fetch in phpseclib to prevent SSRF via AIA caIssuers.
+		// NOTE: this mutates process-global phpseclib state (X509::$disable_url_fetch)
+		// and is intentionally never re-enabled — no other code path in ownCloud relies
+		// on phpseclib fetching remote AIA/CRL URLs, so leaving it disabled is the safe
+		// direction and avoids a fragile save/restore around every validation.
 		X509::disableURLFetch();
 		// Step 1: Get trusted roots
 		$roots = $this->trustStore->getRoots();
 		if (empty($roots)) {
 			throw new BadChainException('No trusted roots available.');
 		}
+
+		// Order roots deterministically by filename. getRoots() returns them in
+		// filesystem (scandir) order; determineAnchorGeneration() returns the FIRST
+		// root that anchors the leaf, so without a stable order a leaf that could
+		// chain to more than one generation would get a filesystem-dependent
+		// generation (and thus CRL path + legacy-warn eligibility).
+		//
+		// NOTE: a stricter "prefer g2 on ambiguity" tie-break would be desirable, but
+		// determineAnchorGeneration() loads verified intermediates as CAs, so the
+		// per-root isolation is looser than a full path build and reordering roots by
+		// generation mis-classifies single-generation leaves. Hardening the anchor
+		// derivation to a true per-root path check is tracked as a follow-up; for now
+		// only bundled ownCloud-keyed roots are trust anchors, so reaching either path
+		// still requires an ownCloud CA signature.
+		\usort($roots, static function (array $a, array $b): int {
+			return \strcmp($a['filename'], $b['filename']);
+		});
 
 		$bundledIntermediates = $this->trustStore->getBundledIntermediates();
 
@@ -99,11 +122,21 @@ class ChainValidator {
 			throw new BadChainException('Leaf certificate does not chain to a trusted root.');
 		}
 
-		// Step 5: Enforce leaf constraints
-		$this->enforceLeafConstraints($leafX509);
-
-		// Step 6: Determine which root anchored the chain
+		// Step 5: Determine which root anchored the chain (needed before constraint
+		// enforcement, since G1 and G2 leaves are held to different constraint rules).
 		$anchorGeneration = $this->determineAnchorGeneration($leafPem, $roots, $verifiedIntermediates);
+
+		// Step 6: Enforce leaf constraints.
+		// The strict X.509 leaf profile (basicConstraints.cA==false, keyUsage has
+		// digitalSignature, extKeyUsage has codeSigning) applies ONLY to G2 leaves.
+		// Legacy G1 code-signing certs in the field are extension-less (e.g. the
+		// shipped resources/codesigning/core.crt and tests/data/integritycheck/SomeApp.crt
+		// carry no v3 extensions at all) and the old verifier enforced none of these
+		// constraints. Enforcing them on G1 would reject real legacy apps, breaking the
+		// transition contract in resources/codesigning/README.md (§"G1 Transition").
+		if ($anchorGeneration !== 'g1') {
+			$this->enforceLeafConstraints($leafX509);
+		}
 
 		// Extract leaf CN and serial from the loaded certificate
 		$leafDn = $leafX509->getDN(X509::DN_OPENSSL);
@@ -119,7 +152,10 @@ class ChainValidator {
 	}
 
 	/**
-	 * Enforce leaf certificate constraints.
+	 * Enforce the strict G2 leaf certificate profile.
+	 *
+	 * Applied to G2 leaves only. Legacy G1 leaves are extension-less by design and
+	 * are exempt (see validate()).
 	 *
 	 * @param X509 $leaf Loaded leaf certificate
 	 * @throws BadChainException On constraint violation

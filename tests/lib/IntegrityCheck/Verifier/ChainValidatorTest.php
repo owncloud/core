@@ -201,6 +201,49 @@ class ChainValidatorTest extends TestCase {
 	}
 
 	/**
+	 * Test: legacy G1 leaf-constraint exemption.
+	 *
+	 * An extension-less leaf (no basicConstraints / keyUsage / extKeyUsage) that
+	 * anchors to the G1 root MUST validate — legacy field certs carry no v3
+	 * extensions and the old verifier enforced none. The strict G2 leaf profile
+	 * (exercised by testLeafMissingEKU / testLeafMissingDigitalSignature) applies
+	 * to G2 anchors only.
+	 */
+	public function testExtensionlessLeafAllowedForG1(): void {
+		$trustStore = $this->createTrustStore(['root-g1.crt'], ['intermediate-g1.crt']);
+
+		$validator = new ChainValidator($trustStore);
+
+		$leafPem = $this->readCertFile('leaf-g1-legacy-noext.crt');
+		$chainPems = [$this->readCertFile('intermediate-g1.crt')];
+
+		$result = $validator->validate($leafPem, $chainPems);
+
+		$this->assertSame('g1', $result->getAnchorGeneration());
+		$this->assertTrue($result->isG1());
+		$this->assertSame('SomeApp', $result->getLeafCn(), 'Legacy CN is preserved verbatim');
+	}
+
+	/**
+	 * Test: an extension-less leaf that anchors to G2 is still rejected — the
+	 * exemption is keyed on the G1 anchor generation, not on the leaf shape.
+	 */
+	public function testExtensionlessLeafRejectedForG2(): void {
+		$this->expectException(BadChainException::class);
+
+		// Extension-less leaf is issued by intermediate-g1, so with only the G2
+		// root trusted it cannot chain at all — a fortiori it never validates as G2.
+		$trustStore = $this->createTrustStore(['root-g2.crt'], ['intermediate-g2.crt']);
+
+		$validator = new ChainValidator($trustStore);
+
+		$leafPem = $this->readCertFile('leaf-g1-legacy-noext.crt');
+		$chainPems = [$this->readCertFile('intermediate-g1.crt')];
+
+		$validator->validate($leafPem, $chainPems);
+	}
+
+	/**
 	 * Test: No trusted roots available.
 	 */
 	public function testNoTrustedRoots(): void {

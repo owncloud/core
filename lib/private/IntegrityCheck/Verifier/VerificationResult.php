@@ -92,9 +92,9 @@ class VerificationResult {
 	 * - ['LEGACY_ACCEPTED_WARN' => true] for a legacy-warn result
 	 * - The structured diff array for an integrity diff failure
 	 *
-	 * NOTE: Task 12 must special-case the LEGACY_ACCEPTED_WARN marker, as the legacy
-	 * hasPassedCheck() treats a non-empty results array as FAILED. But legacyWarn is a
-	 * pass-with-warning, so Task 12 should treat this marker as passed.
+	 * NOTE: The LEGACY_ACCEPTED_WARN marker is special-cased by Checker::hasPassedCheck():
+	 * a non-empty results array is normally treated as FAILED, but legacyWarn is a
+	 * pass-with-warning, so this marker is treated as passed.
 	 *
 	 * @return array
 	 */

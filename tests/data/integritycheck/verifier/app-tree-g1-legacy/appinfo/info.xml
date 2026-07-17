@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<info>
+	<id>SomeApp</id>
+	<name>Some App (G1 legacy, uppercase CN)</name>
+	<version>1.0.0</version>
+	<description>Extension-less, uppercase-CN legacy G1 backward-compat fixture</description>
+</info>

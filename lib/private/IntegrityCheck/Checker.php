@@ -112,8 +112,8 @@ class Checker implements OnDiskHasher {
 	/**
 	 * Get the Verifier instance, building it lazily if not injected.
 	 *
-	 * Lazy building is a fallback for tests and early initialization;
-	 * Task 13 will inject the Verifier directly via the constructor.
+	 * Lazy building is a fallback for tests and early initialization; in normal
+	 * operation the Verifier is injected directly via the constructor.
 	 *
 	 * @return Verifier
 	 */

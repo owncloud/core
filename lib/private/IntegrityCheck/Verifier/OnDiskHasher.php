@@ -11,7 +11,7 @@ namespace OC\IntegrityCheck\Verifier;
  *
  * Returns relativePath => sha512hex for the tree at $basePath, applying the
  * same exclusions and (in core mode) .htaccess/.user.ini normalization as the
- * signer. This is the seam the existing Checker::generateHashes fills in Task 12.
+ * signer. This is the seam the existing Checker::generateHashes fills.
  *
  * @package OC\IntegrityCheck\Verifier
  */

@@ -352,6 +352,44 @@ class LegacyTransitionTest extends TestCase {
 	}
 
 	/**
+	 * Backward-compat regression: a REAL field-shaped legacy G1 leaf — extension-less
+	 * (no basicConstraints / keyUsage / extKeyUsage) and with an UPPERCASE CN
+	 * (CN=SomeApp) — must still verify through the full pipeline exactly as the old
+	 * verifier accepted it. The shipped resources/codesigning/core.crt and the
+	 * canonical tests/data/integritycheck/SomeApp.crt both have this shape.
+	 *
+	 * The leaf is NON-expired (valid 2020..2030) at the reference time, so this
+	 * exercises the plain "passed" G1 path, not the legacy-warn branch.
+	 */
+	public function testLegacyG1ExtensionlessUppercaseCnPasses(): void {
+		$appTreePath = $this->basePath . '/app-tree-g1-legacy';
+		$signaturePath = $appTreePath . '/signature.json';
+
+		// Hashes match the app-tree-g1-legacy fixture (see gen_g1_legacy_fixture.sh).
+		$expectedHashes = [
+			'appinfo/info.xml' => '1839dd617fd5ca4e04eaafa90adaac544faef072a2919fbca9e7e631de963cfda172068a98596c0f6f476412312e3ee925722b1fea83cd95fadbcf3a3ae24206',
+			'test-file-1.txt' => '72aa66f9602c78a1dc4290573c6c417e7802da81d694cae366e39b88c6714a3d581fecc727b3e9977851e07bb1a99ecc5cd4ace9297d26f3c20aec31f156516c',
+			'test-file-2.txt' => '4c1d82c796ea8ff216e678a53c0116b5829ea8d50d710b2d727e88a34ae76a4f2363e6ccc678a5cdf3e5452fd58a54fbd474300d64e1c145947f6523d66205ce',
+		];
+		$this->fakeHasher->setHashes($expectedHashes);
+
+		// Non-expired at 2026-06-01 (leaf valid 2020..2030), before sunset, legacy alg.
+		$now = new \DateTimeImmutable('2026-06-01T00:00:00Z');
+
+		$result = $this->verifier->verify(
+			$signaturePath,
+			$appTreePath,
+			'SomeApp',
+			false,
+			$now
+		);
+
+		$this->assertTrue($result->isPassed(), 'Extension-less/uppercase-CN legacy G1 leaf must pass');
+		$this->assertFalse($result->isLegacyWarn(), 'Non-expired G1 leaf is a plain pass, not legacy-warn');
+		$this->assertSame([], $result->getDiff(), 'Expected no integrity diff');
+	}
+
+	/**
 	 * Test G2 regression: valid non-expired G2 app still returns passed() (not legacyWarn).
 	 */
 	public function testG2RegressionUnaffected(): void {

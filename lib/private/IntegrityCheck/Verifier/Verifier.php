@@ -80,7 +80,7 @@ class Verifier {
 	 * @param string $expectedIdentity App ID or 'core' in core mode
 	 * @param bool $coreMode Whether to validate in core mode (CN must be 'core')
 	 * @param ?\DateTimeInterface $now Reference time for validity checks (defaults to current UTC)
-	 * @param array $excludedFiles Files to exclude from integrity diff (Task 12 extension)
+	 * @param array $excludedFiles Files to exclude from integrity diff
 	 * @return VerificationResult
 	 * @throws MissingSignatureException
 	 * @throws BadChainException
@@ -185,7 +185,8 @@ class Verifier {
 		if ($coreMode) {
 			$this->appIdResolver->assertCoreCn($chain->getLeafCn());
 		} else {
-			$this->appIdResolver->assertAppIdMatchesCn($basePath, $chain->getLeafCn());
+			// Legacy G1 leaves use the old case-sensitive, un-gated CN match.
+			$this->appIdResolver->assertAppIdMatchesCn($basePath, $chain->getLeafCn(), $chain->isG1());
 		}
 
 		// Step 8: Integrity diff

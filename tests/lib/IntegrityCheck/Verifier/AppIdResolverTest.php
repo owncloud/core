@@ -95,6 +95,39 @@ class AppIdResolverTest extends TestCase {
 	}
 
 	/**
+	 * Legacy G1: an uppercase CN matching the raw info.xml <id> byte-for-byte is
+	 * accepted (old verifier semantics: no folding, no APPID_PATTERN gate).
+	 */
+	public function testAssertAppIdMatchesCnLegacyG1UppercaseAccepted(): void {
+		$basePath = $this->fixtureDir . '/uppercase'; // <id>Example-App</id>
+		$leafCn = 'Example-App';
+		$result = $this->resolver->assertAppIdMatchesCn($basePath, $leafCn, true);
+		$this->assertEquals('Example-App', $result, 'Legacy G1 returns the raw, un-folded id');
+	}
+
+	/**
+	 * Legacy G1: comparison is still exact/case-sensitive — a folded CN that does
+	 * NOT match the raw id is rejected.
+	 */
+	public function testAssertAppIdMatchesCnLegacyG1CaseSensitiveMismatch(): void {
+		$this->expectException(CnMismatchException::class);
+		$basePath = $this->fixtureDir . '/uppercase'; // <id>Example-App</id>
+		$leafCn = 'example-app'; // differs in case
+		$this->resolver->assertAppIdMatchesCn($basePath, $leafCn, true);
+	}
+
+	/**
+	 * G2 default: the same uppercase CN that legacy G1 accepts is rejected, since
+	 * the strict path folds the id (example-app) and gates the CN on APPID_PATTERN.
+	 */
+	public function testAssertAppIdMatchesCnG2RejectsUppercaseCn(): void {
+		$this->expectException(CnMismatchException::class);
+		$basePath = $this->fixtureDir . '/uppercase';
+		$leafCn = 'Example-App';
+		$this->resolver->assertAppIdMatchesCn($basePath, $leafCn); // $legacyG1 = false
+	}
+
+	/**
 	 * Test core mode: assertCoreCn('core') should pass
 	 */
 	public function testAssertCoreCnValid(): void {

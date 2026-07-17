@@ -36,12 +36,24 @@ class AppIdResolver {
 	 * and compare to the leaf CN. On success returns the canonical appId.
 	 * On any failure throws CnMismatchException.
 	 *
+	 * G2 leaves are held to the canonical identity profile: the appId is folded
+	 * to lowercase, both appId and CN must match APPID_PATTERN, and the folded
+	 * appId must equal the CN byte-for-byte.
+	 *
+	 * Legacy G1 leaves ($legacyG1 = true) restore the old verifier's semantics:
+	 * a plain case-sensitive byte comparison of the raw info.xml <id> against the
+	 * leaf CN, with NO lowercase folding and NO APPID_PATTERN gate. Legacy dev
+	 * certs in the field use mixed-case CNs (e.g. CN=SomeApp) that the strict
+	 * lowercase-only pattern would otherwise reject, breaking the transition
+	 * contract in resources/codesigning/README.md (§"G1 Transition").
+	 *
 	 * @param string $basePath Base path to the app directory
 	 * @param string $leafCn Leaf certificate CN to validate against
-	 * @return string The canonical appId (folded to lowercase)
+	 * @param bool $legacyG1 Whether this leaf anchors to the legacy G1 generation
+	 * @return string The resolved appId (folded to lowercase for G2; raw for legacy G1)
 	 * @throws CnMismatchException
 	 */
-	public function assertAppIdMatchesCn(string $basePath, string $leafCn): string {
+	public function assertAppIdMatchesCn(string $basePath, string $leafCn, bool $legacyG1 = false): string {
 		// Read info.xml
 		$infoXmlPath = $basePath . '/appinfo/info.xml';
 		$xmlContent = $this->fileAccessHelper->file_get_contents($infoXmlPath);
@@ -84,6 +96,15 @@ class AppIdResolver {
 		$id = (string) $xml->id;
 		if ($id === '') {
 			throw new CnMismatchException('Missing or empty <id> in appinfo/info.xml');
+		}
+
+		// Legacy G1 path: reproduce the old verifier's plain case-sensitive byte
+		// compare, with no folding and no APPID_PATTERN gate (see method docblock).
+		if ($legacyG1) {
+			if ($id !== $leafCn) {
+				throw new CnMismatchException('CN does not match app identity: ' . $id . ' !== ' . $leafCn);
+			}
+			return $id;
 		}
 
 		// Fold the id (ASCII-only: A-Z -> a-z)
