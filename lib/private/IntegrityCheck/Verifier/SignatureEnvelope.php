@@ -117,6 +117,12 @@ class SignatureEnvelope {
 			}
 
 			$version = $data['v'] ?? 2;
+			// Only accept envelope versions this verifier understands. A future v3 may
+			// use a different canonical-M construction; silently treating it as v2 would
+			// reconstruct the wrong signed bytes. Reject anything but the known version.
+			if ($version !== 2) {
+				throw new MissingSignatureException('Signature data not found.');
+			}
 			$alg = $data['alg'] ?? null;
 
 			return new self(

@@ -146,4 +146,24 @@ class SignatureEnvelopeTest extends TestCase {
 		$this->expectException(MissingSignatureException::class);
 		SignatureEnvelope::parse('{"hashes":"not-an-object","signature":"cGxhY2Vob2xkZXI=","certificate":"pem"}');
 	}
+
+	/**
+	 * An envelope carrying an unknown version must be rejected rather than parsed
+	 * with v2 canonicalization rules — a future v3 could reconstruct wrong signed bytes.
+	 */
+	public function testErrorUnknownVersion(): void {
+		$envelope = [
+			'v' => 99,
+			'alg' => 'ecdsa-p384-sha384',
+			'hashes' => ['normal.txt' => 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01'],
+			'signature' => 'cGxhY2Vob2xkZXI=',
+			'certificates' => [
+				'leaf' => 'test',
+				'chain' => []
+			]
+		];
+
+		$this->expectException(MissingSignatureException::class);
+		SignatureEnvelope::parse(json_encode($envelope));
+	}
 }

@@ -6,6 +6,8 @@
 
 namespace OC\IntegrityCheck\Verifier;
 
+use OC\IntegrityCheck\Exceptions\MissingSignatureException;
+
 /**
  * CanonicalManifest - Hand-serialized canonical manifest for byte-exact parity with Go signer.
  *
@@ -50,7 +52,14 @@ class CanonicalManifest {
 	 * @return array Associative array: path => sha512hex
 	 */
 	public static function decodeHashesMap(string $rawM): array {
-		return \json_decode($rawM, true);
+		$decoded = \json_decode($rawM, true);
+		// json_decode returns null on malformed input. Guard so a defect in the
+		// brace-balanced scanner degrades into a clean MISSING_SIGNATURE reason code
+		// rather than a TypeError on the SignatureEnvelope array-typed constructor.
+		if (!\is_array($decoded)) {
+			throw new MissingSignatureException('Signature data not found.');
+		}
+		return $decoded;
 	}
 
 	/**

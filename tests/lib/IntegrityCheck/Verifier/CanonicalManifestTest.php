@@ -7,6 +7,7 @@
 namespace Test\IntegrityCheck\Verifier;
 
 use OC\IntegrityCheck\Verifier\CanonicalManifest;
+use OC\IntegrityCheck\Exceptions\MissingSignatureException;
 use Test\TestCase;
 
 class CanonicalManifestTest extends TestCase {
@@ -152,6 +153,23 @@ class CanonicalManifestTest extends TestCase {
 		// Verify round-trip
 		$decoded = CanonicalManifest::decodeHashesMap($result);
 		$this->assertSame($hashes, $decoded);
+	}
+
+	/**
+	 * Malformed input that json_decode returns null for must raise a clean
+	 * MissingSignatureException, not a TypeError on the array return type.
+	 */
+	public function testDecodeHashesMapRejectsMalformed() {
+		$this->expectException(MissingSignatureException::class);
+		CanonicalManifest::decodeHashesMap('{not valid json');
+	}
+
+	/**
+	 * A JSON scalar (valid JSON, but not an object) must likewise be rejected.
+	 */
+	public function testDecodeHashesMapRejectsScalar() {
+		$this->expectException(MissingSignatureException::class);
+		CanonicalManifest::decodeHashesMap('42');
 	}
 
 	/**
