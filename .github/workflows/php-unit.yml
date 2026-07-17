@@ -14,7 +14,7 @@ jobs:
     name: PHP Unit
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         php: ${{ fromJSON(inputs.php-versions) }}
         database: [sqlite]
