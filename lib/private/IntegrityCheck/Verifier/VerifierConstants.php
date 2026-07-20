@@ -12,7 +12,10 @@ namespace OC\IntegrityCheck\Verifier;
  * @package OC\IntegrityCheck\Verifier
  */
 class VerifierConstants {
-	public const CRL_URL = 'https://owncloud.github.io/developer-certificates/crl/developers.crl';
+	// Served from owncloud.dev (not the owncloud.github.io path, which
+	// 301-redirects org-wide to owncloud.dev — CrlFetcher does not follow
+	// redirects; see spec-core-verifier §5, design §13).
+	public const CRL_URL = 'https://owncloud.dev/developer-certificates/crl/developers.crl';
 	public const LEGACY_SUNSET = '2026-12-31T23:59:59Z';
 	public const ALG_ECDSA_P384_SHA384 = 'ecdsa-p384-sha384';
 	public const ALG_RSA_PSS_SHA384 = 'rsa-pss-sha384';
