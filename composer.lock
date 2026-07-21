@@ -1267,8 +1267,14 @@
             "version": "3.8.1",
             "source": {
                 "type": "git",
-                "url": "https://codeberg.org/icewind/SMB",
+                "url": "https://github.com/DeepDiver1975/SMB.git",
                 "reference": "97063a63b44edc6554966f6121679506b8d85103"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/SMB/zipball/97063a63b44edc6554966f6121679506b8d85103",
+                "reference": "97063a63b44edc6554966f6121679506b8d85103",
+                "shasum": ""
             },
             "require": {
                 "icewind/streams": ">=0.7.3",
@@ -1286,7 +1292,25 @@
                     "Icewind\\SMB\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Icewind\\SMB\\Test\\": "tests/"
+                }
+            },
+            "scripts": {
+                "lint": [
+                    "parallel-lint --exclude src --exclude vendor --exclude target --exclude build ."
+                ],
+                "cs:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "cs:fix": [
+                    "php-cs-fixer fix"
+                ],
+                "psalm": [
+                    "psalm.phar"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -1297,7 +1321,11 @@
                 }
             ],
             "description": "php wrapper for smbclient and libsmbclient-php",
-            "time": "2025-11-13T16:17:19+00:00"
+            "support": {
+                "source": "https://github.com/DeepDiver1975/SMB/tree/3.8.1",
+                "issues": "https://github.com/DeepDiver1975/SMB/issues"
+            },
+            "time": "2025-11-13T16:18:18+00:00"
         },
         {
             "name": "icewind/streams",
