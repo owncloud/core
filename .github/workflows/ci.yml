@@ -37,10 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Validate changelog entries
-        uses: actionhippie/calens@6c54a62bb0c9ac28f361e40f536fe0c69ba50e34 # v1.14.1
+        uses: actionhippie/calens@2008d3a7a90cf05a2a001a3d47cac06cb1b74617 # v1.14.2
 
   acceptance-api-smoke:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
