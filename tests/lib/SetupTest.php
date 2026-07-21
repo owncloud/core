@@ -145,6 +145,13 @@ class SetupTest extends \Test\TestCase {
 		\touch($htaccessFile);
 		\chmod($htaccessFile, 0400);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		$this->config
+			->expects($this->exactly(2))
+			->method('getSystemValue')
+			->willReturnOnConsecutiveCalls(
+				'https://www.example.com/owncloud',
+				'/'
+			);
 		try {
 			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {
@@ -167,6 +174,12 @@ class SetupTest extends \Test\TestCase {
 		@\mkdir($htaccessFile);
 		
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		$this->config
+			->expects($this->exactly(1))
+			->method('getSystemValue')
+			->willReturnOnConsecutiveCalls(
+				'https://www.example.com/owncloud'
+			);
 		try {
 			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {
@@ -183,6 +196,13 @@ class SetupTest extends \Test\TestCase {
 		\touch($htaccessFile);
 		\chmod($htaccessFile, 0700);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
+		$this->config
+			->expects($this->exactly(2))
+			->method('getSystemValue')
+			->willReturnOnConsecutiveCalls(
+				'https://www.example.com/owncloud',
+				'/'
+			);
 		try {
 			$this->setupClass->updateHtaccess($this->config);
 		} catch (\Exception $e) {

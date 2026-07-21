@@ -4,6 +4,7 @@
 		 failOnWarning="true"
 		 timeoutForSmallTests="900" timeoutForMediumTests="900"
 		 timeoutForLargeTests="900"
+		 convertDeprecationsToExceptions="true"
 		 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
 	<coverage>
 		<include>
