@@ -8,6 +8,7 @@ namespace OC\IntegrityCheck\Verifier;
 
 use OCP\Http\Client\IClientService;
 use OCP\ILogger;
+use OCP\Util;
 
 /**
  * Fetches CRL (Certificate Revocation List) from HTTPS URLs with no redirects.
@@ -76,7 +77,7 @@ class CrlFetcher {
 				$this->logger->logException($e, [
 					'app' => 'core',
 					'message' => 'CRL fetch failed for URL ' . $url,
-					'level' => ILogger::WARN,
+					'level' => Util::WARN,
 				]);
 			}
 			return null;

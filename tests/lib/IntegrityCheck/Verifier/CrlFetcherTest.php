@@ -10,6 +10,7 @@ use OC\IntegrityCheck\Verifier\CrlFetcher;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
+use OCP\ILogger;
 use Test\TestCase;
 
 class CrlFetcherTest extends TestCase {
@@ -160,6 +161,77 @@ class CrlFetcherTest extends TestCase {
 			->willReturn($client);
 
 		$result = $this->fetcher->fetch($url);
+		$this->assertNull($result);
+	}
+
+	/**
+	 * A transport exception with a logger present must drive the logException
+	 * branch to completion (this is the branch that references the Util::WARN
+	 * level constant). Regression guard: a logger-less fetcher never dereferences
+	 * that constant at runtime, so only an injected logger exercises it.
+	 */
+	public function testFetchTransportExceptionIsLogged(): void {
+		$url = 'https://example.test/crl';
+
+		$client = $this->createMock(IClient::class);
+		$client->expects($this->once())
+			->method('get')
+			->willThrowException(new \Exception('Network error'));
+
+		$this->clientService->expects($this->once())
+			->method('newClient')
+			->willReturn($client);
+
+		$logger = $this->createMock(ILogger::class);
+		$logger->expects($this->once())
+			->method('logException')
+			->with(
+				$this->isInstanceOf(\Throwable::class),
+				$this->callback(function ($context) {
+					// The level must be the numeric Util::WARN, which is what
+					// Log::logException() forwards to log(). An undefined constant
+					// here is exactly the bug this test guards against.
+					return isset($context['level']) && $context['level'] === \OCP\Util::WARN;
+				})
+			);
+
+		$fetcher = new CrlFetcher($this->clientService, $logger);
+		$result = $fetcher->fetch($url);
+		$this->assertNull($result);
+	}
+
+	/**
+	 * A non-200 status with a logger present must drive the warning-log branch.
+	 */
+	public function testFetchNon200StatusIsLogged(): void {
+		$url = 'https://example.test/crl';
+
+		$response = $this->createMock(IResponse::class);
+		$response->expects($this->once())
+			->method('getStatusCode')
+			->willReturn(503);
+
+		$client = $this->createMock(IClient::class);
+		$client->expects($this->once())
+			->method('get')
+			->willReturn($response);
+
+		$this->clientService->expects($this->once())
+			->method('newClient')
+			->willReturn($client);
+
+		$logger = $this->createMock(ILogger::class);
+		$logger->expects($this->once())
+			->method('warning')
+			->with(
+				$this->stringContains('CRL fetch failed'),
+				$this->callback(function ($context) {
+					return isset($context['status']) && $context['status'] === 503;
+				})
+			);
+
+		$fetcher = new CrlFetcher($this->clientService, $logger);
+		$result = $fetcher->fetch($url);
 		$this->assertNull($result);
 	}
 
