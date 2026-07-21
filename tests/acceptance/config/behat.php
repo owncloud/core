@@ -934,23 +934,6 @@ return (new Config())
 			)
 			->withSuite(
 				(new Suite(
-					'apiWebdavUploadTUS',
-					$suiteSettings
-				))
-					->addContext(
-						'FeatureContext',
-						$featureContextArgs
-					)
-					->addContext('LoggingContext')
-					->addContext('OccContext')
-					->addContext('PublicWebDavContext')
-					->addContext('TUSContext')
-					->addContext('FilesVersionsContext')
-					->addContext('ChecksumContext')
-					->withPaths('%paths.base%/../features/apiWebdavUploadTUS')
-			)
-			->withSuite(
-				(new Suite(
 					'apiWebdavEtagPropagation1',
 					$suiteSettings
 				))

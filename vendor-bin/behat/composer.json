@@ -10,10 +10,9 @@
         "sensiolabs/behat-page-object-extension": "^2.3",
         "symfony/translation": "^5.4",
         "sabre/xml": "^2.2",
-        "guzzlehttp/guzzle": "^7.11",
+        "guzzlehttp/guzzle": "^7.15",
         "phpunit/phpunit": "^9.6",
         "laminas/laminas-ldap": "^2.20",
-        "ankitpokhrel/tus-php": "^2.4",
         "helmich/phpunit-json-assert": "^3.5"
     }
 }
