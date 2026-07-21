@@ -4,7 +4,12 @@ When getSharedSecret received an invalid token it logged both the
 submitted value and the expected valid token in plaintext. Since the
 endpoint is public, any unauthenticated caller could trigger this log
 entry at will for any trusted server URL, exposing the valid token to
-anyone with log-read access. The token values have been removed from
-the log message.
+anyone with log-read access.
+
+A second leak in the same code path has also been closed: the
+GetSharedSecret background job sends the token as a GET query
+parameter, so on an unexpected HTTP response the Guzzle exception -
+whose message embeds the full request URI including "?token=..." -
+was logged verbatim. Both log sites no longer emit the token value.
 
 https://github.com/owncloud/core/pull/41578

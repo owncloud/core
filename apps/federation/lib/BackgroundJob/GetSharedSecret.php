@@ -159,11 +159,21 @@ class GetSharedSecret extends Job {
 			if ($status === Http::STATUS_FORBIDDEN) {
 				$this->logger->info($target . ' refused to exchange a shared secret with you.', ['app' => 'federation']);
 			} else {
-				$this->logger->logException($e, ['app' => 'federation']);
+				// NB: do not log the exception verbatim - the token is sent as a
+				// GET query parameter, so the Guzzle message embeds the full
+				// request URI including "?token=...", leaking the plaintext token.
+				$this->logger->error(
+					'Could not exchange a shared secret with ' . $target . ' (HTTP ' . $status . ')',
+					['app' => 'federation']
+				);
 			}
 		} catch (\Exception $e) {
 			$status = Http::STATUS_INTERNAL_SERVER_ERROR;
-			$this->logger->logException($e, ['app' => 'federation']);
+			// NB: see above - the token must not reach the log via the request URI.
+			$this->logger->error(
+				'Could not exchange a shared secret with ' . $target,
+				['app' => 'federation']
+			);
 		}
 
 		// if we received a unexpected response we try again later
