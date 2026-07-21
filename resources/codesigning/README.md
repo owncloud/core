@@ -8,12 +8,12 @@ This directory contains the trust anchors, intermediates, and CRL data for verif
 resources/codesigning/
 ├── roots/             # Trust anchors (roots)
 │   ├── root-g1.crt    # Legacy G1 root (intermediate authority), kept for transition
-│   └── root-g2.crt    # (G2 anchor — populated by CA ceremony)
+│   └── root-g2.crt    # G2 root anchor (ceremony output)
 ├── intermediates/     # Intermediate certificates
-│   └── intermediate-g2.crt  # (G2 intermediate — populated by CA ceremony)
+│   └── intermediate-g2.crt  # G2 intermediate issuer (ceremony output)
 ├── crl/               # Certificate Revocation Lists
 │   ├── legacy.crl     # Frozen G1 CRL (legacy apps)
-│   └── developers.crl # (G2 leaf CRL — populated by CA ceremony)
+│   └── developers.crl # G2 leaf CRL (ceremony output, refreshed via CRL_URL)
 └── core.crt           # Core leaf certificate (first-party signing, unused in verifier)
 ```
 
@@ -39,13 +39,17 @@ while establishing the new multi-generation layout. Apps signed with G1 certs co
 
 ## G2 Availability
 
-G2 code signing is inert until the CA ceremony populates:
-- `roots/root-g2.crt` (G2 root anchor)
-- `intermediates/intermediate-g2.crt` (G2 intermediate issuer)
-- `crl/developers.crl` (G2 leaf revocation list)
+G2 code signing is **live**. The CA ceremony has produced real, offline-held
+anchors, and they are bundled here:
+- `roots/root-g2.crt` — G2 root anchor (CN "ownCloud Code Signing Root CA G2")
+- `intermediates/intermediate-g2.crt` — G2 intermediate issuer
+- `crl/developers.crl` — G2 leaf revocation list (issued by the G2 intermediate)
 
-This is intentional and correct — the feature is inert until the ceremony produces real anchors.
-Shipping test certificates as production trust anchors (per Task 10 lesson) would be a security error.
+Whether G2 verifies at runtime depends on the bundled CRL validating against the
+shipped root, not on these slots being empty. These are genuine ceremony outputs,
+not the test-PKI certificates under `tests/data/integritycheck/verifier/pki/`.
+Shipping test certificates as production trust anchors (per Task 10 lesson) would
+be a security error, so the two sets are kept strictly separate.
 
 ## Reference
 
