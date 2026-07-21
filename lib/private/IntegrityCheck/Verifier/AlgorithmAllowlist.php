@@ -17,14 +17,14 @@ use OC\IntegrityCheck\Exceptions\BadAlgorithmException;
 class AlgorithmAllowlist {
 
 	/**
-	 * Assert that the given algorithm is permitted based on chain generation and current time.
+	 * Ensure the given algorithm is permitted based on chain generation and current time.
 	 *
 	 * @param string $alg The algorithm identifier
 	 * @param bool $isG1Chain Whether this is a G1 chain
 	 * @param \DateTimeInterface $now The current time (injected for deterministic testing)
 	 * @throws BadAlgorithmException If the algorithm is not permitted
 	 */
-	public function assertPermitted(string $alg, bool $isG1Chain, \DateTimeInterface $now): void {
+	public function ensurePermitted(string $alg, bool $isG1Chain, \DateTimeInterface $now): void {
 		// G2 algorithms are always permitted
 		if (\in_array($alg, VerifierConstants::G2_ALGS, true)) {
 			return;

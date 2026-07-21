@@ -7,18 +7,27 @@
 namespace OC\IntegrityCheck\Verifier;
 
 use OCP\Http\Client\IClientService;
+use OCP\ILogger;
 
 /**
  * Fetches CRL (Certificate Revocation List) from HTTPS URLs with no redirects.
  * Returns null on any failure (network error, non-200 status, exceptions).
  * Never throws for network problems; the caller's fallback policy decides.
+ *
+ * Failures are logged at warning level so that a fail-closed CRL outcome
+ * (network down, wrong scheme, non-200) is diagnosable from the log rather
+ * than surfacing only as an opaque CRL_UNAVAILABLE downstream.
  */
 class CrlFetcher {
 	/** @var IClientService|null */
 	private $clientService;
 
-	public function __construct(?IClientService $clientService = null) {
+	/** @var ILogger|null */
+	private $logger;
+
+	public function __construct(?IClientService $clientService = null, ?ILogger $logger = null) {
 		$this->clientService = $clientService;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -30,11 +39,13 @@ class CrlFetcher {
 	public function fetch(string $url): ?string {
 		// If no client service, cannot fetch
 		if ($this->clientService === null) {
+			$this->logWarning('CRL fetch skipped: no HTTP client service available', ['url' => $url]);
 			return null;
 		}
 
 		// Only allow HTTPS URLs
 		if (\strpos($url, 'https://') !== 0) {
+			$this->logWarning('CRL fetch skipped: non-HTTPS URL rejected', ['url' => $url]);
 			return null;
 		}
 
@@ -48,15 +59,42 @@ class CrlFetcher {
 			$response = $client->get($url, $options);
 
 			// Only accept 200 status
-			if ($response->getStatusCode() !== 200) {
+			$statusCode = $response->getStatusCode();
+			if ($statusCode !== 200) {
+				$this->logWarning('CRL fetch failed: unexpected HTTP status {status}', [
+					'url' => $url,
+					'status' => $statusCode,
+				]);
 				return null;
 			}
 
 			// Return the body (even if empty)
 			return $response->getBody();
 		} catch (\Throwable $e) {
-			// Never throw for network problems; return null
+			// Never throw for network problems; return null after logging.
+			if ($this->logger !== null) {
+				$this->logger->logException($e, [
+					'app' => 'core',
+					'message' => 'CRL fetch failed for URL ' . $url,
+					'level' => ILogger::WARN,
+				]);
+			}
 			return null;
 		}
+	}
+
+	/**
+	 * Log a warning if a logger is available. No-op otherwise (logger is optional
+	 * so the fetcher stays trivially constructible in unit tests).
+	 *
+	 * @param string $message
+	 * @param array $context
+	 */
+	private function logWarning(string $message, array $context = []): void {
+		if ($this->logger === null) {
+			return;
+		}
+		$context['app'] = 'core';
+		$this->logger->warning($message, $context);
 	}
 }

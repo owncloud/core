@@ -40,7 +40,8 @@ class ChainValidator {
 	/**
 	 * Validate a leaf certificate against the trusted PKI.
 	 *
-	 * SECURITY: Disables phpseclib URL fetch to prevent SSRF attacks via AIA caIssuers URLs.
+	 * SECURITY: relies on phpseclib URL fetch being disabled process-wide at boot
+	 * (see OC::init() in lib/kernel.php) to prevent SSRF via AIA caIssuers URLs.
 	 *
 	 * @param string $leafPem PEM-encoded leaf certificate
 	 * @param array $chainPems Array of PEM-encoded intermediates from the signature envelope
@@ -48,12 +49,6 @@ class ChainValidator {
 	 * @throws BadChainException On any validation failure
 	 */
 	public function validate(string $leafPem, array $chainPems): ChainResult {
-		// SECURITY: Disable URL fetch in phpseclib to prevent SSRF via AIA caIssuers.
-		// NOTE: this mutates process-global phpseclib state (X509::$disable_url_fetch)
-		// and is intentionally never re-enabled — no other code path in ownCloud relies
-		// on phpseclib fetching remote AIA/CRL URLs, so leaving it disabled is the safe
-		// direction and avoids a fragile save/restore around every validation.
-		X509::disableURLFetch();
 		// Step 1: Get trusted roots
 		$roots = $this->trustStore->getRoots();
 		if (empty($roots)) {

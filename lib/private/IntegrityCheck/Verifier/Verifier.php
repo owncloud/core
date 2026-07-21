@@ -118,7 +118,7 @@ class Verifier {
 		}
 
 		$now = $now ?? new \DateTimeImmutable();
-		$this->algorithmAllowlist->assertPermitted($alg, $chain->isG1(), $now);
+		$this->algorithmAllowlist->ensurePermitted($alg, $chain->isG1(), $now);
 
 		// Step 5: Determine signed bytes and verify signature
 		if ($env->isLegacyFormat()) {
@@ -213,7 +213,7 @@ class Verifier {
 	 *
 	 * @param \phpseclib3\File\X509 $leaf Loaded leaf certificate (via ChainResult::getLeaf())
 	 * @return \DateTimeImmutable The notAfter date in UTC
-	 * @throws \RuntimeException If unable to extract or parse notAfter
+	 * @throws BadChainException If unable to extract or parse notAfter
 	 */
 	private function extractNotAfterFromLeaf(\phpseclib3\File\X509 $leaf): \DateTimeImmutable {
 		// Use reflection to access the internal certificate data structure
@@ -223,7 +223,7 @@ class Verifier {
 		$cert = $certProperty->getValue($leaf);
 
 		if (!isset($cert['tbsCertificate']['validity']['notAfter'])) {
-			throw new \RuntimeException('Unable to extract notAfter from leaf certificate.');
+			throw new BadChainException('Unable to extract notAfter from leaf certificate.');
 		}
 
 		$notAfterData = $cert['tbsCertificate']['validity']['notAfter'];
@@ -231,14 +231,14 @@ class Verifier {
 		// phpseclib stores validity dates in a structure with either 'utcTime' or 'generalTime'
 		$notAfterString = $notAfterData['utcTime'] ?? $notAfterData['generalTime'] ?? null;
 		if ($notAfterString === null) {
-			throw new \RuntimeException('Unable to parse notAfter (neither utcTime nor generalTime found).');
+			throw new BadChainException('Unable to parse notAfter (neither utcTime nor generalTime found).');
 		}
 
 		// Parse the date string (e.g., "Wed, 09 Jul 2036 14:58:13 +0000")
 		try {
 			return new \DateTimeImmutable($notAfterString, new \DateTimeZone('UTC'));
 		} catch (\Throwable $e) {
-			throw new \RuntimeException('Failed to parse notAfter date: ' . $e->getMessage());
+			throw new BadChainException('Failed to parse notAfter date: ' . $e->getMessage());
 		}
 	}
 }

@@ -41,6 +41,7 @@ use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
 use OCP\Http\Client\IClientService;
+use OCP\ILogger;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\File\X509;
@@ -75,6 +76,8 @@ class Checker implements OnDiskHasher {
 	private $verifier;
 	/** @var IClientService|null */
 	private $clientService;
+	/** @var ILogger|null */
+	private $logger;
 
 	/**
 	 * @param EnvironmentHelper $environmentHelper
@@ -86,6 +89,7 @@ class Checker implements OnDiskHasher {
 	 * @param ITempManager $tempManager
 	 * @param Verifier|null $verifier Injected Verifier for delegation. If null, built lazily.
 	 * @param IClientService|null $clientService HTTP client service for CRL fetching. Required if verifier is null.
+	 * @param ILogger|null $logger Logger for diagnosing CRL fetch failures on the lazily-built verifier.
 	 */
 	public function __construct(
 		EnvironmentHelper $environmentHelper,
@@ -96,7 +100,8 @@ class Checker implements OnDiskHasher {
 		IAppManager $appManager = null,
 		ITempManager $tempManager = null,
 		Verifier $verifier = null,
-		IClientService $clientService = null
+		IClientService $clientService = null,
+		ILogger $logger = null
 	) {
 		$this->environmentHelper = $environmentHelper;
 		$this->fileAccessHelper = $fileAccessHelper;
@@ -107,6 +112,7 @@ class Checker implements OnDiskHasher {
 		$this->tempManager = $tempManager;
 		$this->verifier = $verifier;
 		$this->clientService = $clientService;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -133,7 +139,7 @@ class Checker implements OnDiskHasher {
 		$manifestVerifier = new \OC\IntegrityCheck\Verifier\ManifestVerifier();
 
 		// CrlFetcher needs IClientService; if not provided, it can't fetch from network
-		$crlFetcher = new \OC\IntegrityCheck\Verifier\CrlFetcher($this->clientService);
+		$crlFetcher = new \OC\IntegrityCheck\Verifier\CrlFetcher($this->clientService, $this->logger);
 		$crlValidator = new \OC\IntegrityCheck\Verifier\CrlValidator($trustStore);
 		$crlProvider = new \OC\IntegrityCheck\Verifier\CrlProvider(
 			$crlFetcher,

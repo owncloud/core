@@ -99,6 +99,114 @@ class SignatureEnvelopeTest extends TestCase {
 		$this->assertSame($hashes, $parsed->getHashesMap());
 	}
 
+	/**
+	 * A key that is a PREFIX of "hashes" (e.g. "hash") must NOT be mistaken for the
+	 * real hashes key. The scanner compares the full key, so the value of "hash"
+	 * (a string) must be skipped and the real "hashes" object extracted.
+	 */
+	public function testExtractRawHashesIgnoresPrefixKey(): void {
+		$json = '{"hash":"not-the-object","hashes":{"a.txt":"' . \str_repeat('a', 128) . '"},"signature":"cGxhY2Vob2xkZXI=","certificate":"-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----"}';
+		$envelope = SignatureEnvelope::parse($json);
+
+		$this->assertSame('{"a.txt":"' . \str_repeat('a', 128) . '"}', $envelope->getRawHashesBytes());
+		$this->assertSame(['a.txt' => \str_repeat('a', 128)], $envelope->getHashesMap());
+	}
+
+	/**
+	 * The hashes object need not be the first key. A "certificates" object appearing
+	 * BEFORE hashes (with its own nested braces) must not throw off the depth tracking.
+	 */
+	public function testExtractRawHashesWhenNotFirstKey(): void {
+		$hashesRaw = '{"z.txt":"' . \str_repeat('b', 128) . '"}';
+		$json = '{"v":2,"alg":"ecdsa-p384-sha384","certificates":{"leaf":"L","chain":[]},"signature":"cGxhY2Vob2xkZXI=","hashes":' . $hashesRaw . '}';
+		$envelope = SignatureEnvelope::parse($json);
+
+		$this->assertSame($hashesRaw, $envelope->getRawHashesBytes());
+		$this->assertSame(['z.txt' => \str_repeat('b', 128)], $envelope->getHashesMap());
+	}
+
+	/**
+	 * A hash VALUE that contains braces and the literal text "hashes" inside a JSON
+	 * string must not confuse the brace-balanced scan of the hashes object itself.
+	 */
+	public function testExtractRawHashesWithBraceAndHashesTextInsideValue(): void {
+		$hashes = [
+			'weird{key}.txt' => 'value-with-"hashes"-and-}brace{-text',
+			'normal.txt' => \str_repeat('c', 128),
+		];
+		$json = \json_encode([
+			'v' => 2,
+			'alg' => 'ecdsa-p384-sha384',
+			'hashes' => $hashes,
+			'signature' => 'cGxhY2Vob2xkZXI=',
+			'certificates' => ['leaf' => 'L', 'chain' => []],
+		]);
+
+		$envelope = SignatureEnvelope::parse($json);
+		$decoded = \json_decode($envelope->getRawHashesBytes(), true);
+		$this->assertSame($hashes, $decoded);
+		$this->assertSame($hashes, $envelope->getHashesMap());
+	}
+
+	/**
+	 * A value ending in an escaped backslash immediately followed by the closing
+	 * quote (\\") exercises the escape-handling in the string-aware scan: the quote
+	 * after an escaped backslash is a real closing quote, not an escaped one.
+	 */
+	public function testExtractRawHashesWithTrailingEscapedBackslashInValue(): void {
+		$hashes = [
+			'path\\' => \str_repeat('d', 128),
+			'normal.txt' => \str_repeat('e', 128),
+		];
+		$json = \json_encode([
+			'v' => 2,
+			'hashes' => $hashes,
+			'signature' => 'cGxhY2Vob2xkZXI=',
+			'certificates' => ['leaf' => 'L'],
+		]);
+
+		$envelope = SignatureEnvelope::parse($json);
+		$this->assertSame($hashes, \json_decode($envelope->getRawHashesBytes(), true));
+		$this->assertSame($hashes, $envelope->getHashesMap());
+	}
+
+	/**
+	 * Pretty-printed JSON with whitespace/newlines between the "hashes" key, the
+	 * colon, and the opening brace must still locate and extract the exact object
+	 * span (whitespace inside the object is preserved verbatim in the raw bytes).
+	 */
+	public function testExtractRawHashesWithWhitespaceAroundColon(): void {
+		$json = "{\n  \"v\": 2,\n  \"hashes\"  :  {\n    \"a.txt\": \"" . \str_repeat('f', 128) . "\"\n  },\n  \"signature\": \"cGxhY2Vob2xkZXI=\",\n  \"certificates\": { \"leaf\": \"L\" }\n}";
+		$envelope = SignatureEnvelope::parse($json);
+
+		$raw = $envelope->getRawHashesBytes();
+		$this->assertStringStartsWith('{', $raw);
+		$this->assertStringEndsWith('}', $raw);
+		$this->assertSame(['a.txt' => \str_repeat('f', 128)], \json_decode($raw, true));
+		$this->assertSame(['a.txt' => \str_repeat('f', 128)], $envelope->getHashesMap());
+	}
+
+	/**
+	 * An empty hashes object is structurally valid; the scan must return exactly "{}".
+	 * (getHashesMap then decodes to an empty array.)
+	 */
+	public function testExtractRawHashesEmptyObject(): void {
+		$json = '{"v":2,"hashes":{},"signature":"cGxhY2Vob2xkZXI=","certificates":{"leaf":"L"}}';
+		$envelope = SignatureEnvelope::parse($json);
+
+		$this->assertSame('{}', $envelope->getRawHashesBytes());
+		$this->assertSame([], $envelope->getHashesMap());
+	}
+
+	/**
+	 * A "hashes" value that is present but is NOT an object (e.g. a string) must be
+	 * rejected: the scan requires an opening brace after the colon.
+	 */
+	public function testExtractRawHashesRejectsNonObjectValue(): void {
+		$this->expectException(MissingSignatureException::class);
+		SignatureEnvelope::parse('{"hashes":"a-string","signature":"cGxhY2Vob2xkZXI=","certificate":"pem"}');
+	}
+
 	public function testParseLegacy(): void {
 		$json = file_get_contents($this->fixtureDir . '/signature-legacy.json');
 		$envelope = SignatureEnvelope::parse($json);

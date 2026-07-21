@@ -715,7 +715,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$appManager,
 				$c->getTempManager(),
 				null,
-				$clientService
+				$clientService,
+				$c->getLogger()
 			);
 		});
 		$this->registerService('Request', function ($c) {
