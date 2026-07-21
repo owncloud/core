@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4d6a56d3742e1228faa50b61991bca4",
+    "content-hash": "6f0e6a57bf42ffebeda88af449cb2934",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1267,8 +1267,14 @@
             "version": "3.8.1",
             "source": {
                 "type": "git",
-                "url": "https://codeberg.org/icewind/SMB",
+                "url": "https://github.com/DeepDiver1975/SMB.git",
                 "reference": "97063a63b44edc6554966f6121679506b8d85103"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/SMB/zipball/97063a63b44edc6554966f6121679506b8d85103",
+                "reference": "97063a63b44edc6554966f6121679506b8d85103",
+                "shasum": ""
             },
             "require": {
                 "icewind/streams": ">=0.7.3",
@@ -1286,7 +1292,25 @@
                     "Icewind\\SMB\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Icewind\\SMB\\Test\\": "tests/"
+                }
+            },
+            "scripts": {
+                "lint": [
+                    "parallel-lint --exclude src --exclude vendor --exclude target --exclude build ."
+                ],
+                "cs:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "cs:fix": [
+                    "php-cs-fixer fix"
+                ],
+                "psalm": [
+                    "psalm.phar"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -1297,15 +1321,25 @@
                 }
             ],
             "description": "php wrapper for smbclient and libsmbclient-php",
-            "time": "2025-11-13T16:17:19+00:00"
+            "support": {
+                "source": "https://github.com/DeepDiver1975/SMB/tree/3.8.1",
+                "issues": "https://github.com/DeepDiver1975/SMB/issues"
+            },
+            "time": "2025-11-13T16:18:18+00:00"
         },
         {
             "name": "icewind/streams",
             "version": "v0.7.8",
             "source": {
                 "type": "git",
-                "url": "https://codeberg.org/icewind/streams",
+                "url": "https://github.com/DeepDiver1975/streams.git",
                 "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/streams/zipball/cb2bd3ed41b516efb97e06e8da35a12ef58ba48b",
+                "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
@@ -1321,7 +1355,11 @@
                     "Icewind\\Streams\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Icewind\\Streams\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -1332,6 +1370,10 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
+            "support": {
+                "source": "https://github.com/DeepDiver1975/streams/tree/v0.7.8",
+                "issues": "https://github.com/DeepDiver1975/streams/issues"
+            },
             "time": "2024-12-05T14:36:22+00:00"
         },
         {
@@ -7772,9 +7814,9 @@
         "ext-simplexml": "*",
         "ext-zip": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
