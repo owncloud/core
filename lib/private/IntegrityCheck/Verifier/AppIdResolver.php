@@ -1,0 +1,177 @@
+<?php
+/**
+ * SPDX-FileCopyrightText: 2026 ownCloud GmbH
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+namespace OC\IntegrityCheck\Verifier;
+
+use OC\IntegrityCheck\Exceptions\CnMismatchException;
+use OC\IntegrityCheck\Helpers\FileAccessHelper;
+
+/**
+ * Class AppIdResolver resolves and validates the application identity from the
+ * appinfo/info.xml file, canonicalizes it, and enforces that the leaf certificate
+ * CN matches it exactly.
+ *
+ * @package OC\IntegrityCheck\Verifier
+ */
+class AppIdResolver {
+	private const APPID_PATTERN = '/^[a-z][a-z0-9_.-]{2,63}\z/';
+	private const CORE_IDENTITY = 'core';
+
+	private FileAccessHelper $fileAccessHelper;
+
+	/**
+	 * AppIdResolver constructor.
+	 *
+	 * @param FileAccessHelper $fileAccessHelper Helper for reading files
+	 */
+	public function __construct(FileAccessHelper $fileAccessHelper) {
+		$this->fileAccessHelper = $fileAccessHelper;
+	}
+
+	/**
+	 * App mode: resolve appId from <basePath>/appinfo/info.xml, canonicalize,
+	 * and compare to the leaf CN. On success returns the canonical appId.
+	 * On any failure throws CnMismatchException.
+	 *
+	 * G2 leaves are held to the canonical identity profile: the appId is folded
+	 * to lowercase, both appId and CN must match APPID_PATTERN, and the folded
+	 * appId must equal the CN byte-for-byte.
+	 *
+	 * Legacy G1 leaves ($legacyG1 = true) restore the old verifier's semantics:
+	 * a plain case-sensitive byte comparison of the raw info.xml <id> against the
+	 * leaf CN, with NO lowercase folding and NO APPID_PATTERN gate. Legacy dev
+	 * certs in the field use mixed-case CNs (e.g. CN=SomeApp) that the strict
+	 * lowercase-only pattern would otherwise reject, breaking the transition
+	 * contract in resources/codesigning/README.md (§"G1 Transition").
+	 *
+	 * @param string $basePath Base path to the app directory
+	 * @param string $leafCn Leaf certificate CN to validate against
+	 * @param bool $legacyG1 Whether this leaf anchors to the legacy G1 generation
+	 * @return string The resolved appId (folded to lowercase for G2; raw for legacy G1)
+	 * @throws CnMismatchException
+	 */
+	public function assertAppIdMatchesCn(string $basePath, string $leafCn, bool $legacyG1 = false): string {
+		// Read info.xml
+		$infoXmlPath = $basePath . '/appinfo/info.xml';
+		$xmlContent = $this->fileAccessHelper->file_get_contents($infoXmlPath);
+
+		if ($xmlContent === false || $xmlContent === '') {
+			throw new CnMismatchException('Failed to read or empty appinfo/info.xml');
+		}
+
+		// Parse XML safely (guard against XXE). Both libxml_use_internal_errors()
+		// and libxml_set_external_entity_loader() set PROCESS-GLOBAL state, so we
+		// must restore it in a finally block — otherwise our no-op entity loader
+		// would leak and break XML parsing elsewhere in the same process (e.g.
+		// app info.xml / sabre plugin parsing).
+		//
+		// Note: libxml_set_external_entity_loader() cannot reliably round-trip its
+		// previous value (in PHP 8.x it returns bool(true) for the default loader,
+		// which is not a valid argument to set it back), so we reset to the default
+		// by passing null. ownCloud does not install a global custom entity loader.
+		$libxmlPreviousErrors = \libxml_use_internal_errors(true);
+		\libxml_set_external_entity_loader(function () {
+			// Disable external entity loading (XXE guard).
+			return true;
+		});
+		try {
+			$xml = \simplexml_load_string($xmlContent);
+		} finally {
+			\libxml_use_internal_errors($libxmlPreviousErrors);
+			\libxml_set_external_entity_loader(null);
+		}
+
+		if ($xml === false) {
+			throw new CnMismatchException('Failed to parse appinfo/info.xml');
+		}
+
+		// Extract <id> element
+		if (!isset($xml->id) || $xml->id === '') {
+			throw new CnMismatchException('Missing or empty <id> in appinfo/info.xml');
+		}
+
+		$id = (string) $xml->id;
+		if ($id === '') {
+			throw new CnMismatchException('Missing or empty <id> in appinfo/info.xml');
+		}
+
+		// Legacy G1 path: reproduce the old verifier's plain case-sensitive byte
+		// compare, with no folding and no APPID_PATTERN gate (see method docblock).
+		if ($legacyG1) {
+			if ($id !== $leafCn) {
+				throw new CnMismatchException('CN does not match app identity: ' . $id . ' !== ' . $leafCn);
+			}
+			return $id;
+		}
+
+		// Fold the id (ASCII-only: A-Z -> a-z)
+		$foldedId = $this->asciiFold($id);
+
+		// Validate the folded id
+		if (!$this->isValidId($foldedId)) {
+			throw new CnMismatchException('Invalid appId format: ' . $id);
+		}
+
+		// Validate the CN (NO folding - CN is canonical)
+		if (!$this->isValidId($leafCn)) {
+			throw new CnMismatchException('Invalid CN format: ' . $leafCn);
+		}
+
+		// Exact byte-for-byte comparison
+		if ($foldedId !== $leafCn) {
+			throw new CnMismatchException('CN does not match app identity: ' . $foldedId . ' !== ' . $leafCn);
+		}
+
+		return $foldedId;
+	}
+
+	/**
+	 * Core mode: require the leaf CN to be the reserved 'core' identity.
+	 * Throws CnMismatchException if CN is not exactly 'core'.
+	 *
+	 * @param string $leafCn Leaf certificate CN to validate
+	 * @throws CnMismatchException
+	 */
+	public function assertCoreCn(string $leafCn): void {
+		if ($leafCn !== self::CORE_IDENTITY) {
+			throw new CnMismatchException('Invalid core CN: ' . $leafCn . ' (expected "core")');
+		}
+	}
+
+	/**
+	 * ASCII-only case-fold: convert bytes A-Z (0x41-0x5A) to a-z (0x61-0x7A).
+	 * Non-ASCII bytes are left unchanged.
+	 *
+	 * @param string $id The identifier to fold
+	 * @return string The folded identifier
+	 */
+	public function asciiFold(string $id): string {
+		$result = '';
+		$len = \strlen($id);
+		for ($i = 0; $i < $len; $i++) {
+			$byte = \ord($id[$i]);
+			// If uppercase ASCII letter, add 0x20 to convert to lowercase
+			if ($byte >= 0x41 && $byte <= 0x5A) {
+				$result .= \chr($byte + 0x20);
+			} else {
+				$result .= $id[$i];
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Validate an identifier against the pattern: ^[a-z][a-z0-9_.-]{2,63}$
+	 * (total length 3-64 characters: starts with lowercase letter, followed by
+	 * 2-63 lowercase letters, digits, underscore, dot, or hyphen).
+	 *
+	 * @param string $id The identifier to validate
+	 * @return bool True if valid, false otherwise
+	 */
+	public function isValidId(string $id): bool {
+		return preg_match(self::APPID_PATTERN, $id) === 1;
+	}
+}

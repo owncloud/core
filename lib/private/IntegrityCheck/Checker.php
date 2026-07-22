@@ -27,16 +27,21 @@ namespace OC\IntegrityCheck;
 
 use OC\IntegrityCheck\Exceptions\InvalidSignatureException;
 use OC\IntegrityCheck\Exceptions\MissingSignatureException;
+use OC\IntegrityCheck\Exceptions\ReasonCodeException;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\IntegrityCheck\Iterator\ExcludeFileByNameFilterIterator;
 use OC\IntegrityCheck\Iterator\ExcludeFoldersByPathFilterIterator;
+use OC\IntegrityCheck\Verifier\Verifier;
+use OC\IntegrityCheck\Verifier\OnDiskHasher;
 use OCP\App\IAppManager;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
+use OCP\Http\Client\IClientService;
+use OCP\ILogger;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\File\X509;
@@ -51,7 +56,7 @@ use phpseclib3\File\X509;
  *
  * @package OC\IntegrityCheck
  */
-class Checker {
+class Checker implements OnDiskHasher {
 	public const CACHE_KEY = 'oc.integritycheck.checker';
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
@@ -67,6 +72,12 @@ class Checker {
 	private $appManager;
 	/** @var ITempManager */
 	private $tempManager;
+	/** @var Verifier|null */
+	private $verifier;
+	/** @var IClientService|null */
+	private $clientService;
+	/** @var ILogger|null */
+	private $logger;
 
 	/**
 	 * @param EnvironmentHelper $environmentHelper
@@ -76,23 +87,83 @@ class Checker {
 	 * @param ICacheFactory $cacheFactory
 	 * @param IAppManager $appManager
 	 * @param ITempManager $tempManager
+	 * @param Verifier|null $verifier Injected Verifier for delegation. If null, built lazily.
+	 * @param IClientService|null $clientService HTTP client service for CRL fetching. Required if verifier is null.
+	 * @param ILogger|null $logger Logger for diagnosing CRL fetch failures on the lazily-built verifier.
 	 */
 	public function __construct(
 		EnvironmentHelper $environmentHelper,
 		FileAccessHelper $fileAccessHelper,
 		AppLocator $appLocator,
 		IConfig $config = null,
-		ICacheFactory $cacheFactory,
+		ICacheFactory $cacheFactory = null,
 		IAppManager $appManager = null,
-		ITempManager $tempManager
+		ITempManager $tempManager = null,
+		Verifier $verifier = null,
+		IClientService $clientService = null,
+		ILogger $logger = null
 	) {
 		$this->environmentHelper = $environmentHelper;
 		$this->fileAccessHelper = $fileAccessHelper;
 		$this->appLocator = $appLocator;
 		$this->config = $config;
-		$this->cache = $cacheFactory->create(self::CACHE_KEY);
+		$this->cache = $cacheFactory ? $cacheFactory->create(self::CACHE_KEY) : new \OC\Memcache\NullCache();
 		$this->appManager = $appManager;
 		$this->tempManager = $tempManager;
+		$this->verifier = $verifier;
+		$this->clientService = $clientService;
+		$this->logger = $logger;
+	}
+
+	/**
+	 * Get the Verifier instance, building it lazily if not injected.
+	 *
+	 * Lazy building is a fallback for tests and early initialization; in normal
+	 * operation the Verifier is injected directly via the constructor.
+	 *
+	 * @return Verifier
+	 */
+	private function getVerifier(): Verifier {
+		if ($this->verifier !== null) {
+			return $this->verifier;
+		}
+
+		// Lazy build: construct all collaborators from existing pieces
+		$trustStore = new \OC\IntegrityCheck\Verifier\TrustStore(
+			$this->fileAccessHelper,
+			$this->environmentHelper
+		);
+
+		$chainValidator = new \OC\IntegrityCheck\Verifier\ChainValidator($trustStore);
+		$algorithmAllowlist = new \OC\IntegrityCheck\Verifier\AlgorithmAllowlist();
+		$manifestVerifier = new \OC\IntegrityCheck\Verifier\ManifestVerifier();
+
+		// CrlFetcher needs IClientService; if not provided, it can't fetch from network
+		$crlFetcher = new \OC\IntegrityCheck\Verifier\CrlFetcher($this->clientService, $this->logger);
+		$crlValidator = new \OC\IntegrityCheck\Verifier\CrlValidator($trustStore);
+		$crlProvider = new \OC\IntegrityCheck\Verifier\CrlProvider(
+			$crlFetcher,
+			$crlValidator,
+			$trustStore,
+			$this->fileAccessHelper,
+			$this->environmentHelper
+		);
+
+		$appIdResolver = new \OC\IntegrityCheck\Verifier\AppIdResolver($this->fileAccessHelper);
+		$integrityDiffer = new \OC\IntegrityCheck\Verifier\IntegrityDiffer();
+
+		$this->verifier = new Verifier(
+			$chainValidator,
+			$algorithmAllowlist,
+			$manifestVerifier,
+			$crlProvider,
+			$appIdResolver,
+			$integrityDiffer,
+			$this,
+			$this->fileAccessHelper
+		);
+
+		return $this->verifier;
 	}
 
 	/**
@@ -117,6 +188,16 @@ class Checker {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Compute hashes for the directory tree (OnDiskHasher interface).
+	 *
+	 * @param string $basePath The root directory to hash
+	 * @return array Mapping of relative paths to SHA-512 hex hashes
+	 */
+	public function computeHashes(string $basePath): array {
+		return $this->generateHashes($this->getFolderIterator($basePath), $basePath);
 	}
 
 	/**
@@ -327,7 +408,7 @@ class Checker {
 	}
 
 	/**
-	 * Verifies the signature for the specified path.
+	 * Verifies the signature for the specified path, delegating to the Verifier.
 	 *
 	 * @param string $signaturePath
 	 * @param string $basePath
@@ -336,114 +417,31 @@ class Checker {
 	 * @return array
 	 * @throws InvalidSignatureException
 	 * @throws MissingSignatureException
-	 * @throws \Exception
+	 * @throws \OC\IntegrityCheck\Exceptions\BadChainException
+	 * @throws \OC\IntegrityCheck\Exceptions\BadAlgorithmException
+	 * @throws \OC\IntegrityCheck\Exceptions\BadSignatureException
+	 * @throws \OC\IntegrityCheck\Exceptions\RevokedException
+	 * @throws \OC\IntegrityCheck\Exceptions\CrlUnavailableException
+	 * @throws \OC\IntegrityCheck\Exceptions\CnMismatchException
 	 */
 	private function verify($signaturePath, $basePath, $certificateCN, $force = false) {
 		if (!$force && !$this->isCodeCheckEnforced()) {
 			return [];
 		}
 
-		$content = $this->fileAccessHelper->file_get_contents($signaturePath);
-		if (!$content) {
-			throw new MissingSignatureException('Signature data not found.');
-		}
-		$signatureData = \json_decode($content, true);
-		if (!\is_array($signatureData)) {
-			throw new MissingSignatureException('Signature data not found.');
-		}
+		$excluded = $this->getSystemValue('integrity.excluded.files', []);
+		$coreMode = ($certificateCN === 'core');
 
-		$expectedHashes = $signatureData['hashes'];
-		\ksort($expectedHashes);
-		$signature = \base64_decode($signatureData['signature']);
-		$certificate = $signatureData['certificate'];
+		$result = $this->getVerifier()->verify(
+			$signaturePath,
+			$basePath,
+			$certificateCN,
+			$coreMode,
+			null,
+			$excluded
+		);
 
-		// Check if certificate is signed by ownCloud Root Authority
-		$x509 = new \phpseclib3\File\X509();
-		$rootCertificatePublicKey = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/root.crt');
-		$x509->loadCA($rootCertificatePublicKey);
-		$loadedCertificate = $x509->loadX509($certificate);
-		if (!$x509->validateSignature()) {
-			throw new InvalidSignatureException('App Certificate is not valid.');
-		}
-
-		// Check if the certificate has been revoked
-		$crlFileContent = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/intermediate.crl.pem');
-		if ($crlFileContent && \strlen($crlFileContent) > 0) {
-			$crl = new \phpseclib3\File\X509();
-			$crl->loadCA($rootCertificatePublicKey);
-			$crl->loadCRL($crlFileContent);
-			if (!$crl->validateSignature()) {
-				throw new InvalidSignatureException('Certificate Revocation List is not valid.');
-			}
-			// Get the certificate's serial number.
-			$csn = $loadedCertificate['tbsCertificate']['serialNumber']->toString();
-
-			// Check certificate revocation status.
-			$revoked = $crl->getRevoked($csn);
-			if ($revoked) {
-				throw new InvalidSignatureException('Certificate has been revoked.');
-			}
-		}
-
-		// Verify if certificate has proper CN. "core" CN is always trusted.
-		if ($x509->getDN(X509::DN_OPENSSL)['CN'] !== $certificateCN && $x509->getDN(X509::DN_OPENSSL)['CN'] !== 'core') {
-			$cn = $x509->getDN(true)['CN'];
-			throw new InvalidSignatureException(
-				"Certificate is not valid for required scope. (Requested: $certificateCN, current: CN=$cn)"
-			);
-		}
-
-		/** @phan-suppress-next-line PhanUndeclaredMethod */
-		$rsa = RSA::load($loadedCertificate['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey'])
-			->withHash('sha1')
-			->withMGFHash('sha512')
-			->withPadding(RSA::SIGNATURE_PSS)
-			->withSaltLength(0);
-
-		if (!$rsa->verify(\json_encode($expectedHashes), $signature)) {
-			throw new InvalidSignatureException('Signature could not get verified.');
-		}
-
-		//Exclude files which shouldn't fall for comparison
-		$excludeFiles = $this->getSystemValue('integrity.excluded.files', []);
-
-		// Compare the list of files which are not identical
-		$currentInstanceHashes = $this->generateHashes($this->getFolderIterator($basePath), $basePath);
-		$differencesA = \array_diff_assoc($expectedHashes, $currentInstanceHashes);
-		$differencesB = \array_diff_assoc($currentInstanceHashes, $expectedHashes);
-		$differences = \array_merge($differencesA, $differencesB);
-		$differenceArray = [];
-		foreach ($differences as $filename => $hash) {
-			//If filename in exclude files list, then ignore it
-			if (\in_array($filename, $excludeFiles, true)) {
-				continue;
-			}
-			// Check if file should not exist in the new signature table
-			if (!\array_key_exists($filename, $expectedHashes)) {
-				$differenceArray['EXTRA_FILE'][$filename]['expected'] = '';
-				$differenceArray['EXTRA_FILE'][$filename]['current'] = $hash;
-				continue;
-			}
-
-			// Check if file is missing
-			if (!\array_key_exists($filename, $currentInstanceHashes)) {
-				$differenceArray['FILE_MISSING'][$filename]['expected'] = $expectedHashes[$filename];
-				$differenceArray['FILE_MISSING'][$filename]['current'] = '';
-				continue;
-			}
-
-			// Check if hash does mismatch
-			if ($expectedHashes[$filename] !== $currentInstanceHashes[$filename]) {
-				$differenceArray['INVALID_HASH'][$filename]['expected'] = $expectedHashes[$filename];
-				$differenceArray['INVALID_HASH'][$filename]['current'] = $currentInstanceHashes[$filename];
-				continue;
-			}
-
-			// Should never happen.
-			throw new \Exception('Invalid behaviour in file hash comparison experienced. Please report this error to the developers.');
-		}
-
-		return $differenceArray;
+		return $result->toLegacyResultArray();
 	}
 
 	/**
@@ -457,7 +455,25 @@ class Checker {
 			return true;
 		}
 
-		return false;
+		// Check each result scope
+		foreach ($results as $scope => $result) {
+			if (!\is_array($result) || empty($result)) {
+				// Empty result for this scope; continue
+				continue;
+			}
+
+			// If the result contains only LEGACY_ACCEPTED_WARN, treat as passed
+			if (\array_key_exists('LEGACY_ACCEPTED_WARN', $result) && \count($result) === 1) {
+				// This scope has only the warn marker; continue checking others
+				continue;
+			}
+
+			// Any other result (EXCEPTION, FILE_MISSING, EXTRA_FILE, INVALID_HASH, etc.) is a failure
+			return false;
+		}
+
+		// All scopes either have no result or only the warn marker
+		return true;
 	}
 
 	/**
@@ -639,16 +655,22 @@ class Checker {
 						'message' => $e->getMessage(),
 					],
 				];
+				if (\method_exists($e, 'getReasonCode')) {
+					$result['REASON'] = $e->getReasonCode();
+				}
 			} else {
 				$result = [];
 			}
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			$result = [
 					'EXCEPTION' => [
 							'class' => \get_class($e),
 							'message' => $e->getMessage(),
 					],
 			];
+			if ($e instanceof ReasonCodeException) {
+				$result['REASON'] = $e->getReasonCode();
+			}
 		}
 		$this->storeResults($appId, $result);
 
@@ -692,13 +714,16 @@ class Checker {
 				$this->environmentHelper->getServerRoot(),
 				'core'
 			);
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			$result = [
 					'EXCEPTION' => [
 							'class' => \get_class($e),
 							'message' => $e->getMessage(),
 					],
 			];
+			if ($e instanceof ReasonCodeException) {
+				$result['REASON'] = $e->getReasonCode();
+			}
 		}
 		$this->storeResults('core', $result);
 

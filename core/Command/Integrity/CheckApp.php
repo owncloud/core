@@ -64,7 +64,13 @@ class CheckApp extends Base {
 		$path = \strval($input->getOption('path'));
 		$result = $this->checker->verifyAppSignature($appid, $path);
 		$this->writeArrayInOutputFormat($input, $output, $result);
-		if (\count($result)>0) {
+
+		// A valid but expired, pre-sunset legacy (G1) app verifies with the single
+		// 'LEGACY_ACCEPTED_WARN' marker (spec §8 "warn + allow"). The marker is printed
+		// above so the warning is visible, but it is a pass — do not fail the command.
+		$isLegacyWarnOnly = \array_key_exists('LEGACY_ACCEPTED_WARN', $result)
+			&& \count($result) === 1;
+		if (\count($result) > 0 && !$isLegacyWarnOnly) {
 			return 1;
 		}
 		return 0;

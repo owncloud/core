@@ -1,0 +1,15 @@
+Change: G2 code-signing verifier and G1 signature sunset
+
+We've replaced the app-signature verification with a new G2 code-signing
+verifier that validates the full certificate chain against bundled trust
+anchors, enforces an algorithm allowlist, and checks a fail-closed CRL for
+revocation.
+
+Existing G1-signed apps continue to verify during the transition. However,
+all G1 signatures stop verifying on 2027-01-01 (the hardcoded sunset at
+2026-12-31T23:59:59Z), regardless of individual certificate expiry. After
+that cutoff, affected apps must be re-signed with a G2 certificate to install
+or pass integrity verification. Administrators running third-party apps signed
+under G1 should plan for re-signed releases ahead of that date.
+
+https://github.com/owncloud/core/pull/41680

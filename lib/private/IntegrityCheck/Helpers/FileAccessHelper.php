@@ -85,4 +85,28 @@ class FileAccessHelper {
 			throw new \Exception('Directory ' . $path . ' does not exist.');
 		}
 	}
+
+	/**
+	 * List non-directory entries (files) in a directory.
+	 *
+	 * @param string $dir Directory path
+	 * @return array Array of filenames (basenames) in the directory, or empty array if dir doesn't exist
+	 */
+	public function getDirectoryContent($dir) {
+		if (!$this->file_exists($dir) || !\is_dir($dir)) {
+			return [];
+		}
+		$entries = \scandir($dir);
+		if ($entries === false) {
+			return [];
+		}
+		// Filter out ".", "..", and directories; keep only files
+		$files = [];
+		foreach ($entries as $entry) {
+			if ($entry !== '.' && $entry !== '..' && \is_file($dir . '/' . $entry)) {
+				$files[] = $entry;
+			}
+		}
+		return $files;
+	}
 }

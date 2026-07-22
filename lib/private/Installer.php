@@ -349,7 +349,12 @@ class Installer {
 					$info['id'],
 					$extractDir
 				);
-			if ($integrityResult !== []) {
+			// A valid but expired, pre-sunset legacy (G1) app verifies with the
+			// single 'LEGACY_ACCEPTED_WARN' marker (spec §8 "warn + allow"). That is
+			// a pass-with-warning, not a failure, so it must not block the install.
+			$isLegacyWarnOnly = \array_key_exists('LEGACY_ACCEPTED_WARN', $integrityResult)
+				&& \count($integrityResult) === 1;
+			if ($integrityResult !== [] && !$isLegacyWarnOnly) {
 				$e = new \Exception(
 					$l->t(
 						'Signature could not get checked. Please contact the app developer and check your admin screen.'
