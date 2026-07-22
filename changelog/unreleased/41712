@@ -1,0 +1,14 @@
+Change: Remove occ integrity:sign-app and integrity:sign-core commands
+
+We've removed the occ integrity:sign-app and integrity:sign-core console
+commands along with the signing-only code in the integrity checker
+(createSignatureData, writeAppSignature and writeCoreSignature). Code signing
+is a release and CI concern rather than an operator action performed against a
+running instance, so this code was dead weight in the security-sensitive
+integrity subsystem.
+
+Integrity verification is unaffected: the integrity:check-app and
+integrity:check-core commands and all signature verification continue to work
+as before.
+
+https://github.com/owncloud/core/pull/41712
