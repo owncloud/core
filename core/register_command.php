@@ -44,15 +44,6 @@ $application->addCommand(new OC\Core\Command\App\CheckCode(
 	new \OC\App\InfoParser(),
 	\OC::$server->getAppManager()
 ));
-$application->addCommand(new \OC\Core\Command\Integrity\SignApp(
-	\OC::$server->getIntegrityCodeChecker(),
-	new \OC\IntegrityCheck\Helpers\FileAccessHelper(),
-	\OC::$server->getURLGenerator()
-));
-$application->addCommand(new \OC\Core\Command\Integrity\SignCore(
-	\OC::$server->getIntegrityCodeChecker(),
-	new \OC\IntegrityCheck\Helpers\FileAccessHelper()
-));
 $application->addCommand(new \OC\Core\Command\Integrity\CheckApp(
 	\OC::$server->getIntegrityCodeChecker()
 ));
