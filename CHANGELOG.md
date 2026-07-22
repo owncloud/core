@@ -67,6 +67,7 @@ ownCloud admins and users.
 * Change - Use phan major version 6 code analysis: [#41650](https://github.com/owncloud/core/pull/41650)
 * Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
 * Change - G2 code-signing verifier and G1 signature sunset: [#41680](https://github.com/owncloud/core/pull/41680)
+* Change - Remove occ integrity:sign-app and integrity:sign-core commands: [#41712](https://github.com/owncloud/core/pull/41712)
 
 ## Details
 
@@ -298,13 +299,13 @@ ownCloud admins and users.
 
    The following have been updated:
 
-   * doctrine/dbal (2.13.9 to 3.10.4)
+   * doctrine/dbal (2.13.9 to 3.10.6)
 
    * firebase/php-jwt (7.0.5 to 7.1.0)
 
    * google/apiclient (v2.19.0 to v2.19.4)
 
-   * google/apiclient-services (v0.435.0 to v0.449.0)
+   * google/apiclient-services (v0.435.0 to v0.451.0)
 
    * google/auth (v1.50.0 to v1.52.0)
 
@@ -314,7 +315,7 @@ ownCloud admins and users.
 
    * guzzlehttp/psr7 (2.8.0 to 2.13.0)
 
-   * laravel/serializable-closure (v2.0.10 to v2.0.13)
+   * laravel/serializable-closure (v2.0.10 to v2.0.15)
 
    * league/mime-type-detection (1.16.0 to 1.17.0)
 
@@ -370,6 +371,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41681
    https://github.com/owncloud/core/pull/41691
    https://github.com/owncloud/core/pull/41697
+   https://github.com/owncloud/core/pull/41709
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
@@ -453,6 +455,21 @@ ownCloud admins and users.
    should plan for re-signed releases ahead of that date.
 
    https://github.com/owncloud/core/pull/41680
+
+* Change - Remove occ integrity:sign-app and integrity:sign-core commands: [#41712](https://github.com/owncloud/core/pull/41712)
+
+   We've removed the occ integrity:sign-app and integrity:sign-core console
+   commands along with the signing-only code in the integrity checker
+   (createSignatureData, writeAppSignature and writeCoreSignature). Code signing is
+   a release and CI concern rather than an operator action performed against a
+   running instance, so this code was dead weight in the security-sensitive
+   integrity subsystem.
+
+   Integrity verification is unaffected: the integrity:check-app and
+   integrity:check-core commands and all signature verification continue to work as
+   before.
+
+   https://github.com/owncloud/core/pull/41712
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
