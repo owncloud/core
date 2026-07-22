@@ -2,13 +2,13 @@ Change: Update PHP dependencies
 
 The following have been updated:
 
- * doctrine/dbal (2.13.9 to 3.10.4)
+ * doctrine/dbal (2.13.9 to 3.10.6)
 
  * firebase/php-jwt (7.0.5 to 7.1.0)
 
  * google/apiclient (v2.19.0 to v2.19.4)
 
- * google/apiclient-services (v0.435.0 to v0.449.0)
+ * google/apiclient-services (v0.435.0 to v0.451.0)
 
  * google/auth (v1.50.0 to v1.52.0)
 
@@ -18,7 +18,7 @@ The following have been updated:
 
  * guzzlehttp/psr7 (2.8.0 to 2.13.0)
 
- * laravel/serializable-closure (v2.0.10 to v2.0.13)
+ * laravel/serializable-closure (v2.0.10 to v2.0.15)
 
  * league/mime-type-detection (1.16.0 to 1.17.0)
 
@@ -74,3 +74,4 @@ https://github.com/owncloud/core/pull/41677
 https://github.com/owncloud/core/pull/41681
 https://github.com/owncloud/core/pull/41691
 https://github.com/owncloud/core/pull/41697
+https://github.com/owncloud/core/pull/41709
