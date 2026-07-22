@@ -42,17 +42,14 @@ use OCP\IConfig;
 use OCP\ITempManager;
 use OCP\Http\Client\IClientService;
 use OCP\ILogger;
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PrivateKey;
-use phpseclib3\File\X509;
 
 /**
- * Class Checker handles the code signing using X.509 and RSA. ownCloud ships with
- * a public root certificate certificate that allows to issue new certificates that
- * will be trusted for signing code. The CN will be used to verify that a certificate
- * given to a third-party developer may not be used for other applications. For
- * example the author of the application "calendar" would only receive a certificate
- * only valid for this application.
+ * Class Checker verifies the code integrity of core and apps using X.509 and RSA.
+ * ownCloud ships with public root certificates that are used to validate the
+ * certificates embedded in the signature.json files. The CN is used to verify that
+ * a certificate given to a third-party developer may not be used for other
+ * applications. For example the author of the application "calendar" would only
+ * receive a certificate only valid for this application.
  *
  * @package OC\IntegrityCheck
  */
@@ -304,107 +301,6 @@ class Checker implements OnDiskHasher {
 		}
 
 		return $hashes;
-	}
-
-	/**
-	 * Creates the signature data
-	 *
-	 * @param array $hashes
-	 * @param array $certificate
-	 * @param RSA $privateKey
-	 * @param X509 $x509,
-	 * @return array
-	 */
-	private function createSignatureData(
-		array $hashes,
-		array $certificate,
-		RSA $privateKey,
-		X509 $x509
-	) {
-		\ksort($hashes);
-
-		$privateKey = $privateKey
-			->withMGFHash('sha512')
-			->withSaltLength(0)
-			->withPadding(RSA::SIGNATURE_PSS);
-
-		$signature = $privateKey->sign(\json_encode($hashes));
-
-		return [
-				'hashes' => $hashes,
-				'signature' => \base64_encode($signature),
-				'certificate' => $x509->saveX509($certificate),
-			];
-	}
-
-	/**
-	 * Write the signature of the app in the specified folder
-	 *
-	 * @param string $path
-	 * @param array $certificate
-	 * @param X509 $x509
-	 * @param RSA $privateKey
-	 * @throws \Exception
-	 */
-	public function writeAppSignature(
-		string $path,
-		array $certificate,
-		X509 $x509,
-		RSA $privateKey
-	) {
-		$appInfoDir = $path . '/appinfo';
-		$this->fileAccessHelper->assertDirectoryExists($path);
-		$this->fileAccessHelper->assertDirectoryExists($appInfoDir);
-
-		$iterator = $this->getFolderIterator($path);
-		$hashes = $this->generateHashes($iterator, $path);
-		$signature = $this->createSignatureData($hashes, $certificate, $privateKey, $x509);
-		try {
-			$this->fileAccessHelper->file_put_contents(
-				$appInfoDir . '/signature.json',
-				\json_encode($signature, JSON_PRETTY_PRINT)
-			);
-		} catch (\Exception $e) {
-			if (!$this->fileAccessHelper->is_writeable($appInfoDir)) {
-				throw new \Exception($appInfoDir . ' is not writable');
-			}
-			throw $e;
-		}
-	}
-
-	/**
-	 * Write the signature of core
-	 *
-	 * @param string $path
-	 * @param array $certificate
-	 * @param X509 $x509
-	 * @param RSA $privateKey
-	 * @throws \Exception
-	 */
-	public function writeCoreSignature(
-		string $path,
-		array $certificate,
-		X509 $x509,
-		RSA $privateKey
-	) {
-		$coreDir = $path . '/core';
-		$this->fileAccessHelper->assertDirectoryExists($path);
-		$this->fileAccessHelper->assertDirectoryExists($coreDir);
-
-		$iterator = $this->getFolderIterator($path, $path);
-		$hashes = $this->generateHashes($iterator, $path);
-		$signatureData = $this->createSignatureData($hashes, $certificate, $privateKey, $x509);
-		try {
-			$this->fileAccessHelper->file_put_contents(
-				$coreDir . '/signature.json',
-				\json_encode($signatureData, JSON_PRETTY_PRINT)
-			);
-		} catch (\Exception $e) {
-			if (!$this->fileAccessHelper->is_writeable($coreDir)) {
-				throw new \Exception($coreDir . ' is not writable');
-			}
-			throw $e;
-		}
 	}
 
 	/**
