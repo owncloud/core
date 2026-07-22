@@ -48,8 +48,8 @@ use OCP\ILogger;
  * ownCloud ships with public root certificates that are used to validate the
  * certificates embedded in the signature.json files. The CN is used to verify that
  * a certificate given to a third-party developer may not be used for other
- * applications. For example the author of the application "calendar" would only
- * receive a certificate only valid for this application.
+ * applications. For example, the author of the application "calendar" would only
+ * receive a certificate that is valid for this application.
  *
  * @package OC\IntegrityCheck
  */
