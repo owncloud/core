@@ -31,6 +31,7 @@ use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class StoragesControllerTest extends \Test\TestCase {
@@ -44,9 +45,24 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	 */
 	protected $service;
 
+	/**
+	 * @var IConfig | MockObject
+	 */
+	protected $config;
+
 	public function setUp(): void {
 		\OC_Mount_Config::$skipTest = true;
 		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', true);
+
+		$this->config = $this->createMock(IConfig::class);
+		// Default: private addresses are NOT allowed (SSRF protection active)
+		$this->config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = null) {
+				if ($key === 'files_external_allow_private_address') {
+					return false;
+				}
+				return $default;
+			});
 	}
 
 	public function tearDown(): void {
@@ -677,4 +693,210 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$this->assertEquals(Http::STATUS_OK, $result->getStatus());
 		$this->assertEquals($expectedStorage, $actual);
 	}
+
+	// -------------------------------------------------------------------------
+	// SSRF host validation tests
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Data provider with private/reserved host values that must be rejected.
+	 */
+	public function blockedHostProvider() {
+		return [
+			// IPv4 loopback
+			['127.0.0.1'],
+			['127.255.255.255'],
+			// localhost hostname
+			['localhost'],
+			// RFC-1918 private ranges
+			['10.0.0.1'],
+			['10.255.255.255'],
+			['172.16.0.1'],
+			['172.31.255.255'],
+			['192.168.0.1'],
+			['192.168.255.255'],
+			// IPv4 link-local (APIPA / AWS metadata)
+			['169.254.0.1'],
+			['169.254.169.254'],
+			['169.254.169.254/latest/meta-data/iam/security-credentials/'],
+			// with explicit port
+			['192.168.1.100:445'],
+			// with scheme (as used by DAV/ownCloud backends)
+			['http://192.168.1.1/dav'],
+			['https://10.0.0.1:8080/path'],
+		];
+	}
+
+	/**
+	 * @dataProvider blockedHostProvider
+	 */
+	public function testCreateBlockedSsrfHost($blockedHost) {
+		$backend = $this->getBackendMock();
+		$backend->method('validateStorage')->willReturn(true);
+		$backend->method('isVisibleFor')->willReturn(true);
+
+		$authMech = $this->getAuthMechMock();
+		$authMech->method('validateStorage')->willReturn(true);
+		$authMech->method('isVisibleFor')->willReturn(true);
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions(['host' => $blockedHost]);
+
+		$this->service->expects($this->once())
+			->method('createStorage')
+			->willReturn($storageConfig);
+		$this->service->expects($this->never())
+			->method('addStorage');
+
+		$response = $this->controller->create(
+			'mount',
+			'\OCA\Files_External\Lib\Storage\DAV',
+			'\OCA\Files_External\Lib\Auth\Password\Password',
+			['host' => $blockedHost],
+			[],
+			[],
+			[],
+			null
+		);
+
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
+	}
+
+	/**
+	 * @dataProvider blockedHostProvider
+	 */
+	public function testUpdateBlockedSsrfHost($blockedHost) {
+		$backend = $this->getBackendMock();
+		$backend->method('validateStorage')->willReturn(true);
+		$backend->method('isVisibleFor')->willReturn(true);
+
+		$authMech = $this->getAuthMechMock();
+		$authMech->method('validateStorage')->willReturn(true);
+		$authMech->method('isVisibleFor')->willReturn(true);
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions(['host' => $blockedHost]);
+
+		$this->service->expects($this->once())
+			->method('createStorage')
+			->willReturn($storageConfig);
+		$this->service->expects($this->never())
+			->method('updateStorage');
+
+		$response = $this->controller->update(
+			1,
+			'mount',
+			'\OCA\Files_External\Lib\Storage\DAV',
+			'\OCA\Files_External\Lib\Auth\Password\Password',
+			['host' => $blockedHost],
+			[],
+			[],
+			[],
+			null
+		);
+
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
+	}
+
+	public function testCreateAllowedPublicHost() {
+		$backend = $this->getBackendMock();
+		$backend->method('validateStorage')->willReturn(true);
+		$backend->method('isVisibleFor')->willReturn(true);
+
+		$authMech = $this->getAuthMechMock();
+		$authMech->method('validateStorage')->willReturn(true);
+		$authMech->method('isVisibleFor')->willReturn(true);
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions(['host' => 'example.com']);
+
+		$this->service->expects($this->once())
+			->method('createStorage')
+			->willReturn($storageConfig);
+		$this->service->expects($this->once())
+			->method('addStorage')
+			->willReturn($storageConfig);
+
+		$response = $this->controller->create(
+			'mount',
+			'\OCA\Files_External\Lib\Storage\DAV',
+			'\OCA\Files_External\Lib\Auth\Password\Password',
+			['host' => 'example.com'],
+			[],
+			[],
+			[],
+			null
+		);
+
+		// Must succeed (not blocked)
+		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
+	}
+
+	public function testCreateBlockedSsrfHostAllowedByAdmin() {
+		// When the admin sets files_external_allow_private_address = true,
+		// private addresses must be accepted.
+		$this->config = $this->createMock(IConfig::class);
+		$this->config->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = null) {
+				if ($key === 'files_external_allow_private_address') {
+					return true;
+				}
+				return $default;
+			});
+
+		// Rebuild the controller with the permissive config
+		$this->rebuildControllerWithConfig($this->config);
+
+		$backend = $this->getBackendMock();
+		$backend->method('validateStorage')->willReturn(true);
+		$backend->method('isVisibleFor')->willReturn(true);
+
+		$authMech = $this->getAuthMechMock();
+		$authMech->method('validateStorage')->willReturn(true);
+		$authMech->method('isVisibleFor')->willReturn(true);
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions(['host' => '192.168.1.1']);
+
+		$this->service->expects($this->once())
+			->method('createStorage')
+			->willReturn($storageConfig);
+		$this->service->expects($this->once())
+			->method('addStorage')
+			->willReturn($storageConfig);
+
+		$response = $this->controller->create(
+			'mount',
+			'\OCA\Files_External\Lib\Storage\DAV',
+			'\OCA\Files_External\Lib\Auth\Password\Password',
+			['host' => '192.168.1.1'],
+			[],
+			[],
+			[],
+			null
+		);
+
+		// Admin override must allow it through
+		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
+	}
+
+	/**
+	 * Rebuild the concrete controller implementation with a given IConfig.
+	 * Subclasses must implement this to recreate their specific controller.
+	 *
+	 * @param \OCP\IConfig $config
+	 */
+	abstract protected function rebuildControllerWithConfig(\OCP\IConfig $config);
 }

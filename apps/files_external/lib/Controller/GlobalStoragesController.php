@@ -29,6 +29,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -45,20 +46,23 @@ class GlobalStoragesController extends StoragesController {
 	 * @param IL10N $l10n l10n service
 	 * @param IGlobalStoragesService $globalStoragesService storage service
 	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
 		IGlobalStoragesService $globalStoragesService,
-		ILogger $logger
+		ILogger $logger,
+		IConfig $config = null
 	) {
 		parent::__construct(
 			$AppName,
 			$request,
 			$l10n,
 			$globalStoragesService,
-			$logger
+			$logger,
+			$config
 		);
 	}
 
