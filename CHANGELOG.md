@@ -39,6 +39,7 @@ ownCloud admins and users.
 ## Summary
 
 * Security - Prevent params body from overriding validated occ command: [#41577](https://github.com/owncloud/core/pull/41577)
+* Security - Remove plaintext federation auth token from error log: [#41578](https://github.com/owncloud/core/pull/41578)
 * Security - Replace strcmp token oracle with hash-based comparison in federation: [#41579](https://github.com/owncloud/core/pull/41579)
 * Security - Restrict unserialize() allowed classes in CommandJob: [#41582](https://github.com/owncloud/core/pull/41582)
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
@@ -80,6 +81,21 @@ ownCloud admins and users.
    allowlist. The params array is now stripped of any command key before the merge.
 
    https://github.com/owncloud/core/pull/41577
+
+* Security - Remove plaintext federation auth token from error log: [#41578](https://github.com/owncloud/core/pull/41578)
+
+   When getSharedSecret received an invalid token it logged both the submitted
+   value and the expected valid token in plaintext. Since the endpoint is public,
+   any unauthenticated caller could trigger this log entry at will for any trusted
+   server URL, exposing the valid token to anyone with log-read access.
+
+   A second leak in the same code path has also been closed: the GetSharedSecret
+   background job sends the token as a GET query parameter, so on an unexpected
+   HTTP response the Guzzle exception - whose message embeds the full request URI
+   including "?token=..." - was logged verbatim. Both log sites no longer emit the
+   token value.
+
+   https://github.com/owncloud/core/pull/41578
 
 * Security - Replace strcmp token oracle with hash-based comparison in federation: [#41579](https://github.com/owncloud/core/pull/41579)
 
