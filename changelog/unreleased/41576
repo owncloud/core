@@ -1,0 +1,10 @@
+Security: Block SSRF host targets in DAV storage constructor
+
+The DAV storage class accepted arbitrary host values without validating
+against private IP ranges, loopback addresses, or link-local ranges such
+as 169.254.x.x. When user external storage mounting was enabled, an
+authenticated user could force outbound HTTP requests to cloud metadata
+endpoints or internal services. Host validation now blocks RFC-1918,
+loopback, link-local, and equivalent IPv6 ranges.
+
+https://github.com/owncloud/core/pull/41576
