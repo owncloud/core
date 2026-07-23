@@ -23,6 +23,9 @@
 
 namespace OCA\Federation\Tests\BackgroundJob;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use OCA\Federation\BackgroundJob\GetSharedSecret;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
@@ -202,5 +205,52 @@ class GetSharedSecretTest extends TestCase {
 			[Http::STATUS_FORBIDDEN],
 			[Http::STATUS_CONFLICT],
 		];
+	}
+
+	/**
+	 * On a non-403 HTTP failure the shared secret is sent as a GET query
+	 * parameter, so the Guzzle exception message embeds the full request URI
+	 * including "?token=...". Logging that exception verbatim would leak the
+	 * plaintext token, so the token value must never reach the logger.
+	 */
+	public function testRunDoesNotLogTokenOnClientException() {
+		$target = 'https://remote.example.com';
+		$source = 'https://local.example.com';
+		$token = 'super-secret-federation-token';
+
+		$argument = ['url' => $target, 'token' => $token];
+
+		$this->urlGenerator->expects($this->once())->method('getAbsoluteURL')->with('/')
+			->willReturn($source);
+
+		// Build a real Guzzle ClientException whose request URI carries the
+		// token in the query string, exactly as the live client would produce.
+		$request = new Request(
+			'GET',
+			$target . '/ocs/v2.php/apps/federation/api/v1/shared-secret?url=' . $source . '&token=' . $token . '&format=json'
+		);
+		$exception = new ClientException(
+			'Client error: `' . $request->getUri() . '` resulted in a `409 Conflict` response',
+			$request,
+			new Response(Http::STATUS_CONFLICT)
+		);
+
+		$this->httpClient->expects($this->once())->method('get')
+			->willThrowException($exception);
+
+		// The token must not appear in any exception logged verbatim...
+		$this->logger->expects($this->never())->method('logException');
+		// ...nor in any error/info message string.
+		$assertNoToken = function ($message) use ($token) {
+			$this->assertStringNotContainsString($token, $message);
+			return true;
+		};
+		$this->logger->method('error')->with($this->callback($assertNoToken));
+		$this->logger->method('info')->with($this->callback($assertNoToken));
+
+		self::invokePrivate($this->getSharedSecret, 'run', [$argument]);
+
+		// A 409 is an unexpected response, so the job is retained for retry.
+		$this->assertTrue(self::invokePrivate($this->getSharedSecret, 'retainJob'));
 	}
 }

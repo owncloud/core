@@ -236,6 +236,40 @@ class OCSAuthAPITest extends TestCase {
 	}
 
 	/**
+	 * Verify that when an invalid token is supplied, the error log message does NOT
+	 * contain either the attacker-supplied token or the expected stored token.
+	 * Leaking either value allows an attacker with log-read access to replay the
+	 * valid token and obtain the shared secret (CVE-class: information disclosure).
+	 */
+	public function testGetSharedSecretDoesNotLogTokenValues() {
+		$url = 'https://trusted.example.com';
+		$attackerToken = 'attacker_supplied_token_XYZ';
+		$storedToken = 'super_secret_expected_token_ABC';
+
+		$this->trustedServers
+			->method('isTrustedServer')->with($url)->willReturn(true);
+
+		// dbHandler->getToken is used by isValidToken; return the stored token
+		$this->dbHandler
+			->method('getToken')->with($url)->willReturn($storedToken);
+
+		// Capture every call to logger->error and assert no token values appear
+		$this->logger
+			->expects($this->once())
+			->method('error')
+			->with(
+				$this->logicalAnd(
+					$this->logicalNot($this->stringContains($attackerToken)),
+					$this->logicalNot($this->stringContains($storedToken))
+				),
+				$this->anything()
+			);
+
+		$result = $this->ocsAuthApi->getSharedSecret($url, $attackerToken);
+		$this->assertSame(Http::STATUS_FORBIDDEN, $result['statuscode']);
+	}
+
+	/**
 	 * @dataProvider dataTestIsTokenValid
 	 */
 	public function testIsTokenValid($storedToken, $requestToken): void {
