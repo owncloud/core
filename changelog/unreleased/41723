@@ -1,0 +1,12 @@
+Bugfix: Reject non-numeric avatar crop coordinates
+
+Submitting a profile picture crop with empty or non-numeric coordinates hit the
+image cropping code with invalid values. On PHP 8 this raised a TypeError from
+round() and returned an HTTP 500; on PHP 7 it silently produced a broken crop.
+The client sends empty coordinates (crop[x]=&crop[y]=...) whenever the cropper
+failed to produce a selection. postCroppedAvatar now validates that all four
+coordinates are numeric and returns a clean HTTP 400 otherwise, instead of
+crashing.
+
+https://github.com/owncloud/core/issues/41723
+https://github.com/owncloud/core/pull/41725

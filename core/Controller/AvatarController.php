@@ -325,7 +325,13 @@ class AvatarController extends Controller {
 			);
 		}
 
-		if (!isset($crop['x'], $crop['y'], $crop['w'], $crop['h'])) {
+		if (!isset($crop['x'], $crop['y'], $crop['w'], $crop['h'])
+			|| !\is_numeric($crop['x']) || !\is_numeric($crop['y'])
+			|| !\is_numeric($crop['w']) || !\is_numeric($crop['h'])
+		) {
+			// The client may submit empty coordinates (e.g. crop[x]=&crop[y]=...)
+			// when the cropper failed to produce a selection. Reject them here
+			// instead of letting round()/imagecreatetruecolor() fail later.
 			return new DataResponse(
 				['data' => ['message' => $this->l->t("No valid crop data provided")]],
 				Http::STATUS_BAD_REQUEST
@@ -343,7 +349,7 @@ class AvatarController extends Controller {
 		}
 
 		$image = new \OC_Image($tmpAvatar);
-		$image->crop($crop['x'], $crop['y'], \round($crop['w']), \round($crop['h']));
+		$image->crop((int)$crop['x'], (int)$crop['y'], (int)\round($crop['w']), (int)\round($crop['h']));
 		try {
 			$avatar = $this->avatarManager->getAvatar($userId);
 			$avatar->set($image);
