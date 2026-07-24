@@ -61,8 +61,11 @@ ownCloud admins and users.
 * Bugfix - Handle deprecated code related to comments app: [#41656](https://github.com/owncloud/core/pull/41656)
 * Bugfix - Hide navigation icon for apps not enabled for the user: [#41717](https://github.com/owncloud/core/issues/41717)
 * Bugfix - Do not crash on malformed translations: [#41720](https://github.com/owncloud/core/issues/41720)
+* Bugfix - Reject non-numeric avatar crop coordinates: [#41723](https://github.com/owncloud/core/issues/41723)
+* Bugfix - Fix avatar cropper broken by Jcrop 2.0 file rename: [#41723](https://github.com/owncloud/core/issues/41723)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+* Change - Raise minimum PHP version to 8.3: [#41449](https://github.com/owncloud/core/pull/41449)
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 * Change - Removed legacy and deprecated code from ownCloud 11: [#41455](https://github.com/owncloud/core/pull/41455)
@@ -324,6 +327,34 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41720
 
+* Bugfix - Reject non-numeric avatar crop coordinates: [#41723](https://github.com/owncloud/core/issues/41723)
+
+   Submitting a profile picture crop with empty or non-numeric coordinates hit the
+   image cropping code with invalid values. On PHP 8 this raised a TypeError from
+   round() and returned an HTTP 500; on PHP 7 it silently produced a broken crop.
+   The client sends empty coordinates (crop[x]=&crop[y]=...) whenever the cropper
+   failed to produce a selection. postCroppedAvatar now validates that all four
+   coordinates are numeric and returns a clean HTTP 400 otherwise, instead of
+   crashing.
+
+   https://github.com/owncloud/core/issues/41723
+   https://github.com/owncloud/core/pull/41725
+
+* Bugfix - Fix avatar cropper broken by Jcrop 2.0 file rename: [#41723](https://github.com/owncloud/core/issues/41723)
+
+   Uploading a non-square profile picture opened a cropper that immediately failed
+   with "$cropperImage.Jcrop is not a function". Bumping the Jcrop dependency from
+   0.9.12 to 2.0.4 renamed its distribution files from js/jquery.Jcrop.js and
+   css/jquery.Jcrop.css to js/Jcrop.js and css/Jcrop.css, but the personal profile
+   template still referenced the old paths. The script therefore failed to load,
+   the plugin never registered on jQuery, and the cropper could not be shown. The
+   template now loads the renamed Jcrop assets.
+
+   Original Jcrop PR: https://github.com/owncloud/core/pull/38666
+
+   https://github.com/owncloud/core/issues/41723
+   https://github.com/owncloud/core/pull/41724
+
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
    Icons have been updated according to the M$ cloud storage partner program
@@ -335,6 +366,15 @@ ownCloud admins and users.
    With composer managing auto loading for a long time this is no longer necessary.
 
    https://github.com/owncloud/core/pull/41376
+
+* Change - Raise minimum PHP version to 8.3: [#41449](https://github.com/owncloud/core/pull/41449)
+
+   The minimum required PHP version is now 8.3. Numerous PHP 8.x deprecation
+   warnings were resolved across the codebase, the mail subsystem was migrated to
+   symfony/mailer, the unused ext-apc requirement was dropped, and the PHP version
+   check now runs early in lib/base.php.
+
+   https://github.com/owncloud/core/pull/41449
 
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
 
