@@ -65,7 +65,20 @@ class OC_L10N_String implements JsonSerializable {
 			return (string)$text;
 		}
 
-		return \vsprintf($text, $this->parameters);
+		try {
+			return \vsprintf($text, $this->parameters);
+		} catch (\ValueError $e) {
+			// A malformed translation (e.g. a translator turned "%s" into
+			// "% s" or "%S", or dropped a specifier) makes vsprintf() throw
+			// a ValueError on PHP 8. Rather than letting that bubble up as a
+			// 500, fall back to the untranslated source text so the request
+			// still succeeds. See https://github.com/owncloud/core/issues/41720
+			try {
+				return \vsprintf(\str_replace('%n', $this->count, $this->text), $this->parameters);
+			} catch (\ValueError $e) {
+				return (string)$this->text;
+			}
+		}
 	}
 
 	public function jsonSerialize(): string {
