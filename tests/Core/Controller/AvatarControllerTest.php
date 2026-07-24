@@ -420,6 +420,34 @@ class AvatarControllerTest extends TestCase {
 	}
 
 	/**
+	 * Non-numeric crop coordinates must be rejected with a clean 400 instead of
+	 * reaching the image cropping code. jQuery serializes undefined cropper
+	 * coordinates as empty strings (crop[x]=&crop[y]=...), which are "set" but
+	 * not numeric; passing them to round()/imagecreatetruecolor() throws a
+	 * TypeError on PHP 8 (HTTP 500) or silently produces a broken crop on PHP 7.
+	 *
+	 * @dataProvider providesNonNumericCrop
+	 */
+	public function testPostCroppedAvatarNonNumericCrop($crop) {
+		// A valid tmp avatar is present, so we get past the tmpAvatar check and
+		// would reach the cropping code if the coordinates were not rejected.
+		$this->cache->expects($this->any())->method('get')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
+		$this->avatarManager->expects($this->any())->method('getAvatar')->willReturn($this->avatarMock);
+
+		$response = $this->avatarController->postCroppedAvatar($crop);
+
+		$this->assertEquals(Http::STATUS_BAD_REQUEST, $response->getStatus());
+	}
+
+	public function providesNonNumericCrop() {
+		return [
+			'empty strings (undefined jQuery coords)' => [['x' => '', 'y' => '', 'w' => '', 'h' => '']],
+			'non-numeric strings' => [['x' => 'a', 'y' => 'b', 'w' => 'c', 'h' => 'd']],
+			'mixed' => [['x' => 0, 'y' => 0, 'w' => '', 'h' => 10]],
+		];
+	}
+
+	/**
 	 * Test no tmp avatar to crop
 	 */
 	public function testPostCroppedAvatarNoTmpAvatar() {
