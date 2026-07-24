@@ -59,6 +59,7 @@ ownCloud admins and users.
 * Bugfix - Fix user:home:list-dirs and user:home:list-users crashing on PHP 8: [#41630](https://github.com/owncloud/core/issues/41630)
 * Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
 * Bugfix - Handle deprecated code related to comments app: [#41656](https://github.com/owncloud/core/pull/41656)
+* Bugfix - Hide navigation icon for apps not enabled for the user: [#41717](https://github.com/owncloud/core/issues/41717)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
@@ -298,6 +299,16 @@ ownCloud admins and users.
    Code paths that caused deprecation warnings in PHP 8 have been corrected.
 
    https://github.com/owncloud/core/pull/41656
+
+* Bugfix - Hide navigation icon for apps not enabled for the user: [#41717](https://github.com/owncloud/core/issues/41717)
+
+   Apps that were enabled only for a specific group still showed their navigation
+   icon in the top-left app menu for every user, including users who were not in
+   that group. Clicking the icon then bounced the user back to the Files app. The
+   navigation manager now skips apps that are not enabled for the current user,
+   mirroring the per-user check already used for the web navigation entry.
+
+   https://github.com/owncloud/core/issues/41717
 
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
