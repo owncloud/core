@@ -60,6 +60,7 @@ ownCloud admins and users.
 * Bugfix - Add MIME types for OpenDocument formats: [#41648](https://github.com/owncloud/core/pull/41648)
 * Bugfix - Handle deprecated code related to comments app: [#41656](https://github.com/owncloud/core/pull/41656)
 * Bugfix - Hide navigation icon for apps not enabled for the user: [#41717](https://github.com/owncloud/core/issues/41717)
+* Bugfix - Do not crash on malformed translations: [#41720](https://github.com/owncloud/core/issues/41720)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41450](https://github.com/owncloud/core/pull/41450)
@@ -309,6 +310,19 @@ ownCloud admins and users.
    mirroring the per-user check already used for the web navigation entry.
 
    https://github.com/owncloud/core/issues/41717
+
+* Bugfix - Do not crash on malformed translations: [#41720](https://github.com/owncloud/core/issues/41720)
+
+   Changing the language (and any request that rendered a translated string with
+   parameters) could return an HTTP 500 error. On PHP 8 vsprintf() throws a
+   ValueError instead of returning false when a translation's format specifiers do
+   not match the supplied arguments — a common result of translators turning "%s"
+   into "% s" or "%S", or dropping a specifier. OC_L10N_String::__toString() did
+   not guard against this, so a single malformed translation string in a shipped
+   language file crashed the whole request. Such translations now fall back to the
+   untranslated source text so the request still succeeds.
+
+   https://github.com/owncloud/core/issues/41720
 
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
