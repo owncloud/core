@@ -56,6 +56,33 @@ class L10nTest extends TestCase {
 		self::assertEquals('malformed %', $lString->__toString());
 	}
 
+	/**
+	 * A translation whose format specifiers do not match the supplied
+	 * parameters must not crash. On PHP 8 vsprintf() throws a ValueError
+	 * for such mismatches (translators frequently mangle specifiers, e.g.
+	 * "%s" -> "% s" or "%S"). We must fall back to the untranslated text
+	 * instead of letting the ValueError bubble up as a 500. See #41720.
+	 *
+	 * @dataProvider providesMismatchedFormatTranslations
+	 */
+	public function testMismatchedFormatTranslationsDoNotThrow(string $translation, array $parameters): void {
+		$lMock = $this->createMock(L10N::class);
+		$lMock->method('getTranslations')->willReturn(['See %s' => $translation]);
+
+		$lString = new \OC_L10N_String($lMock, 'See %s', $parameters);
+		// Falls back to the untranslated source text rather than throwing.
+		self::assertEquals('See http://example.com', $lString->__toString());
+	}
+
+	public function providesMismatchedFormatTranslations(): array {
+		return [
+			// Unknown specifier "% S" produced by a translator (real case: lib/l10n/ug.json)
+			'unknown specifier' => ['% S', ['http://example.com']],
+			// More specifiers in the translation than parameters supplied
+			'too few arguments' => ['%s %s', ['http://example.com']],
+		];
+	}
+
 	public function testRussianPluralTranslations(): void {
 		$transFile = \OC::$SERVERROOT.'/tests/data/l10n/ru.json';
 		$l = new L10N($this->getFactory(), 'test', 'ru', [$transFile]);

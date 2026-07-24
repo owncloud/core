@@ -1,0 +1,12 @@
+Bugfix: Do not crash on malformed translations
+
+Changing the language (and any request that rendered a translated string with
+parameters) could return an HTTP 500 error. On PHP 8 vsprintf() throws a
+ValueError instead of returning false when a translation's format specifiers do
+not match the supplied arguments — a common result of translators turning "%s"
+into "% s" or "%S", or dropping a specifier. OC_L10N_String::__toString() did
+not guard against this, so a single malformed translation string in a shipped
+language file crashed the whole request. Such translations now fall back to the
+untranslated source text so the request still succeeds.
+
+https://github.com/owncloud/core/issues/41720
