@@ -8,4 +8,7 @@ template still referenced the old paths. The script therefore failed to load,
 the plugin never registered on jQuery, and the cropper could not be shown. The
 template now loads the renamed Jcrop assets.
 
-https://github.com/owncloud/core/pull/38666
+Original Jcrop PR: https://github.com/owncloud/core/pull/38666
+
+https://github.com/owncloud/core/issues/41723
+https://github.com/owncloud/core/pull/41724
