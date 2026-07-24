@@ -1,0 +1,11 @@
+Bugfix: Fix avatar cropper broken by Jcrop 2.0 file rename
+
+Uploading a non-square profile picture opened a cropper that immediately failed
+with "$cropperImage.Jcrop is not a function". Bumping the Jcrop dependency from
+0.9.12 to 2.0.4 renamed its distribution files from js/jquery.Jcrop.js and
+css/jquery.Jcrop.css to js/Jcrop.js and css/Jcrop.css, but the personal profile
+template still referenced the old paths. The script therefore failed to load,
+the plugin never registered on jQuery, and the cropper could not be shown. The
+template now loads the renamed Jcrop assets.
+
+https://github.com/owncloud/core/pull/38666
