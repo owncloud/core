@@ -1,0 +1,8 @@
+Change: Raise minimum PHP version to 8.3
+
+The minimum required PHP version is now 8.3. Numerous PHP 8.x deprecation
+warnings were resolved across the codebase, the mail subsystem was migrated
+to symfony/mailer, the unused ext-apc requirement was dropped, and the PHP
+version check now runs early in lib/base.php.
+
+https://github.com/owncloud/core/pull/41449
