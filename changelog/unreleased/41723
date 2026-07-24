@@ -9,3 +9,4 @@ coordinates are numeric and returns a clean HTTP 400 otherwise, instead of
 crashing.
 
 https://github.com/owncloud/core/issues/41723
+https://github.com/owncloud/core/pull/41725
