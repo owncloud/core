@@ -1,0 +1,11 @@
+Bugfix: Prevent trashbin restore from overwriting an existing file
+
+Restoring a file or folder from the trashbin to a location that already held a
+different file silently overwrote (and thereby destroyed) the existing target.
+The WebDAV restore path deleted the pre-existing destination before the restore
+ran, so an earlier guard inside the restore routine never took effect. The DAV
+layer now refuses such a restore with "403 Forbidden" before anything is
+deleted, leaving the existing target untouched.
+
+https://github.com/owncloud/core/issues/35974
+https://github.com/owncloud/core/pull/41645
