@@ -142,6 +142,11 @@ class NavigationManager implements INavigationManager {
 			return;
 		}
 		foreach ($this->appManager->getInstalledApps() as $app) {
+			// skip apps that are not enabled for the current user, e.g. apps
+			// that are only enabled for a specific group the user is not in
+			if (!$this->appManager->isEnabledForUser($app)) {
+				continue;
+			}
 			// load plugins and collections from info.xml
 			$info = $this->appManager->getAppInfo($app);
 			if (!isset($info['navigation'])) {

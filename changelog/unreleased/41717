@@ -1,0 +1,9 @@
+Bugfix: Hide navigation icon for apps not enabled for the user
+
+Apps that were enabled only for a specific group still showed their navigation
+icon in the top-left app menu for every user, including users who were not in
+that group. Clicking the icon then bounced the user back to the Files app. The
+navigation manager now skips apps that are not enabled for the current user,
+mirroring the per-user check already used for the web navigation entry.
+
+https://github.com/owncloud/core/issues/41717

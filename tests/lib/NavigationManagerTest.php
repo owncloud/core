@@ -182,6 +182,7 @@ class NavigationManagerTest extends TestCase {
 		});
 
 		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);
+		$appManager->method('isEnabledForUser')->with('test')->willReturn(true);
 		$appManager->expects($this->once())->method('getAppInfo')->with('test')->willReturn($config);
 		$l10nFac->expects($this->exactly(\count($expected)))->method('get')->with('test')->willReturn($l);
 		$urlGenerator->method('imagePath')->willReturnCallback(static function ($appName, $file) {
@@ -204,6 +205,30 @@ class NavigationManagerTest extends TestCase {
 
 		$entries = $navigationManager->getAll();
 		$this->assertEquals($expected, $entries);
+	}
+
+	public function testAppNotEnabledForUserIsNotShown(): void {
+		$appManager = $this->createMock(IAppManager::class);
+		$urlGenerator = $this->createMock(IURLGenerator::class);
+		$l10nFac = $this->createMock(IFactory::class);
+		$userSession = $this->createMock(IUserSession::class);
+		$groupManager = $this->createMock(IGroupManager::class);
+		$systemConfig = $this->createMock(IConfig::class);
+
+		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);
+		// the app is installed (e.g. enabled only for a specific group) but not
+		// enabled for the current user - its navigation entry must be skipped
+		$appManager->method('isEnabledForUser')->with('test')->willReturn(false);
+		$appManager->expects($this->never())->method('getAppInfo');
+
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('user001');
+		$userSession->method('getUser')->willReturn($user);
+		$groupManager->method('isAdmin')->willReturn(false);
+
+		$navigationManager = new NavigationManager($appManager, $urlGenerator, $l10nFac, $userSession, $groupManager, $systemConfig);
+
+		$this->assertEquals([], $navigationManager->getAll());
 	}
 
 	public function providesNavigationConfig(): array {
