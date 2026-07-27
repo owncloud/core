@@ -97,10 +97,7 @@ class Movie implements IProvider2 {
 			if (\strtolower($suffix) === '.mp4') {
 				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 				$tmpBase = $tmpFolder.'/Cover';
-				$cmd = self::$atomicParsleyBinary . ' ' .
-					\escapeshellarg($absPath).
-					' --extractPixToPath ' . \escapeshellarg($tmpBase) .
-					' > /dev/null 2>&1';
+				$cmd = self::buildAtomicParsleyCommand($absPath, $tmpBase);
 
 				\exec($cmd, $output, $returnCode);
 
@@ -121,6 +118,47 @@ class Movie implements IProvider2 {
 	}
 
 	/**
+	 * Build the AtomicParsley command line used to extract cover artwork.
+	 *
+	 * The binary is escaped just like every other part of the command line: it
+	 * originates from OC_Helper::findBinaryPath() and must never be interpolated
+	 * into a shell string unquoted.
+	 *
+	 * @param string $absPath
+	 * @param string $tmpBase
+	 * @return string
+	 */
+	private static function buildAtomicParsleyCommand($absPath, $tmpBase) {
+		return \escapeshellarg(self::$atomicParsleyBinary) . ' ' .
+			\escapeshellarg($absPath) .
+			' --extractPixToPath ' . \escapeshellarg($tmpBase) .
+			' > /dev/null 2>&1';
+	}
+
+	/**
+	 * Build the avconv/ffmpeg command line used to grab a single frame.
+	 *
+	 * @param string $absPath
+	 * @param int $second
+	 * @param string $tmpPath
+	 * @return string
+	 */
+	private static function buildMovieCommand($absPath, $second, $tmpPath) {
+		if (self::$avconvBinary) {
+			return \escapeshellarg(self::$avconvBinary) . ' -y -ss ' . \escapeshellarg($second) .
+				' -i ' . \escapeshellarg($absPath) .
+				' -an -f mjpeg -vframes 1 -vsync 1 ' . \escapeshellarg($tmpPath) .
+				' > /dev/null 2>&1';
+		}
+
+		return \escapeshellarg(self::$ffmpegBinary) . ' -y -ss ' . \escapeshellarg($second) .
+			' -i ' . \escapeshellarg($absPath) .
+			' -f mjpeg -vframes 1' .
+			' ' . \escapeshellarg($tmpPath) .
+			' > /dev/null 2>&1';
+	}
+
+	/**
 	 * @param $absPath
 	 * @param $second
 	 * @return bool|string
@@ -128,18 +166,7 @@ class Movie implements IProvider2 {
 	private function generateFromMovie($absPath, $second) {
 		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
 
-		if (self::$avconvBinary) {
-			$cmd = self::$avconvBinary . ' -y -ss ' . \escapeshellarg($second) .
-				' -i ' . \escapeshellarg($absPath) .
-				' -an -f mjpeg -vframes 1 -vsync 1 ' . \escapeshellarg($tmpPath) .
-				' > /dev/null 2>&1';
-		} else {
-			$cmd = self::$ffmpegBinary . ' -y -ss ' . \escapeshellarg($second) .
-				' -i ' . \escapeshellarg($absPath) .
-				' -f mjpeg -vframes 1' .
-				' ' . \escapeshellarg($tmpPath) .
-				' > /dev/null 2>&1';
-		}
+		$cmd = self::buildMovieCommand($absPath, $second, $tmpPath);
 
 		\exec($cmd, $output, $returnCode);
 
