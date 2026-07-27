@@ -104,6 +104,12 @@ $this->create('settings_ajax_changegroupname', '/settings/ajax/changegroupname.p
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
+$this->create('settings_personal_changelanguage', '/settings/personal/changelanguage')
+	->post()
+	->actionInclude('settings/ajax/setlanguage.php');
+// Kept for backwards compatibility only. This url is shadowed by the script of
+// the same name on disk, so the front controller rewrite never reaches it - see
+// settings_personal_changelanguage above.
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')
 	->actionInclude('settings/ajax/setlanguage.php');
 // apps

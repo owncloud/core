@@ -1,0 +1,26 @@
+Bugfix: Route requests for .php urls through the front controller
+
+Legacy ajax endpoints returned an HTTP 500 with a PHP fatal error
+'Class "OC" not found' instead of a response. Changing the language in the
+personal settings was the most visible case, but the share dialog's email
+autocomplete, public link thumbnails, trashbin previews and the Google Drive
+OAuth flow were affected in the same way.
+
+Those endpoints are legacy routes whose url is also a real script on disk, for
+example /settings/ajax/setlanguage.php. The front controller rewrite rules in
+.htaccess only forwarded a request to index.php when the requested path did not
+exist, so the web server executed such a script directly - that is without the
+bootstrap index.php would have done - and the request died on the first
+statement. The rewrite rules now always route .php urls through the front
+controller, while static assets keep being served directly and the exempted
+entry points (status.php, remote.php, public.php, cron.php, ocs/v1.php,
+ocs/v2.php, core/ajax/update.php) keep bypassing the router.
+
+Existing installations pick up the new rules on the next upgrade, or by running
+'occ maintenance:update:htaccess'. Independently of that, the personal language
+endpoint is now registered as /settings/personal/changelanguage, matching the
+sibling changepassword route, and the personal profile panel builds the url with
+OC.generateUrl() instead of posting to a relative script path.
+
+https://github.com/owncloud/core/issues/41740
+https://github.com/owncloud/core/pull/41741

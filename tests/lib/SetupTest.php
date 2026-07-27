@@ -218,7 +218,7 @@ class SetupTest extends \Test\TestCase {
 		);
 	}
 
-	public function testUpdateHtaccessWithRewriteBaseUsesFileExistenceCheck(): void {
+	public function testUpdateHtaccessWithRewriteBaseUsesFileExistenceCheckAndRoutesPhpUrls(): void {
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
 		\touch($htaccessFile);
@@ -255,6 +255,15 @@ class SetupTest extends \Test\TestCase {
 		$this->assertStringNotContainsString(
 			'REQUEST_URI} !\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)',
 			$content
+		);
+		// .php urls have to be routed even when the script exists on disk,
+		// otherwise the web server runs it without a bootstrap
+		$phpCond = 'RewriteCond %{REQUEST_URI} \.php$ [OR]';
+		$this->assertStringContainsString($phpCond, $content);
+		$this->assertLessThan(
+			\strpos($content, 'RewriteCond %{REQUEST_FILENAME} !-f'),
+			\strpos($content, $phpCond),
+			'The .php condition has to precede the file existence check to be OR-ed with it'
 		);
 	}
 }

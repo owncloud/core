@@ -498,6 +498,12 @@ class Setup {
 			$content .= "\n  RewriteRule ^favicon.ico$ core/img/favicon.ico [L]";
 			$content .= "\n  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteRule ^core/preview.png$ index.php [PT,E=PATH_INFO:$1]";
+			// Requests for .php urls have to reach the front controller as well.
+			// A couple of legacy routes declare a url which is also a real script
+			// on disk - e.g. /settings/ajax/setlanguage.php - and without this the
+			// -f check below lets the web server execute those scripts directly,
+			// that is without the bootstrap index.php would have done.
+			$content .= "\n  RewriteCond %{REQUEST_URI} \\.php$ [OR]";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !-f";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/core/img/favicon\\.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/robots\\.txt$";
