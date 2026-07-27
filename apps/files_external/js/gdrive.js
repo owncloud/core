@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var backendId = 'googledrive';
-	var backendUrl = OC.generateUrl('apps/files_external/ajax/oauth2.php');
+	var backendUrl = OC.generateUrl('/index.php/apps/files_external/ajax/oauth2.php');
 
 	function generateUrl($tr) {
 		// no mapping between client ID and Google 'project', so we always load the same URL
