@@ -27,7 +27,6 @@
 
 namespace OC\Files\Cache;
 use OC\Cache\CappedMemoryCache;
-use OCP\ICache;
 
 /**
  * Handle the mapping between the string and numeric storage ids
@@ -38,6 +37,11 @@ use OCP\ICache;
  *
  * A mapping between the two storage ids is stored in the database and accessible trough this class
  *
+ * The mapping is memoized for the duration of the request only. It used to be
+ * cached in the distributed cache on top of that, which bought about 0.1ms per
+ * lookup at the price of setAvailability() changes taking up to five minutes to
+ * be seen by the other nodes.
+ *
  * @package OC\Files\Cache
  */
 class Storage {
@@ -46,11 +50,6 @@ class Storage {
 
 	/** @var CappedMemoryCache */
 	protected static $localCache = null;
-
-	/** @var ICache  */
-	private static $distributedCache = null;
-
-	private static $distributedCacheTTL = 300; // 5 Min
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
@@ -83,13 +82,6 @@ class Storage {
 
 				// local cache has been initialized by self::getStorageById
 				self::$localCache->set($this->storageId, $storageData);
-
-				// distributed cache may need initializing
-				self::getDistributedCache()->set(
-					$this->storageId,
-					$storageData,
-					self::$distributedCacheTTL
-				);
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
 					$this->numericId = (int)$row['numeric_id'];
@@ -101,7 +93,7 @@ class Storage {
 	}
 
 	/**
-	 * query the local cache, a distributed cache and the db for a storageid
+	 * query the request scoped cache and the db for a storageid
 	 * @param string $storageId
 	 * @return array|false
 	 */
@@ -111,37 +103,8 @@ class Storage {
 		}
 		$result = self::$localCache->get($storageId);
 		if ($result === null || !isset($result['numeric_id'])) {
-			$result = self::getStorageByIdFromCache($storageId);
-			self::$localCache->set($storageId, $result);
-		}
-		return $result;
-	}
-
-	/**
-	 * @return ICache
-	 */
-	private static function getDistributedCache() {
-		if (self::$distributedCache === null) {
-			self::$distributedCache =
-				\OC::$server->getMemCacheFactory()->create('getStorageById');
-		}
-		return self::$distributedCache;
-	}
-
-	/**
-	 * query the distributed cache for a storageid
-	 * @param string $storageId
-	 * @return array|false
-	 */
-	private static function getStorageByIdFromCache($storageId) {
-		$result = self::getDistributedCache()->get($storageId);
-		if ($result === null || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromDb($storageId);
-			self::getDistributedCache()->set(
-				$storageId,
-				$result,
-				self::$distributedCacheTTL
-			);
+			self::$localCache->set($storageId, $result);
 		}
 		return $result;
 	}
@@ -162,12 +125,9 @@ class Storage {
 	}
 
 	private static function unsetCache($storageId) {
-		// delete from local cache
 		if (self::$localCache !== null) {
 			self::$localCache->remove($storageId);
 		}
-		// delete from distributed cache
-		self::getDistributedCache()->remove($storageId);
 	}
 
 	/**
