@@ -1,4 +1,4 @@
-Tests: Cover HTML metacharacters in the username validation allow-list
+Change: Cover HTML metacharacters in the username validation allow-list
 
 The username allow-list in OC\User\Manager::createUser() already rejects every
 character outside "a-z", "A-Z", "0-9" and "+_.@-'", which blocks HTML and script
