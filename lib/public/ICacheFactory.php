@@ -41,6 +41,23 @@ interface ICacheFactory {
 	public function create($prefix = '');
 
 	/**
+	 * Get a memory cache instance in the host local tier
+	 *
+	 * Unlike the cache returned by create(), this cache is not shared between the
+	 * nodes of an installation. Values which are only meaningful on the machine
+	 * which produced them - resolved paths on disk, results of inspecting the
+	 * local installation - belong here and not in the shared cache, where every
+	 * node would consume what any single node wrote.
+	 *
+	 * All entries added trough the cache instance will be namespaced by $prefix to prevent collisions between apps
+	 *
+	 * @param string $prefix
+	 * @return \OCP\ICache
+	 * @since 11.0.0
+	 */
+	public function createLocal($prefix = '');
+
+	/**
 	 * Check if any memory cache backend is available
 	 *
 	 * @return bool

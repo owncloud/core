@@ -77,20 +77,12 @@ class LocalCacheFactoryTest extends TestCase {
 		$this->assertNull($factory->createDistributed('test')->get('key'));
 	}
 
-	public function testFallsBackWhenCreateLocalIsNotImplemented(): void {
-		// ICacheFactory does not declare createLocal(), so a bare interface
-		// mock has no such method
-		$factory = $this->createMock(ICacheFactory::class);
-
-		$this->assertInstanceOf(ArrayCache::class, LocalCacheFactory::create($factory, 'test'));
-	}
-
 	/**
 	 * @dataProvider unusableLocalCacheProvider
 	 * @param mixed $returnValue
 	 */
 	public function testFallsBackWhenCreateLocalReturnsSomethingUnusable($returnValue): void {
-		$factory = $this->createMock(FixedCacheFactory::class);
+		$factory = $this->createMock(ICacheFactory::class);
 		$factory->method('createLocal')->willReturn($returnValue);
 
 		$this->assertInstanceOf(ArrayCache::class, LocalCacheFactory::create($factory, 'test'));
@@ -101,6 +93,17 @@ class LocalCacheFactoryTest extends TestCase {
 			'null' => [null],
 			'a NullCache' => [new NullCache('test')],
 		];
+	}
+
+	/**
+	 * The helper calls createLocal() unconditionally, which is only safe as long
+	 * as every ICacheFactory has to provide it.
+	 */
+	public function testTheLocalTierIsPartOfThePublicApi(): void {
+		$this->assertTrue(
+			(new \ReflectionClass(ICacheFactory::class))->hasMethod('createLocal'),
+			'ICacheFactory declares createLocal()'
+		);
 	}
 
 	public function testPassesThroughThePrefix(): void {
