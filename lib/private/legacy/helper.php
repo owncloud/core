@@ -519,32 +519,82 @@ class OC_Helper {
 	}
 
 	/**
+	 * Sentinel stored in the cache to remember that a program could not be
+	 * found, so the (comparatively expensive) lookup is not repeated. It is
+	 * distinguishable from a cache miss, which yields null.
+	 */
+	private const BINARY_NOT_FOUND = false;
+
+	/**
+	 * Number of seconds a resolved binary path is cached for
+	 */
+	private const BINARY_PATH_TTL = 300;
+
+	/**
 	 * Try to find a program
 	 *
 	 * @param string $program
 	 * @return null|string
 	 */
 	public static function findBinaryPath($program) {
-		$memcache = \OC::$server->getMemCacheFactory()->create('findBinaryPath');
-		if ($memcache->hasKey($program)) {
-			return $memcache->get($program);
+		// host local tier only: a binary path is meaningful for this machine
+		// alone and ends up in a shell command, so it must not be read from a
+		// cache which other hosts - or anything able to reach the cache
+		// backend - can write to.
+		$memcache = \OC\Memcache\LocalCacheFactory::create(
+			\OC::$server->getMemCacheFactory(),
+			'findBinaryPath'
+		);
+
+		$cached = $memcache->get($program);
+		if ($cached === self::BINARY_NOT_FOUND) {
+			return null;
 		}
+		// never hand out a cached path without checking it still describes the
+		// program which was asked for
+		if ($cached !== null && self::isUsableBinaryPath($program, $cached)) {
+			return $cached;
+		}
+
 		$result = null;
 		if (self::is_function_enabled('exec')) {
 			$exeSniffer = new ExecutableFinder();
 			// Returns null if nothing is found
 			$result = $exeSniffer->find($program);
-			#if (empty($result)) {
-			#	$command = 'find ' . self::getCleanedPath(\getenv('PATH')) . ' -name ' . \escapeshellarg($program) . ' 2> /dev/null';
-			#	\exec($command, $output, $returnCode);
-			#	if (\count($output) > 0) {
-			#		$result = \escapeshellcmd($output[0]);
-			#	}
-			#}
 		}
-		// store the value for 5 minutes
-		$memcache->set($program, $result, 300);
+		if (!self::isUsableBinaryPath($program, $result)) {
+			$result = null;
+		}
+
+		$memcache->set(
+			$program,
+			$result === null ? self::BINARY_NOT_FOUND : $result,
+			self::BINARY_PATH_TTL
+		);
 		return $result;
+	}
+
+	/**
+	 * Check that a path really is the executable of the requested program.
+	 *
+	 * @param string $program the program which was looked up
+	 * @param mixed $path the path to check
+	 * @return bool
+	 */
+	private static function isUsableBinaryPath($program, $path) {
+		if (!\is_string($path) || $path === '') {
+			return false;
+		}
+		// a NUL byte truncates the value for any C level consumer and makes
+		// escapeshellarg() throw
+		if (\strpos($path, "\0") !== false) {
+			return false;
+		}
+		if (\basename($path) !== $program) {
+			return false;
+		}
+		// is_executable() alone is not enough: it is also true for directories
+		return \is_file($path) && \is_executable($path);
 	}
 
 	/**

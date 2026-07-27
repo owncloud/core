@@ -1,0 +1,9 @@
+Security: Do not trust cached binary paths
+
+The paths of the helper binaries used to render previews - ffmpeg, avconv and
+AtomicParsley - were cached in the distributed memory cache and used without
+being checked, then interpolated unquoted into the shell commands built from
+them. A cached path is now stored in the host local cache tier only, is
+validated before it is used, and is quoted when the command line is assembled.
+
+https://github.com/owncloud/core/pull/41732
