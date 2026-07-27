@@ -110,4 +110,17 @@ class RouterTest extends \Test\TestCase {
 			['/resource/{id}/sub', true, '/resource/id/with/slashes/sub', true],
 		];
 	}
+
+	/**
+	 * Generated urls used to be cached, which measured slower than generating
+	 * them and made the cache a place where urls could be tampered with. There
+	 * is no caching router any more.
+	 */
+	public function testRouterIsNotCached(): void {
+		$this->assertFalse(
+			\class_exists(\OC\Route\CachingRouter::class),
+			'OC\Route\CachingRouter has been removed'
+		);
+		$this->assertSame(Router::class, \get_class(\OC::$server->getRouter()));
+	}
 }

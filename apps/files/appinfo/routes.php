@@ -64,7 +64,7 @@ $application->registerRoutes(
 	]
 );
 
-/** @var $this \OC\Route\Router */
+/** @var $this \OCP\Route\IRouter */
 
 $this->create('files_ajax_download', 'ajax/download.php')
 	->actionInclude('files/ajax/download.php');

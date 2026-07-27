@@ -1,0 +1,7 @@
+Change: Remove the caching router
+
+Generated urls are no longer stored in the memory cache. Measurement showed
+generating a url to be faster than a cache round trip, so the cache only added
+a place where urls could go stale or be tampered with.
+
+https://github.com/owncloud/core/pull/41733

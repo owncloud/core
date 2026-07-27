@@ -524,14 +524,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('Router', function (Server $c) {
-			$cacheFactory = $c->getMemCacheFactory();
-			$logger = $c->getLogger();
-			if ($cacheFactory->isAvailable()) {
-				$router = new \OC\Route\CachingRouter($cacheFactory->create('route'), $logger);
-			} else {
-				$router = new \OC\Route\Router($logger);
-			}
-			return $router;
+			return new \OC\Route\Router($c->getLogger());
 		});
 		$this->registerService('Search', function ($c) {
 			return new Search();
