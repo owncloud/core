@@ -1,0 +1,8 @@
+Security: Enforce the read permission in the public share preview endpoint
+
+The public share preview endpoint resolved the share by token and rendered the
+requested file without consulting the share's permission bitmask. It now returns
+404 when the share does not carry the read permission, which makes it consistent
+with ShareController::downloadShare() and the public WebDAV route.
+
+https://github.com/owncloud/core/pull/41751

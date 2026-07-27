@@ -59,6 +59,31 @@ Feature: accessing a public link share
     Then the HTTP status code of responses on all endpoints should be "200"
 
 
+  Scenario: Access to the preview of a file in an upload-only public link share is not allowed
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "FOLDER/testavatar.jpg"
+    And user "Alice" has created a public link share with settings
+      | path        | /FOLDER         |
+      | permissions | uploadwriteonly |
+    When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
+    Then the HTTP status code should be "404"
+
+
+  Scenario: Access to the preview in an upload-only public link share does not disclose whether a file exists
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "FOLDER/testavatar.jpg"
+    And user "Alice" has created a public link share with settings
+      | path        | /FOLDER         |
+      | permissions | uploadwriteonly |
+    When the public accesses the preview of the following files from the last shared public link using the sharing API
+      | path               |
+      | testavatar.jpg     |
+      | thisWillNeverExist |
+    Then the HTTP status code of responses on all endpoints should be "404"
+
+
   Scenario Outline: Request to non-existent public link
     When a user requests "<endpoint>" with "<method>" and no authentication
     Then the HTTP status code should be "404"
