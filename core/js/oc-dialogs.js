@@ -745,7 +745,7 @@ var OCdialogs = {
 		}
 
 		return $.getJSON(
-			OC.filePath('files', 'ajax', 'list.php'),
+			OC.generateUrl('/apps/files/ajax/list'),
 			{
 				dir: dir,
 				mimetypes: JSON.stringify(mimeType)

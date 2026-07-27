@@ -299,7 +299,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		} else {
 			var checkShares = true;
 		}
-		$.ajax({type: 'GET', url: OC.filePath('core', 'ajax', 'share.php'), data: { fetch: 'getItem', itemType: itemType, itemSource: itemSource, checkReshare: checkReshare, checkShares: checkShares }, async: async, success: function(result) {
+		$.ajax({type: 'GET', url: OC.generateUrl('/core/ajax/share'), data: { fetch: 'getItem', itemType: itemType, itemSource: itemSource, checkReshare: checkReshare, checkShares: checkShares }, async: async, success: function(result) {
 			if (result && result.status === 'success') {
 				data = result.data;
 			} else {
@@ -327,7 +327,7 @@ OC.Share = _.extend(OC.Share || {}, {
 			);
 		}
 
-		return $.post(OC.filePath('core', 'ajax', 'share.php'),
+		return $.post(OC.generateUrl('/core/ajax/share'),
 			{
 				action: 'share',
 				itemType: itemType,
@@ -357,7 +357,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		);
 	},
 	unshare:function(itemType, itemSource, shareType, shareWith, callback) {
-		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'unshare', itemType: itemType, itemSource: itemSource, shareType: shareType, shareWith: shareWith }, function(result) {
+		$.post(OC.generateUrl('/core/ajax/share'), { action: 'unshare', itemType: itemType, itemSource: itemSource, shareType: shareType, shareWith: shareWith }, function(result) {
 			if (result && result.status === 'success') {
 				if (callback) {
 					callback();

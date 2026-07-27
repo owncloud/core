@@ -121,7 +121,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 					permissions: 1
 				}
 			};
-			fakeServer.respondWith(/\/index\.php\/apps\/files_trashbin\/ajax\/list.php\?dir=%2Fsubdir/, [
+			fakeServer.respondWith(/\/index\.php\/apps\/files_trashbin\/ajax\/list\?dir=%2Fsubdir/, [
 					200, {
 						"Content-Type": "application/json"
 					},
@@ -266,7 +266,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .delete-selected').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', files: '["One.txt.d11111","Three.pdf.d33333","somedir.d99999"]'});
 				fakeServer.requests[0].respond(
@@ -296,7 +296,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .delete-selected').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', files: '["One.txt.d11111","somedir.d99999"]'});
 				fakeServer.requests[0].respond(
@@ -323,7 +323,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .delete-selected').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/delete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', allfiles: 'true'});
 				fakeServer.requests[0].respond(
@@ -340,7 +340,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .undelete').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', files: '["One.txt.d11111","Three.pdf.d33333","somedir.d99999"]'});
 				fakeServer.requests[0].respond(
@@ -370,7 +370,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .undelete').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', files: '["One.txt.d11111","somedir.d99999"]'});
 				fakeServer.requests[0].respond(
@@ -397,7 +397,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 				$('.selectedActions .undelete').click();
 				expect(fakeServer.requests.length).toEqual(1);
 				request = fakeServer.requests[0];
-				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete.php');
+				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_trashbin/ajax/undelete');
 				expect(OC.parseQueryString(request.requestBody))
 					.toEqual({'dir': '/', allfiles: 'true'});
 				fakeServer.requests[0].respond(

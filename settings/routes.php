@@ -89,34 +89,27 @@ $this->create('settings_users', '/settings/users')
 
 // Settings ajax actions
 // users
-$this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
+$this->create('settings_ajax_setquota', '/settings/ajax/setquota')
 	->actionInclude('settings/ajax/setquota.php');
-$this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')
+$this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups')
 	->actionInclude('settings/ajax/togglegroups.php');
-$this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.php')
+$this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins')
 	->actionInclude('settings/ajax/togglesubadmins.php');
 $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
-$this->create('settings_ajax_changegroupname', '/settings/ajax/changegroupname.php')
-	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
-$this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')
+$this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage')
 	->actionInclude('settings/ajax/setlanguage.php');
 // apps
-$this->create('settings_ajax_enableapp', '/settings/ajax/enableapp.php')
+$this->create('settings_ajax_enableapp', '/settings/ajax/enableapp')
 	->actionInclude('settings/ajax/enableapp.php');
-$this->create('settings_ajax_disableapp', '/settings/ajax/disableapp.php')
+$this->create('settings_ajax_disableapp', '/settings/ajax/disableapp')
 	->actionInclude('settings/ajax/disableapp.php');
-$this->create('settings_ajax_updateapp', '/settings/ajax/updateapp.php')
-	->actionInclude('settings/ajax/updateapp.php');
-$this->create('settings_ajax_uninstallapp', '/settings/ajax/uninstallapp.php')
+$this->create('settings_ajax_uninstallapp', '/settings/ajax/uninstallapp')
 	->actionInclude('settings/ajax/uninstallapp.php');
-$this->create('settings_ajax_navigationdetect', '/settings/ajax/navigationdetect.php')
+$this->create('settings_ajax_navigationdetect', '/settings/ajax/navigationdetect')
 	->actionInclude('settings/ajax/navigationdetect.php');
-// admin
-$this->create('settings_ajax_excludegroups', '/settings/ajax/excludegroups.php')
-	->actionInclude('settings/ajax/excludegroups.php');

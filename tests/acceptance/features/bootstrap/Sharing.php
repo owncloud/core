@@ -3484,7 +3484,7 @@ trait Sharing {
 	 */
 	public function getPublicPreviewOfFile(string $fileName, string $token):void {
 		$url = $this->getBaseUrl() .
-			"/index.php/apps/files_sharing/ajax/publicpreview.php" .
+			"/index.php/apps/files_sharing/ajax/publicpreview" .
 			"?file=$fileName&t=$token";
 		$resp = HttpRequestHelper::get(
 			$url,

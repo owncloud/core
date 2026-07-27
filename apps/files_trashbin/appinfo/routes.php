@@ -25,13 +25,13 @@ namespace OCA\Files_Trashbin\AppInfo;
 
 $application = new Application();
 
-$this->create('core_ajax_trashbin_preview', 'ajax/preview.php')
+$this->create('core_ajax_trashbin_preview', 'ajax/preview')
 	->actionInclude('files_trashbin/ajax/preview.php');
-$this->create('files_trashbin_ajax_delete', 'ajax/delete.php')
+$this->create('files_trashbin_ajax_delete', 'ajax/delete')
 	->actionInclude('files_trashbin/ajax/delete.php');
-$this->create('files_trashbin_ajax_isEmpty', 'ajax/isEmpty.php')
+$this->create('files_trashbin_ajax_isEmpty', 'ajax/isEmpty')
 	->actionInclude('files_trashbin/ajax/isEmpty.php');
-$this->create('files_trashbin_ajax_list', 'ajax/list.php')
+$this->create('files_trashbin_ajax_list', 'ajax/list')
 	->actionInclude('files_trashbin/ajax/list.php');
-$this->create('files_trashbin_ajax_undelete', 'ajax/undelete.php')
+$this->create('files_trashbin_ajax_undelete', 'ajax/undelete')
 	->actionInclude('files_trashbin/ajax/undelete.php');

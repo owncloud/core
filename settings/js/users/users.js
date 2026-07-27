@@ -437,7 +437,7 @@ var UserList = {
 					return false;
 				}
 				$.post(
-					OC.filePath('settings', 'ajax', 'togglegroups.php'),
+					OC.generateUrl('/settings/ajax/togglegroups'),
 					{
 						username: user,
 						group: group
@@ -486,7 +486,7 @@ var UserList = {
 				return false;
 			}
 			$.post(
-				OC.filePath('settings', 'ajax', 'togglesubadmins.php'),
+				OC.generateUrl('/settings/ajax/togglesubadmins'),
 				{
 					username: user,
 					group: group
@@ -549,7 +549,7 @@ var UserList = {
 	 */
 	_updateQuota: function(uid, quota, ready) {
 		$.post(
-			OC.filePath('settings', 'ajax', 'setquota.php'),
+			OC.generateUrl('/settings/ajax/setquota'),
 			{username: uid, quota: quota},
 			function (result) {
 				if (ready) {

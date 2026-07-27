@@ -1684,11 +1684,11 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('returns correct download URL for multiple files', function() {
 			expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt']))
-				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files[]=a%20b%20c.txt&files[]=d%20e%20f.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download?dir=%2Fsubdir&files[]=a%20b%20c.txt&files[]=d%20e%20f.txt');
 		});
 		it('returns the correct ajax URL', function() {
 			expect(fileList.getAjaxUrl('test', {a:1, b:'x y'}))
-				.toEqual(OC.webroot + '/index.php/apps/files/ajax/test.php?a=1&b=x%20y');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/test?a=1&b=x%20y');
 		});
 	});
 	describe('Upload Url', function() {
@@ -2083,7 +2083,7 @@ describe('OCA.Files.FileList tests', function() {
 				it('Opens download URL when clicking "Download"', function() {
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
-					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download.php?' +
+					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download?' +
 						'dir=%2Fsubdir&files[]=One.txt&files[]=Three.pdf&files[]=somedir');
 					redirectStub.restore();
 				});
@@ -2092,13 +2092,13 @@ describe('OCA.Files.FileList tests', function() {
 					$('.select-all').click();
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
-					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=');
+					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download?dir=%2F&files=');
 				});
 				it('Downloads parent folder when all selected in subfolder', function() {
 					$('.select-all').click();
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
-					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=subdir');
+					expect(redirectStub.getCall(0).args[0]).toContain(OC.webroot + '/index.php/apps/files/ajax/download?dir=%2F&files=subdir');
 				});
 			});
 			describe('Delete', function() {

@@ -270,7 +270,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		var appItem = $('div#app-'+appId+'');
 		element.val(t('settings','Please wait....'));
 		if(active && !groups.length) {
-			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appId},function(result) {
+			$.post(OC.generateUrl('/settings/ajax/disableapp'),{appid:appId},function(result) {
 				if(!result || result.status !== 'success') {
 					if (result.data && result.data.message) {
 						OC.Settings.Apps.showErrorMessage(appId, result.data.message);
@@ -296,7 +296,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		} else {
 			// TODO: display message to admin to not refresh the page!
 			// TODO: lock UI to prevent further operations
-			$.post(OC.filePath('settings','ajax','enableapp.php'),{appid: appId, groups: groups},function(result) {
+			$.post(OC.generateUrl('/settings/ajax/enableapp'),{appid: appId, groups: groups},function(result) {
 				if(!result || result.status !== 'success') {
 					if (result.data && result.data.message) {
 						OC.Settings.Apps.showErrorMessage(appId, result.data.message);
@@ -369,30 +369,10 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 	},
 
-	updateApp:function(appId, element) {
-		var oldButtonText = element.val();
-		element.val(t('settings','Updating....'));
-		OC.Settings.Apps.hideErrorMessage(appId);
-		$.post(OC.filePath('settings','ajax','updateapp.php'),{appid:appId},function(result) {
-			if(!result || result.status !== 'success') {
-				if (result.data && result.data.message) {
-					OC.Settings.Apps.showErrorMessage(appId, result.data.message);
-				} else {
-					OC.Settings.Apps.showErrorMessage(appId, t('settings','Error while updating app'));
-				}
-				element.val(oldButtonText);
-			}
-			else {
-				element.val(t('settings','Updated'));
-				element.hide();
-			}
-		},'json');
-	},
-
 	uninstallApp:function(appId, element) {
 		OC.Settings.Apps.hideErrorMessage(appId);
 		element.val(t('settings','Uninstalling ....'));
-		$.post(OC.filePath('settings','ajax','uninstallapp.php'),{appid:appId},function(result) {
+		$.post(OC.generateUrl('/settings/ajax/uninstallapp'),{appid:appId},function(result) {
 			if(!result || result.status !== 'success') {
 				OC.Settings.Apps.showErrorMessage(appId, t('settings','Error while uninstalling app'));
 				element.val(t('settings','Uninstall'));
@@ -406,7 +386,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 	},
 
 	rebuildNavigation: function() {
-		$.getJSON(OC.filePath('settings', 'ajax', 'navigationdetect.php')).done(function(response){
+		$.getJSON(OC.generateUrl('/settings/ajax/navigationdetect')).done(function(response){
 			if(response.status === 'success'){
 				var idsToKeep = {};
 				var navEntries=response.nav_entries;
@@ -619,13 +599,6 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			var element = $(this);
 
 			OC.Settings.Apps.uninstallApp(appId, element);
-		});
-
-		$(document).on('click', '#apps-list input.update', function () {
-			var appId = $(this).data('appid');
-			var element = $(this);
-
-			OC.Settings.Apps.updateApp(appId, element);
 		});
 
 		$(document).on('change', '#group_select', function() {
