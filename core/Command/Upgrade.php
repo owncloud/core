@@ -30,6 +30,7 @@
 namespace OC\Core\Command;
 
 use OC\Console\TimestampFormatter;
+use OC\Memcache\LocalCacheFactory;
 use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -277,10 +278,10 @@ class Upgrade extends Command {
 			}
 
 			// Clear caches after successful upgrade.
-			// Caches were created before the upgrade, so the cache prefix will be the old one
-			// TODO: Note that only the "create" method is available in the interface. It isn't
-			// possible to create local or distributed caches explicitly
-			$this->cacheFactory->create()->clear();
+			// Caches were created before the upgrade, so the cache prefix will be the old one.
+			// Note that clearing the local cache only reaches the node running occ - other
+			// nodes rely on the TTLs the individual caches set on their entries.
+			$this->clearCaches();
 			return self::ERROR_SUCCESS;
 		} elseif ($this->config->getSystemValue('maintenance', false)) {
 			//Possible scenario: ownCloud core is updated but an app failed
@@ -294,6 +295,15 @@ class Upgrade extends Command {
 			$output->writeln('<info>ownCloud is already latest version</info>');
 			return self::ERROR_UP_TO_DATE;
 		}
+	}
+
+	/**
+	 * Clear both cache tiers - host local values (image paths, mime types, ...)
+	 * live in the local tier, everything else in the distributed one.
+	 */
+	private function clearCaches() {
+		$this->cacheFactory->create()->clear();
+		LocalCacheFactory::create($this->cacheFactory)->clear();
 	}
 
 	/**

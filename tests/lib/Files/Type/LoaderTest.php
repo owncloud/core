@@ -23,8 +23,8 @@ namespace Test\Files\Type;
 
 use OC\Files\Type\Loader;
 use OCP\IDBConnection;
-use OCP\ICacheFactory;
 use OCP\ICache;
+use Test\Memcache\FixedCacheFactory;
 
 class LoaderTest extends \Test\TestCase {
 	/** @var IDBConnection */
@@ -33,16 +33,15 @@ class LoaderTest extends \Test\TestCase {
 	protected $loader;
 	/** @var ICache */
 	protected $memcache;
+	/** @var FixedCacheFactory */
+	protected $cacheFactory;
 
 	protected function setUp(): void {
 		$this->memcache = $this->createMock(ICache::class);
-		$cacheFactoryMock = $this->createMock(ICacheFactory::class);
-		$cacheFactoryMock->expects($this->once())
-			->method('create')
-			->willReturn($this->memcache);
+		$this->cacheFactory = new FixedCacheFactory($this->memcache);
 
 		$this->db = \OC::$server->getDatabaseConnection();
-		$this->loader = new Loader($this->db, $cacheFactoryMock);
+		$this->loader = new Loader($this->db, $this->cacheFactory);
 	}
 
 	protected function tearDown(): void {
@@ -98,5 +97,38 @@ class LoaderTest extends \Test\TestCase {
 		$mimetypeId2 = $this->loader->getId('testing/mymimetype');
 
 		$this->assertEquals($mimetypeId, $mimetypeId2);
+	}
+
+	/**
+	 * The mimetype map is derived from the database of this instance, so it
+	 * belongs in the local tier - not in a distributed cache that anything able
+	 * to reach it could remap.
+	 */
+	public function testUsesTheLocalCacheTier() {
+		$cacheFactory = $this->createMock(FixedCacheFactory::class);
+		$cacheFactory->expects($this->once())
+			->method('createLocal')
+			->with('mimetypes')
+			->willReturn($this->createMock(ICache::class));
+		$cacheFactory->expects($this->never())->method('createDistributed');
+		$cacheFactory->expects($this->never())->method('create');
+
+		new Loader($this->db, $cacheFactory);
+	}
+
+	/**
+	 * Nothing invalidates the cache of the other nodes, so entries have to
+	 * expire on their own.
+	 */
+	public function testCachedEntriesExpire() {
+		$this->memcache->expects($this->atLeastOnce())
+			->method('set')
+			->with(
+				$this->anything(),
+				$this->anything(),
+				Loader::CACHE_TTL
+			);
+
+		$this->loader->getId('testing/mymimetype');
 	}
 }

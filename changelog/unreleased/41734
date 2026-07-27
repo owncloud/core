@@ -1,0 +1,11 @@
+Change: Keep host local caches in the local cache tier
+
+The image paths of the active theme and the mimetype id map were stored in the
+distributed memory cache although both are derived from the files and the
+database of a single instance. They now use the host local cache tier and their
+entries expire, so a stale entry is scoped to one node and no longer lives
+forever. The repair step for mimetypes deletes rows from the mimetype table and
+now clears the mimetype cache afterwards, and occ upgrade clears both cache
+tiers instead of only the distributed one.
+
+https://github.com/owncloud/core/pull/41734

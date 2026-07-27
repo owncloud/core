@@ -51,7 +51,7 @@ class RepairMimeTypesTest extends TestCase {
 
 		$this->storage = new Temporary([]);
 
-		$this->repair = new RepairMimeTypes($config);
+		$this->repair = new RepairMimeTypes($config, $this->mimetypeLoader);
 	}
 
 	protected function tearDown(): void {
@@ -459,6 +459,45 @@ class RepairMimeTypesTest extends TestCase {
 		$this->assertNull($this->getMimeTypeIdFromDB('application/x-font-ttf'));
 		$this->assertNull($this->getMimeTypeIdFromDB('font'));
 		$this->assertNull($this->getMimeTypeIdFromDB('font/opentype'));
+	}
+
+	/**
+	 * The repair step deletes rows from the mimetypes table, so it has to drop
+	 * the id <-> mimetype mapping the loader caches - otherwise the mapping of
+	 * a deleted mimetype survives the repair.
+	 */
+	public function testMimeTypeCacheIsResetAfterRepair() {
+		/** @var IMimeTypeLoader | MockObject $loader */
+		$loader = $this->createMock(IMimeTypeLoader::class);
+		$loader->expects($this->once())->method('reset');
+
+		/** @var IConfig | MockObject $config */
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')->with('version')->willReturn('8.0.0.0');
+
+		/** @var IOutput | MockObject $outputMock */
+		$outputMock = $this->createMock(IOutput::class);
+
+		(new RepairMimeTypes($config, $loader))->run($outputMock);
+	}
+
+	/**
+	 * Nothing was changed, so there is no reason to throw the mimetype cache of
+	 * every node away.
+	 */
+	public function testMimeTypeCacheIsKeptWhenNothingIsRepaired() {
+		/** @var IMimeTypeLoader | MockObject $loader */
+		$loader = $this->createMock(IMimeTypeLoader::class);
+		$loader->expects($this->never())->method('reset');
+
+		/** @var IConfig | MockObject $config */
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')->with('version')->willReturn('10.0.0.0');
+
+		/** @var IOutput | MockObject $outputMock */
+		$outputMock = $this->createMock(IOutput::class);
+
+		(new RepairMimeTypes($config, $loader))->run($outputMock);
 	}
 
 	/**
