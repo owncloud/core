@@ -370,6 +370,11 @@ class ManagerTest extends TestCase {
 			['John#Smith'],
 			['John^Smith'],
 			['JohnSmith(CEO)'],
+			// HTML/script metacharacters must never reach a username
+			['"><script>alert(document.cookie)</script>'],
+			['<img src=x onerror=alert(1)>'],
+			['John<b>Smith'],
+			['John"Smith'],
 		];
 	}
 

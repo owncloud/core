@@ -1,0 +1,14 @@
+Change: Cover HTML metacharacters in the username validation allow-list
+
+The username allow-list in OC\User\Manager::createUser() already rejects every
+character outside "a-z", "A-Z", "0-9" and "+_.@-'", which blocks HTML and script
+metacharacters from ever reaching a stored username. That behaviour was only
+covered by three generic invalid-character cases, none of which resembled an
+injection payload.
+
+The invalid-character data provider now also exercises quote, angle-bracket and
+full script-tag payloads, so any future relaxation of the allow-list that would
+let markup into a username fails the test suite instead of passing unnoticed.
+This is test-only coverage; no production behaviour changes.
+
+https://github.com/owncloud/core/pull/41738
