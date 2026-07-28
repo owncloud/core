@@ -393,6 +393,27 @@ $CONFIG = [
 'user.search_min_length' => 2,
 
 /**
+ * Additional base directories a user home may be located in
+ *
+ * User backends can supply a per user home directory - the LDAP backend for
+ * instance can be configured to read it from a user attribute. Such a value is
+ * not necessarily controlled by the ownCloud administrator, so a home is only
+ * accepted when it lies inside the configured `datadirectory`. A home pointing
+ * at the ownCloud code directory would otherwise expose - and allow overwriting
+ * - the application's own files.
+ *
+ * If user homes legitimately live outside of the data directory, for example on
+ * a separate NFS mount, list the permitted base directories here. Any home
+ * inside one of them is accepted. Keep this list as narrow as possible and never
+ * include the ownCloud code directory.
+ *
+ * Defaults to `[]`, i.e. only the data directory is permitted.
+ *
+ * The LDAP backend honours the analogous `user_ldap.home_base_dirs` option.
+ */
+'user.home_base_dirs' => [],
+
+/**
  * Mail Parameters
  *
  * These configure the email settings for ownCloud notifications and password resets.
