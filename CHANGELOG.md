@@ -46,6 +46,7 @@ ownCloud admins and users.
 * Security - Prevent user enumeration via differential password reset UI: [#41586](https://github.com/owncloud/core/pull/41586)
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
 * Security - Do not trust cached binary paths: [#41732](https://github.com/owncloud/core/pull/41732)
+* Security - Enforce the read permission in the public share preview endpoint: [#41751](https://github.com/owncloud/core/pull/41751)
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
@@ -64,6 +65,7 @@ ownCloud admins and users.
 * Bugfix - Do not crash on malformed translations: [#41720](https://github.com/owncloud/core/issues/41720)
 * Bugfix - Reject non-numeric avatar crop coordinates: [#41723](https://github.com/owncloud/core/issues/41723)
 * Bugfix - Fix avatar cropper broken by Jcrop 2.0 file rename: [#41723](https://github.com/owncloud/core/issues/41723)
+* Bugfix - Rewire legacy ajax routes to extension-free urls: [#41740](https://github.com/owncloud/core/issues/41740)
 * Bugfix - Request legacy ajax endpoints through the front controller: [#41740](https://github.com/owncloud/core/issues/41740)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
@@ -77,6 +79,7 @@ ownCloud admins and users.
 * Change - G2 code-signing verifier and G1 signature sunset: [#41680](https://github.com/owncloud/core/pull/41680)
 * Change - Remove occ integrity:sign-app and integrity:sign-core commands: [#41712](https://github.com/owncloud/core/pull/41712)
 * Change - Remove the caching router: [#41733](https://github.com/owncloud/core/pull/41733)
+* Change - Keep host local caches in the local cache tier: [#41734](https://github.com/owncloud/core/pull/41734)
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 
 ## Details
@@ -167,6 +170,15 @@ ownCloud admins and users.
    validated before it is used, and is quoted when the command line is assembled.
 
    https://github.com/owncloud/core/pull/41732
+
+* Security - Enforce the read permission in the public share preview endpoint: [#41751](https://github.com/owncloud/core/pull/41751)
+
+   The public share preview endpoint resolved the share by token and rendered the
+   requested file without consulting the share's permission bitmask. It now returns
+   404 when the share does not carry the read permission, which makes it consistent
+   with ShareController::downloadShare() and the public WebDAV route.
+
+   https://github.com/owncloud/core/pull/41751
 
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 
@@ -368,6 +380,30 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41723
    https://github.com/owncloud/core/pull/41724
+
+* Bugfix - Rewire legacy ajax routes to extension-free urls: [#41740](https://github.com/owncloud/core/issues/41740)
+
+   The front controller rewrite only forwards a request to index.php when the
+   requested path does not exist on disk. A legacy route whose declared url was
+   itself a real file - for example /settings/ajax/setlanguage.php - therefore
+   never reached the router: the web server executed the script directly, without
+   the bootstrap index.php would have performed, and the request died with `Class
+   "OC" not found` (HTTP 500). Changing the personal language setting, the share
+   dialog e-mail lookup, the trashbin and public link preview thumbnails and the
+   Google Drive OAuth entry point were affected.
+
+   Every such route url has lost its .php suffix so that no route url resolves to a
+   file on disk any more, and the affected javascript callers now build routed urls
+   through OC.generateUrl(). Route names are unchanged, so linkToRoute() callers
+   keep working. The legacy .php urls are gone and no alias is provided - an alias
+   would re-introduce the very shadowing this change removes. /core/ajax/update.php
+   keeps its suffix by design: it bootstraps itself and is excluded from the
+   rewrite. Five routes whose include target no longer existed were removed.
+   Third-party apps posting to their own shadowed .php route urls need the same
+   treatment.
+
+   https://github.com/owncloud/core/issues/41740
+   https://github.com/owncloud/core/pull/41742
 
 * Bugfix - Request legacy ajax endpoints through the front controller: [#41740](https://github.com/owncloud/core/issues/41740)
 
@@ -592,6 +628,18 @@ ownCloud admins and users.
    place where urls could go stale or be tampered with.
 
    https://github.com/owncloud/core/pull/41733
+
+* Change - Keep host local caches in the local cache tier: [#41734](https://github.com/owncloud/core/pull/41734)
+
+   The image paths of the active theme and the mimetype id map were stored in the
+   distributed memory cache although both are derived from the files and the
+   database of a single instance. They now use the host local cache tier and their
+   entries expire, so a stale entry is scoped to one node and no longer lives
+   forever. The repair step for mimetypes deletes rows from the mimetype table and
+   now clears the mimetype cache afterwards, and occ upgrade clears both cache
+   tiers instead of only the distributed one.
+
+   https://github.com/owncloud/core/pull/41734
 
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 
