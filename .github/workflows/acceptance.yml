@@ -10,7 +10,7 @@ on:
         description: JSON array of databases
         required: false
         type: string
-        default: '["mariadb:10.6"]'
+        default: '["postgres:10.21"]'
       test-suites:
         description: JSON array of acceptance test suite names
         required: false
