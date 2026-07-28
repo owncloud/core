@@ -11,7 +11,7 @@ Feature: using files external service with storage as webdav_owncloud
     And user "Alice" has created folder "TestMnt"
     And using server "LOCAL"
 
-  @issue-38165 @skipOnDbOracle
+  @issue-38165
   Scenario: creating a webdav_owncloud external storage
     When the administrator creates an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
@@ -28,7 +28,7 @@ Feature: using files external service with storage as webdav_owncloud
       | ok     | 0    |         |
     And as "admin" folder "TestMountPoint" should exist
 
-  @skipOnEncryption @issue-encryption-181 @skipOnDbOracle @issue-38165
+  @skipOnEncryption @issue-encryption-181 @issue-38165
   Scenario: using webdav_owncloud as external storage
     Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
