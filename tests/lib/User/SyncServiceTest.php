@@ -45,6 +45,8 @@ interface IUserInterfaceWithQuotaBackendTest extends UserInterface, IProvidesQuo
 }
 interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvidesUserNameBackend {
 }
+interface IUserInterfaceWithHomeBackendTest extends UserInterface, IProvidesHomeBackend {
+}
 
 class SyncServiceTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
@@ -162,6 +164,249 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->once())->method('error');
 
 		// Run the sync
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	/**
+	 * A backend-supplied home is not necessarily under the control of the
+	 * ownCloud administrator (an LDAP directory can set it per user). Accepting
+	 * one that points at the ownCloud code root would hand out read/write access
+	 * to the application's own PHP files, so it must be refused before it is
+	 * persisted on the account.
+	 *
+	 * @dataProvider providesHomeOutsideDataDir
+	 */
+	public function testSyncHomeRefusesHomeOutsideDataDir($home) {
+		$this->expectException(\OutOfBoundsException::class);
+
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+		$backend->expects($this->any())->method('getHome')->willReturn($home);
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = '') {
+				if ($key === 'datadirectory') {
+					return '/var/www/owncloud/data';
+				}
+				if ($key === 'user.home_base_dirs') {
+					return [];
+				}
+				return $default;
+			});
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome'])->getMock();
+		$a->expects($this->any())->method('getHome')->willReturn('');
+		// the malicious home must never reach the account
+		$a->expects($this->never())->method('setHome');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	public function providesHomeOutsideDataDir() {
+		return [
+			'application root' => ['/var/www/owncloud'],
+			'apps directory' => ['/var/www/owncloud/apps'],
+			'system directory' => ['/etc'],
+			'traversal' => ['/var/www/owncloud/data/../../../etc'],
+			// an absolute path can carry dot segments anywhere, not just trailing
+			'traversal mid-path' => ['/var/www/../../opt'],
+			'traversal out of data dir' => ['/var/www/owncloud/data/../../apps'],
+			'dot segments' => ['/var/www/./owncloud/./apps'],
+			'traversal to root' => ['/..'],
+			'dot segments to code root' => ['/var/www/owncloud/data/../.'],
+			'prefix sibling' => ['/var/www/owncloud/data-evil'],
+		];
+	}
+
+	public function testSyncHomeAcceptsHomeInsideDataDir() {
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+		$backend->expects($this->any())->method('getHome')->willReturn('/var/www/owncloud/data/alice');
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = '') {
+				if ($key === 'datadirectory') {
+					return '/var/www/owncloud/data';
+				}
+				if ($key === 'user.home_base_dirs') {
+					return [];
+				}
+				return $default;
+			});
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome', 'getUpdatedFields'])->getMock();
+		$a->expects($this->any())->method('getHome')->willReturn('');
+		$a->expects($this->any())->method('getUpdatedFields')->willReturn([]);
+		$a->expects($this->once())->method('setHome')->with('/var/www/owncloud/data/alice');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	/**
+	 * A symlink inside the data directory must not be usable to point a home that
+	 * looks contained at a location outside of it.
+	 */
+	public function testSyncHomeRefusesHomeEscapingViaSymlink() {
+		$this->expectException(\OutOfBoundsException::class);
+
+		$tmp = \realpath(\sys_get_temp_dir()) . '/oc-synchome-' . \uniqid();
+		\mkdir($tmp . '/data', 0777, true);
+		\mkdir($tmp . '/apps', 0777, true);
+		\symlink($tmp . '/apps', $tmp . '/data/escape');
+
+		try {
+			/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+			$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+			$backend->expects($this->any())->method('getHome')->willReturn($tmp . '/data/escape');
+
+			$this->config->expects($this->any())
+				->method('getSystemValue')
+				->willReturnCallback(function ($key, $default = '') use ($tmp) {
+					if ($key === 'datadirectory') {
+						return $tmp . '/data';
+					}
+					if ($key === 'user.home_base_dirs') {
+						return [];
+					}
+					return $default;
+				});
+
+			$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome'])->getMock();
+			$a->expects($this->any())->method('getHome')->willReturn('');
+			$a->expects($this->never())->method('setHome');
+
+			$s = new SyncService($this->config, $this->logger, $this->mapper);
+			self::invokePrivate($s, 'syncHome', [$a, $backend]);
+		} finally {
+			\unlink($tmp . '/data/escape');
+			\rmdir($tmp . '/apps');
+			\rmdir($tmp . '/data');
+			\rmdir($tmp);
+		}
+	}
+
+	/**
+	 * A symlinked data directory is a legitimate setup and must keep working: the
+	 * home is compared after resolving both sides.
+	 */
+	public function testSyncHomeAcceptsHomeUnderSymlinkedDataDir() {
+		$tmp = \realpath(\sys_get_temp_dir()) . '/oc-synchome-' . \uniqid();
+		\mkdir($tmp . '/real-data', 0777, true);
+		\symlink($tmp . '/real-data', $tmp . '/data');
+
+		try {
+			/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+			$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+			$backend->expects($this->any())->method('getHome')->willReturn($tmp . '/data/alice');
+
+			$this->config->expects($this->any())
+				->method('getSystemValue')
+				->willReturnCallback(function ($key, $default = '') use ($tmp) {
+					if ($key === 'datadirectory') {
+						return $tmp . '/data';
+					}
+					if ($key === 'user.home_base_dirs') {
+						return [];
+					}
+					return $default;
+				});
+
+			$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome', 'getUpdatedFields'])->getMock();
+			$a->expects($this->any())->method('getHome')->willReturn('');
+			$a->expects($this->any())->method('getUpdatedFields')->willReturn([]);
+			$a->expects($this->once())->method('setHome')->with($tmp . '/data/alice');
+
+			$s = new SyncService($this->config, $this->logger, $this->mapper);
+			self::invokePrivate($s, 'syncHome', [$a, $backend]);
+		} finally {
+			\unlink($tmp . '/data');
+			\rmdir($tmp . '/real-data');
+			\rmdir($tmp);
+		}
+	}
+
+	/**
+	 * Admins with homes on a separate mount can opt back in explicitly.
+	 */
+	/**
+	 * A base directory that is not usable as one must not widen the check. Values
+	 * such as '.' or a relative path normalize to something unrelated to the
+	 * intended directory - notably '.' normalizes to the empty string, which used
+	 * to make the containment check accept every absolute path.
+	 *
+	 * @dataProvider providesUnusableBaseDirs
+	 */
+	public function testSyncHomeRefusesUnusableBaseDir($baseDir) {
+		$this->expectException(\OutOfBoundsException::class);
+
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+		$backend->expects($this->any())->method('getHome')->willReturn('/var/www/owncloud/apps');
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = '') use ($baseDir) {
+				if ($key === 'datadirectory') {
+					return '/var/www/owncloud/data';
+				}
+				if ($key === 'user.home_base_dirs') {
+					return [$baseDir];
+				}
+				return $default;
+			});
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome', 'getUpdatedFields'])->getMock();
+		$a->expects($this->any())->method('getHome')->willReturn('');
+		$a->expects($this->any())->method('getUpdatedFields')->willReturn([]);
+		$a->expects($this->never())->method('setHome');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	public function providesUnusableBaseDirs() {
+		return [
+			'empty' => [''],
+			// these normalize to the empty string
+			'current directory' => ['.'],
+			'current directory with slash' => ['./'],
+			'dot segments only' => ['./.'],
+			// a relative base dir would resolve against the working directory of
+			// whichever process happens to run the check
+			'relative' => ['data'],
+			'relative with dot' => ['./data'],
+			'parent' => ['..'],
+			'not a string' => [null],
+		];
+	}
+
+	public function testSyncHomeAcceptsHomeInConfiguredBaseDir() {
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+		$backend->expects($this->any())->method('getHome')->willReturn('/mnt/nfs/homes/alice');
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = '') {
+				if ($key === 'datadirectory') {
+					return '/var/www/owncloud/data';
+				}
+				if ($key === 'user.home_base_dirs') {
+					return ['/mnt/nfs/homes'];
+				}
+				return $default;
+			});
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome', 'getUpdatedFields'])->getMock();
+		$a->expects($this->any())->method('getHome')->willReturn('');
+		$a->expects($this->any())->method('getUpdatedFields')->willReturn([]);
+		$a->expects($this->once())->method('setHome')->with('/mnt/nfs/homes/alice');
+
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		self::invokePrivate($s, 'syncHome', [$a, $backend]);
 	}

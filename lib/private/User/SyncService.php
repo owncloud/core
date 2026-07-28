@@ -244,6 +244,7 @@ class SyncService {
 	/**
 	 * @param Account $a
 	 * @param UserInterface $backend
+	 * @throws \OutOfBoundsException if the backend provides a home outside of the permitted base directories
 	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
@@ -265,12 +266,21 @@ class SyncService {
 			if ($providesHome) {
 				$home = $backend->getHome($uid);
 			}
+			$dataDir = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
 			if (!\is_string($home) || $home[0] !== '/') {
-				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
+				$home = $dataDir . "/$uid";
 				$this->logger->debug(
 					'User backend ' .\get_class($backend)." provided no home for <$uid>",
 					['app' => self::class]
 				);
+			} else {
+				// A backend provided home is not necessarily under the control of
+				// the administrator - an LDAP directory can carry a per user home
+				// attribute. Accepting one that points at the ownCloud code root
+				// would turn the user's file listing into read/write access to the
+				// application's own PHP files, so confine it to the data directory
+				// and to any additional base directory the admin opted into.
+				$this->verifyHomeLocation($home, $dataDir, $uid, \get_class($backend));
 			}
 			// This will set the home if not provided by the backend
 			$a->setHome($home);
@@ -281,6 +291,136 @@ class SyncService {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Ensure a backend provided home lies within the data directory or within one
+	 * of the base directories the administrator explicitly permitted.
+	 *
+	 * @param string $home
+	 * @param string $dataDir
+	 * @param string $uid
+	 * @param string $backendClass
+	 * @throws \OutOfBoundsException if the home is not contained in a permitted base directory
+	 */
+	private function verifyHomeLocation($home, $dataDir, $uid, $backendClass) {
+		$normalizedHome = self::normalizePath($home);
+		$baseDirs = $this->config->getSystemValue('user.home_base_dirs', []);
+		if (!\is_array($baseDirs)) {
+			$baseDirs = [];
+		}
+		\array_unshift($baseDirs, $dataDir);
+
+		foreach ($baseDirs as $baseDir) {
+			// A base directory is only meaningful as an absolute path. Anything
+			// else is a misconfiguration and must not widen the comparison: '.'
+			// and './' would normalize to the empty string, which makes the
+			// containment check below accept every absolute path, and a relative
+			// value would resolve against the working directory of whichever
+			// process happens to run this check.
+			if (!\is_string($baseDir) || !isset($baseDir[0]) || $baseDir[0] !== '/') {
+				continue;
+			}
+			if (self::isContainedIn($normalizedHome, self::normalizePath($baseDir))) {
+				return;
+			}
+		}
+
+		$this->logger->error(
+			"User backend $backendClass returned home <$normalizedHome> for user <$uid> which is outside" .
+			" of the data directory <$dataDir> and of any directory listed in the 'user.home_base_dirs'" .
+			" config option - refusing it",
+			['app' => self::class]
+		);
+		throw new \OutOfBoundsException(
+			"Home provided by user backend $backendClass is not inside a permitted base directory for uid: $uid"
+		);
+	}
+
+	/**
+	 * Resolve a path to a canonical form for comparison: symlinks are resolved on
+	 * the longest leading part that exists on disk, the remainder is normalized
+	 * lexically. realpath() alone cannot be used here because a home directory is
+	 * created lazily on first login, so it usually does not exist yet when it is
+	 * validated - but resolving the existing prefix keeps a symlink from pointing
+	 * an apparently contained home somewhere else, and lets an admin have a
+	 * symlinked data directory.
+	 *
+	 * Callers are responsible for passing an absolute path: a relative one would be
+	 * resolved against the working directory of whichever process happens to run
+	 * this, and '' and '.' normalize to the empty string.
+	 *
+	 * @param string $path an absolute path
+	 * @return string the resolved path, without a trailing slash
+	 */
+	private static function normalizePath($path) {
+		$lexical = self::normalizePathLexically($path);
+
+		$suffix = [];
+		$candidate = $lexical;
+		while ($candidate !== '' && $candidate !== '/') {
+			$real = \realpath($candidate);
+			if ($real !== false) {
+				return \rtrim($real, '/') . (empty($suffix) ? '' : '/' . \implode('/', $suffix));
+			}
+			\array_unshift($suffix, \basename($candidate));
+			$parent = \dirname($candidate);
+			if ($parent === $candidate) {
+				break;
+			}
+			$candidate = $parent;
+		}
+
+		return $lexical;
+	}
+
+	/**
+	 * Resolve '.', '..' and duplicate slashes without touching the filesystem.
+	 *
+	 * @param string $path
+	 * @return string the normalized path, without a trailing slash
+	 */
+	private static function normalizePathLexically($path) {
+		$isAbsolute = isset($path[0]) && $path[0] === '/';
+		$parts = [];
+		foreach (\explode('/', $path) as $part) {
+			if ($part === '' || $part === '.') {
+				continue;
+			}
+			if ($part === '..') {
+				// a leading '..' cannot escape the root, mirroring the kernel
+				if (\end($parts) === '..') {
+					$parts[] = $part;
+				} elseif (\array_pop($parts) === null && !$isAbsolute) {
+					$parts[] = $part;
+				}
+				continue;
+			}
+			$parts[] = $part;
+		}
+		return ($isAbsolute ? '/' : '') . \implode('/', $parts);
+	}
+
+	/**
+	 * Whether $path is $baseDir itself or lies underneath it. Both arguments are
+	 * expected to be normalized already.
+	 *
+	 * @param string $path
+	 * @param string $baseDir
+	 * @return bool
+	 */
+	private static function isContainedIn($path, $baseDir) {
+		// an empty base dir contains nothing - without this the comparison below
+		// degenerates into strpos($path, '/') === 0, accepting every absolute path
+		if ($baseDir === '') {
+			return false;
+		}
+		if ($path === $baseDir) {
+			return true;
+		}
+		// compare against the separator as well, so that a sibling directory
+		// sharing the base dir's prefix (/data-evil vs /data) is not accepted
+		return \strpos($path, \rtrim($baseDir, '/') . '/') === 0;
 	}
 
 	/**
