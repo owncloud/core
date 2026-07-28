@@ -399,8 +399,8 @@ $CONFIG = [
  * instance can be configured to read it from a user attribute. Such a value is
  * not necessarily controlled by the ownCloud administrator, so a home is only
  * accepted when it lies inside the configured `datadirectory`. A home pointing
- * at the ownCloud code directory would otherwise expose - and allow overwriting
- * - the application's own files.
+ * at the ownCloud code directory would otherwise expose the application's own
+ * files, and allow overwriting them.
  *
  * If user homes legitimately live outside of the data directory, for example on
  * a separate NFS mount, list the permitted base directories here. Any home
