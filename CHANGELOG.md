@@ -64,6 +64,7 @@ ownCloud admins and users.
 * Bugfix - Do not crash on malformed translations: [#41720](https://github.com/owncloud/core/issues/41720)
 * Bugfix - Reject non-numeric avatar crop coordinates: [#41723](https://github.com/owncloud/core/issues/41723)
 * Bugfix - Fix avatar cropper broken by Jcrop 2.0 file rename: [#41723](https://github.com/owncloud/core/issues/41723)
+* Bugfix - Request legacy ajax endpoints through the front controller: [#41740](https://github.com/owncloud/core/issues/41740)
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 * Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Raise minimum PHP version to 8.3: [#41449](https://github.com/owncloud/core/pull/41449)
@@ -366,6 +367,25 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41723
    https://github.com/owncloud/core/pull/41724
+
+* Bugfix - Request legacy ajax endpoints through the front controller: [#41740](https://github.com/owncloud/core/issues/41740)
+
+   The front controller rewrite only forwards a request to index.php when the
+   requested path does not exist on disk. Five javascript call sites requested a
+   url that was itself a real file, so the web server executed the script directly,
+   without the bootstrap index.php would have performed, and the request died with
+   a fatal error (HTTP 500): changing the personal language, the share dialog
+   e-mail lookup, the Google Drive OAuth entry point, and the trashbin and public
+   link preview thumbnails.
+
+   All five now build their url with an explicit /index.php/ prefix so that the
+   request no longer matches a file on disk and reaches the router. The prefix has
+   to be part of the url literal because OC.generateUrl() omits /index.php when
+   mod_rewrite is active, which is how four of the five came to request the
+   shadowed url in the first place.
+
+   https://github.com/owncloud/core/issues/41740
+   https://github.com/owncloud/core/pull/41743
 
 * Change - Update M$ Office icons: [#41347](https://github.com/owncloud/core/pull/41347)
 
