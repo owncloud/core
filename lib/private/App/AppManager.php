@@ -31,8 +31,7 @@
 namespace OC\App;
 
 use OC_App;
-use OC\Memcache\ArrayCache;
-use OC\Memcache\NullCache;
+use OC\Memcache\LocalCacheFactory;
 use OC\Installer;
 use OCP\App\AppNotFoundException;
 use OCP\App\IAppManager;
@@ -120,14 +119,9 @@ class AppManager implements IAppManager {
 		$this->dispatcher = $dispatcher;
 		$this->config = $config;
 
-		// TODO we have no public API for this
-		if (\method_exists($this->memCacheFactory, 'createLocal')) {
-			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			$this->appInfo = $this->memCacheFactory->createLocal('app-info');
-		}
-		if ($this->appInfo === null || $this->appInfo instanceof NullCache) {
-			$this->appInfo = new ArrayCache('app-info');
-		}
+		// app info describes the apps installed on this machine, so it belongs in
+		// the host local tier
+		$this->appInfo = LocalCacheFactory::create($this->memCacheFactory, 'app-info');
 	}
 
 	/**
