@@ -33,9 +33,8 @@ use OCP\ICacheFactory;
  * consume what any single node (or anything else able to talk to the backend)
  * wrote there.
  *
- * ICacheFactory does not declare createLocal(), so the tier is requested
- * defensively and a request scoped ArrayCache is used whenever a usable local
- * cache cannot be obtained.
+ * A request scoped ArrayCache is used whenever a usable local cache cannot be
+ * obtained.
  *
  * @package OC\Memcache
  */
@@ -51,11 +50,7 @@ class LocalCacheFactory {
 	 * @return ICache
 	 */
 	public static function create(ICacheFactory $factory, $prefix = '') {
-		$cache = null;
-		if (\method_exists($factory, 'createLocal')) {
-			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			$cache = $factory->createLocal($prefix);
-		}
+		$cache = $factory->createLocal($prefix);
 		if (!$cache instanceof ICache || $cache instanceof NullCache) {
 			$cache = new ArrayCache($prefix);
 		}

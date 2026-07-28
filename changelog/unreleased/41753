@@ -1,0 +1,13 @@
+Change: Expose createLocal() on ICacheFactory
+
+The cache factory has always been able to hand out a cache from the host local
+tier, but the method was missing from the public ICacheFactory interface, so
+core had to ask for it defensively and apps had no way to use it at all. It is
+now part of the interface, which lets values that are only meaningful on the
+machine that produced them be kept out of the cache shared between the nodes of
+an installation.
+
+Note for app developers: a class implementing OCP\ICacheFactory has to declare
+createLocal() from this release on.
+
+https://github.com/owncloud/core/pull/41753
