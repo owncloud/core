@@ -126,7 +126,7 @@ class Repair implements IOutput {
 	 */
 	public static function getRepairSteps() {
 		return [
-			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairMimeTypes(\OC::$server->getConfig(), \OC::$server->getMimeTypeLoader()),
 			new RepairMismatchFileCachePath(
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getMimeTypeLoader(),

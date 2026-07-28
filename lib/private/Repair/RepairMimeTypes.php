@@ -29,6 +29,7 @@
 
 namespace OC\Repair;
 
+use OCP\Files\IMimeTypeLoader;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -39,15 +40,22 @@ class RepairMimeTypes implements IRepairStep {
 	protected $config;
 
 	/**
+	 * @var IMimeTypeLoader
+	 */
+	protected $mimeTypeLoader;
+
+	/**
 	 * @var int
 	 */
 	protected $folderMimeTypeId;
 
 	/**
 	 * @param \OCP\IConfig $config
+	 * @param IMimeTypeLoader|null $mimeTypeLoader
 	 */
-	public function __construct($config) {
+	public function __construct($config, IMimeTypeLoader $mimeTypeLoader = null) {
 		$this->config = $config;
+		$this->mimeTypeLoader = $mimeTypeLoader ?? \OC::$server->getMimeTypeLoader();
 	}
 
 	public function getName() {
@@ -313,12 +321,15 @@ class RepairMimeTypes implements IRepairStep {
 	 */
 	public function run(IOutput $out) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
+		$repaired = false;
 
 		// NOTE TO DEVELOPERS: when adding new mime types, please make sure to
 		// add a version comparison to avoid doing it every time
 
 		// only update mime types if necessary as it can be expensive
 		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
+			$repaired = true;
+
 			$this->fixOfficeMimeTypes();
 			$out->info('Fixed office mime types');
 
@@ -346,6 +357,7 @@ class RepairMimeTypes implements IRepairStep {
 
 		// Mimetype updates from #19272
 		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
+			$repaired = true;
 			$this->introduceJavaMimeType();
 			$out->info('Fixed java/class mime types');
 
@@ -360,8 +372,17 @@ class RepairMimeTypes implements IRepairStep {
 		}
 
 		if (\version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
+			$repaired = true;
 			$this->introduceRichDocumentsMimeTypes();
 			$out->info('Fixed richdocuments additional office mime types');
+		}
+
+		if ($repaired) {
+			// rows have been inserted into and deleted from the mimetypes table,
+			// so anything holding on to the old id <-> mimetype mapping has to
+			// let go of it
+			$this->mimeTypeLoader->reset();
+			$out->info('Cleared the mime type cache');
 		}
 	}
 }

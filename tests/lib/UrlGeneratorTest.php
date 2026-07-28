@@ -8,11 +8,12 @@
 
 namespace Test;
 use OC\Helper\EnvironmentHelper;
+use OC\Memcache\ArrayCache;
 use OC\URLGenerator;
-use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\Route\IRouter;
+use Test\Memcache\FixedCacheFactory;
 
 /**
  * Class UrlGeneratorTest
@@ -26,10 +27,14 @@ class UrlGeneratorTest extends TestCase {
 	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
 
+	/** @var ArrayCache */
+	private $imagePathCache;
+
 	public function setUp(): void {
 		parent::setUp();
 		$config = $this->createMock(IConfig::class);
-		$cacheFactory = $this->createMock(ICacheFactory::class);
+		$this->imagePathCache = new ArrayCache();
+		$cacheFactory = new FixedCacheFactory($this->imagePathCache);
 		$this->router = $this->createMock(IRouter::class);
 		$this->environmentHelper = $this->createMock(EnvironmentHelper::class);
 		$this->urlGenerator = new URLGenerator(
@@ -140,5 +145,61 @@ class UrlGeneratorTest extends TestCase {
 			["/apps/index.php", "http://localhost/owncloud/apps/index.php"],
 			["apps/index.php", "http://localhost/owncloud/apps/index.php"],
 		];
+	}
+
+	public function testImagePathIsCached() {
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('/owncloud');
+		$this->environmentHelper->expects($this->any())
+			->method('getServerRoot')
+			->willReturn(\OC::$SERVERROOT);
+
+		$path = $this->urlGenerator->imagePath('', 'favicon.png');
+		$this->assertEquals('/owncloud/core/img/favicon.png', $path);
+
+		// the theme name is part of the key, so that switching themes does not
+		// serve the paths of the previous one
+		$theme = \OC_Util::getTheme()->getName();
+		$this->assertEquals($path, $this->imagePathCache->get($theme . '--favicon.png'));
+
+		// a second call is served from the cache - proven by handing out a
+		// value the filesystem would never produce
+		$this->imagePathCache->set($theme . '--favicon.png', '/from/the/cache.png');
+		$this->assertEquals('/from/the/cache.png', $this->urlGenerator->imagePath('', 'favicon.png'));
+	}
+
+	/**
+	 * Image paths are host local, so they must not be stored in the distributed
+	 * cache where another host - or anything else reaching it - could serve them
+	 * back.
+	 */
+	public function testImagePathsUseTheLocalCacheTier() {
+		$cacheFactory = $this->createMock(FixedCacheFactory::class);
+		$cacheFactory->expects($this->once())
+			->method('createLocal')
+			->with('imagePath')
+			->willReturn(new ArrayCache());
+		$cacheFactory->expects($this->never())->method('createDistributed');
+		$cacheFactory->expects($this->never())->method('create');
+
+		new URLGenerator(
+			$this->createMock(IConfig::class),
+			$cacheFactory,
+			$this->router,
+			$this->environmentHelper
+		);
+	}
+
+	public function testImagePathThrowsForMissingImage() {
+		$this->environmentHelper->expects($this->any())
+			->method('getWebRoot')
+			->willReturn('/owncloud');
+		$this->environmentHelper->expects($this->any())
+			->method('getServerRoot')
+			->willReturn(\OC::$SERVERROOT);
+
+		$this->expectException(\RuntimeException::class);
+		$this->urlGenerator->imagePath('', 'this-image-does-not-exist.gif');
 	}
 }
