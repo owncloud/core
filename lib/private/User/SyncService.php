@@ -312,7 +312,13 @@ class SyncService {
 		\array_unshift($baseDirs, $dataDir);
 
 		foreach ($baseDirs as $baseDir) {
-			if (!\is_string($baseDir) || $baseDir === '') {
+			// A base directory is only meaningful as an absolute path. Anything
+			// else is a misconfiguration and must not widen the comparison: '.'
+			// and './' would normalize to the empty string, which makes the
+			// containment check below accept every absolute path, and a relative
+			// value would resolve against the working directory of whichever
+			// process happens to run this check.
+			if (!\is_string($baseDir) || !isset($baseDir[0]) || $baseDir[0] !== '/') {
 				continue;
 			}
 			if (self::isContainedIn($normalizedHome, self::normalizePath($baseDir))) {
@@ -339,6 +345,10 @@ class SyncService {
 	 * validated - but resolving the existing prefix keeps a symlink from pointing
 	 * an apparently contained home somewhere else, and lets an admin have a
 	 * symlinked data directory.
+	 *
+	 * Callers are responsible for passing an absolute path: a relative one would be
+	 * resolved against the working directory of whichever process happens to run
+	 * this, and '' and '.' normalize to the empty string.
 	 *
 	 * @param string $path an absolute path
 	 * @return string the resolved path, without a trailing slash
@@ -400,6 +410,11 @@ class SyncService {
 	 * @return bool
 	 */
 	private static function isContainedIn($path, $baseDir) {
+		// an empty base dir contains nothing - without this the comparison below
+		// degenerates into strpos($path, '/') === 0, accepting every absolute path
+		if ($baseDir === '') {
+			return false;
+		}
 		if ($path === $baseDir) {
 			return true;
 		}

@@ -211,6 +211,12 @@ class SyncServiceTest extends TestCase {
 			'apps directory' => ['/var/www/owncloud/apps'],
 			'system directory' => ['/etc'],
 			'traversal' => ['/var/www/owncloud/data/../../../etc'],
+			// an absolute path can carry dot segments anywhere, not just trailing
+			'traversal mid-path' => ['/var/www/../../opt'],
+			'traversal out of data dir' => ['/var/www/owncloud/data/../../apps'],
+			'dot segments' => ['/var/www/./owncloud/./apps'],
+			'traversal to root' => ['/..'],
+			'dot segments to code root' => ['/var/www/owncloud/data/../.'],
 			'prefix sibling' => ['/var/www/owncloud/data-evil'],
 		];
 	}
@@ -327,6 +333,58 @@ class SyncServiceTest extends TestCase {
 	/**
 	 * Admins with homes on a separate mount can opt back in explicitly.
 	 */
+	/**
+	 * A base directory that is not usable as one must not widen the check. Values
+	 * such as '.' or a relative path normalize to something unrelated to the
+	 * intended directory - notably '.' normalizes to the empty string, which used
+	 * to make the containment check accept every absolute path.
+	 *
+	 * @dataProvider providesUnusableBaseDirs
+	 */
+	public function testSyncHomeRefusesUnusableBaseDir($baseDir) {
+		$this->expectException(\OutOfBoundsException::class);
+
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
+		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);
+		$backend->expects($this->any())->method('getHome')->willReturn('/var/www/owncloud/apps');
+
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->willReturnCallback(function ($key, $default = '') use ($baseDir) {
+				if ($key === 'datadirectory') {
+					return '/var/www/owncloud/data';
+				}
+				if ($key === 'user.home_base_dirs') {
+					return [$baseDir];
+				}
+				return $default;
+			});
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome', 'setHome', 'getUpdatedFields'])->getMock();
+		$a->expects($this->any())->method('getHome')->willReturn('');
+		$a->expects($this->any())->method('getUpdatedFields')->willReturn([]);
+		$a->expects($this->never())->method('setHome');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	public function providesUnusableBaseDirs() {
+		return [
+			'empty' => [''],
+			// these normalize to the empty string
+			'current directory' => ['.'],
+			'current directory with slash' => ['./'],
+			'dot segments only' => ['./.'],
+			// a relative base dir would resolve against the working directory of
+			// whichever process happens to run the check
+			'relative' => ['data'],
+			'relative with dot' => ['./data'],
+			'parent' => ['..'],
+			'not a string' => [null],
+		];
+	}
+
 	public function testSyncHomeAcceptsHomeInConfiguredBaseDir() {
 		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(IUserInterfaceWithHomeBackendTest::class);

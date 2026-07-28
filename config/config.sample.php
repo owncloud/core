@@ -407,6 +407,10 @@ $CONFIG = [
  * inside one of them is accepted. Keep this list as narrow as possible and never
  * include the ownCloud code directory.
  *
+ * Every entry must be an absolute path. Entries that are not are ignored, because
+ * a relative one would be resolved against the working directory of whichever
+ * process happens to run the check.
+ *
  * Defaults to `[]`, i.e. only the data directory is permitted.
  *
  * The LDAP backend honours the analogous `user_ldap.home_base_dirs` option.
