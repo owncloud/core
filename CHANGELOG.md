@@ -76,6 +76,7 @@ ownCloud admins and users.
 * Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
 * Change - G2 code-signing verifier and G1 signature sunset: [#41680](https://github.com/owncloud/core/pull/41680)
 * Change - Remove occ integrity:sign-app and integrity:sign-core commands: [#41712](https://github.com/owncloud/core/pull/41712)
+* Change - Remove the caching router: [#41733](https://github.com/owncloud/core/pull/41733)
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 
 ## Details
@@ -583,6 +584,14 @@ ownCloud admins and users.
    before.
 
    https://github.com/owncloud/core/pull/41712
+
+* Change - Remove the caching router: [#41733](https://github.com/owncloud/core/pull/41733)
+
+   Generated urls are no longer stored in the memory cache. Measurement showed
+   generating a url to be faster than a cache round trip, so the cache only added a
+   place where urls could go stale or be tampered with.
+
+   https://github.com/owncloud/core/pull/41733
 
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 
