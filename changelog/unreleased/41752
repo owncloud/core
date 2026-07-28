@@ -1,0 +1,24 @@
+Security: Confine backend provided user homes to the data directory
+
+A user backend can supply a per user home directory - the LDAP backend for
+instance can be configured to read it from a user attribute such as
+homeDirectory. The account sync accepted that value after nothing more than a
+check for a leading slash, so a home pointing at the ownCloud code directory
+turned the user's file listing into read and write access to the application's
+own PHP files. Writing a PHP file into a web reachable location, or modifying
+one of the shipped ones, results in remote code execution. The relative form
+was concatenated onto the data directory without normalization, so a value
+containing ".." escaped it as well.
+
+A backend provided home is now rejected unless it resolves inside the
+configured datadirectory. Installations that legitimately keep user homes
+elsewhere, for example on a separate NFS mount, can list the permitted base
+directories in the new "user.home_base_dirs" config option. Symlinks are
+resolved before the comparison, so a symlinked data directory keeps working
+while a symlink inside it cannot be used to escape.
+
+Note that a home is only set when an account has none yet, so accounts that were
+provisioned before this change keep the home already stored for them.
+
+https://github.com/owncloud/core/pull/41752
+https://github.com/owncloud/user_ldap/pull/849
