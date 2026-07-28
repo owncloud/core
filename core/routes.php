@@ -87,15 +87,18 @@ $application->registerRoutes($this, [
 $this->create('search_ajax_search', '/core/search')
 	->actionInclude('core/search/ajax/search.php');
 // AppConfig
-$this->create('core_ajax_appconfig', '/core/ajax/appconfig.php')
+$this->create('core_ajax_appconfig', '/core/ajax/appconfig')
 	->actionInclude('core/ajax/appconfig.php');
 // Share
-$this->create('core_ajax_share', '/core/ajax/share.php')
+$this->create('core_ajax_share', '/core/ajax/share')
 	->actionInclude('core/ajax/share.php');
 // oC JS config
 $this->create('js_config', '/core/js/oc.js')
 	->actionInclude('core/js/config.php');
 // Routing
+// This url intentionally keeps the .php suffix: update.php bootstraps itself and
+// is excluded from the front controller rewrite, see \OC\Setup::updateHtaccess()
+// and OC::checkMaintenanceMode().
 $this->create('core_ajax_update', '/core/ajax/update.php')
 	->actionInclude('core/ajax/update.php');
 

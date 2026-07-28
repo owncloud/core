@@ -208,7 +208,7 @@
 						if (this.xhr != null)
 							this.xhr.abort();
 
-						var xhr = $.get(OC.generateUrl('/index.php/core/ajax/share.php'), {
+						var xhr = $.get(OC.generateUrl('/core/ajax/share'), {
 							'fetch' : 'getShareWithEmail',
 							'search': query.term
 						}).done(function(result) {

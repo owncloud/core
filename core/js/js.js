@@ -43,7 +43,7 @@ function escapeHTML(s) {
  * @deprecated use Files.getDownloadURL() instead
  */
 function fileDownloadPath(dir, file) {
-	return OC.filePath('files', 'ajax', 'download.php') + '?files=' + encodeURIComponent(file) + '&dir=' + encodeURIComponent(dir);
+	return OC.generateUrl('/apps/files/ajax/download') + '?files=' + encodeURIComponent(file) + '&dir=' + encodeURIComponent(dir);
 }
 
 /** @namespace */

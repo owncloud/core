@@ -113,7 +113,7 @@
 			if (params) {
 				q = '?' + OC.buildQueryString(params);
 			}
-			return OC.filePath('files_trashbin', 'ajax', action + '.php') + q;
+			return OC.generateUrl('/apps/files_trashbin/ajax/' + action) + q;
 		},
 
 		setupUploadEvents: function() {
@@ -205,7 +205,7 @@
 				};
 			}
 
-			$.post(OC.filePath('files_trashbin', 'ajax', 'undelete.php'),
+			$.post(OC.generateUrl('/apps/files_trashbin/ajax/undelete'),
 				params,
 				function(result) {
 					if (allFiles) {
@@ -255,7 +255,7 @@
 				}
 			}
 
-			$.post(OC.filePath('files_trashbin', 'ajax', 'delete.php'),
+			$.post(OC.generateUrl('/apps/files_trashbin/ajax/delete'),
 					params,
 					function(result) {
 						if (allFiles) {
@@ -275,7 +275,7 @@
 		},
 
 		generatePreviewUrl: function(urlSpec) {
-			return OC.generateUrl('/index.php/apps/files_trashbin/ajax/preview.php') + '?' + $.param(urlSpec);
+			return OC.generateUrl('/apps/files_trashbin/ajax/preview') + '?' + $.param(urlSpec);
 		},
 
 		getDownloadUrl: function() {

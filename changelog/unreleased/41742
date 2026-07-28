@@ -1,0 +1,23 @@
+Bugfix: Rewire legacy ajax routes to extension-free urls
+
+The front controller rewrite only forwards a request to index.php when the
+requested path does not exist on disk. A legacy route whose declared url was
+itself a real file - for example /settings/ajax/setlanguage.php - therefore
+never reached the router: the web server executed the script directly, without
+the bootstrap index.php would have performed, and the request died with
+`Class "OC" not found` (HTTP 500). Changing the personal language setting, the
+share dialog e-mail lookup, the trashbin and public link preview thumbnails and
+the Google Drive OAuth entry point were affected.
+
+Every such route url has lost its .php suffix so that no route url resolves to
+a file on disk any more, and the affected javascript callers now build routed
+urls through OC.generateUrl(). Route names are unchanged, so linkToRoute()
+callers keep working. The legacy .php urls are gone and no alias is provided -
+an alias would re-introduce the very shadowing this change removes.
+/core/ajax/update.php keeps its suffix by design: it bootstraps itself and is
+excluded from the rewrite. Five routes whose include target no longer existed
+were removed. Third-party apps posting to their own shadowed .php route urls
+need the same treatment.
+
+https://github.com/owncloud/core/issues/41740
+https://github.com/owncloud/core/pull/41742

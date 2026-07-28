@@ -25,7 +25,7 @@
 				state.call.abort();
 			}
 			state.dir = currentDir;
-			state.call = $.getJSON(OC.filePath('files','ajax','getstoragestats.php') + '?dir=' + encodeURIComponent(currentDir),function(response) {
+			state.call = $.getJSON(OC.generateUrl('/apps/files/ajax/getstoragestats') + '?dir=' + encodeURIComponent(currentDir),function(response) {
 				state.dir = null;
 				state.call = null;
 				Files.updateMaxUploadFilesize(response);
@@ -200,7 +200,7 @@
 			if (params) {
 				q = '?' + OC.buildQueryString(params);
 			}
-			return OC.filePath('files', 'ajax', action + '.php') + q;
+			return OC.generateUrl('/apps/files/ajax/' + action) + q;
 		},
 
 		/**
