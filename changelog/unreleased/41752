@@ -15,7 +15,10 @@ configured datadirectory. Installations that legitimately keep user homes
 elsewhere, for example on a separate NFS mount, can list the permitted base
 directories in the new "user.home_base_dirs" config option. Symlinks are
 resolved before the comparison, so a symlinked data directory keeps working
-while a symlink inside it cannot be used to escape.
+while a symlink inside it cannot be used to escape. Every entry in the option
+has to be an absolute path; entries that are not are ignored, because a
+relative one would be resolved against the working directory of whichever
+process happens to run the check.
 
 Note that a home is only set when an account has none yet, so accounts that were
 provisioned before this change keep the home already stored for them.
