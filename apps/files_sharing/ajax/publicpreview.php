@@ -62,6 +62,15 @@ try {
 	exit;
 }
 
+// a share without the read permission - like an upload only ("file drop") share - must not
+// expose any file content, nor whether a given file name exists. Sending back 404 the same
+// way ShareController::downloadShare() does.
+if (($linkedItem->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {
+	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
+	\OCP\Util::writeLog('core-preview', 'Share does not grant read permission', \OCP\Util::DEBUG);
+	exit;
+}
+
 $userId = $linkedItem->getShareOwner();
 if ($userId === null) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
