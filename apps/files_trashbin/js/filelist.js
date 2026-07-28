@@ -275,7 +275,7 @@
 		},
 
 		generatePreviewUrl: function(urlSpec) {
-			return OC.generateUrl('/apps/files_trashbin/ajax/preview.php?') + $.param(urlSpec);
+			return OC.generateUrl('/index.php/apps/files_trashbin/ajax/preview.php') + '?' + $.param(urlSpec);
 		},
 
 		getDownloadUrl: function() {

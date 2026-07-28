@@ -1,0 +1,18 @@
+Bugfix: Request legacy ajax endpoints through the front controller
+
+The front controller rewrite only forwards a request to index.php when the
+requested path does not exist on disk. Five javascript call sites requested a url
+that was itself a real file, so the web server executed the script directly,
+without the bootstrap index.php would have performed, and the request died with a
+fatal error (HTTP 500): changing the personal language, the share dialog e-mail
+lookup, the Google Drive OAuth entry point, and the trashbin and public link
+preview thumbnails.
+
+All five now build their url with an explicit /index.php/ prefix so that the
+request no longer matches a file on disk and reaches the router. The prefix has
+to be part of the url literal because OC.generateUrl() omits /index.php when
+mod_rewrite is active, which is how four of the five came to request the shadowed
+url in the first place.
+
+https://github.com/owncloud/core/issues/41740
+https://github.com/owncloud/core/pull/41743
