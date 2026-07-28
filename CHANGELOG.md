@@ -45,6 +45,7 @@ ownCloud admins and users.
 * Security - Sanitize storage connection error messages returned to clients: [#41585](https://github.com/owncloud/core/pull/41585)
 * Security - Prevent user enumeration via differential password reset UI: [#41586](https://github.com/owncloud/core/pull/41586)
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
+* Security - Do not trust cached binary paths: [#41732](https://github.com/owncloud/core/pull/41732)
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
@@ -74,6 +75,7 @@ ownCloud admins and users.
 * Change - Remove msteamsbridge config sample: [#41668](https://github.com/owncloud/core/pull/41668)
 * Change - G2 code-signing verifier and G1 signature sunset: [#41680](https://github.com/owncloud/core/pull/41680)
 * Change - Remove occ integrity:sign-app and integrity:sign-core commands: [#41712](https://github.com/owncloud/core/pull/41712)
+* Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 
 ## Details
 
@@ -153,6 +155,16 @@ ownCloud admins and users.
    true in config.php.
 
    https://github.com/owncloud/core/pull/41634
+
+* Security - Do not trust cached binary paths: [#41732](https://github.com/owncloud/core/pull/41732)
+
+   The paths of the helper binaries used to render previews - ffmpeg, avconv and
+   AtomicParsley - were cached in the distributed memory cache and used without
+   being checked, then interpolated unquoted into the shell commands built from
+   them. A cached path is now stored in the host local cache tier only, is
+   validated before it is used, and is quoted when the command line is assembled.
+
+   https://github.com/owncloud/core/pull/41732
 
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 
@@ -551,6 +563,21 @@ ownCloud admins and users.
    before.
 
    https://github.com/owncloud/core/pull/41712
+
+* Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
+
+   The username allow-list in OC\User\Manager::createUser() already rejects every
+   character outside "a-z", "A-Z", "0-9" and "+_.@-'", which blocks HTML and script
+   metacharacters from ever reaching a stored username. That behaviour was only
+   covered by three generic invalid-character cases, none of which resembled an
+   injection payload.
+
+   The invalid-character data provider now also exercises quote, angle-bracket and
+   full script-tag payloads, so any future relaxation of the allow-list that would
+   let markup into a username fails the test suite instead of passing unnoticed.
+   This is test-only coverage; no production behaviour changes.
+
+   https://github.com/owncloud/core/pull/41738
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
