@@ -120,8 +120,8 @@ Feature: Unlock locked files and folders
       | shared    |
 
   # This scenario depends on the order of locks displayed on the UI.
-  # Pgsql and Oracle database can have different sorting, so allow this scenario to be skipped on those
-  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql @skipOnDbOracle
+  # Pgsql database can have different sorting, so allow this scenario to be skipped on that
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql
   Scenario: deleting the first one of multiple shared locks on the webUI
     Given these users have been created without skeleton files:
       | username  |
@@ -161,8 +161,8 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   # This scenario depends on the order of locks displayed on the UI.
-  # Pgsql and Oracle database can have different sorting, so allow this scenario to be skipped on those
-  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql @skipOnDbOracle
+  # Pgsql database can have different sorting, so allow this scenario to be skipped on that
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql
   Scenario: deleting the second one of multiple shared locks on the webUI
     Given these users have been created without skeleton files:
       | username  |
@@ -202,8 +202,8 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
   # This scenario depends on the order of locks displayed on the UI.
-  # Pgsql and Oracle database can have different sorting, so allow this scenario to be skipped on those
-  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql @skipOnDbOracle
+  # Pgsql database can have different sorting, so allow this scenario to be skipped on that
+  @skipOnFIREFOX @files_sharing-app-required @skipOnLDAP @skipOnDbPgsql
   Scenario: deleting the last one of multiple shared locks on the webUI
     Given these users have been created without skeleton files:
       | username  |
