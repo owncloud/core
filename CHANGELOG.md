@@ -47,6 +47,7 @@ ownCloud admins and users.
 * Security - Disable group-admin feature by default behind allow_subadmins: [#41634](https://github.com/owncloud/core/pull/41634)
 * Security - Do not trust cached binary paths: [#41732](https://github.com/owncloud/core/pull/41732)
 * Security - Enforce the read permission in the public share preview endpoint: [#41751](https://github.com/owncloud/core/pull/41751)
+* Security - Confine backend provided user homes to the data directory: [#41752](https://github.com/owncloud/core/pull/41752)
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
@@ -81,6 +82,7 @@ ownCloud admins and users.
 * Change - Remove the caching router: [#41733](https://github.com/owncloud/core/pull/41733)
 * Change - Keep host local caches in the local cache tier: [#41734](https://github.com/owncloud/core/pull/41734)
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
+* Change - Expose createLocal() on ICacheFactory: [#41753](https://github.com/owncloud/core/pull/41753)
 
 ## Details
 
@@ -179,6 +181,33 @@ ownCloud admins and users.
    with ShareController::downloadShare() and the public WebDAV route.
 
    https://github.com/owncloud/core/pull/41751
+
+* Security - Confine backend provided user homes to the data directory: [#41752](https://github.com/owncloud/core/pull/41752)
+
+   A user backend can supply a per user home directory - the LDAP backend for
+   instance can be configured to read it from a user attribute such as
+   homeDirectory. The account sync accepted that value after nothing more than a
+   check for a leading slash, so a home pointing at the ownCloud code directory
+   turned the user's file listing into read and write access to the application's
+   own PHP files. Writing a PHP file into a web reachable location, or modifying
+   one of the shipped ones, results in remote code execution. The relative form was
+   concatenated onto the data directory without normalization, so a value
+   containing ".." escaped it as well.
+
+   A backend provided home is now rejected unless it resolves inside the configured
+   datadirectory. Installations that legitimately keep user homes elsewhere, for
+   example on a separate NFS mount, can list the permitted base directories in the
+   new "user.home_base_dirs" config option. Symlinks are resolved before the
+   comparison, so a symlinked data directory keeps working while a symlink inside
+   it cannot be used to escape. Every entry in the option has to be an absolute
+   path; entries that are not are ignored, because a relative one would be resolved
+   against the working directory of whichever process happens to run the check.
+
+   Note that a home is only set when an account has none yet, so accounts that were
+   provisioned before this change keep the home already stored for them.
+
+   https://github.com/owncloud/core/pull/41752
+   https://github.com/owncloud/user_ldap/pull/849
 
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 
@@ -655,6 +684,20 @@ ownCloud admins and users.
    This is test-only coverage; no production behaviour changes.
 
    https://github.com/owncloud/core/pull/41738
+
+* Change - Expose createLocal() on ICacheFactory: [#41753](https://github.com/owncloud/core/pull/41753)
+
+   The cache factory has always been able to hand out a cache from the host local
+   tier, but the method was missing from the public ICacheFactory interface, so
+   core had to ask for it defensively and apps had no way to use it at all. It is
+   now part of the interface, which lets values that are only meaningful on the
+   machine that produced them be kept out of the cache shared between the nodes of
+   an installation.
+
+   Note for app developers: a class implementing OCP\ICacheFactory has to declare
+   createLocal() from this release on.
+
+   https://github.com/owncloud/core/pull/41753
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
