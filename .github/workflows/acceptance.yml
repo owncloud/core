@@ -86,7 +86,7 @@ jobs:
     services:
       mysql:
         image: >-
-          ${{ (startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:')) && matrix.database || '' }}
+          ${{ case(startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:'), matrix.database, inputs.federated-folder != '', 'mariadb:10.6', '') }}
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: owncloud
@@ -100,7 +100,7 @@ jobs:
         ports:
           - 3306:3306
       postgres:
-        image: ${{ startsWith(matrix.database,'postgres:') && matrix.database || '' }}
+        image: ${{ case(startsWith(matrix.database,'postgres:'), matrix.database, '') }}
         env:
           POSTGRES_DB: owncloud
           POSTGRES_USER: owncloud
