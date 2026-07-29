@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Security - Do not trust cached binary paths: [#41732](https://github.com/owncloud/core/pull/41732)
 * Security - Enforce the read permission in the public share preview endpoint: [#41751](https://github.com/owncloud/core/pull/41751)
 * Security - Confine backend provided user homes to the data directory: [#41752](https://github.com/owncloud/core/pull/41752)
+* Security - Encode search highlights before they are returned as a DAV property: [#41760](https://github.com/owncloud/core/pull/41760)
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 * Bugfix - Normalise trashbin original-location PROPFIND response: [#39337](https://github.com/owncloud/core/issues/39337)
 * Bugfix - Add missing space to mail footer signature delimiter: [#41364](https://github.com/owncloud/core/issues/41364)
@@ -209,6 +210,20 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41752
    https://github.com/owncloud/user_ldap/pull/849
+
+* Security - Encode search highlights before they are returned as a DAV property: [#41760](https://github.com/owncloud/core/pull/41760)
+
+   The search-highlights property of the files search REPORT returned the
+   elasticsearch highlight fragment unencoded. The fragment is built from file
+   content, so a user who shared a crafted file could place arbitrary markup in the
+   property value. The property deliberately carries HTML - line breaks are
+   substituted with <br/> - so a client rendering it as HTML would execute the
+   injected markup.
+
+   The fragment is now HTML-encoded before the line break substitution, which keeps
+   the intended <br/> markup intact.
+
+   https://github.com/owncloud/core/pull/41760
 
 * Bugfix - Point documentation help links at the latest server docs: [#5132](https://github.com/owncloud/docs/issues/5132)
 
@@ -485,11 +500,11 @@ ownCloud admins and users.
 
    * google/apiclient (v2.19.0 to v2.19.4)
 
-   * google/apiclient-services (v0.435.0 to v0.451.0)
+   * google/apiclient-services (v0.435.0 to v0.452.0)
 
-   * google/auth (v1.50.0 to v1.52.0)
+   * google/auth (v1.50.0 to v1.53.0)
 
-   * guzzlehttp/guzzle (7.10.0 to 7.15.1)
+   * guzzlehttp/guzzle (7.10.0 to 7.15.2)
 
    * guzzlehttp/promises (2.3.0 to 2.5.1)
 
@@ -552,6 +567,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41691
    https://github.com/owncloud/core/pull/41697
    https://github.com/owncloud/core/pull/41709
+   https://github.com/owncloud/core/pull/41756
 
 * Change - Drop command db:convert-type: [#41451](https://github.com/owncloud/core/pull/41451)
 
