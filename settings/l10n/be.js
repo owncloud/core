@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't remove app." : "Не ўдалося выдаліць праграму.",
     "All" : "Усе",
     "Please wait...." : "Пачакайце...",
-    "Updating...." : "Абнаўленне...",
-    "Updated" : "Абноўлена",
     "App update" : "Абнаўленне праграмы",
     "CORS" : "CORS",
     "Sending..." : "Адпраўка...",

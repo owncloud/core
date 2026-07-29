@@ -7,8 +7,6 @@ OC.L10N.register(
     "Please wait...." : "...ਉਡੀਕੋ ਜੀ",
     "Disable" : "ਬੰਦ",
     "Enable" : "ਚਾਲੂ",
-    "Updating...." : "...ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
-    "Updated" : "ਅੱਪਡੇਟ ਕੀਤਾ",
     "Groups" : "ਗਰੁੱਪ",
     "unknown" : "ਅਣਜਾਣ",
     "Sharing" : "ਸਾਂਝ",
