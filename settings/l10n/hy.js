@@ -20,8 +20,6 @@ OC.L10N.register(
     "All" : "Ամենը",
     "Enabled" : "Միացված",
     "Not enabled" : "Չմիացված",
-    "Updating...." : "Թարմացնում եմ...",
-    "Updated" : "Թարմացվեց",
     "App update" : "Ափփ թարմացում",
     "Experimental" : "Փորձարարական",
     "Valid until {date}" : "Վավեր մինչ {date}",
