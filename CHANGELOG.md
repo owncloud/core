@@ -83,6 +83,7 @@ ownCloud admins and users.
 * Change - Keep host local caches in the local cache tier: [#41734](https://github.com/owncloud/core/pull/41734)
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 * Change - Expose createLocal() on ICacheFactory: [#41753](https://github.com/owncloud/core/pull/41753)
+* Change - Escape group names in the users administration group list: [#41758](https://github.com/owncloud/core/pull/41758)
 
 ## Details
 
@@ -698,6 +699,19 @@ ownCloud admins and users.
    createLocal() from this release on.
 
    https://github.com/owncloud/core/pull/41753
+
+* Change - Escape group names in the users administration group list: [#41758](https://github.com/owncloud/core/pull/41758)
+
+   The group list in the users administration panel built each list item by
+   concatenating the group id and group name into an HTML string, so both values
+   were interpreted as markup rather than text. Unlike usernames, group names are
+   not restricted to an allow-listed character set - Group\Manager::createGroup()
+   only rejects empty and untrimmed names - so a name containing HTML characters
+   was not rendered verbatim. Both interpolated values are now passed through
+   escapeHTML(), which makes the encoding consistent with the user rows, and the
+   behaviour is covered by tests in settings/tests/js/users/groupsSpec.js.
+
+   https://github.com/owncloud/core/pull/41758
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
