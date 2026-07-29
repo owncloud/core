@@ -1,0 +1,13 @@
+Security: Encode search highlights before they are returned as a DAV property
+
+The search-highlights property of the files search REPORT returned the
+elasticsearch highlight fragment unencoded. The fragment is built from
+file content, so a user who shared a crafted file could place arbitrary
+markup in the property value. The property deliberately carries HTML -
+line breaks are substituted with <br/> - so a client rendering it as
+HTML would execute the injected markup.
+
+The fragment is now HTML-encoded before the line break substitution,
+which keeps the intended <br/> markup intact.
+
+https://github.com/owncloud/core/pull/41760

@@ -183,7 +183,11 @@ class FilesSearchReportPlugin extends ServerPlugin {
 			$this->server->getPropertiesByNode($propFind, $node);
 			// assuming we only have one entry in the highlights array
 			if (isset($paths[$path]->highlights[0]) && \in_array(self::REPORT_HIGHLIGHTS, $requestedProps)) {
-				$propFind->set(self::REPORT_HIGHLIGHTS, \str_replace(["\r\n", "\r", "\n"], '<br/>', $paths[$path]->highlights[0]));
+				// the highlight is built from file content, so it has to be encoded
+				// before the line breaks are turned into markup - encoding
+				// afterwards would mangle the <br/> we inject here on purpose
+				$highlight = \htmlspecialchars($paths[$path]->highlights[0], ENT_QUOTES, 'UTF-8');
+				$propFind->set(self::REPORT_HIGHLIGHTS, \str_replace(["\r\n", "\r", "\n"], '<br/>', $highlight));
 			}
 			if (isset($paths[$path]->score) && \in_array(self::REPORT_SCORE, $requestedProps)) {
 				$propFind->set(self::REPORT_SCORE, $paths[$path]->score);

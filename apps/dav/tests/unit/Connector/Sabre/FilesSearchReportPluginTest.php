@@ -292,6 +292,87 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		}
 	}
 
+	public function highlightsEscapingProvider() {
+		return [
+			[
+				'<script>alert(1)</script>',
+				'&lt;script&gt;alert(1)&lt;/script&gt;',
+			],
+			[
+				'<img src=x onerror="alert(1)">',
+				'&lt;img src=x onerror=&quot;alert(1)&quot;&gt;',
+			],
+			// the newline substitution still has to produce a real <br/>
+			[
+				"first<script>alert(1)</script>\nsecond",
+				'first&lt;script&gt;alert(1)&lt;/script&gt;<br/>second',
+			],
+			// an already encoded fragment must survive as-is, single encoding only
+			[
+				'harmless &amp; encoded',
+				'harmless &amp;amp; encoded',
+			],
+		];
+	}
+
+	/**
+	 * The highlight fragment is built from attacker controlled file content and is
+	 * handed out as an HTML bearing property (this code deliberately injects
+	 * <br/>), so a client rendering it as HTML must not be able to execute script.
+	 *
+	 * @dataProvider highlightsEscapingProvider
+	 */
+	public function testOnReportEscapesHighlights($highlight, $expected) {
+		$base = '/remote.php/dav/files/user';
+		$nodePath = '/';
+		$path = "{$base}{$nodePath}";
+		$resultPath = '/hit0';
+
+		$parameters = new SearchRequest();
+		$parameters->properties = ['{http://owncloud.org/ns}search-highlights'];
+		$parameters->searchInfo = ['pattern' => 'hit', 'limit' => 1];
+
+		$node = $this->createMock(Directory::class);
+		$node->method('getPath')->willReturn($nodePath);
+
+		$this->searchService->method('searchPaged')
+			->will($this->returnCallback(function () use ($resultPath, $highlight) {
+				$mock = $this->createMock(ResultFile::class);
+				$mock->path = $resultPath;
+				$mock->highlights = [$highlight];
+				return [$mock];
+			}));
+
+		$this->tree->method('getMultipleNodes')
+			->will($this->returnCallback(function ($paths) {
+				$nodes = [];
+				foreach ($paths as $nodePath) {
+					$nodes[$nodePath] = $this->createMock(Node::class);
+				}
+				return $nodes;
+			}));
+
+		$responses = [];
+		$this->server->expects($this->once())
+			->method('generateMultiStatus')
+			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
+				foreach ($responsesArg as $responseArg) {
+					$responses[] = $responseArg;
+				}
+			}));
+
+		$this->setupBaseTreeNode($path, $node);
+		$this->plugin->initialize($this->server);
+
+		$this->plugin->onReport(FilesSearchReportPlugin::REPORT_NAME, $parameters, $path);
+
+		$this->assertCount(1, $responses);
+		$this->assertSame(
+			$expected,
+			$responses[0][200]['{http://owncloud.org/ns}search-highlights']
+		);
+	}
+
 	private function getSearchList($search, $numberOfItems) {
 		$results = [];
 		$pathParts = [];
