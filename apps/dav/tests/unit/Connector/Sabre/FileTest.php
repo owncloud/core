@@ -681,6 +681,46 @@ class FileTest extends TestCase {
 	}
 
 	/**
+	 * A chunked upload whose assembled target name is blacklisted (e.g.
+	 * `.htaccess`) must be rejected, just like the non-chunked path. The
+	 * chunk names themselves (`.htaccess-chunking-...`) are not blacklisted,
+	 * so the guard has to fire on the decoded target name.
+	 */
+	public function testChunkedPutToBlacklistedNameIsForbidden() {
+		// wire the blacklist guard exactly as lib/kernel.php does at boot
+		// (setUp() clears all hooks, so it is not registered by default)
+		\OC_Hook::connect(
+			'OC_Filesystem',
+			'write',
+			'OC\Files\Filesystem',
+			'isForbiddenFileOrDir_Hook'
+		);
+
+		$_SERVER['HTTP_OC_CHUNKED'] = true;
+
+		$this->assertNull($this->doPut('/.htaccess-chunking-12345-2-0'));
+
+		$thrown = false;
+		try {
+			$this->doPut('/.htaccess-chunking-12345-2-1');
+		} catch (\Sabre\DAV\Exception\Forbidden $e) {
+			$thrown = true;
+		}
+		$this->assertTrue($thrown, 'Uploading a blacklisted .htaccess via chunking must be forbidden');
+
+		// The blacklisted target must never reach the storage backend - check
+		// the physical storage directly, because the file cache scanner skips
+		// blacklisted names and would hide a file that is actually on disk.
+		$view = Filesystem::getView();
+		list($storage, $internalPath) = $view->resolvePath('/.htaccess');
+		$this->assertFalse(
+			$storage->file_exists($internalPath),
+			'Blacklisted .htaccess must not be written to storage via chunked upload'
+		);
+		$this->assertEmpty($this->listPartFiles(), 'No stray part files');
+	}
+
+	/**
 	 * Test that putting a file triggers create hooks
 	 */
 	public function testPutSingleFileTriggersHooks() {
