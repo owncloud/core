@@ -553,7 +553,15 @@ class File extends Node implements IFile, IFileNode {
 			try {
 				$this->fileView->lockFile($targetPath, ILockingProvider::LOCK_SHARED);
 
-				$this->emitPreHooks($exists, $targetPath);
+				$run = $this->emitPreHooks($exists, $targetPath);
+				if ($run === false) {
+					// a hook (e.g. the blacklist check on the decoded target
+					// name) vetoed the write - abort before assembling the
+					// chunks into the final file
+					$this->fileView->unlockFile($targetPath, ILockingProvider::LOCK_SHARED);
+					$chunk_handler->cleanup();
+					throw new Forbidden('Writing the file was not allowed');
+				}
 				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_EXCLUSIVE);
 				/** @var \OC\Files\Storage\Storage $targetStorage */
 				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);

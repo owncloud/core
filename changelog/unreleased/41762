@@ -1,0 +1,9 @@
+Change: Honour the write hook veto on legacy chunked WebDAV uploads
+
+The legacy WebDAV chunked upload path assembled the final file without
+respecting the pre-write hook result, so the filename blacklist that applies
+to ordinary uploads was not enforced for chunked uploads. The chunked
+assembly now aborts when a write hook vetoes the file, matching the
+non-chunked upload path.
+
+https://github.com/owncloud/core/pull/41762
