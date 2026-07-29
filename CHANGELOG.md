@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
 * [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
 * [Changelog for 10.16.2](#changelog-for-owncloud-core-10162-2026-04-02)
 * [Changelog for 10.16.1](#changelog-for-owncloud-core-10161-2026-02-18)
@@ -28,6 +29,38 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.4] (2026-07-29)
+
+The following sections list the changes in ownCloud core 10.16.4 relevant to
+ownCloud admins and users.
+
+[10.16.4]: https://github.com/owncloud/core/compare/v10.16.3...v10.16.4
+
+## Summary
+
+* Bugfix - Fix subadmin email change updating caller's address instead of target's: [#41574](https://github.com/owncloud/core/pull/41574)
+* Change - Honour the write hook veto on legacy chunked WebDAV uploads: [#41763](https://github.com/owncloud/core/pull/41763)
+
+## Details
+
+* Bugfix - Fix subadmin email change updating caller's address instead of target's: [#41574](https://github.com/owncloud/core/pull/41574)
+
+   The verification token and confirmation link in the subadmin path of
+   setMailAddress were associated with the caller's account instead of the target
+   user's account. Clicking the confirmation link changed the subadmin's email
+   rather than the intended target's email.
+
+   https://github.com/owncloud/core/pull/41574
+
+* Change - Honour the write hook veto on legacy chunked WebDAV uploads: [#41763](https://github.com/owncloud/core/pull/41763)
+
+   The legacy WebDAV chunked upload path assembled the final file without
+   respecting the pre-write hook result, so the filename blacklist that applies to
+   ordinary uploads was not enforced for chunked uploads. The chunked assembly now
+   aborts when a write hook vetoes the file, matching the non-chunked upload path.
+
+   https://github.com/owncloud/core/pull/41763
+
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
 The following sections list the changes in ownCloud core 10.16.3 relevant to
