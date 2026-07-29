@@ -8,11 +8,11 @@ The following have been updated:
 
  * google/apiclient (v2.19.0 to v2.19.4)
 
- * google/apiclient-services (v0.435.0 to v0.451.0)
+ * google/apiclient-services (v0.435.0 to v0.452.0)
 
- * google/auth (v1.50.0 to v1.52.0)
+ * google/auth (v1.50.0 to v1.53.0)
 
- * guzzlehttp/guzzle (7.10.0 to 7.15.1)
+ * guzzlehttp/guzzle (7.10.0 to 7.15.2)
 
  * guzzlehttp/promises (2.3.0 to 2.5.1)
 
@@ -75,3 +75,4 @@ https://github.com/owncloud/core/pull/41681
 https://github.com/owncloud/core/pull/41691
 https://github.com/owncloud/core/pull/41697
 https://github.com/owncloud/core/pull/41709
+https://github.com/owncloud/core/pull/41756
