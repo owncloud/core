@@ -85,6 +85,7 @@ ownCloud admins and users.
 * Change - Cover HTML metacharacters in the username validation allow-list: [#41738](https://github.com/owncloud/core/pull/41738)
 * Change - Expose createLocal() on ICacheFactory: [#41753](https://github.com/owncloud/core/pull/41753)
 * Change - Escape group names in the users administration group list: [#41758](https://github.com/owncloud/core/pull/41758)
+* Change - Honour the write hook veto on legacy chunked WebDAV uploads: [#41762](https://github.com/owncloud/core/pull/41762)
 
 ## Details
 
@@ -728,6 +729,15 @@ ownCloud admins and users.
    behaviour is covered by tests in settings/tests/js/users/groupsSpec.js.
 
    https://github.com/owncloud/core/pull/41758
+
+* Change - Honour the write hook veto on legacy chunked WebDAV uploads: [#41762](https://github.com/owncloud/core/pull/41762)
+
+   The legacy WebDAV chunked upload path assembled the final file without
+   respecting the pre-write hook result, so the filename blacklist that applies to
+   ordinary uploads was not enforced for chunked uploads. The chunked assembly now
+   aborts when a write hook vetoes the file, matching the non-chunked upload path.
+
+   https://github.com/owncloud/core/pull/41762
 
 # Changelog for ownCloud Core [10.16.3] (2026-05-22)
 
