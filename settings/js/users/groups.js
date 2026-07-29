@@ -27,9 +27,9 @@ var GroupDeleteHandler;
 
 		addGroup: function (gid, name, usercount) {
 			var $li = $(
-				'<li class="isgroup" data-gid="' + gid + '" data-usercount="0">' +
+				'<li class="isgroup" data-gid="' + escapeHTML(gid) + '" data-usercount="0">' +
 				'	<a href="#" class="dorename">' +
-				'		<span class="groupname">' + name + '</span>' +
+				'		<span class="groupname">' + escapeHTML(name) + '</span>' +
 				'		<span class="usercount tag"></span>' +
 				'	</a>' +
 				'	<span class="utils">' +

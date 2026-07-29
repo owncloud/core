@@ -62,4 +62,29 @@ describe('groups tests', function() {
 		expect($li.length).toEqual(1);
 		expect($('#usergrouplist li').length).toEqual(4);
 	});
+
+	describe('escaping of group names', function() {
+		it('renders a group name containing markup as text', function() {
+			var payload = '"><script>alert(document.cookie)</script>';
+			var $li = groupList.addGroup(payload, payload, 0);
+
+			expect($li.find('script').length).toEqual(0);
+			expect($li.find('.groupname').text()).toEqual(payload);
+		});
+
+		it('does not break out of the data-gid attribute', function() {
+			var $li = groupList.addGroup('" onmouseover="alert(1)" x="', 'evil', 0);
+
+			expect($li.attr('onmouseover')).toBeUndefined();
+			expect($li.attr('data-gid')).toEqual('" onmouseover="alert(1)" x="');
+		});
+
+		it('does not execute an event handler payload in the group name', function() {
+			var $li = groupList.addGroup('g1', '<img src=x onerror="alert(1)">', 0);
+
+			// note: the row always contains the delete icon, so scope to the name
+			expect($li.find('.groupname img').length).toEqual(0);
+			expect($li.find('.groupname').text()).toEqual('<img src=x onerror="alert(1)">');
+		});
+	});
 });

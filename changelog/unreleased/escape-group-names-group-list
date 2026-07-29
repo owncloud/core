@@ -1,0 +1,12 @@
+Change: Escape group names in the users administration group list
+
+The group list in the users administration panel built each list item by
+concatenating the group id and group name into an HTML string, so both values
+were interpreted as markup rather than text. Unlike usernames, group names are
+not restricted to an allow-listed character set - Group\Manager::createGroup()
+only rejects empty and untrimmed names - so a name containing HTML characters
+was not rendered verbatim. Both interpolated values are now passed through
+escapeHTML(), which makes the encoding consistent with the user rows, and the
+behaviour is covered by tests in settings/tests/js/users/groupsSpec.js.
+
+https://github.com/owncloud/core/pull/41758
