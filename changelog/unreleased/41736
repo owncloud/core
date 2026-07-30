@@ -1,0 +1,10 @@
+Change: Drop the distributed cache in front of the storages table
+
+The mapping between the string and the numeric id of a storage was cached in
+the distributed cache for five minutes on top of the cache that already
+memoizes it for the duration of the request. A storage marked unavailable was
+therefore still considered available by the other nodes until that entry
+expired. The mapping is now looked up in the database once per request, so a
+change of the availability is seen everywhere immediately.
+
+https://github.com/owncloud/core/pull/41736

@@ -188,14 +188,6 @@ abstract class TestCase extends \Test\TestCase {
 			$localCache->clear();
 		}
 		$property->setAccessible(false);
-		$property = $storage->getProperty('distributedCache');
-		$property->setAccessible(true);
-		/** @var ICache $localCache */
-		$distributedCache = $property->getValue();
-		if ($distributedCache instanceof ICache) {
-			$distributedCache->clear();
-		}
-		$property->setAccessible(false);
 	}
 
 	/**
