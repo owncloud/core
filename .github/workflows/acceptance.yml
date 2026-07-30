@@ -77,7 +77,7 @@ jobs:
     permissions:
       contents: read
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         php: ${{ fromJSON(inputs.php-versions) }}
         database: ${{ fromJSON(inputs.databases) }}
