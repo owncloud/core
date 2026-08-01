@@ -56,6 +56,8 @@ OC.L10N.register(
     "Unsatisfied authentication mechanism parameters" : "Недопустимые настройки механизма авторизации",
     "Insufficient data: %s" : "Недостаточно данных: %s",
     "%s" : "%s",
+    "Storage connection error. See server log for details." : "Ошибка соединения с хранилищем. См. подробнее в журнале сервера.",
+    "Storage with id \"%d\" not found" : "Хранилище с идентификатором \"%d\" не найдено",
     "Storage with id \"%i\" is not user editable" : "Пользователь не может редактировать хранилище \"%i\"",
     "OAuth1" : "OAuth1",
     "App key" : "Ключ приложения",

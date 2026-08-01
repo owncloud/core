@@ -138,6 +138,8 @@
     "Cannot set the requested share attributes for %s" : "Не удалось установить запрошенные атрибуты общего доступа для %s",
     "Expiration date is in the past" : "Дата окончания срока действия уже прошла",
     "Cannot set expiration date more than %s days in the future" : "Невозможно установить дату окончания срока действия более %s дней",
+    "Group admin feature is disabled" : "Администраторские группы отключены",
+    "The group admin (subadmin) feature has been disabled by the administrator" : "Администраторские группы (группы субадминистраторов) отключены администратором.",
     "Could not find category \"%s\"" : "Категория \"%s\"  не найдена",
     "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"+_.@-'\"" : "В имени пользователя допустимы только следующие символы: «a—z», «A—Z», «0—9», и «+_.@-'»",
     "A valid username must be provided" : "Укажите допустимое имя пользователя",
