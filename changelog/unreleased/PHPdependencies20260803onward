@@ -1,0 +1,19 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+ * phpseclib/phpseclib (3.0.55 to 3.0.56)
+
+ * symfony/console (v7.4.14 to v7.4.15)
+
+ * symfony/event-dispatcher (v7.4.14 to v7.4.15)
+
+ * symfony/mailer (v7.4.14 to v7.4.15)
+
+ * symfony/mime (v7.4.13 to v7.4.15)
+
+ * symfony/routing (v7.4.13 to v7.4.15)
+
+ * symfony/string (v7.4.13 to v7.4.15)
+
+https://github.com/owncloud/core/pull/41774
