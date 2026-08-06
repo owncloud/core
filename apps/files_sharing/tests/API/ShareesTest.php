@@ -124,6 +124,8 @@ class ShareesTest extends TestCase {
 		$this->userSearch = $this->getMockBuilder(UserSearch::class)
 			->disableOriginalConstructor()
 			->getMock();
+		// Default: all search terms are acceptable unless a specific test overrides this.
+		$this->userSearch->method('isSearchable')->willReturn(true);
 
 		$this->customRemoteSearchMock = $this->createMock(IRemoteShareesSearch::class);
 
@@ -2082,6 +2084,71 @@ class ShareesTest extends TestCase {
 			['http://localhost/index.php', 'http://localhost'],
 			['http://localhost/index.php/s/AShareToken', 'http://localhost'],
 		];
+	}
+
+	/**
+	 * Verify that a short but non-empty search term is blocked when
+	 * user.search_min_length is configured — the previous code only blocked
+	 * empty strings and allowed single-character enumeration attacks.
+	 */
+	public function testGetUsersBlocksShortSearchTerm() {
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'shareWithGroupOnly', [false]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [true]);
+		self::invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [false]);
+
+		// Simulate admin setting user.search_min_length = 2
+		$this->userSearch->expects($this->any())
+			->method('getSearchMinLength')
+			->willReturn(2);
+		$this->userSearch->expects($this->once())
+			->method('isSearchable')
+			->with('a')
+			->willReturn(false);
+
+		// userManager->find() must NOT be called for a too-short search term
+		$this->userManager->expects($this->never())
+			->method('find');
+		$this->userManager->expects($this->never())
+			->method('get');
+
+		self::invokePrivate($this->sharees, 'getUsers', ['a']);
+		$result = self::invokePrivate($this->sharees, 'result');
+
+		$this->assertEmpty($result['exact']['users'], 'Exact users must be empty for short search');
+		$this->assertEmpty($result['users'], 'Users must be empty for short search');
+	}
+
+	/**
+	 * Verify that a short but non-empty group search term is blocked when
+	 * user.search_min_length is configured.
+	 */
+	public function testGetGroupsBlocksShortSearchTerm() {
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'shareWithMembershipGroupOnly', [false]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [true]);
+		self::invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [false]);
+
+		// Simulate admin setting user.search_min_length = 2
+		$this->userSearch->expects($this->any())
+			->method('getSearchMinLength')
+			->willReturn(2);
+		$this->userSearch->expects($this->once())
+			->method('isSearchable')
+			->with('a')
+			->willReturn(false);
+
+		// groupManager->search() must NOT be called for a too-short search term
+		$this->groupManager->expects($this->never())
+			->method('search');
+
+		self::invokePrivate($this->sharees, 'getGroups', ['a']);
+		$result = self::invokePrivate($this->sharees, 'result');
+
+		$this->assertEmpty($result['exact']['groups'], 'Exact groups must be empty for short search');
+		$this->assertEmpty($result['groups'], 'Groups must be empty for short search');
 	}
 
 	public function testGetUserWithSearchAttributes() {
