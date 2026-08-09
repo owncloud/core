@@ -2,6 +2,10 @@ Change: Update PHP dependencies
 
 The following have been updated:
 
+ * guzzlehttp/guzzle (7.15.2 to 7.15.3)
+
+ * guzzlehttp/promises (2.5.1 to 2.5.2)
+
  * phpseclib/phpseclib (3.0.55 to 3.0.56)
 
  * symfony/console (v7.4.14 to v7.4.16)
