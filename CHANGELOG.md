@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 11.0.0](#changelog-for-owncloud-core-1100-2026-07-30)
 * [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
 * [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
@@ -30,6 +31,45 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v11.0.0...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
+
+## Details
+
+* Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
+
+   The following have been updated:
+
+   * guzzlehttp/guzzle (7.15.2 to 7.15.3)
+
+   * guzzlehttp/promises (2.5.1 to 2.5.2)
+
+   * phpseclib/phpseclib (3.0.55 to 3.0.56)
+
+   * symfony/console (v7.4.14 to v7.4.16)
+
+   * symfony/event-dispatcher (v7.4.14 to v7.4.15)
+
+   * symfony/mailer (v7.4.14 to v7.4.15)
+
+   * symfony/mime (v7.4.13 to v7.4.16)
+
+   * symfony/routing (v7.4.13 to v7.4.15)
+
+   * symfony/string (v7.4.13 to v7.4.15)
+
+   * symfony/translation (v7.4.14 to v7.4.16)
+
+   https://github.com/owncloud/core/pull/41775
+
 # Changelog for ownCloud Core [11.0.0] (2026-07-30)
 
 The following sections list the changes in ownCloud core 11.0.0 relevant to
