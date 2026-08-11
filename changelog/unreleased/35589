@@ -1,0 +1,11 @@
+Bugfix: Stop logging ERROR for stale background job rows of removed apps
+
+The background-job runner logged an ERROR-level stack trace on every cron run
+for stale oc_jobs rows whose class no longer exists, left behind by removed or
+disabled apps. JobList::buildJob() now checks whether the class exists before
+logging: a class that exists but cannot be resolved as a service is still
+logged at ERROR as a genuine dependency-injection failure, while a class that
+no longer exists is logged once at DEBUG and the stale row is skipped.
+
+https://github.com/owncloud/core/issues/35589
+https://github.com/owncloud/core/pull/41644
