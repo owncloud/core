@@ -142,6 +142,48 @@ class SystemConfig {
 	}
 
 	/**
+	 * Checks whether the value stored under the given key path holds sensitive
+	 * data, based on the very same list that getFilteredValue() uses.
+	 *
+	 * A key is reported as sensitive when it is marked as such itself, or when
+	 * it is the parent of a sensitive key - setting or printing the parent
+	 * passes the nested secret along as well.
+	 *
+	 * @param array $keys key path, e.g. ['redis', 'password']
+	 * @return bool
+	 */
+	public function isSensitiveKey(array $keys) {
+		$definition = $this->sensitiveValues;
+
+		foreach ($keys as $key) {
+			if (!\is_array($definition)) {
+				return false;
+			}
+
+			if (!isset($definition[$key])) {
+				/*
+				 * The 0 key indicates a possibly repeating array of actual
+				 * entries 0,1,2,3... - they all share the same definition.
+				 */
+				if (\is_numeric($key) && isset($definition[0])) {
+					$definition = $definition[0];
+					continue;
+				}
+				return false;
+			}
+
+			$definition = $definition[$key];
+
+			if ($definition === true) {
+				return true;
+			}
+		}
+
+		// the remaining definition still holds sensitive keys below this path
+		return $keys !== [] && \is_array($definition);
+	}
+
+	/**
 	 * Delete a system wide defined value
 	 *
 	 * @param string $key the key of the value, under which it was saved

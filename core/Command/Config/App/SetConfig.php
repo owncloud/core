@@ -22,6 +22,7 @@
 namespace OC\Core\Command\Config\App;
 
 use OC\Core\Command\Base;
+use OC\Core\Command\Config\SensitiveValueTrait;
 use OCP\IConfig;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetConfig extends Base {
+	use SensitiveValueTrait;
+
 	/** * @var IConfig */
 	protected $config;
 
@@ -93,7 +96,11 @@ class SetConfig extends Base {
 		$configValue = $input->getOption('value');
 		$this->config->setAppValue($appName, $configName, $configValue);
 
-		$output->writeln('<info>Config value ' . $configName . ' for app ' . $appName . ' set to ' . $configValue . '</info>');
+		// secrets are never echoed, so that they do not end up in the terminal
+		// scrollback or in any log tailing it
+		$readableValue = $this->isSensitiveKeyName($configName) ? IConfig::SENSITIVE_VALUE : $configValue;
+
+		$output->writeln('<info>Config value ' . $configName . ' for app ' . $appName . ' set to ' . $readableValue . '</info>');
 		return 0;
 	}
 }

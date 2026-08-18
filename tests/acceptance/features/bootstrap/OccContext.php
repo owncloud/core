@@ -934,6 +934,32 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then /^the command output should not contain the text ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $text
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theCommandOutputDoesNotContainTheText(string $text):void {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$text = \trim($text, $text[0]);
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = SetupHelper::findLines(
+			$commandOutput,
+			$text
+		);
+		Assert::assertCount(
+			0,
+			$lines,
+			"The command output should not contain the text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
 	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*")) about user "([^"]*)"$/
 	 *
 	 * @param string $text
