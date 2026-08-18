@@ -16,3 +16,4 @@ jwt_secret. Boolean values keep being shown, as they cannot hold a secret. Only
 the confirmation output changed, the stored value is written as before.
 
 https://github.com/owncloud/core/issues/41779
+https://github.com/owncloud/core/pull/41780
