@@ -42,6 +42,26 @@ Feature: add and delete app configs using occ command
     And system config key "con" should have value ""
 
 
+  Scenario: admin adds a system config holding a secret and the value is not echoed
+    When the administrator adds system config key "wopi.token.key" with value "Pc7rTwpsnKfT3NfpvbChTPMxVfMr9X7t" using the occ command
+    Then the command should have been successful
+    And the command output should not contain the text 'Pc7rTwpsnKfT3NfpvbChTPMxVfMr9X7t'
+    And the command output should contain the text 'System config value wopi.token.key set to string ***REMOVED SENSITIVE VALUE***'
+    And system config key "wopi.token.key" should have value "Pc7rTwpsnKfT3NfpvbChTPMxVfMr9X7t"
+    When the administrator deletes system config key "wopi.token.key" using the occ command
+    Then the command should have been successful
+
+
+  Scenario: admin adds an app config holding a secret and the value is not echoed
+    When the administrator adds config key "jwt_secret" with value "VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw" in app "core" using the occ command
+    Then the command should have been successful
+    And the command output should not contain the text 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw'
+    And the command output should contain the text 'Config value jwt_secret for app core set to ***REMOVED SENSITIVE VALUE***'
+    And the config key "jwt_secret" of app "core" should have value "VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw"
+    When the administrator deletes config key "jwt_secret" of app "core" using the occ command
+    Then the command should have been successful
+
+
   Scenario: admin tries to add an empty config key for an app using the occ command
     When the administrator adds config key "''" with value "conkey" in app "core" using the occ command
     Then the command should have failed with exit code 1

@@ -23,13 +23,17 @@
 namespace OC\Core\Command\Config\System;
 
 use OC\Core\Command\Base;
+use OC\Core\Command\Config\SensitiveValueTrait;
 use OC\SystemConfig;
+use OCP\IConfig;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetConfig extends Base {
+	use SensitiveValueTrait;
+
 	/** * @var SystemConfig */
 	protected $systemConfig;
 
@@ -77,7 +81,9 @@ class SetConfig extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$configNames = $input->getArgument('name');
 		$configName = $configNames[0];
-		$configValue = $this->castValue($input->getOption('value'), $input->getOption('type'));
+		$sensitive = $this->systemConfig->isSensitiveKey($configNames)
+			|| $this->isSensitiveKeyName(...$configNames);
+		$configValue = $this->castValue($input->getOption('value'), $input->getOption('type'), $sensitive);
 		$updateOnly = $input->getOption('update-only');
 
 		if ($configName === '') {
@@ -111,10 +117,12 @@ class SetConfig extends Base {
 	/**
 	 * @param string $value
 	 * @param string $type
+	 * @param bool $sensitive when true the readable value holds a placeholder
+	 *                        instead of the value itself
 	 * @return mixed
 	 * @throws \InvalidArgumentException
 	 */
-	protected function castValue($value, $type) {
+	protected function castValue($value, $type, $sensitive = false) {
 		switch ($type) {
 			case 'integer':
 			case 'int':
@@ -123,7 +131,7 @@ class SetConfig extends Base {
 				}
 				return [
 					'value' => (int) $value,
-					'readable-value' => 'integer ' . (int) $value,
+					'readable-value' => 'integer ' . $this->readableValue((int) $value, $sensitive),
 				];
 
 			case 'double':
@@ -133,11 +141,13 @@ class SetConfig extends Base {
 				}
 				return [
 					'value' => (double) $value,
-					'readable-value' => 'double ' . (double) $value,
+					'readable-value' => 'double ' . $this->readableValue((double) $value, $sensitive),
 				];
 
 			case 'boolean':
 			case 'bool':
+				// a boolean cannot hold a secret - both of its values are
+				// public knowledge - so it is never masked
 				$value = \strtolower($value);
 				switch ($value) {
 					case 'true':
@@ -167,7 +177,7 @@ class SetConfig extends Base {
 				$value = (string) $value;
 				return [
 					'value' => $value,
-					'readable-value' => ($value === '') ? 'empty string' : 'string ' . $value,
+					'readable-value' => ($value === '') ? 'empty string' : 'string ' . $this->readableValue($value, $sensitive),
 				];
 
 			case 'json':
@@ -177,12 +187,24 @@ class SetConfig extends Base {
 				}
 				return [
 					'value' => $decodedJson,
-					'readable-value' => 'json ' . $value,
+					'readable-value' => 'json ' . $this->readableValue($value, $sensitive),
 				];
 
 			default:
 				throw new \InvalidArgumentException('Invalid type');
 		}
+	}
+
+	/**
+	 * The value as it is shown to the user - secrets are never echoed, so that
+	 * they do not end up in the terminal scrollback or in any log tailing it.
+	 *
+	 * @param mixed $value
+	 * @param bool $sensitive
+	 * @return string
+	 */
+	private function readableValue($value, $sensitive) {
+		return $sensitive ? IConfig::SENSITIVE_VALUE : (string) $value;
 	}
 
 	/**

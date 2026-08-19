@@ -1,0 +1,19 @@
+Bugfix: Do not echo secrets when setting config values via occ
+
+config:system:set and config:app:set printed the value that had just been
+written back to stdout, so every secret configured through occ ended up in the
+terminal scrollback, the container log or the CI log of whoever ran the command.
+WOPI signing keys and the JWT secrets of apps leaked out of Docker deployments
+that configure them from a startup hook this way.
+
+Both commands now print a placeholder instead of the value when the config key
+holds a secret. Recognition reuses the existing list of sensitive keys in
+OC\SystemConfig, which gained an accessor telling whether a key path is
+sensitive, and falls back to matching the key name against the patterns
+credential, key, passwd, password, pwd, salt, secret and token. That fallback
+covers the keys of apps, which core does not know, such as wopi.token.key or
+jwt_secret. Boolean values keep being shown, as they cannot hold a secret. Only
+the confirmation output changed, the stored value is written as before.
+
+https://github.com/owncloud/core/issues/41779
+https://github.com/owncloud/core/pull/41780

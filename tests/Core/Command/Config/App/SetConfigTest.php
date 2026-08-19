@@ -22,6 +22,7 @@
 namespace Tests\Core\Command\Config\App;
 
 use OC\Core\Command\Config\App\SetConfig;
+use OCP\IConfig;
 use Test\TestCase;
 
 class SetConfigTest extends TestCase {
@@ -112,5 +113,66 @@ class SetConfigTest extends TestCase {
 			->with($this->stringContains($expectedMessage));
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
+
+	public function sensitiveValueProvider() {
+		return [
+			['jwt_secret', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['token', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['wopi_key', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['smtp_password', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['bind_pwd', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['user_salt', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			['api_credentials', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			// name matching is case insensitive
+			['JWT_SECRET', 'VmNz3qhMWjsxnw4rMPpFxnM7C9hg9Xw', true],
+			// harmless keys keep showing the value
+			['DocumentServerUrl', 'https://example.com/onlyoffice', false],
+			['enabled', 'yes', false],
+		];
+	}
+
+	/**
+	 * @dataProvider sensitiveValueProvider
+	 *
+	 * @param string $configName
+	 * @param string $newValue
+	 * @param bool $expectMasked
+	 */
+	public function testSensitiveValueIsNotEchoed($configName, $newValue, $expectMasked) {
+		$this->config->method('getAppKeys')
+			->with('app-name')
+			->willReturn([$configName]);
+
+		$this->consoleInput->method('getArgument')
+			->willReturnMap([
+				['app', 'app-name'],
+				['name', $configName],
+			]);
+		$this->consoleInput->method('getOption')
+			->with('value')
+			->willReturn($newValue);
+		$this->consoleInput->method('hasParameterOption')
+			->with('--update-only')
+			->willReturn(false);
+
+		$message = null;
+		$this->consoleOutput->expects($this->once())
+			->method('writeln')
+			->willReturnCallback(function ($line) use (&$message) {
+				$message = $line;
+			});
+
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+
+		$this->assertStringContainsString($configName, $message);
+		$this->assertStringContainsString('app-name', $message);
+		if ($expectMasked) {
+			$this->assertStringNotContainsString($newValue, $message);
+			$this->assertStringContainsString(IConfig::SENSITIVE_VALUE, $message);
+		} else {
+			$this->assertStringContainsString($newValue, $message);
+			$this->assertStringNotContainsString(IConfig::SENSITIVE_VALUE, $message);
+		}
 	}
 }

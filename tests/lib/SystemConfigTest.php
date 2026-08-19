@@ -249,6 +249,54 @@ class SystemConfigTest extends TestCase {
 		}
 	}
 
+	public function dataIsSensitiveKey() {
+		return [
+			// plain sensitive keys
+			[['dbpassword'], true],
+			[['passwordsalt'], true],
+			[['secret'], true],
+			[['license-key'], true],
+			// nested sensitive keys
+			[['redis', 'password'], true],
+			[['objectstore', 'arguments', 'password'], true],
+			[['objectstore', 'arguments', 'options', 'credentials', 'secret'], true],
+			[['openid-connect', 'client-secret'], true],
+			// repeating numeric entries, the list defines them under key 0
+			[['log.condition', 0, 'shared_secret'], true],
+			[['log.conditions', 0, 'shared_secret'], true],
+			[['log.conditions', 3, 'shared_secret'], true],
+			// the console passes the key path as strings
+			[['log.conditions', '3', 'shared_secret'], true],
+			[['log.conditions', '0', 'logfile'], false],
+			// a parent of a sensitive key is sensitive as a whole, because
+			// setting it means passing the nested secret along
+			[['redis'], true],
+			[['objectstore', 'arguments'], true],
+			[['log.conditions'], true],
+			// harmless neighbours of sensitive keys
+			[['redis', 'host'], false],
+			[['objectstore', 'arguments', 'bucket'], false],
+			[['log.conditions', 0, 'logfile'], false],
+			// plain harmless keys
+			[['loglevel'], false],
+			[['trusted_domains'], false],
+			[[], false],
+			// keys of third party apps are not part of the list - those are
+			// caught by the name patterns of the config:*:set commands
+			[['wopi.token.key'], false],
+		];
+	}
+
+	/**
+	 * @dataProvider dataIsSensitiveKey
+	 *
+	 * @param array $keys
+	 * @param bool $expected
+	 */
+	public function testIsSensitiveKey($keys, $expected) {
+		$this->assertSame($expected, $this->systemConfig->isSensitiveKey($keys));
+	}
+
 	public function testDeleteValue() {
 		$key = 'mahkey';
 		$this->config->expects($this->once())
