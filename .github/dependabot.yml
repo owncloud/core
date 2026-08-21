@@ -14,6 +14,25 @@ updates:
           - minor
           - patch
 
+  # Same composer dependencies, but for the maintained 10.16 release branch.
+  # Without an explicit target-branch Dependabot only ever opens PRs against the
+  # default branch, so security fixes never reach the branch that ships in the
+  # 10.16.x tarballs.
+  - package-ecosystem: composer
+    directory: "/"
+    target-branch: "10.16"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
   - package-ecosystem: npm
     directory: "/build"
     schedule:
