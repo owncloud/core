@@ -343,22 +343,17 @@ class AdapterTest extends \Test\TestCase {
 		$this->assertSame(['key' => null, 'value' => IQueryBuilder::PARAM_STR], $types);
 	}
 
-	public function providesUnresolvableSchema() {
-		return [
-			'schema manager throws' => [null],
-			'table is unknown' => [[]],
-		];
-	}
-
 	/**
 	 * If the column types cannot be resolved, every compare column is cast -
 	 * the behaviour that shipped before large objects were told apart. It is
 	 * slow, but it can never raise ORA-00932.
 	 *
-	 * @dataProvider providesUnresolvableSchema
+	 * Note that this class cannot use a data provider: its constructor takes no
+	 * arguments, so PHPUnit has no way to hand a data set to an instance.
+	 *
 	 * @param array|null $columns
 	 */
-	public function testUpsertOnOracleCastsEverythingWhenSchemaIsUnavailable($columns) {
+	private function assertUpsertOnOracleCastsEverything($columns) {
 		$types = $this->captureCompareTypes(
 			AdapterOCI8::class,
 			new OraclePlatform(),
@@ -373,6 +368,14 @@ class AdapterTest extends \Test\TestCase {
 			'storage' => IQueryBuilder::PARAM_STR,
 			'path_hash' => IQueryBuilder::PARAM_STR,
 		], $types);
+	}
+
+	public function testUpsertOnOracleCastsEverythingWhenTheSchemaManagerThrows() {
+		$this->assertUpsertOnOracleCastsEverything(null);
+	}
+
+	public function testUpsertOnOracleCastsEverythingWhenTheTableIsUnknown() {
+		$this->assertUpsertOnOracleCastsEverything([]);
 	}
 
 	/**
