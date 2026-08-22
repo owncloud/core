@@ -91,7 +91,7 @@
         "phpseclib/phpseclib": "^3.0",
         "pimple/pimple": "^3.6",
         "punic/punic": "^3.8",
-        "rhukster/dom-sanitizer": "dev-main",
+        "rhukster/dom-sanitizer": "^1.0.10",
         "sabre/dav": "^4.7",
         "sabre/http": "^5.1",
         "sabre/vobject": "^4.6",
