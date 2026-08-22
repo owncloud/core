@@ -35,6 +35,7 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\LockedException;
+use Sabre\DAV\Server;
 
 class ObjectTree extends \Sabre\DAV\Tree {
 	/**
@@ -213,7 +214,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 * @return void
 	 */
-	public function copy($source, $destination) {
+	public function copy($source, $destination, int $depth = Server::DEPTH_INFINITY) {
 		if (!$this->fileView) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
 		}

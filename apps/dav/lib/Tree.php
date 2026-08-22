@@ -80,8 +80,9 @@ class Tree extends \Sabre\DAV\Tree {
 	 *
 	 * @param string $sourcePath      The source location
 	 * @param string $destinationPath The full destination path
+	 * @param int $depth
 	 */
-	public function copy($sourcePath, $destinationPath) {
+	public function copy($sourcePath, $destinationPath, int $depth = \Sabre\DAV\Server::DEPTH_INFINITY): void {
 		$sourceNode = $this->getNodeForPath($sourcePath);
 		if ($sourceNode instanceof File
 			|| $sourceNode instanceof Directory
@@ -99,7 +100,7 @@ class Tree extends \Sabre\DAV\Tree {
 				]
 			);
 			if ($run === true) {
-				parent::copy($sourcePath, $destinationPath);
+				parent::copy($sourcePath, $destinationPath, $depth);
 				\OC_Hook::emit(
 					Filesystem::CLASSNAME,
 					Filesystem::signal_post_copy,
@@ -110,7 +111,7 @@ class Tree extends \Sabre\DAV\Tree {
 				);
 			}
 		} else {
-			parent::copy($sourcePath, $destinationPath);
+			parent::copy($sourcePath, $destinationPath, $depth);
 		}
 	}
 
