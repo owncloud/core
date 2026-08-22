@@ -4,6 +4,7 @@ The 10.16 branch had not seen a dependency update since the 10.16.4 release, and
 several bundled packages were carrying published advisories. They have been
 updated to versions that are not affected:
 
+- deepdiver/zipstreamer (2.0.3 to 3.0.1)
 - guzzlehttp/guzzle (7.10.0 to 7.15.3)
 - guzzlehttp/promises (2.3.0 to 2.5.2)
 - guzzlehttp/psr7 (2.8.0 to 2.13.0)
@@ -31,3 +32,4 @@ requires PHP 8.0 or later, so it cannot be applied to the 10.16 line, which
 supports PHP 7.4.
 
 https://github.com/owncloud/core/pull/41784
+https://github.com/owncloud/core/pull/41788
