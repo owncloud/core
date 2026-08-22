@@ -42,6 +42,7 @@ ownCloud admins and users.
 
 * Bugfix - Do not echo secrets when setting config values via occ: [#41779](https://github.com/owncloud/core/issues/41779)
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
+* Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
 ## Details
 
@@ -90,6 +91,21 @@ ownCloud admins and users.
    * symfony/translation (v7.4.14 to v7.4.16)
 
    https://github.com/owncloud/core/pull/41775
+
+* Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
+
+   Rhukster/dom-sanitizer was required as "dev-main", a branch pin. A branch pin
+   resolves to whatever commit the branch happened to point at when the lock file
+   was written, and it carries no version number. Vulnerability scanners match
+   installed versions against advisory version ranges, so an unversioned dependency
+   can never match any range: scanners silently reported nothing at all for this
+   package, whatever commit was actually shipped.
+
+   It is now required as "^1.0.10" and resolves to 1.0.14. The shipped code is
+   equivalent -- the previously locked commit 02d08ec8 corresponds to tag 1.0.11 --
+   so this is a packaging and auditability change, not a functional one.
+
+   https://github.com/owncloud/core/pull/41785
 
 # Changelog for ownCloud Core [11.0.0] (2026-07-30)
 
