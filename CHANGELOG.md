@@ -74,6 +74,8 @@ ownCloud admins and users.
 
    * guzzlehttp/promises (2.5.1 to 2.5.2)
 
+   * pear/archive_tar (1.6.0 to 1.6.1)
+
    * phpseclib/phpseclib (3.0.55 to 3.0.56)
 
    * symfony/console (v7.4.14 to v7.4.16)
@@ -91,6 +93,7 @@ ownCloud admins and users.
    * symfony/translation (v7.4.14 to v7.4.16)
 
    https://github.com/owncloud/core/pull/41775
+   https://github.com/owncloud/core/pull/41791
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
