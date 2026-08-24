@@ -2,6 +2,8 @@ Change: Update PHP dependencies
 
 The following have been updated:
 
+ * google/apiclient-services (v0.452.0 to v0.456.0)
+
  * guzzlehttp/guzzle (7.15.2 to 7.15.3)
 
  * guzzlehttp/promises (2.5.1 to 2.5.2)
@@ -12,19 +14,21 @@ The following have been updated:
 
  * sabre/event (5.1.8 to 5.1.9)
 
- * symfony/console (v7.4.14 to v7.4.16)
+ * symfony/console (v7.4.14 to v7.4.17)
 
- * symfony/event-dispatcher (v7.4.14 to v7.4.15)
+ * symfony/event-dispatcher (v7.4.14 to v7.4.17)
 
- * symfony/mailer (v7.4.14 to v7.4.15)
+ * symfony/mailer (v7.4.14 to v7.4.17)
 
- * symfony/mime (v7.4.13 to v7.4.16)
+ * symfony/mime (v7.4.13 to v7.4.17)
 
- * symfony/routing (v7.4.13 to v7.4.15)
+ * symfony/process (v7.4.13 to v7.4.17)
+
+ * symfony/routing (v7.4.13 to v7.4.17)
 
  * symfony/string (v7.4.13 to v7.4.15)
 
- * symfony/translation (v7.4.14 to v7.4.16)
+ * symfony/translation (v7.4.14 to v7.4.17)
 
 https://github.com/owncloud/core/pull/41676
 https://github.com/owncloud/core/pull/41775
