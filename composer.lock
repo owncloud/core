@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7f41ed62ebb0e6c2288e067a691512f",
+    "content-hash": "344e9958cd73533e9bdb08a414d19df0",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2405,21 +2405,21 @@
         },
         {
             "name": "pear/archive_tar",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Archive_Tar.git",
-                "reference": "dc3285537f1832da8ddbbe45f5a007248b6cc00e"
+                "reference": "a0d2c458a2ff6ee8943ac4271b7f57d613529ae0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/dc3285537f1832da8ddbbe45f5a007248b6cc00e",
-                "reference": "dc3285537f1832da8ddbbe45f5a007248b6cc00e",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/a0d2c458a2ff6ee8943ac4271b7f57d613529ae0",
+                "reference": "a0d2c458a2ff6ee8943ac4271b7f57d613529ae0",
                 "shasum": ""
             },
             "require": {
                 "pear/pear-core-minimal": "^1.10.0alpha2",
-                "php": ">=5.4.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "*"
@@ -2432,7 +2432,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -2471,7 +2471,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Archive_Tar",
                 "source": "https://github.com/pear/Archive_Tar"
             },
-            "time": "2025-07-19T14:49:16+00:00"
+            "time": "2026-08-19T17:37:49+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -2522,7 +2522,6 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Getopt",
                 "source": "https://github.com/pear/Console_Getopt"
             },
-            "abandoned": true,
             "time": "2019-11-20T18:27:48+00:00"
         },
         {
