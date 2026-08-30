@@ -285,9 +285,15 @@ class JobListTest extends TestCase {
 		$query->execute();
 	}
 
-	public function testUnknownJobLogsException() {
+	public function testUnknownJobDoesNotLogException() {
+		// A stale job row whose class no longer exists must NOT be logged at
+		// ERROR level via logException (see issue #35589). It is a benign,
+		// expected condition and is only logged at DEBUG instead.
 		$this->addWrongJob();
-		$this->logger->expects($this->once())->method('logException');
+		$this->logger->expects($this->never())->method('logException');
+		$this->logger->expects($this->atLeastOnce())
+			->method('debug')
+			->with($this->stringContains('wrong job title'), ['app' => 'core']);
 		$this->instance->listJobs(function () {
 		});
 		$this->clearJobsList();
