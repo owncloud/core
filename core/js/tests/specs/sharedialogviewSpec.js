@@ -969,6 +969,56 @@ describe('OC.Share.ShareDialogView', function() {
 			dialog.render();
 			expect(dialog.$el.find('.resharerInfoView .reshare').length).toEqual(0);
 		});
+		it('shows original file owner for single user reshare when it differs from the sharer', function() {
+			shareModel.set({
+				reshare: {
+					uid_owner: 'user1',
+					displayname_owner: 'User One',
+					uid_file_owner: 'owner1',
+					displayname_file_owner: 'File Owner',
+					share_type: OC.Share.SHARE_TYPE_USER
+				},
+				shares: [],
+				permissions: OC.PERMISSION_READ
+			});
+			dialog.render();
+			expect(dialog.$el.find('.resharerInfoView .reshare').length).toEqual(1);
+			expect(dialog.$el.find('.resharerInfoView .reshare').text().trim()).toEqual('Shared with you by User One (on behalf of File Owner)');
+		});
+		it('shows original file owner for group reshare when it differs from the sharer', function() {
+			shareModel.set({
+				reshare: {
+					uid_owner: 'user1',
+					displayname_owner: 'User One',
+					uid_file_owner: 'owner1',
+					displayname_file_owner: 'File Owner',
+					share_with: 'group2',
+					share_with_displayname: 'Group Two',
+					share_type: OC.Share.SHARE_TYPE_GROUP
+				},
+				shares: [],
+				permissions: OC.PERMISSION_READ
+			});
+			dialog.render();
+			expect(dialog.$el.find('.resharerInfoView .reshare').length).toEqual(1);
+			expect(dialog.$el.find('.resharerInfoView .reshare').text().trim()).toEqual('Shared with you and the group Group Two by User One (on behalf of File Owner)');
+		});
+		it('does not mention file owner when it equals the sharer', function() {
+			shareModel.set({
+				reshare: {
+					uid_owner: 'user1',
+					displayname_owner: 'User One',
+					uid_file_owner: 'user1',
+					displayname_file_owner: 'User One',
+					share_type: OC.Share.SHARE_TYPE_USER
+				},
+				shares: [],
+				permissions: OC.PERMISSION_READ
+			});
+			dialog.render();
+			expect(dialog.$el.find('.resharerInfoView .reshare').length).toEqual(1);
+			expect(dialog.$el.find('.resharerInfoView .reshare').text().trim()).toEqual('Shared with you by User One');
+		});
 	});
 	describe('tabs', function() {
 		beforeEach(function() {
