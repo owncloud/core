@@ -5,6 +5,7 @@
     "Please select tags to filter by" : "Vänligen välj taggar att filtrera med",
     "No files found for the selected tags" : "Inga filer hittade för de valda taggarna",
     "<strong>System tags</strong> for a file have been modified" : "<strong>Systemtaggar</strong> för en fil har blivit ändrade",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "Systemtaggen %3$s tilldelades %2$s på grund av en automatiseringsregel",
     "You assigned system tag %3$s" : "Du tilldelade systemtagg %3$s",
     "%1$s assigned system tag %3$s" : "%1$s blev tilldelad systemtagg %3$s",
     "You unassigned system tag %3$s" : "Du tog bort tilldelning av systemtag %3$s",
