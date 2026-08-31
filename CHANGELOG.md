@@ -40,11 +40,22 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Reduce priority of checkPropFind event: [#41676](https://github.com/owncloud/core/pull/41676)
 * Bugfix - Do not echo secrets when setting config values via occ: [#41779](https://github.com/owncloud/core/issues/41779)
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
 ## Details
+
+* Bugfix - Reduce priority of checkPropFind event: [#41676](https://github.com/owncloud/core/pull/41676)
+
+   The checkPropFind event that triggers during an HTTP PROPFIND request must
+   happen before the Sabre DAV httpPropFind event. That has been happening because
+   it sorts alphabetically first. This change reduces the priority number of
+   checkPropFind, increasing its priority, so that it always executes first,
+   regardless of any other sort order.
+
+   https://github.com/owncloud/core/pull/41676
 
 * Bugfix - Do not echo secrets when setting config values via occ: [#41779](https://github.com/owncloud/core/issues/41779)
 
@@ -70,30 +81,39 @@ ownCloud admins and users.
 
    The following have been updated:
 
+   * google/apiclient-services (v0.452.0 to v0.456.0)
+
    * guzzlehttp/guzzle (7.15.2 to 7.15.3)
 
    * guzzlehttp/promises (2.5.1 to 2.5.2)
+
+   * laravel/serializable-closure (2.0.15 to 2.0.16)
 
    * pear/archive_tar (1.6.0 to 1.6.1)
 
    * phpseclib/phpseclib (3.0.55 to 3.0.56)
 
-   * symfony/console (v7.4.14 to v7.4.16)
+   * sabre/event (5.1.8 to 5.1.9)
 
-   * symfony/event-dispatcher (v7.4.14 to v7.4.15)
+   * symfony/console (v7.4.14 to v7.4.17)
 
-   * symfony/mailer (v7.4.14 to v7.4.15)
+   * symfony/event-dispatcher (v7.4.14 to v7.4.17)
 
-   * symfony/mime (v7.4.13 to v7.4.16)
+   * symfony/mailer (v7.4.14 to v7.4.17)
 
-   * symfony/routing (v7.4.13 to v7.4.15)
+   * symfony/mime (v7.4.13 to v7.4.17)
+
+   * symfony/process (v7.4.13 to v7.4.17)
+
+   * symfony/routing (v7.4.13 to v7.4.17)
 
    * symfony/string (v7.4.13 to v7.4.15)
 
-   * symfony/translation (v7.4.14 to v7.4.16)
+   * symfony/translation (v7.4.14 to v7.4.17)
 
    https://github.com/owncloud/core/pull/41775
    https://github.com/owncloud/core/pull/41791
+   https://github.com/owncloud/core/pull/41797
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
