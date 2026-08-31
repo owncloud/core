@@ -11,6 +11,7 @@
     "Update channel:" : "Uppdateringskanal:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Du kan alltid uppdatera till en nyare version / experimentell kanal. Men du kan aldrig nedgradera till en mer stabil kanal.",
     "Notify members of the following groups about available updates:" : "Meddela medlemmar i följande grupper om tillgängliga uppdateringar:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Endast notiser om app-uppdateringar är tillgängliga, eftersom den valda uppdateringskanalen för ownCloud själv inte tillåter notiser."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Endast notiser om app-uppdateringar är tillgängliga, eftersom den valda uppdateringskanalen för ownCloud själv inte tillåter notiser.",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "Onlineuppdateraren har automatiskt inaktiverats eftersom du för närvarande kör ownCloud Enterprise-utgåvan. Uppdatera din ownCloud-instans manuellt."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
