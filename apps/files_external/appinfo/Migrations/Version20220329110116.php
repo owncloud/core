@@ -11,8 +11,8 @@ use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Files\External\IStorageConfig;
 use OCP\ILogger;
 use OCP\IConfig;
-use phpseclib3\Crypt\RSA as RSACrypt;
-use phpseclib3\Crypt\RSA\PrivateKey;
+use phpseclib4\Crypt\RSA as RSACrypt;
+use phpseclib4\Crypt\RSA\PrivateKey;
 
 class Version20220329110116 implements ISimpleMigration {
 	/** @var IGlobalStoragesService */
@@ -59,7 +59,7 @@ class Version20220329110116 implements ISimpleMigration {
 				try {
 					/** @phan-suppress-next-line PhanUndeclaredMethod */
 					$rsaKey = RSACrypt::load($privKey, $pass)->withHash('sha1');
-				} catch (\phpseclib3\Exception\NoKeyLoadedException $e) {
+				} catch (\phpseclib4\Exception\NoKeyLoadedException $e) {
 					$out->warning("Storage configuration with id = {$configId}: Cannot load private key, skipping");
 					continue;
 				}

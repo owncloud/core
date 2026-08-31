@@ -26,7 +26,7 @@ use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 use OCA\Files_External\Lib\RSAStore;
-use phpseclib3\Crypt\RSA as RSACrypt;
+use phpseclib4\Crypt\RSA as RSACrypt;
 
 /**
  * RSA public key authentication

@@ -24,7 +24,7 @@ namespace OCA\Files_External\Tests;
 use OCP\Security\ICredentialsManager;
 use OCP\IConfig;
 use OCA\Files_External\Lib\RSAStore;
-use phpseclib3\Crypt\RSA;
+use phpseclib4\Crypt\RSA;
 
 class RSAStoreTest extends \Test\TestCase {
 	/** @var ICredentialsManager */

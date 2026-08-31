@@ -534,7 +534,7 @@ class OC {
 		// code-signing verifier). ownCloud never relies on phpseclib fetching
 		// remote URLs, so this is disabled once here at boot rather than toggled
 		// per validation call — a single, greppable, non-hidden global default.
-		\phpseclib3\File\X509::disableURLFetch();
+		\phpseclib4\File\X509::disableURLFetch();
 
 		try {
 			self::initPaths();

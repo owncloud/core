@@ -6,10 +6,10 @@
 
 namespace OC\IntegrityCheck\Verifier;
 
-use phpseclib3\File\X509;
+use phpseclib4\File\X509;
 
 /**
- * CrlValidator parses and validates CRLs using phpseclib3.
+ * CrlValidator parses and validates CRLs using phpseclib4.
  *
  * @package OC\IntegrityCheck\Verifier
  */

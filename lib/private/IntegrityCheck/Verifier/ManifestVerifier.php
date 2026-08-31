@@ -7,9 +7,9 @@
 namespace OC\IntegrityCheck\Verifier;
 
 use OC\IntegrityCheck\Exceptions\BadSignatureException;
-use phpseclib3\Crypt\PublicKeyLoader;
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\EC;
+use phpseclib4\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\RSA;
+use phpseclib4\Crypt\EC;
 
 /**
  * Class ManifestVerifier verifies manifest signatures using various cryptographic algorithms.

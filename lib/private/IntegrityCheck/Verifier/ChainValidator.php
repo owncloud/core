@@ -7,7 +7,7 @@
 namespace OC\IntegrityCheck\Verifier;
 
 use OC\IntegrityCheck\Exceptions\BadChainException;
-use phpseclib3\File\X509;
+use phpseclib4\File\X509;
 
 /**
  * ChainValidator - Validates X.509 certificate chains against trusted roots.
