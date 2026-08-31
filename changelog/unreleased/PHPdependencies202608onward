@@ -12,7 +12,7 @@ The following have been updated:
 
  * pear/archive_tar (1.6.0 to 1.6.1)
 
- * phpseclib/phpseclib (3.0.55 to 3.0.56)
+ * phpseclib/phpseclib (3.0.55 to 4.0.1)
 
  * sabre/event (5.1.8 to 5.1.9)
 
@@ -35,3 +35,4 @@ The following have been updated:
 https://github.com/owncloud/core/pull/41775
 https://github.com/owncloud/core/pull/41791
 https://github.com/owncloud/core/pull/41797
+https://github.com/owncloud/core/pull/41798
