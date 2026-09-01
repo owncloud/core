@@ -23,11 +23,11 @@ namespace OCA\Files_External\Lib;
 
 use OCP\Security\ICredentialsManager;
 use OCP\IConfig;
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PrivateKey;
+use phpseclib4\Crypt\RSA;
+use phpseclib4\Crypt\RSA\PrivateKey;
 
 /**
- * Store and retrieve phpseclib3 RSA private keys
+ * Store and retrieve phpseclib4 RSA private keys
  */
 class RSAStore {
 	private static $rsaStore = null;

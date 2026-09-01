@@ -34,7 +34,7 @@
 namespace OCA\Files_External\Lib\Storage;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
-use phpseclib3\Net\SFTP\Stream;
+use phpseclib4\Net\SFTP\Stream;
 use OCA\Files_External\Lib\RSAStore;
 
 /**
@@ -50,7 +50,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	private $auth;
 
 	/**
-	* @var \phpseclib3\Net\SFTP
+	* @var \phpseclib4\Net\SFTP
 	*/
 	protected $client;
 
@@ -118,7 +118,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * Returns the connection.
 	 *
-	 * @return \phpseclib3\Net\SFTP connected client instance
+	 * @return \phpseclib4\Net\SFTP connected client instance
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
@@ -127,7 +127,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \phpseclib3\Net\SFTP($this->host, $this->port);
+		$this->client = new \phpseclib4\Net\SFTP($this->host, $this->port);
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();

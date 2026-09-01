@@ -6,7 +6,7 @@
 
 namespace OC\IntegrityCheck\Verifier;
 
-use phpseclib3\File\X509;
+use phpseclib4\File\X509;
 
 /**
  * ChainResult - Immutable holder for successful X.509 chain validation result.

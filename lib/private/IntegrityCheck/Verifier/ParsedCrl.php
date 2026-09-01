@@ -6,10 +6,10 @@
 
 namespace OC\IntegrityCheck\Verifier;
 
-use phpseclib3\File\X509;
+use phpseclib4\File\X509;
 
 /**
- * ParsedCrl wraps a loaded, signature-validated CRL from phpseclib3.
+ * ParsedCrl wraps a loaded, signature-validated CRL from phpseclib4.
  *
  * @package OC\IntegrityCheck\Verifier
  */

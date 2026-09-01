@@ -88,7 +88,7 @@
         "owncloud/tarstreamer": "v2.1.0",
         "pear/archive_tar": "1.6.1",
         "pear/pear-core-minimal": "^v1.10",
-        "phpseclib/phpseclib": "^3.0",
+        "phpseclib/phpseclib": "^4.0",
         "pimple/pimple": "^3.6",
         "punic/punic": "^3.8",
         "rhukster/dom-sanitizer": "^1.0.10",

@@ -21,7 +21,7 @@
 
 namespace OC\Files\External;
 
-use phpseclib3\Crypt\AES;
+use phpseclib4\Crypt\AES;
 use \OCP\Files\External\IStorageConfig;
 use \OCP\Files\StorageNotAvailableException;
 

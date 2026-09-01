@@ -211,11 +211,11 @@ class Verifier {
 	 * Accesses the internal tbsCertificate.validity.notAfter field via reflection
 	 * and parses it into a \DateTimeImmutable for timestamp comparison.
 	 *
-	 * @param \phpseclib3\File\X509 $leaf Loaded leaf certificate (via ChainResult::getLeaf())
+	 * @param \phpseclib4\File\X509 $leaf Loaded leaf certificate (via ChainResult::getLeaf())
 	 * @return \DateTimeImmutable The notAfter date in UTC
 	 * @throws BadChainException If unable to extract or parse notAfter
 	 */
-	private function extractNotAfterFromLeaf(\phpseclib3\File\X509 $leaf): \DateTimeImmutable {
+	private function extractNotAfterFromLeaf(\phpseclib4\File\X509 $leaf): \DateTimeImmutable {
 		// Use reflection to access the internal certificate data structure
 		$reflection = new \ReflectionClass($leaf);
 		$certProperty = $reflection->getProperty('currentCert');

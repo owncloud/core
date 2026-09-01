@@ -527,14 +527,10 @@ class OC {
 		\spl_autoload_register([self::$loader, 'load']);
 		$loaderEnd = \microtime(true);
 
-		// SECURITY: Disable phpseclib's automatic URL fetching process-wide.
-		// phpseclib's X509 will otherwise follow AIA caIssuers / CRL distribution
-		// point URLs found inside a certificate, which is an SSRF vector when
-		// validating attacker-supplied certificates (e.g. the IntegrityCheck
-		// code-signing verifier). ownCloud never relies on phpseclib fetching
-		// remote URLs, so this is disabled once here at boot rather than toggled
-		// per validation call — a single, greppable, non-hidden global default.
-		\phpseclib3\File\X509::disableURLFetch();
+		// SECURITY: phpseclib v4 disables automatic URL fetching process-wide by default.
+		// ownCloud never relies on phpseclib fetching remote URLs, so this default
+		// behavior is what is needed. The old code to call disableURLFetch() for
+		// phpseclib v3 is no long needed.
 
 		try {
 			self::initPaths();

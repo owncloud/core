@@ -13,7 +13,7 @@ use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Verifier\TrustStore;
 use OC\IntegrityCheck\Verifier\CrlValidator;
 use OC\IntegrityCheck\Verifier\ParsedCrl;
-use phpseclib3\File\X509;
+use phpseclib4\File\X509;
 use Test\TestCase;
 
 class CrlValidatorTest extends TestCase {
