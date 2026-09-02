@@ -74,10 +74,46 @@ class AppConfigController extends Controller {
 	 * @param string $default
 	 */
 	public function getValue($app, $key, $default = null) {
-		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+		if ($this->isProtectedCoreServiceKey($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		return new JSONResponse($this->appConfig->getValue($app, $key, $default));
+	}
+
+	/**
+	 * Whether the given app/key pair targets a protected "core" remote_/public_
+	 * service handler. These handlers are require_once'd by remote.php/public.php
+	 * and may only be registered programmatically (from an app's info.xml), never
+	 * through this admin-facing controller, otherwise an admin can point them at
+	 * an arbitrary file and achieve code execution.
+	 *
+	 * The app name is normalized before the comparison so that mangled spellings
+	 * which the database folds back to the "core" row (e.g. "core " with a
+	 * trailing space, "CORE", "core/") cannot slip past the guard. See OC10-146
+	 * and the related OC10-5. Note this is best-effort defense-in-depth: the
+	 * authoritative protection against traversal is the containment check at the
+	 * include sites in public.php/remote.php.
+	 *
+	 * @param string $app
+	 * @param string $key
+	 * @return bool
+	 */
+	private function isProtectedCoreServiceKey($app, $key) {
+		return $this->isCoreApp($app)
+			&& (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0);
+	}
+
+	/**
+	 * Whether the given (possibly mangled) app id resolves to the "core" app.
+	 * The name is stripped and normalized so that spellings which the database
+	 * folds back to the "core" row (e.g. "core " with a trailing space, "CORE",
+	 * "core/") are all recognised. See OC10-146.
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	private function isCoreApp($app) {
+		return \strtolower(\trim(\OC_App::cleanAppId((string)$app))) === 'core';
 	}
 
 	/**
@@ -96,7 +132,7 @@ class AppConfigController extends Controller {
 		// on its own. This should only be possible programmatically.
 		// This change is due the fact that an admin may not be expected
 		// to execute arbitrary code in every environment.
-		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+		if ($this->isProtectedCoreServiceKey($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -112,7 +148,7 @@ class AppConfigController extends Controller {
 		if (!isset($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+		if ($this->isProtectedCoreServiceKey($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -126,6 +162,13 @@ class AppConfigController extends Controller {
 	 */
 	public function deleteApp($app) {
 		if (!isset($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+
+		// Deleting the whole "core" appconfig would drop the programmatically
+		// managed remote_/public_ service handlers (and all other core config),
+		// so it must never be possible through this admin-facing controller.
+		if ($this->isCoreApp($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 

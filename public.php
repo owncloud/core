@@ -57,6 +57,15 @@ try {
 		exit;
 	}
 
+	// The stored handler path is later require_once'd relative to the app
+	// directory, so reject any path traversal to prevent inclusion (and thus
+	// execution) of files outside the app tree. This mirrors the guard in
+	// remote.php and defends against a poisoned "core" public_* appconfig
+	// value (see OC10-146 / OC10-5).
+	if (\strpos($file, '../') !== false || \strpos($file, '/..') !== false) {
+		throw new Exception('Path not allowed');
+	}
+
 	$parts = \explode('/', $file, 2);
 	$app = $parts[0];
 
