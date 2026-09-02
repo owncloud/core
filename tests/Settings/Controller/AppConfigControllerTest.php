@@ -90,6 +90,14 @@ class AppConfigControllerTest extends TestCase {
 			['appId1', 'key1', null],
 			['core', 'remote_key1', 'foo'],
 			['core', 'public_key1', 'foo'],
+			// mangled "core" app ids that the database folds back to the
+			// "core" row must not slip past the guard (OC10-146 / OC10-5)
+			['core ', 'public_webdav', 'files/../../../poc.php'],
+			[' core', 'public_key1', 'foo'],
+			['CORE', 'public_key1', 'foo'],
+			['Core', 'remote_key1', 'foo'],
+			['core/', 'public_key1', 'foo'],
+			['core..', 'remote_key1', 'foo'],
 		];
 	}
 
@@ -103,6 +111,44 @@ class AppConfigControllerTest extends TestCase {
 		$response = $this->appConfigController->setValue($app, $key, $value);
 		$this->assertEquals([], $response->getData());
 		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
+	}
+
+	public function getValueWrongProvider(): array {
+		return [
+			['core', 'remote_key1'],
+			['core', 'public_key1'],
+			['core ', 'public_webdav'],
+			['CORE', 'public_key1'],
+			['core/', 'remote_key1'],
+		];
+	}
+
+	/**
+	 * @dataProvider getValueWrongProvider
+	 */
+	public function testGetValueWrong($app, $key): void {
+		$this->appConfig->expects($this->never())
+			->method('getValue');
+
+		$response = $this->appConfigController->getValue($app, $key, null);
+		$this->assertEquals([], $response->getData());
+		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
+	}
+
+	/**
+	 * The guard must only block the "core" app; unrelated apps whose id merely
+	 * contains "core", and non-service keys on core, must still work.
+	 */
+	public function testSetValueAllowedNearMisses(): void {
+		$this->appConfig->expects($this->exactly(2))
+			->method('setValue')
+			->willReturn(true);
+
+		$response = $this->appConfigController->setValue('encore', 'public_key1', 'foo');
+		$this->assertSame(Http::STATUS_OK, $response->getStatus());
+
+		$response = $this->appConfigController->setValue('core', 'some_other_key', 'foo');
+		$this->assertSame(Http::STATUS_OK, $response->getStatus());
 	}
 
 	public function testDeleteKey(): void {
@@ -122,6 +168,11 @@ class AppConfigControllerTest extends TestCase {
 			['appId1', null, null],
 			['core', 'remote_key1', 'foo'],
 			['core', 'public_key1', 'foo'],
+			// mangled "core" app ids must be rejected here too (OC10-146)
+			['core ', 'public_webdav'],
+			[' core', 'public_key1'],
+			['CORE', 'remote_key1'],
+			['core/', 'public_key1'],
 		];
 	}
 
@@ -148,11 +199,27 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $response->getStatus());
 	}
 
-	public function testDeleteAppWrong(): void {
+	public function deleteAppWrongProvider(): array {
+		return [
+			[null],
+			// deleting the "core" appconfig (or a mangled spelling that folds
+			// back to it) must be rejected (OC10-146)
+			['core'],
+			['core '],
+			[' core'],
+			['CORE'],
+			['core/'],
+		];
+	}
+
+	/**
+	 * @dataProvider deleteAppWrongProvider
+	 */
+	public function testDeleteAppWrong($app): void {
 		$this->appConfig->expects($this->never())
 			->method('deleteApp');
 
-		$response = $this->appConfigController->deleteApp(null);
+		$response = $this->appConfigController->deleteApp($app);
 		$this->assertEquals([], $response->getData());
 		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
 	}
