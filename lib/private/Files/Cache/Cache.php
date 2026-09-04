@@ -431,7 +431,10 @@ class Cache implements ICache {
 		foreach ($data as $name => $value) {
 			if (\array_search($name, $fields) !== false) {
 				if ($name === 'path') {
-					$params[] = \md5($value);
+					// On Oracle an empty path has been turned into null further up,
+					// so cast back: the hash of the storage root must be md5('')
+					// on every platform.
+					$params[] = \md5((string)$value);
 					$queryParts[] = '`path_hash`';
 				} elseif ($name === 'mimetype') {
 					# an unknown mimetyp will be stored as -1
