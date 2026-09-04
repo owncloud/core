@@ -1438,14 +1438,13 @@ class ShareesTest extends TestCase {
 					]
 				]
 			],
-			// #15: if exact user found but with a non-local domain, keep the remote entry
+			// #15: if exact user found, skip the generated remote entry even when the
+			// domain name does not match a local domain - the local account wins
 			[
 				'test@domain.tld',
 				[],
 				true,
-				[
-					['label' => 'test@domain.tld', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'test@domain.tld']],
-				],
+				[],
 				[],
 				true,
 				[
@@ -1505,6 +1504,43 @@ class ShareesTest extends TestCase {
 				true,
 				[],
 				false
+			],
+			// #19: if an exact group is found, skip the generated remote entry
+			[
+				'test@domain.tld',
+				[],
+				true,
+				[],
+				[],
+				true,
+				[
+					'groups' => [
+						['label' => 'test@domain.tld', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test@domain.tld']],
+					]
+				]
+			],
+			// #20: a federated contact matched in the address book is still returned
+			// when a local user was matched exactly - only the *generated* remote
+			// entry is suppressed
+			[
+				'test@domain.tld',
+				[
+					[
+						'FN' => 'User @ Remote',
+						'CLOUD' => ['username@remote.domain.tld'],
+					],
+				],
+				true,
+				[],
+				[
+					['label' => 'User @ Remote', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@remote.domain.tld', 'server' => 'remote.domain.tld']],
+				],
+				true,
+				[
+					'users' => [
+						['label' => 'test@domain.tld', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test@domain.tld']],
+					]
+				]
 			],
 		];
 	}
