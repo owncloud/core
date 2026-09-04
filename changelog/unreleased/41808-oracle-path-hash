@@ -1,0 +1,12 @@
+Bugfix: Compute the file cache path hash correctly on Oracle
+
+Oracle cannot store empty strings, so the file cache converts them to null
+before writing a row. For the storage root, whose path is the empty string,
+that left md5() being called with null: on PHP 8 that raises a deprecation
+notice, and the resulting path_hash was the hash of null rather than the hash
+of the empty string used on every other database.
+
+The value is now cast back to a string before hashing, so path_hash for the
+storage root is md5('') on Oracle as well.
+
+https://github.com/owncloud/core/pull/41808
