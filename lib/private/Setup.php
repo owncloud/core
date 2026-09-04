@@ -85,6 +85,7 @@ class Setup {
 	public static $dbSetupClasses = [
 		'mysql' => \OC\Setup\MySQL::class,
 		'pgsql' => \OC\Setup\PostgreSQL::class,
+		'oci'   => \OC\Setup\OCI::class,
 		'sqlite' => \OC\Setup\Sqlite::class,
 		'sqlite3' => \OC\Setup\Sqlite::class,
 	];
@@ -142,6 +143,11 @@ class Setup {
 				'call' => 'pg_connect',
 				'name' => 'PostgreSQL'
 			],
+			'oci' => [
+				'type' => 'function',
+				'call' => 'oci_connect',
+				'name' => 'Oracle'
+			]
 		];
 		if ($allowAllDatabases) {
 			$configuredDatabases = \array_keys($availableDatabases);

@@ -50,14 +50,15 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql']);
+			->willReturn(['sqlite', 'mysql', 'oci']);
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
 			->willReturn(true);
 		$this->setupClass
-			->expects($this->never())
-			->method('is_callable');
+			->expects($this->once())
+			->method('is_callable')
+			->willReturn(false);
 		$this->setupClass
 			->expects($this->once())
 			->method('getAvailableDbDriversForPdo')
@@ -74,13 +75,13 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql', 'pgsql']);
+			->willReturn(['sqlite', 'mysql', 'oci', 'pgsql']);
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
 			->willReturn(false);
 		$this->setupClass
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('is_callable')
 			->willReturn(false);
 		$this->setupClass
@@ -96,13 +97,13 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->willReturn(['sqlite', 'mysql', 'pgsql']);
+			->willReturn(['sqlite', 'mysql', 'pgsql', 'oci']);
 		$this->setupClass
 			->expects($this->once())
 			->method('IsClassExisting')
 			->willReturn(true);
 		$this->setupClass
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('is_callable')
 			->willReturn(true);
 		$this->setupClass
@@ -114,6 +115,7 @@ class SetupTest extends \Test\TestCase {
 			'sqlite' => 'SQLite',
 			'mysql' => 'MySQL/MariaDB',
 			'pgsql' => 'PostgreSQL',
+			'oci' => 'Oracle'
 		];
 		$this->assertSame($expectedResult, $result);
 	}
