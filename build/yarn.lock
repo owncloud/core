@@ -191,9 +191,10 @@
   uid "80f645b69fc938b3823d92d74e5019036d04a9ca"
   resolved "https://codeload.github.com/tapmodo/Jcrop/tar.gz/80f645b69fc938b3823d92d74e5019036d04a9ca"
 
-"@bower_components/jquery-migrate@appleboy/jquery-migrate#1.4.0":
+"@bower_components/jquery-migrate@appleboy/jquery-migrate#3.0.0":
   version "0.0.0"
-  resolved "https://codeload.github.com/appleboy/jquery-migrate/tar.gz/29077d39689bddad05036a537d49c4cf96488569"
+  uid ba224c3e6bd8a90f72fddacf34e02bc2472d5a0f
+  resolved "https://codeload.github.com/appleboy/jquery-migrate/tar.gz/ba224c3e6bd8a90f72fddacf34e02bc2472d5a0f"
 
 "@bower_components/jquery-ui@components/jqueryui#1.10.0":
   version "1.10.0"
