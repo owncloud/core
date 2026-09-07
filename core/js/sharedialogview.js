@@ -273,7 +273,7 @@
 
 						var isBatch = trimmedSearch.indexOf(view.batchActionSeparator) !== -1;
 						var suggestions = users.concat(groups);
-						if (suggestions.length < 1 && !isBatch) {
+						if (!isBatch) {
 							suggestions = suggestions.concat(remotes);
 						}
 
