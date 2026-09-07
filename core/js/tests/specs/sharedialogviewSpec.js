@@ -342,6 +342,86 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 		});
 
+		it('suggests federated users even when local users match the search', function () {
+			dialog.render();
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'Kamp'}, response);
+			var jsonData = JSON.stringify({
+				'ocs' : {
+					'meta' : {
+						'status' : 'success',
+						'statuscode' : 100,
+						'message' : null
+					},
+					'data' : {
+						'exact' : {
+							'users'  : [],
+							'groups' : [],
+							'remotes': []
+						},
+						'users'  : [
+							{'label': 'Bouwkamp', 'value': {'shareType': OC.Share.SHARE_TYPE_USER, 'shareWith': 'bouwkamp'}},
+							{'label': 'Haverkamp', 'value': {'shareType': OC.Share.SHARE_TYPE_USER, 'shareWith': 'haverkamp'}}
+						],
+						'groups' : [],
+						'remotes': [
+							{'label': 'Kamp,Andrea', 'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'a.kamp@remote.example.com', 'server': 'remote.example.com'}}
+						]
+					}
+				}
+			});
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.getCall(0).args[0]).toEqual([
+				{'label': 'Bouwkamp', 'value': {'shareType': OC.Share.SHARE_TYPE_USER, 'shareWith': 'bouwkamp'}},
+				{'label': 'Haverkamp', 'value': {'shareType': OC.Share.SHARE_TYPE_USER, 'shareWith': 'haverkamp'}},
+				{'label': 'Kamp,Andrea', 'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'a.kamp@remote.example.com', 'server': 'remote.example.com'}}
+			]);
+			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
+		});
+
+		it('suggests an exact federated match even when local groups match the search', function () {
+			dialog.render();
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'team'}, response);
+			var jsonData = JSON.stringify({
+				'ocs' : {
+					'meta' : {
+						'status' : 'success',
+						'statuscode' : 100,
+						'message' : null
+					},
+					'data' : {
+						'exact' : {
+							'users'  : [],
+							'groups' : [],
+							'remotes': [
+								{'label': 'team', 'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'team@remote.example.com', 'server': 'remote.example.com'}}
+							]
+						},
+						'users'  : [],
+						'groups' : [
+							{'label': 'teamleads', 'value': {'shareType': OC.Share.SHARE_TYPE_GROUP, 'shareWith': 'teamleads'}}
+						],
+						'remotes': []
+					}
+				}
+			});
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.getCall(0).args[0]).toEqual([
+				{'label': 'team', 'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'team@remote.example.com', 'server': 'remote.example.com'}},
+				{'label': 'teamleads', 'value': {'shareType': OC.Share.SHARE_TYPE_GROUP, 'shareWith': 'teamleads'}}
+			]);
+			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
+		});
+
 		it('fetches multiple users for batch action', function () {
 			dialog.render();
 			dialog._getUsersForBatchAction('user01, user02').then(function(users) {
