@@ -1,0 +1,22 @@
+name: Nightly
+
+on:
+  schedule:
+    # Scheduled workflows only run from the default branch.
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-unit-oracle:
+    name: PHP Unit Oracle
+    uses: ./.github/workflows/php-unit.yml
+    with:
+      php-versions: '["8.3"]'
+      databases: '["oracle:23"]'

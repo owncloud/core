@@ -5,6 +5,11 @@ on:
         description: JSON array of PHP versions
         required: true
         type: string
+      databases:
+        description: JSON array of databases
+        required: false
+        type: string
+        default: '["sqlite","mysql:8.0","mariadb:10.6","mariadb:10.11","postgres:10.21"]'
 
 permissions:
   contents: read
@@ -17,16 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ${{ fromJSON(inputs.php-versions) }}
-        database: [sqlite]
-        include:
-          - php: "8.3"
-            database: "mysql:8.0"
-          - php: "8.3"
-            database: "mariadb:10.6"
-          - php: "8.3"
-            database: "mariadb:10.11"
-          - php: "8.3"
-            database: "postgres:10.21"
+        database: ${{ fromJSON(inputs.databases) }}
 
     services:
       mysql:
@@ -52,6 +48,23 @@ jobs:
           POSTGRES_PASSWORD: owncloud
         ports:
           - 5432:5432
+      oracle:
+        # Oracle Database Free 23ai. The APP_USER schema is created inside the
+        # FREEPDB1 pluggable database, so a connect string using SERVICE_NAME is
+        # required - a plain host plus database name would target the CDB root.
+        image: >-
+          ${{ startsWith(matrix.database,'oracle:') && 'gvenzl/oracle-free:23-slim-faststart' || '' }}
+        env:
+          ORACLE_PASSWORD: owncloud
+          APP_USER: owncloud
+          APP_USER_PASSWORD: owncloud
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
+        ports:
+          - 1521:1521
 
     steps:
       - name: Clone owncloud/core
@@ -63,7 +76,7 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, gd, json, xml, zip, imagick
+          extensions: curl, gd, json, xml, zip, imagick${{ startsWith(matrix.database,'oracle:') && ', oci8' || '' }}
           ini-values: "memory_limit=2048M"
 
       - name: Install ffmpeg & imagemagick
@@ -85,24 +98,34 @@ jobs:
           DB_HOST: 127.0.0.1
           DB_USERNAME: owncloud
           DB_PASSWORD: owncloud
+          ORACLE_SERVICE_NAME: FREEPDB1
 
         run: |
           DB_TYPE=${DB%:*}
           if [ $DB_TYPE == "postgres" ] ; then DB_TYPE="pgsql"; fi
           if [ $DB_TYPE == "mariadb" ] ; then DB_TYPE="mysql"; fi
+          if [ $DB_TYPE == "oracle" ] ; then DB_TYPE="oci"; fi
           install_cmd="maintenance:install -vvv \
             --database=${DB_TYPE} \
             --database-name=${DB_NAME} \
             --admin-user=${ADMIN_LOGIN} \
             --admin-pass=${ADMIN_PASSWORD} \
             --data-dir=${DATA_DIRECTORY} "
-          
-          if [[ "${DB_TYPE}" != "sqlite" ]]; then
+
+          if [[ "${DB_TYPE}" == "oci" ]]; then
+            # The database user lives in a pluggable database, so it can only be
+            # reached via a connect string carrying SERVICE_NAME. --database-host
+            # is deliberately not passed: an empty host makes the connect string
+            # take precedence over host/name.
+            install_cmd+=" --database-connection-string=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${DB_HOST})(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=${ORACLE_SERVICE_NAME}))) \
+              --database-user=${DB_USERNAME} \
+              --database-pass=${DB_PASSWORD}"
+          elif [[ "${DB_TYPE}" != "sqlite" ]]; then
             install_cmd+=" --database-host=${DB_HOST} \
               --database-user=${DB_USERNAME} \
               --database-pass=${DB_PASSWORD}"
           fi
-          
+
           php occ ${install_cmd}
           echo "enabling apps"
           php occ app:enable files_sharing
@@ -113,6 +136,12 @@ jobs:
           php occ app:enable federatedfilesharing
 
       - name: Run PHPUnit
+        env:
+          # test-phpunit.sh narrows the suite to --group DB whenever DB_TYPE is
+          # set to anything but sqlite. Set it for Oracle only - as drone did -
+          # because the DB group is the part worth running against Oracle. The
+          # other databases keep running the full suite, as they do today.
+          DB_TYPE: ${{ startsWith(matrix.database,'oracle:') && 'oracle' || '' }}
         run: |
           bash tests/drone/test-phpunit.sh
 
