@@ -14,6 +14,8 @@ The following have been updated:
 
  * phpseclib/phpseclib (3.0.55 to 3.0.56)
 
+ * rhukster/dom-sanitizer (1.0.14 to 1.0.16)
+
  * sabre/event (5.1.8 to 5.1.9)
 
  * symfony/console (v7.4.14 to v7.4.17)
@@ -35,3 +37,4 @@ The following have been updated:
 https://github.com/owncloud/core/pull/41775
 https://github.com/owncloud/core/pull/41791
 https://github.com/owncloud/core/pull/41797
+https://github.com/owncloud/core/pull/41809
