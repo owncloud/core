@@ -202,7 +202,9 @@ class AdapterTest extends \Test\TestCase {
 	 * to IQueryBuilder::PARAM_STR is the one that OCIExpressionBuilder wraps in
 	 * to_char(); a column mapped to null is compared as it is.
 	 *
-	 * There is no Oracle job in CI, so the platform has to be faked here.
+	 * The platform is faked, so that every platform is pinned no matter which
+	 * database the job runs against. The live Oracle behaviour is pinned by the
+	 * tests at the bottom of this class.
 	 *
 	 * @param string $adapterClass
 	 * @param AbstractPlatform $platform
@@ -402,5 +404,108 @@ class AdapterTest extends \Test\TestCase {
 			'configkey' => null,
 			'configvalue' => null,
 		], $types);
+	}
+
+	/**
+	 * An Oracle adapter for the live connection, or a skipped test everywhere
+	 * else. The adapter has to be built here: the one this class keeps is a
+	 * plain Adapter, which never casts anything on any platform.
+	 *
+	 * @return AdapterOCI8
+	 */
+	private function getOracleAdapterOrSkip() {
+		if (!$this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+			$this->markTestSkipped('the live Oracle schema is only available on the Oracle job');
+		}
+		return new AdapterOCI8($this->conn);
+	}
+
+	/**
+	 * The comparison that upsert() builds for a single compare column, rendered
+	 * by the expression builder of the live connection.
+	 *
+	 * @param string $table table name without the prefix
+	 * @param string $column
+	 * @param array $types result of getCompareColumnTypes()
+	 * @return string
+	 */
+	private function buildCompareSql($table, $column, array $types) {
+		$qb = $this->conn->getQueryBuilder();
+		$qb->select($column)
+			->from($table)
+			->where(
+				$qb->expr()->eq(
+					$column,
+					$qb->expr()->literal('x'),
+					$types[$column] ?? null
+				)
+			);
+		return $qb->getSQL();
+	}
+
+	/**
+	 * The tests above fake the platform, so they cannot prove that the schema
+	 * lookup finds an ownCloud table on a live Oracle at all: the tables are
+	 * created quoted and therefore in lower case, while Oracle folds an
+	 * unquoted identifier to upper case. If the lookup came up empty, every
+	 * compare column would be cast again - which is the regression this fixes.
+	 */
+	public function testCompareColumnTypesAreResolvedFromTheLiveOracleSchema() {
+		$adapter = $this->getOracleAdapterOrSkip();
+
+		// storage is a NUMBER and path_hash a VARCHAR2, so neither is cast -
+		// otherwise the unique index fs_storage_path_hash cannot be used
+		$this->assertSame(
+			[],
+			self::invokePrivate($adapter, 'getCompareColumnTypes', ['*PREFIX*filecache', ['storage', 'path_hash']])
+		);
+
+		// configvalue is a CLOB and is the only one of the three that is cast
+		$this->assertSame(
+			['configvalue' => IQueryBuilder::PARAM_STR],
+			self::invokePrivate($adapter, 'getCompareColumnTypes', ['*PREFIX*appconfig', ['appid', 'configkey', 'configvalue']])
+		);
+	}
+
+	/**
+	 * What the resolved types amount to in the generated SQL on a live Oracle:
+	 * no to_char() around an indexed column, and still one around the CLOB.
+	 */
+	public function testUpsertSqlOnOracleDoesNotCastTheIndexedColumns() {
+		$adapter = $this->getOracleAdapterOrSkip();
+
+		$fileCacheTypes = self::invokePrivate($adapter, 'getCompareColumnTypes', ['*PREFIX*filecache', ['storage', 'path_hash']]);
+		$this->assertStringNotContainsString('to_char', $this->buildCompareSql('filecache', 'storage', $fileCacheTypes));
+		$this->assertStringNotContainsString('to_char', $this->buildCompareSql('filecache', 'path_hash', $fileCacheTypes));
+
+		$appConfigTypes = self::invokePrivate($adapter, 'getCompareColumnTypes', ['*PREFIX*appconfig', ['configvalue']]);
+		$this->assertStringContainsString('to_char', $this->buildCompareSql('appconfig', 'configvalue', $appConfigTypes));
+	}
+
+	/**
+	 * Both comparisons have to keep working against a live Oracle: an uncast
+	 * VARCHAR2 column, and a CLOB column that is still cast. A comparison that
+	 * fails to match makes upsert() fall through to the insert, so a second row
+	 * would appear - or the primary key of oc_appconfig would reject it and the
+	 * upsert would end in a RuntimeException after five attempts. Both are
+	 * caught by asserting that exactly one row is there afterwards.
+	 */
+	public function testUpsertOnOracleMatchesOnUncastAndOnCastColumns() {
+		$adapter = $this->getOracleAdapterOrSkip();
+		$input = ['appid' => 'testadapter', 'configkey' => 'test-oracle', 'configvalue' => 'v1'];
+
+		// inserts, because nothing is there yet
+		$this->assertEquals(1, $adapter->upsert('*PREFIX*appconfig', $input, ['appid', 'configkey']));
+		$this->assertRowExists('test-oracle', 'v1');
+
+		// updates, comparing two VARCHAR2 columns that are no longer cast
+		$input['configvalue'] = 'v2';
+		$this->assertEquals(1, $adapter->upsert('*PREFIX*appconfig', $input, ['appid', 'configkey']));
+		$this->assertRowExists('test-oracle', 'v2');
+
+		// updates again, this time comparing the CLOB column: the cast is what
+		// makes that possible at all, without it Oracle raises ORA-00932
+		$this->assertEquals(1, $adapter->upsert('*PREFIX*appconfig', $input, ['appid', 'configvalue']));
+		$this->assertRowExists('test-oracle', 'v2');
 	}
 }
