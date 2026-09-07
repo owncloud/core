@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "344e9958cd73533e9bdb08a414d19df0",
+    "content-hash": "68e036cb98d1342a175e02d310e0b3dc",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1349,8 +1349,14 @@
             "version": "v3.7.0",
             "source": {
                 "type": "git",
-                "url": "https://codeberg.org/icewind/SMB",
+                "url": "https://github.com/DeepDiver1975/SMB.git",
                 "reference": "e6904cbe75f678335092f4861c60c656b1a99e84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/SMB/zipball/e6904cbe75f678335092f4861c60c656b1a99e84",
+                "reference": "e6904cbe75f678335092f4861c60c656b1a99e84",
+                "shasum": ""
             },
             "require": {
                 "icewind/streams": ">=0.7.3",
@@ -1368,7 +1374,25 @@
                     "Icewind\\SMB\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Icewind\\SMB\\Test\\": "tests/"
+                }
+            },
+            "scripts": {
+                "lint": [
+                    "parallel-lint --exclude src --exclude vendor --exclude target --exclude build ."
+                ],
+                "cs:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "cs:fix": [
+                    "php-cs-fixer fix"
+                ],
+                "psalm": [
+                    "psalm.phar"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -1379,6 +1403,10 @@
                 }
             ],
             "description": "php wrapper for smbclient and libsmbclient-php",
+            "support": {
+                "source": "https://github.com/DeepDiver1975/SMB/tree/v3.7.0",
+                "issues": "https://github.com/DeepDiver1975/SMB/issues"
+            },
             "time": "2024-11-11T14:08:34+00:00"
         },
         {
@@ -1386,8 +1414,14 @@
             "version": "v0.7.8",
             "source": {
                 "type": "git",
-                "url": "https://codeberg.org/icewind/streams",
+                "url": "https://github.com/DeepDiver1975/streams.git",
                 "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/streams/zipball/cb2bd3ed41b516efb97e06e8da35a12ef58ba48b",
+                "reference": "cb2bd3ed41b516efb97e06e8da35a12ef58ba48b",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
@@ -1403,7 +1437,11 @@
                     "Icewind\\Streams\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Icewind\\Streams\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -1414,6 +1452,10 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
+            "support": {
+                "source": "https://github.com/DeepDiver1975/streams/tree/v0.7.8",
+                "issues": "https://github.com/DeepDiver1975/streams/issues"
+            },
             "time": "2024-12-05T14:36:22+00:00"
         },
         {
