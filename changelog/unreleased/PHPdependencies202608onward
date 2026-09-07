@@ -2,31 +2,39 @@ Change: Update PHP dependencies
 
 The following have been updated:
 
- * google/apiclient-services (v0.452.0 to v0.456.0)
+ * google/apiclient-services (v0.452.0 to v0.457.0)
 
- * guzzlehttp/guzzle (7.15.2 to 7.15.3)
+ * guzzlehttp/guzzle (7.15.2 to 7.15.5)
 
- * guzzlehttp/promises (2.5.1 to 2.5.2)
+ * guzzlehttp/promises (2.5.1 to 2.5.3)
+
+ * guzzlehttp/psr7 (2.13.0 to 2.13.1)
 
  * laravel/serializable-closure (2.0.15 to 2.0.16)
 
+ * monolog/monolog (3.10.0 to 3.11.0)
+
  * pear/archive_tar (1.6.0 to 1.6.1)
 
- * phpseclib/phpseclib (3.0.55 to 3.0.56)
+ * phpseclib/phpseclib (3.0.55 to 3.0.57)
+
+ * rhukster/dom-sanitizer (1.0.14 to 1.0.16)
 
  * sabre/event (5.1.8 to 5.1.9)
 
- * symfony/console (v7.4.14 to v7.4.17)
+ * symfony/console (v7.4.14 to v7.4.18)
 
  * symfony/event-dispatcher (v7.4.14 to v7.4.17)
 
  * symfony/mailer (v7.4.14 to v7.4.17)
 
- * symfony/mime (v7.4.13 to v7.4.17)
+ * symfony/mime (v7.4.13 to v7.4.18)
 
- * symfony/process (v7.4.13 to v7.4.17)
+ * symfony/process (v7.4.13 to v7.4.18)
 
- * symfony/routing (v7.4.13 to v7.4.17)
+ * symfony/routing (v7.4.13 to v7.4.18)
+
+ * symfony/service-contracts (v3.7.1 to v3.7.3)
 
  * symfony/string (v7.4.13 to v7.4.15)
 
@@ -35,3 +43,4 @@ The following have been updated:
 https://github.com/owncloud/core/pull/41775
 https://github.com/owncloud/core/pull/41791
 https://github.com/owncloud/core/pull/41797
+https://github.com/owncloud/core/pull/41809
