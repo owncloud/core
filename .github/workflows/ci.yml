@@ -32,6 +32,15 @@ jobs:
     with:
       php-versions: '["8.3"]'
 
+  php-unit-oracle:
+    # Same display name as php-unit so both appear in one group of checks. It
+    # stays a separate job because the acceptance jobs must not need Oracle.
+    name: PHP Unit
+    uses: ./.github/workflows/php-unit.yml
+    with:
+      php-versions: '["8.3"]'
+      databases: '["oracle:23"]'
+
   calens:
     name: Changelog lint
     runs-on: ubuntu-latest

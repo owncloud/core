@@ -1,0 +1,18 @@
+Change: Restore Oracle database support in the command line installer
+
+The Oracle database layer -- ConnectionFactory, OracleConnection, OracleMigrator,
+AdapterOCI8 and the OCI expression builder -- has always remained in the code
+base, but the setup class that makes it reachable had been removed, so an
+instance could no longer be installed against Oracle at all. That also meant no
+CI job could exercise that layer.
+
+The maintenance:install command accepts --database=oci again, together with the
+--database-connection-string option needed to reach a schema inside an Oracle
+pluggable database. The web installer is unchanged: Oracle is not offered there,
+because the default supportedDatabases config still lists only sqlite, mysql and
+pgsql.
+
+This restores test coverage for Oracle-specific code paths. It is not a
+statement about production support for Oracle.
+
+https://github.com/owncloud/core/pull/41808
