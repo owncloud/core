@@ -88,28 +88,6 @@ jobs:
         run: |
           make install-composer-deps
 
-      - name: TEMPORARY DEBUG - Oracle client
-        if: startsWith(matrix.database,'oracle:')
-        env:
-          DSN: "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=FREEPDB1)))"
-        run: |
-          php -r 'echo "oci8: ", phpversion("oci8"), "\n";'
-          php -i | grep -iE "oracle|instant" || true
-          ls -l /opt/hostedtoolcache/setup-php/*/instantclient* 2>/dev/null || true
-          ldd "$(php -r 'echo ini_get("extension_dir");')/oci8.so" || true
-          echo "--- raw tcp to 1521 ---"
-          timeout 10 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/1521' && echo "tcp ok" || echo "tcp failed"
-          echo "--- oci_connect (60s budget) ---"
-          timeout -s KILL 60 php -d display_errors=1 -r '
-            $t = microtime(true);
-            $c = @oci_connect("owncloud", "owncloud", getenv("DSN"));
-            printf("connect=%s after %.1fs\n", $c ? "OK" : "FAIL", microtime(true) - $t);
-            if (!$c) { print_r(oci_error()); exit(1); }
-            $s = oci_parse($c, "select banner from v\$version");
-            oci_execute($s);
-            print_r(oci_fetch_row($s));
-          ' || echo "EXIT=$? (124/137 means it hung)"
-
       - name: Install Server
         env:
           DATA_DIRECTORY: ${{ github.workspace }}/data
@@ -148,63 +126,7 @@ jobs:
               --database-pass=${DB_PASSWORD}"
           fi
           
-          if [[ "${DB_TYPE}" == "oci" ]]; then
-            export DSN="(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${DB_HOST})(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=${ORACLE_SERVICE_NAME})))"
-            cat > /tmp/oracle-watch.php <<'WATCHEOF'
-          <?php
-          $c = @oci_connect('system', 'owncloud', getenv('DSN'));
-          if (!$c) { echo "  (no system connection)\n"; exit; }
-          $q = function ($c, $sql) {
-            $s = oci_parse($c, $sql);
-            oci_execute($s);
-            return oci_fetch_row($s)[0];
-          };
-          printf("  objects=%s introspections=%s dict_secs=%s\n",
-            $q($c, "select count(*) from dba_objects where owner = 'OWNCLOUD'"),
-            $q($c, "select nvl(sum(executions), 0) from v\$sql"
-              . " where parsing_schema_name = 'OWNCLOUD' and sql_text like 'SELECT * FROM sys.user_tables%'"),
-            $q($c, "select round(nvl(sum(elapsed_time), 0) / 1e6) from v\$sql"
-              . " where parsing_schema_name = 'OWNCLOUD'"));
-          $s = oci_parse($c, "select s.sid, s.status, s.state, s.event, s.seconds_in_wait,"
-            . " substr(q.sql_text, 1, 90) txt"
-            . " from v\$session s left join v\$sql q on q.sql_id = s.sql_id"
-            . " where s.username = 'OWNCLOUD'");
-          oci_execute($s);
-          while ($r = oci_fetch_assoc($s)) {
-            printf("    sid=%s %s/%s wait=%ss event=%s sql=%s\n",
-              $r['SID'], $r['STATUS'], $r['STATE'], $r['SECONDS_IN_WAIT'],
-              $r['EVENT'], preg_replace('/\s+/', ' ', (string)$r['TXT']));
-          }
-          WATCHEOF
-            cat > /tmp/oracle-top-sql.php <<'TOPEOF'
-          <?php
-          $c = @oci_connect('system', 'owncloud', getenv('DSN'));
-          if (!$c) { echo "  (no system connection)\n"; exit; }
-          $s = oci_parse($c, "select executions, round(elapsed_time/1e6, 1) secs,"
-            . " round(cpu_time/1e6, 1) cpu, substr(sql_text, 1, 110) txt"
-            . " from v\$sql where parsing_schema_name = 'OWNCLOUD'"
-            . " order by elapsed_time desc fetch first 12 rows only");
-          oci_execute($s);
-          echo "  --- top SQL by elapsed time (schema OWNCLOUD) ---\n";
-          while ($r = oci_fetch_assoc($s)) {
-            printf("  execs=%-6s elapsed=%-8ss cpu=%-8ss %s\n",
-              $r['EXECUTIONS'], $r['SECS'], $r['CPU'], preg_replace('/\s+/', ' ', $r['TXT']));
-          }
-          TOPEOF
-            timeout -s KILL 5400 php occ ${install_cmd} &
-            INSTALL_PID=$!
-            START=$(date +%s)
-            while kill -0 $INSTALL_PID 2>/dev/null; do
-              sleep 60
-              echo "  --- elapsed=$(( $(date +%s) - START ))s ---"
-              timeout -s KILL 30 php /tmp/oracle-watch.php || true
-            done
-            wait $INSTALL_PID && INSTALL_RC=0 || INSTALL_RC=$?
-            timeout -s KILL 60 php /tmp/oracle-top-sql.php || true
-            if [[ $INSTALL_RC -ne 0 ]]; then exit $INSTALL_RC; fi
-          else
-            php occ ${install_cmd}
-          fi
+          php occ ${install_cmd}
           echo "enabling apps"
           php occ app:enable files_sharing
           php occ app:enable files_trashbin
