@@ -4,7 +4,17 @@ The following have been updated:
 
  * deepdiver/zipstreamer (2.0.3 to 3.0.1)
 
+ * guzzlehttp/guzzle (7.15.3 to 7.15.5)
+
+ * guzzlehttp/promises (2.5.2 to 2.5.3)
+
+ * guzzlehttp/psr7 (2.13.0 to 2.13.1)
+
+ * monolog/monolog (2.11.0 to 2.11.1)
+
  * pear/archive_tar (1.6.0 to 1.6.1)
+
+ * phpseclib/phpseclib (3.0.56 to 3.0.57)
 
  * rhukster/dom-sanitizer (1.0.14 to 1.0.16)
 
