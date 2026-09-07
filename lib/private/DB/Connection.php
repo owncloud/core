@@ -35,6 +35,7 @@ use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -61,6 +62,20 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			// throw a new exception to prevent leaking info from the stacktrace
 			throw new DBALException('Failed to connect to the database: ' . $e->getMessage(), $e->getCode());
 		}
+	}
+
+	/**
+	 * On Oracle, use a schema manager that introspects the whole schema with a
+	 * constant number of queries instead of four per table. See
+	 * {@see \OC\DB\OracleSchemaManager} for why this is needed.
+	 *
+	 * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
+	 */
+	public function getSchemaManager() {
+		if ($this->_schemaManager === null && $this->getDatabasePlatform() instanceof OraclePlatform) {
+			$this->_schemaManager = new OracleSchemaManager($this, $this->getDatabasePlatform());
+		}
+		return parent::getSchemaManager();
 	}
 
 	/**

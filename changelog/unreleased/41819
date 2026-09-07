@@ -1,0 +1,30 @@
+Bugfix: Speed up Oracle schema introspection
+
+Installing and upgrading ownCloud on Oracle took an unreasonably long time. A
+fresh `occ maintenance:install` on the 10.16 branch needed over 40 minutes,
+while the same install on the master branch finished in well under a minute.
+
+The cause was the bundled doctrine/dbal 2.13, which introspects a schema by
+describing every table on its own: for each table it issues one query for the
+columns, one for the indexes, one for the foreign keys and one for the table
+comment. Each of those queries inlines the table name as a literal, so Oracle
+cannot share cursors between them and hard parses every single one, which
+costs a few hundred milliseconds each. The migration code then asks for the
+full schema once per applied migration, so the number of queries grows with
+the number of tables multiplied by the number of migrations. With 68
+migrations and roughly 48 tables that added up to thousands of hard parsed
+queries.
+
+Oracle schema introspection now reads the whole data dictionary with a fixed
+number of queries instead of four per table. Reading a 48 table schema went
+down from 194 queries to 6, and `occ maintenance:install` against Oracle on
+PHP 7.4 went down from 43 minutes to 30 seconds. The resulting schema is
+unchanged; it is compared against the previous implementation in the test
+suite.
+
+doctrine/dbal does the same thing natively from version 3.4 onwards, which is
+why the master branch was never affected. Upgrading doctrine/dbal on the 10.16
+branch is not an option, because its 3.x line changes public API that
+third-party apps use.
+
+https://github.com/owncloud/core/pull/41819
