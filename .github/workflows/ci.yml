@@ -28,3 +28,13 @@ jobs:
     uses: ./.github/workflows/php-unit.yml
     with:
       php-versions: '["7.4"]'
+
+  php-unit-oracle:
+    # Same display name as php-unit so both appear in one group of checks. It
+    # stays a separate job so that a slow or failing Oracle run cannot cancel
+    # the other databases via fail-fast.
+    name: PHP Unit
+    uses: ./.github/workflows/php-unit.yml
+    with:
+      php-versions: '["7.4"]'
+      databases: '["oracle:23"]'
