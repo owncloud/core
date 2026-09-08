@@ -27,7 +27,7 @@ jobs:
     services:
       mysql:
         image: >-
-          ${{ (startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:')) && matrix.database || '' }}
+          ${{ case(startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:'), matrix.database, '') }}
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: owncloud
@@ -41,7 +41,7 @@ jobs:
         ports:
           - 3306:3306
       postgres:
-        image: ${{ startsWith(matrix.database,'postgres:') && matrix.database || '' }}
+        image: ${{ case(startsWith(matrix.database,'postgres:'), matrix.database, '') }}
         env:
           POSTGRES_DB: owncloud
           POSTGRES_USER: owncloud
@@ -53,7 +53,7 @@ jobs:
         # FREEPDB1 pluggable database, so a connect string using SERVICE_NAME is
         # required - a plain host plus database name would target the CDB root.
         image: >-
-          ${{ startsWith(matrix.database,'oracle:') && 'gvenzl/oracle-free:23-slim-faststart' || '' }}
+          ${{ case(startsWith(matrix.database,'oracle:'), 'gvenzl/oracle-free:23-slim-faststart', '') }}
         env:
           ORACLE_PASSWORD: owncloud
           APP_USER: owncloud
@@ -76,7 +76,7 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, gd, json, xml, zip, imagick${{ startsWith(matrix.database,'oracle:') && ', oci8' || '' }}
+          extensions: curl, gd, json, xml, zip, imagick${{ case(startsWith(matrix.database,'oracle:'), ', oci8', '') }}
           ini-values: "memory_limit=2048M"
 
       - name: Install ffmpeg & imagemagick
@@ -141,7 +141,7 @@ jobs:
           # set to anything but sqlite. Set it for Oracle only - as drone did -
           # because the DB group is the part worth running against Oracle. The
           # other databases keep running the full suite, as they do today.
-          DB_TYPE: ${{ startsWith(matrix.database,'oracle:') && 'oracle' || '' }}
+          DB_TYPE: ${{ case(startsWith(matrix.database,'oracle:'), 'oracle', '') }}
         run: |
           bash tests/drone/test-phpunit.sh
 
