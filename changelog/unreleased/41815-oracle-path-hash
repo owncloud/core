@@ -1,0 +1,13 @@
+Bugfix: Avoid a deprecation notice when hashing the file cache path on Oracle
+
+Oracle cannot store empty strings, so the file cache converts them to null
+before writing a row. For the storage root, whose path is the empty string, that
+left md5() being called with null. PHP 8 reports that as a deprecated implicit
+null to string conversion: noise in the log whenever a storage root is inserted,
+and an error under PHPUnit's strict error handling. The stored path_hash itself
+was never wrong, because md5(null) coerces to md5('').
+
+The value is now cast to a string before hashing.
+
+https://github.com/owncloud/core/pull/41808
+https://github.com/owncloud/core/pull/41815
