@@ -23,6 +23,7 @@
 namespace Tests\Core\Controller;
 
 use OC\AppFramework\Http;
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Authentication\Token\IToken;
 use OC\Core\Controller\TokenController;
 use OCP\AppFramework\Http\JSONResponse;
@@ -36,6 +37,8 @@ class TokenControllerTest extends TestCase {
 	private $tokenProvider;
 	private $twoFactorAuthManager;
 	private $secureRandom;
+	/** @var AccountLockout | \PHPUnit\Framework\MockObject\MockObject */
+	private $accountLockout;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,8 +52,9 @@ class TokenControllerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->secureRandom = $this->createMock('\OCP\Security\ISecureRandom');
+		$this->accountLockout = $this->createMock(AccountLockout::class);
 
-		$this->tokenController = new TokenController('core', $this->request, $this->userManager, $this->tokenProvider, $this->twoFactorAuthManager, $this->secureRandom);
+		$this->tokenController = new TokenController('core', $this->request, $this->userManager, $this->tokenProvider, $this->twoFactorAuthManager, $this->secureRandom, $this->accountLockout);
 	}
 
 	public function testWithoutCredentials() {
@@ -75,15 +79,46 @@ class TokenControllerTest extends TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	public function testWithInvalidCredentialsTheFailureIsCounted() {
+		$this->userManager->expects($this->once())
+			->method('checkPassword')
+			->with('john', 'passme')
+			->will($this->returnValue(false));
+		$this->accountLockout->expects($this->once())
+			->method('recordFailure')
+			->with('john');
+
+		$this->tokenController->generateToken('john', 'passme');
+	}
+
+	public function testLockedOutIsRefusedBeforeTheCredentialCheck() {
+		$this->accountLockout->expects($this->once())
+			->method('getRemainingLockTime')
+			->with('john')
+			->willReturn(300);
+		$this->userManager->expects($this->never())
+			->method('checkPassword');
+		$this->accountLockout->expects($this->never())
+			->method('recordFailure');
+		$expected = new JSONResponse();
+		$expected->setStatus(Http::STATUS_UNAUTHORIZED);
+
+		$actual = $this->tokenController->generateToken('john', 'passme');
+
+		$this->assertEquals($expected, $actual);
+	}
+
 	public function testWithValidCredentials() {
 		$user = $this->createMock('\OCP\IUser');
 		$this->userManager->expects($this->once())
 			->method('checkPassword')
 			->with('john', '123456')
 			->will($this->returnValue($user));
-		$user->expects($this->once())
-			->method('getUID')
+		$user->method('getUID')
 			->will($this->returnValue('john'));
+		$this->accountLockout->expects($this->once())
+			->method('clearFailures')
+			->with('john', 'john');
 		$this->twoFactorAuthManager->expects($this->once())
 			->method('isTwoFactorAuthenticated')
 			->with($user)
