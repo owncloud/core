@@ -116,20 +116,42 @@ class Adapter {
 	}
 
 	/**
+	 * Types to pass to the expression builder for the compare columns, keyed by
+	 * column name. Only platforms that need to treat some column types
+	 * differently in a comparison return anything here - see AdapterOCI8.
+	 *
+	 * A column that is missing from the result is compared as it is, which is
+	 * what every platform except Oracle does with any type anyway, because
+	 * ExpressionBuilder::eq() ignores its type argument.
+	 *
+	 * @param string $table table name including **PREFIX**
+	 * @param string[] $compare columns that are compared to look for existing rows
+	 * @return array column name => one of \OCP\DB\QueryBuilder\IQueryBuilder::PARAM_*
+	 */
+	protected function getCompareColumnTypes($table, array $compare) {
+		return [];
+	}
+
+	/**
 	 * Inserts, or updates a row into the database. Returns the inserted or updated rows
 	 * @param $table string table name including **PREFIX**
 	 * @param $input array the key=>value pairs to insert into the db row
 	 * @param $compare array columns that should be compared to look for existing arrays
+	 *				If this is null or an empty array, all keys of $input will be compared
 	 * @return int the number of rows affected by the operation
 	 * @throws DriverException|\RuntimeException
 	 */
 	public function upsert($table, $input, $compare) {
-		$this->conn->beginTransaction();
-		$done = false;
-
 		if (empty($compare)) {
 			$compare = \array_keys($input);
 		}
+
+		// resolved before the transaction is opened, because it may query the schema
+		$compareTypes = $this->getCompareColumnTypes($table, $compare);
+		$isOracle = $this->conn->getDatabasePlatform() instanceof OraclePlatform;
+
+		$this->conn->beginTransaction();
+		$done = false;
 
 		// Construct the update query
 		$qbu = $this->conn->getQueryBuilder();
@@ -139,25 +161,19 @@ class Adapter {
 			->setParameter($col, $val);
 		}
 		foreach ($compare as $key) {
-			if ($input[$key] === null || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
+			if ($input[$key] === null || ($input[$key] === '' && $isOracle)) {
 				$qbu->andWhere($qbu->expr()->isNull($key));
 			} else {
-				if ($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
-					$qbu->andWhere(
-						$qbu->expr()->eq(
-							// needs to cast to char in order to compare with char
-							$qbu->createFunction('to_char(`'.$key.'`)'), // TODO does this handle empty strings on oracle correctly
-							$qbu->expr()->literal($input[$key])
-						)
-					);
-				} else {
-					$qbu->andWhere(
-						$qbu->expr()->eq(
-							$key,
-							$qbu->expr()->literal($input[$key])
-						)
-					);
-				}
+				$qbu->andWhere(
+					$qbu->expr()->eq(
+						$key,
+						$qbu->expr()->literal($input[$key]),
+						// on Oracle a large object column has to be cast to char in
+						// order to be comparable at all - every other column must be
+						// left alone, or the comparison cannot use an index
+						$compareTypes[$key] ?? null
+					)
+				);
 			}
 		}
 

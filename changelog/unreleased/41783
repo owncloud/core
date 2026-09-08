@@ -1,0 +1,14 @@
+Bugfix: Restore index usage for filecache writes on Oracle
+
+On Oracle every compare column of an upsert was wrapped in to_char(). That cast
+is only needed for text and binary columns, which Oracle cannot compare
+directly, but it was applied to all of them - and to_char(column) cannot use an
+index on that column. Writes to the file cache compare storage and path_hash,
+so uploads, renames and file scans could no longer use the unique index
+fs_storage_path_hash and became very slow on large installations.
+
+Only text and binary compare columns are cast now, so every other comparison
+uses its index again.
+
+https://github.com/owncloud/core/issues/41782
+https://github.com/owncloud/core/pull/41783

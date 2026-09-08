@@ -140,7 +140,9 @@ interface IDBConnection {
 	 * @param array $input data that should be inserted into the table  (column name => value)
 	 * @param array|null $compare List of values that should be checked for "if not exists"
 	 *				If this is null or an empty array, all keys of $input will be compared
-	 *				Please note: text fields (clob) must not be used in the compare array
+	 *				Please note: on Oracle a text field (clob) in the compare array is
+	 *				compared as char and therefore limited to 4000 bytes, and a binary
+	 *				field (blob) cannot be compared at all
 	 * @return int number of affected rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 * @since 10.0.3
