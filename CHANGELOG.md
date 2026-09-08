@@ -42,6 +42,7 @@ ownCloud admins and users.
 
 * Bugfix - Reduce priority of checkPropFind event: [#41676](https://github.com/owncloud/core/pull/41676)
 * Bugfix - Do not echo secrets when setting config values via occ: [#41779](https://github.com/owncloud/core/issues/41779)
+* Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41807](https://github.com/owncloud/core/pull/41807)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
@@ -79,6 +80,21 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41779
    https://github.com/owncloud/core/pull/41780
+
+* Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
+
+   On Oracle every compare column of an upsert was wrapped in to_char(). That cast
+   is only needed for text and binary columns, which Oracle cannot compare
+   directly, but it was applied to all of them - and to_char(column) cannot use an
+   index on that column. Writes to the file cache compare storage and path_hash, so
+   uploads, renames and file scans could no longer use the unique index
+   fs_storage_path_hash and became very slow on large installations.
+
+   Only text and binary compare columns are cast now, so every other comparison
+   uses its index again.
+
+   https://github.com/owncloud/core/issues/41782
+   https://github.com/owncloud/core/pull/41818
 
 * Bugfix - Show federated users in the share dialog when local users also match: [#41807](https://github.com/owncloud/core/pull/41807)
 
