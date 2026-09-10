@@ -84,6 +84,7 @@
     "%s enter the database username and name." : "%s ange användarnamn och lösenord för servern",
     "%s enter the database username." : "%s ange databasanvändare.",
     "%s enter the database name." : "%s ange databasnamn",
+    "%s enter the database name or connection string." : "%s Ange databasnamnet eller anslutningssträngen.",
     "Oracle connection could not be established" : "Oracle-anslutning kunde inte etableras",
     "Oracle username and/or password not valid" : "Oracle-användarnamnet och/eller lösenordet är felaktigt",
     "You need to enter either an existing account or the administrator." : "Du måste antingen ange ett befintligt konto eller administratör.",
