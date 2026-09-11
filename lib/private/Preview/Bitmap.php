@@ -114,11 +114,12 @@ abstract class Bitmap implements IProvider2 {
 		$mimeType = \OC::$server->getMimeTypeDetector()->detectString($content);
 		$mimeType = \strtolower(\trim(\explode(';', $mimeType, 2)[0]));
 
-		if (\strpos($mimeType, 'text/') === 0) {
+		// libmagic reports "image/svg" without the "+xml" suffix on some PHP/OS builds
+		if (\strpos($mimeType, 'text/') === 0 || \strpos($mimeType, 'image/svg') === 0) {
 			return true;
 		}
 
-		return \in_array($mimeType, ['image/svg+xml', 'application/xml', 'image/x-mvg'], true);
+		return \in_array($mimeType, ['application/xml', 'image/x-mvg'], true);
 	}
 
 	/**
