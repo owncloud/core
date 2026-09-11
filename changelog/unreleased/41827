@@ -1,0 +1,15 @@
+Security: Reject SVG/script content before it reaches ImageMagick bitmap previews
+
+Bitmap previews (PDF, Font, ...) sanitized SVG content before decoding it, but
+fell back to the original, unsanitized bytes whenever the sanitizer could not
+parse the input - which happened for any malformed SVG or non-XML payload,
+not only for genuinely broken SVG files. A crafted malformed SVG or a raw MVG
+script could therefore reach ImageMagick unsanitized and trigger an MSL
+script that reads or writes arbitrary files as the web server user.
+
+Bitmap previews no longer attempt to sanitize and fall back; they now reject
+any content that is detected as text, XML, SVG, or MVG before ImageMagick
+ever sees it, and decode through the same hardened Imagick options already
+used by the dedicated SVG preview provider.
+
+https://github.com/owncloud/core/pull/41827
