@@ -44,10 +44,10 @@ class SanitizeTest extends TestCase {
 		$file->method('getContent')->willReturn($svgContent);
 		$file->method('fopen')->willReturn($stream);
 
-		# create the preview
+		# create the preview - SVG/text/script-shaped content must never reach Imagick via a Bitmap provider
 		$return = $provider->getThumbnail($file, 32, 32, false);
 
-		$this->assertImage(__DIR__ . '/white-32x32.png', $return);
+		$this->assertFalse($return);
 	}
 
 	public function providesSVG(): Generator {
@@ -58,8 +58,33 @@ class SanitizeTest extends TestCase {
 </svg>
 SVG;
 
+		# malformed SVG (unclosed <image>) - the DOM sanitizer cannot parse this and
+		# used to fall back to the raw, unsanitized content
+		$malformedSvgWithMslHref = <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="10">
+	<image xlink:href="MSL:/tmp/oc10-164-payload.msl" width="10" height="10">
+</svg>
+SVG;
+
+		$rawMvg = <<<MVG
+push graphic-context
+viewbox 0 0 64 64
+fill 'url(msl:/tmp/oc10-164-payload.msl)'
+pop graphic-context
+MVG;
+
+		$wellFormedSvg = <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="green"/></svg>
+SVG;
+
 		# all Bitmap based providers use the same thumbnailing logic - two is enough ....
-		yield 'PDF provider' => [$svgContent0, new PDF()];
-		yield 'Font Provider' => [$svgContent0, new Font()];
+		yield 'PDF provider - image tag' => [$svgContent0, new PDF()];
+		yield 'Font Provider - image tag' => [$svgContent0, new Font()];
+		yield 'PDF provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new PDF()];
+		yield 'Font Provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new Font()];
+		yield 'PDF provider - raw MVG' => [$rawMvg, new PDF()];
+		yield 'Font Provider - raw MVG' => [$rawMvg, new Font()];
+		yield 'PDF provider - well-formed SVG' => [$wellFormedSvg, new PDF()];
+		yield 'Font Provider - well-formed SVG' => [$wellFormedSvg, new Font()];
 	}
 }
