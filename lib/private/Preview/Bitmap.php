@@ -25,6 +25,7 @@
 namespace OC\Preview;
 
 use Imagick;
+use OC\Image\ImagickFactory;
 use OC\Preview;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
@@ -85,18 +86,16 @@ abstract class Bitmap implements IProvider2 {
 	 * @return Imagick
 	 */
 	private function getResizedPreview($stream, int $maxX, int $maxY): Imagick {
-		# file content can be SVG - we need to sanitize it first
 		$content = \stream_get_contents($stream);
-		$output = SVG::sanitizeSVGContent($content);
-		# in case the content is not an SVG we use the original content
-		if ($output === '') {
-			$output = $content;
+
+		if ($this->isDangerousToDecode($content)) {
+			throw new \RuntimeException('Refusing to decode text-based content for a bitmap preview');
 		}
 
-		$bp = new Imagick();
+		$bp = ImagickFactory::create();
 
 		# setIteratorIndex(0) will make previews to be generated from the first page
-		$bp->readImageBlob($output);
+		$bp->readImageBlob($content);
 		$bp->setIteratorIndex(0);
 
 		$bp = $this->resize($bp, $maxX, $maxY);
@@ -104,6 +103,23 @@ abstract class Bitmap implements IProvider2 {
 		$bp->setImageFormat('png');
 
 		return $bp;
+	}
+
+	/**
+	 * Bitmap providers must never hand text-based content (SVG, XML, or any other
+	 * text/* type, e.g. a raw MVG script) to Imagick::readImageBlob() - ImageMagick's
+	 * text/vector coders can be abused to read and write arbitrary files.
+	 */
+	private function isDangerousToDecode(string $content): bool {
+		$mimeType = \OC::$server->getMimeTypeDetector()->detectString($content);
+		$mimeType = \strtolower(\trim(\explode(';', $mimeType, 2)[0]));
+
+		// libmagic reports "image/svg" without the "+xml" suffix on some PHP/OS builds
+		if (\strpos($mimeType, 'text/') === 0 || \strpos($mimeType, 'image/svg') === 0) {
+			return true;
+		}
+
+		return \in_array($mimeType, ['application/xml', 'image/x-mvg'], true);
 	}
 
 	/**
