@@ -12,4 +12,4 @@ any content that is detected as text, XML, SVG, or MVG before ImageMagick
 ever sees it, and decode through the same hardened Imagick options already
 used by the dedicated SVG preview provider.
 
-https://github.com/owncloud/core/pull/41827
+https://github.com/owncloud/core/pull/41828
