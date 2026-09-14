@@ -29,4 +29,11 @@ class Heic extends Bitmap {
 	public function getMimeType() {
 		return '/image\/hei(f|c)/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		if ($mimeType === 'image/heif') {
+			return 'HEIF';
+		}
+		return 'HEIC';
+	}
 }

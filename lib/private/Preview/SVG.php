@@ -58,7 +58,18 @@ class SVG implements IProvider2 {
 				return false;
 			}
 
-			$imagick->readImageBlob($output);
+			# Pin the coder: reading with no format set would let Imagick's own content-
+			# sniffing pick the coder independently of the svg:sanitize/embed/decode
+			# options above and of the isDangerousToDecode()-style reasoning in Bitmap.php.
+			# This has to be a "SVG:path" read, not setFormat()+readImageBlob(): the latter
+			# silently skips the actual rasterization step, same as in Bitmap.php.
+			$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
+			\file_put_contents($tmpPath, $output);
+			try {
+				$imagick->readImage('SVG:' . $tmpPath);
+			} finally {
+				\unlink($tmpPath);
+			}
 			$imagick->setImageFormat('png32');
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);

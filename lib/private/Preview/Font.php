@@ -29,4 +29,13 @@ class Font extends Bitmap {
 	public function getMimeType() {
 		return '/application\/(?:font-sfnt|x-font$)/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		if ($mimeType === 'application/x-font') {
+			return 'PFB';
+		}
+		# .otf and .ttf are indistinguishable by mime type alone (both application/font-sfnt);
+		# TTF is what actually decodes real font files here, both tagged variants included.
+		return 'TTF';
+	}
 }

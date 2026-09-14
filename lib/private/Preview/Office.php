@@ -68,7 +68,10 @@ abstract class Office implements IProvider2 {
 			$pdfPreview = $tmpDir . '/' . $pathInfo['filename'] . '.pdf';
 
 			# Note: no SVG sanitization of the file content required ....
-			$imagick = ImagickFactory::create($pdfPreview . '[0]');
+			# Pin the coder: this is LibreOffice's own PDF output, but readImageBlob()-style
+			# content-sniffing is avoided everywhere else Imagick decodes a file in this
+			# codebase, so pin it here too rather than rely on the ".pdf" path extension.
+			$imagick = ImagickFactory::create('PDF:' . $pdfPreview . '[0]');
 			$imagick->setImageFormat('jpg');
 		} catch (\Exception $e) {
 			@\unlink($pdfPreview);

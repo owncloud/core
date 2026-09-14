@@ -49,7 +49,7 @@ abstract class Bitmap implements IProvider2 {
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
-			$bp = $this->getResizedPreview($stream, $maxX, $maxY);
+			$bp = $this->getResizedPreview($stream, $maxX, $maxY, $file->getMimeType());
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
@@ -82,10 +82,12 @@ abstract class Bitmap implements IProvider2 {
 	 * @param resource $stream the handle of the file to convert
 	 * @param int $maxX
 	 * @param int $maxY
+	 * @param string $mimeType the file's own detected mime type, used to pin the
+	 *   Imagick coder so it can't be redirected by the file's actual content
 	 *
 	 * @return Imagick
 	 */
-	private function getResizedPreview($stream, int $maxX, int $maxY): Imagick {
+	private function getResizedPreview($stream, int $maxX, int $maxY, string $mimeType): Imagick {
 		$content = \stream_get_contents($stream);
 
 		if ($this->isDangerousToDecode($content)) {
@@ -94,8 +96,27 @@ abstract class Bitmap implements IProvider2 {
 
 		$bp = ImagickFactory::create();
 
+		# Pin the coder instead of letting Imagick's own content-sniffing pick one:
+		# reading with no format set re-derives the format from a ~130-entry magic
+		# table independently of isDangerousToDecode()'s check above, so content that
+		# looks like PostScript/PDF (which that check must allow through for the
+		# Postscript/PDF providers) would otherwise reach the Ghostscript delegate via
+		# any Bitmap provider, not just those two.
+		#
+		# The pin has to be a "FORMAT:path" read, not setFormat()+readImageBlob(): the
+		# latter does reliably reject a mismatched format, but for several coders here
+		# (PDF, EPS, AI, PSD, SGI, TIFF, HEIC, HEIF - i.e. all of them) it also silently
+		# skips the actual rasterization step, so setImageFormat('png') below ends up
+		# with no effect and getImageBlob() returns the original, undecoded bytes.
+		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
+		\file_put_contents($tmpPath, $content);
+		try {
+			$bp->readImage($this->getImagickFormat($mimeType) . ':' . $tmpPath);
+		} finally {
+			\unlink($tmpPath);
+		}
+
 		# setIteratorIndex(0) will make previews to be generated from the first page
-		$bp->readImageBlob($content);
 		$bp->setIteratorIndex(0);
 
 		$bp = $this->resize($bp, $maxX, $maxY);
@@ -121,6 +142,12 @@ abstract class Bitmap implements IProvider2 {
 
 		return \in_array($mimeType, ['application/xml', 'image/x-mvg'], true);
 	}
+
+	/**
+	 * Maps this provider's own detected mime type(s) to the Imagick coder name that
+	 * must decode them - the format pinned in getResizedPreview() above.
+	 */
+	abstract protected function getImagickFormat(string $mimeType): string;
 
 	/**
 	 * Returns a resized \Imagick object
