@@ -130,7 +130,7 @@ ownCloud admins and users.
 
    The following have been updated:
 
-   * google/apiclient-services (v0.452.0 to v0.457.0)
+   * google/apiclient-services (v0.452.0 to v0.458.0)
 
    * guzzlehttp/guzzle (7.15.2 to 7.15.5)
 
@@ -140,11 +140,13 @@ ownCloud admins and users.
 
    * laravel/serializable-closure (2.0.15 to 2.0.16)
 
-   * monolog/monolog (3.10.0 to 3.11.0)
+   * monolog/monolog (3.10.0 to 3.12.0)
 
    * pear/archive_tar (1.6.0 to 1.6.1)
 
    * phpseclib/phpseclib (3.0.55 to 3.0.57)
+
+   * punic/punic (3.8.1 to 3.8.2)
 
    * rhukster/dom-sanitizer (1.0.14 to 1.0.16)
 
@@ -172,6 +174,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41791
    https://github.com/owncloud/core/pull/41797
    https://github.com/owncloud/core/pull/41809
+   https://github.com/owncloud/core/pull/41829
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
