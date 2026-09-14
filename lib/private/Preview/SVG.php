@@ -54,6 +54,9 @@ class SVG implements IProvider2 {
 
 			# sanitize SVG content
 			$output = self::sanitizeSVGContent($content);
+			if ($output === null) {
+				return false;
+			}
 
 			$imagick->readImageBlob($output);
 			$imagick->setImageFormat('png32');
@@ -81,7 +84,7 @@ class SVG implements IProvider2 {
 		return true;
 	}
 
-	public static function sanitizeSVGContent(string $content): string {
+	public static function sanitizeSVGContent(string $content): ?string {
 		$sanitizer = new DOMSanitizer(DOMSanitizer::SVG);
 		$sanitizer->addDisallowedTags(['image']);
 		$sanitizer->addDisallowedAttributes(['xlink:href']);
@@ -89,6 +92,10 @@ class SVG implements IProvider2 {
 
 		// XML errors are expected here if the SVG is malformed
 		\libxml_clear_errors();
+
+		if (!\is_string($sanitized_content)) {
+			return null;
+		}
 
 		return $sanitized_content;
 	}
