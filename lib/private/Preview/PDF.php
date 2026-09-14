@@ -31,7 +31,7 @@ class PDF extends Bitmap {
 		return '/application\/pdf/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		return 'PDF';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		return $this->hasSignatureAt($content, '%PDF-');
 	}
 }

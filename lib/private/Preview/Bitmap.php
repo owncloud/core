@@ -49,7 +49,7 @@ abstract class Bitmap implements IProvider2 {
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
-			$bp = $this->getResizedPreview($stream, $maxX, $maxY, $file->getMimeType());
+			$bp = $this->getResizedPreview($stream, $maxX, $maxY);
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
@@ -82,39 +82,33 @@ abstract class Bitmap implements IProvider2 {
 	 * @param resource $stream the handle of the file to convert
 	 * @param int $maxX
 	 * @param int $maxY
-	 * @param string $mimeType the file's own detected mime type, used to pin the
-	 *   Imagick coder so it can't be redirected by the file's actual content
 	 *
 	 * @return Imagick
 	 */
-	private function getResizedPreview($stream, int $maxX, int $maxY, string $mimeType): Imagick {
+	private function getResizedPreview($stream, int $maxX, int $maxY): Imagick {
 		$content = \stream_get_contents($stream);
 
 		if ($this->isDangerousToDecode($content)) {
 			throw new \RuntimeException('Refusing to decode text-based content for a bitmap preview');
 		}
 
-		$bp = ImagickFactory::create();
-
-		# Pin the coder instead of letting Imagick's own content-sniffing pick one:
-		# reading with no format set re-derives the format from a ~130-entry magic
-		# table independently of isDangerousToDecode()'s check above, so content that
-		# looks like PostScript/PDF (which that check must allow through for the
-		# Postscript/PDF providers) would otherwise reach the Ghostscript delegate via
-		# any Bitmap provider, not just those two.
-		#
-		# The pin has to be a "FORMAT:path" read, not setFormat()+readImageBlob(): the
-		# latter does reliably reject a mismatched format, but for several coders here
-		# (PDF, EPS, AI, PSD, SGI, TIFF, HEIC, HEIF - i.e. all of them) it also silently
-		# skips the actual rasterization step, so setImageFormat('png') below ends up
-		# with no effect and getImageBlob() returns the original, undecoded bytes.
-		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
-		\file_put_contents($tmpPath, $content);
-		try {
-			$bp->readImage($this->getImagickFormat($mimeType) . ':' . $tmpPath);
-		} finally {
-			\unlink($tmpPath);
+		# Reject content whose own leading bytes don't match this provider's expected
+		# format before Imagick ever sees it, instead of pinning the coder Imagick
+		# itself uses to decode: readImageBlob() with no format set picks its coder
+		# from the same leading bytes via its own ~130-entry magic table, independently
+		# of isDangerousToDecode()'s check above - so content that looks like
+		# PostScript/PDF (which that check must allow through for the Postscript/PDF
+		# providers) would otherwise reach the Ghostscript delegate via any Bitmap
+		# provider, not just those two. Since this check and Imagick's own sniffing key
+		# off the same bytes, passing it guarantees Imagick will independently reach the
+		# same, safe conclusion - there's no way to satisfy this check with bytes that
+		# then decode via a different coder.
+		if (!$this->hasExpectedMagicBytes($content)) {
+			throw new \RuntimeException("Refusing to decode content whose signature does not match this provider's expected format");
 		}
+
+		$bp = ImagickFactory::create();
+		$bp->readImageBlob($content);
 
 		# setIteratorIndex(0) will make previews to be generated from the first page
 		$bp->setIteratorIndex(0);
@@ -144,10 +138,18 @@ abstract class Bitmap implements IProvider2 {
 	}
 
 	/**
-	 * Maps this provider's own detected mime type(s) to the Imagick coder name that
-	 * must decode them - the format pinned in getResizedPreview() above.
+	 * True if $content's own leading bytes plausibly belong to a format this
+	 * provider is registered to decode - checked before Imagick ever sees the
+	 * content, per getResizedPreview() above.
 	 */
-	abstract protected function getImagickFormat(string $mimeType): string;
+	abstract protected function hasExpectedMagicBytes(string $content): bool;
+
+	/**
+	 * True if $content has $signature's exact bytes starting at $offset.
+	 */
+	protected function hasSignatureAt(string $content, string $signature, int $offset = 0): bool {
+		return \substr($content, $offset, \strlen($signature)) === $signature;
+	}
 
 	/**
 	 * Returns a resized \Imagick object

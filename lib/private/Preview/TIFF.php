@@ -31,7 +31,7 @@ class TIFF extends Bitmap {
 		return '/image\/tiff/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		return 'TIFF';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		return $this->hasSignatureAt($content, "II*\0") || $this->hasSignatureAt($content, "MM\0*");
 	}
 }

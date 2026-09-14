@@ -31,7 +31,10 @@ class Illustrator extends Bitmap {
 		return '/application\/illustrator/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		return 'AI';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		// Modern (9+) Illustrator files are PDF-compatible ("%PDF-"); legacy pre-9
+		// files use a plain PostScript header ("%!"). Both already reach the same
+		// Ghostscript/PDF delegate as the Postscript and PDF providers.
+		return $this->hasSignatureAt($content, '%PDF-') || $this->hasSignatureAt($content, '%!');
 	}
 }

@@ -28,7 +28,7 @@ class SGI extends Bitmap {
 		return '/image\/sgi/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		return 'SGI';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		return $this->hasSignatureAt($content, "\x01\xDA");
 	}
 }

@@ -30,12 +30,15 @@ class Font extends Bitmap {
 		return '/application\/(?:font-sfnt|x-font$)/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		if ($mimeType === 'application/x-font') {
-			return 'PFB';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		foreach (["\x00\x01\x00\x00", 'OTTO', 'true', 'ttcf'] as $sfntTag) {
+			if ($this->hasSignatureAt($content, $sfntTag)) {
+				return true;
+			}
 		}
-		# .otf and .ttf are indistinguishable by mime type alone (both application/font-sfnt);
-		# TTF is what actually decodes real font files here, both tagged variants included.
-		return 'TTF';
+		# PFB (Printer Font Binary): each segment starts with 0x80 followed by a
+		# segment-type byte (0x01 ASCII, 0x02 binary, 0x03 EOF).
+		return \strlen($content) >= 2 && $content[0] === "\x80"
+			&& \in_array($content[1], ["\x01", "\x02", "\x03"], true);
 	}
 }

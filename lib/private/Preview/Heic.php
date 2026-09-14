@@ -30,10 +30,13 @@ class Heic extends Bitmap {
 		return '/image\/hei(f|c)/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		if ($mimeType === 'image/heif') {
-			return 'HEIF';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		// ISO-BMFF: bytes[0:4] are a variable box size (not checked - any value is
+		// structurally valid), bytes[4:8] must be "ftyp", bytes[8:12] are the brand.
+		if (!$this->hasSignatureAt($content, 'ftyp', 4)) {
+			return false;
 		}
-		return 'HEIC';
+		$brand = \substr($content, 8, 4);
+		return \in_array($brand, ['heic', 'heix', 'hevc', 'heim', 'heis', 'hevm', 'hevs', 'mif1', 'msf1'], true);
 	}
 }

@@ -31,7 +31,7 @@ class Postscript extends Bitmap {
 		return '/application\/postscript/';
 	}
 
-	protected function getImagickFormat(string $mimeType): string {
-		return 'EPS';
+	protected function hasExpectedMagicBytes(string $content): bool {
+		return $this->hasSignatureAt($content, '%!');
 	}
 }
