@@ -1,0 +1,14 @@
+Security: Pin the Imagick coder for each bitmap preview provider
+
+Bitmap previews decoded content with no format hint, so ImageMagick's own
+content-sniffing - independent of the mime-type check that decides whether a
+preview is even attempted - could still pick a different coder than the one
+a provider actually serves. PostScript-looking content, which the mime check
+must allow through for the PDF and Postscript providers, could therefore
+still reach the Ghostscript delegate through any other bitmap provider (SGI,
+Font, Illustrator, Photoshop, TIFF, Heic).
+
+Each provider now pins the exact Imagick coder it expects instead of letting
+ImageMagick guess from the file's content.
+
+https://github.com/owncloud/core/pull/41832
