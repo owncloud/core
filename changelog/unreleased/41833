@@ -1,0 +1,10 @@
+Security: Replace bitmap preview Imagick coder pinning with a magic-byte check
+
+The previous hardening for bitmap previews pinned the ImageMagick coder for
+each provider by writing the file's content to a temporary file before
+decoding, which added a disk write to every preview generation. Each
+provider now instead verifies its own expected file signature against the
+raw content in memory before ImageMagick is invoked at all, closing the
+same class of cross-provider decoding confusion without the extra I/O.
+
+https://github.com/owncloud/core/pull/41833
