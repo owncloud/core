@@ -152,6 +152,22 @@ abstract class Bitmap implements IProvider2 {
 	}
 
 	/**
+	 * True if $content is one of the three PostScript variants ImageMagick's own
+	 * magic table (magick/magic.c, MagicMap[], coder name "PS") recognizes: plain
+	 * ASCII PostScript, DOS EPS ASCII (a leading Ctrl-D byte), or DOS EPS binary
+	 * (a 4-byte binary preamble). Shared by Postscript and Illustrator, since
+	 * Illustrator's pre-9, non-PDF-based files use a plain PostScript header too.
+	 */
+	protected function hasPostScriptSignature(string $content): bool {
+		foreach (['%!', "\x04%!", "\xC5\xD0\xD3\xC6"] as $signature) {
+			if ($this->hasSignatureAt($content, $signature)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns a resized \Imagick object
 	 *
 	 * If you want to know more on the various methods available to resize an

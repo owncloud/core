@@ -32,6 +32,6 @@ class Postscript extends Bitmap {
 	}
 
 	protected function hasExpectedMagicBytes(string $content): bool {
-		return $this->hasSignatureAt($content, '%!');
+		return $this->hasPostScriptSignature($content);
 	}
 }

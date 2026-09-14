@@ -159,11 +159,14 @@ class MagicByteGateTest extends TestCase {
 		yield 'PDF accepts %PDF-' => [new PDF(), "%PDF-1.4\n", true];
 		yield 'PDF rejects %!' => [new PDF(), "%!PS-Adobe-3.0\n", false];
 
-		yield 'Postscript accepts %!' => [new Postscript(), "%!PS-Adobe-3.0\n", true];
+		yield 'Postscript accepts plain %!' => [new Postscript(), "%!PS-Adobe-3.0\n", true];
+		yield 'Postscript accepts DOS EPS ASCII (0x04 %!)' => [new Postscript(), "\x04%!PS-Adobe-3.0\n", true];
+		yield 'Postscript accepts DOS EPS binary preamble' => [new Postscript(), "\xC5\xD0\xD3\xC6rest", true];
 		yield 'Postscript rejects %PDF-' => [new Postscript(), "%PDF-1.4\n", false];
 
 		yield 'Illustrator accepts %PDF-' => [new Illustrator(), "%PDF-1.4\n", true];
-		yield 'Illustrator accepts %!' => [new Illustrator(), "%!PS-Adobe-3.0\n", true];
+		yield 'Illustrator accepts plain %!' => [new Illustrator(), "%!PS-Adobe-3.0\n", true];
+		yield 'Illustrator accepts DOS EPS binary preamble' => [new Illustrator(), "\xC5\xD0\xD3\xC6rest", true];
 		yield 'Illustrator rejects 8BPS' => [new Illustrator(), "8BPS\0\0", false];
 
 		yield 'Photoshop accepts 8BPS' => [new Photoshop(), "8BPS\x00\x01", true];
@@ -174,21 +177,22 @@ class MagicByteGateTest extends TestCase {
 
 		yield 'TIFF accepts little-endian II*\0' => [new TIFF(), "II*\0\x08\x00\x00\x00", true];
 		yield 'TIFF accepts big-endian MM\0*' => [new TIFF(), "MM\0*\x00\x00\x00\x08", true];
+		yield 'TIFF accepts little-endian BigTIFF (II+\0)' => [new TIFF(), "II+\0\x08\x00\x00\x00", true];
+		yield 'TIFF accepts big-endian BigTIFF (MM\0+)' => [new TIFF(), "MM\0+\x00\x08\x00\x00", true];
 		yield 'TIFF rejects 8BPS' => [new TIFF(), "8BPS\x00\x01", false];
 
-		yield 'Font accepts sfnt 1.0 tag' => [new Font(), "\x00\x01\x00\x00rest", true];
-		yield 'Font accepts OTTO tag' => [new Font(), 'OTTOrest', true];
-		yield 'Font accepts true tag' => [new Font(), 'truerest', true];
-		yield 'Font accepts ttcf tag' => [new Font(), 'ttcfrest', true];
-		yield 'Font accepts PFB ASCII segment' => [new Font(), "\x80\x01rest", true];
-		yield 'Font accepts PFB binary segment' => [new Font(), "\x80\x02rest", true];
-		yield 'Font accepts PFB EOF segment' => [new Font(), "\x80\x03rest", true];
-		yield 'Font rejects PFB with an unknown segment type' => [new Font(), "\x80\x04rest", false];
+		yield 'Font accepts sfnt 1.0 tag' => [new Font(), "\x00\x01\x00\x00\x00rest", true];
+		yield 'Font rejects sfnt tag with a non-zero 5th byte' => [new Font(), "\x00\x01\x00\x00\x01rest", false];
+		yield 'Font rejects OTTO (no ImageMagick magic entry for it)' => [new Font(), 'OTTOrest', false];
+		yield 'Font accepts a real PFB header' => [new Font(), "\x80\x01\x00\x00\x00\x00%!PS-AdobeFont-1.0", true];
+		yield 'Font rejects PFB-looking bytes without the Adobe font string' => [new Font(), "\x80\x01\x00\x00\x00\x00not a font", false];
 		yield 'Font rejects %!' => [new Font(), "%!PS-Adobe-3.0\n", false];
 
 		yield 'Heic accepts a heic brand' => [new Heic(), "\x00\x00\x00\x18ftypheic", true];
+		yield 'Heic accepts a heix brand' => [new Heic(), "\x00\x00\x00\x18ftypheix", true];
 		yield 'Heic accepts a mif1 (generic HEIF) brand' => [new Heic(), "\x00\x00\x00\x18ftypmif1", true];
-		yield 'Heic rejects an avif brand' => [new Heic(), "\x00\x00\x00\x18ftypavif", false];
+		yield 'Heic accepts an avif brand' => [new Heic(), "\x00\x00\x00\x18ftypavif", true];
+		yield 'Heic rejects an unregistered brand' => [new Heic(), "\x00\x00\x00\x18ftyphevc", false];
 		yield 'Heic rejects content missing the ftyp box' => [new Heic(), "\x00\x00\x00\x18wxyzheic", false];
 	}
 }

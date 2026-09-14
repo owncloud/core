@@ -31,14 +31,21 @@ class Font extends Bitmap {
 	}
 
 	protected function hasExpectedMagicBytes(string $content): bool {
-		foreach (["\x00\x01\x00\x00", 'OTTO', 'true', 'ttcf'] as $sfntTag) {
-			if ($this->hasSignatureAt($content, $sfntTag)) {
-				return true;
-			}
+		# Verified against ImageMagick's own compiled-in magic table
+		# (magick/magic.c, MagicMap[]): the sfnt version-1.0 tag is the ONLY font
+		# signature it recognizes ("TTF", 5 bytes including the high byte of
+		# numTables, which is 0 for any font with fewer than 256 tables - true in
+		# practice for every real font). It has no entry at all for "OTTO"/"true"/
+		# "ttcf" - confirmed empirically too: this environment's Imagick has no
+		# decode delegate for genuine OTF ('OTTO'-tagged) content regardless of
+		# how it's read, pinned or not.
+		if ($this->hasSignatureAt($content, "\x00\x01\x00\x00\x00")) {
+			return true;
 		}
-		# PFB (Printer Font Binary): each segment starts with 0x80 followed by a
-		# segment-type byte (0x01 ASCII, 0x02 binary, 0x03 EOF).
-		return \strlen($content) >= 2 && $content[0] === "\x80"
-			&& \in_array($content[1], ["\x01", "\x02", "\x03"], true);
+		# PFB ("Printer Font Binary"): the entry is "PFB", offset 6,
+		# "%!PS-AdobeFont-1.0" - the first 6 bytes are the PFB binary segment
+		# header (0x80, segment type, 4-byte little-endian length), followed by
+		# the standard Adobe Type 1 font program identification string.
+		return $this->hasSignatureAt($content, '%!PS-AdobeFont-1.0', 6);
 	}
 }

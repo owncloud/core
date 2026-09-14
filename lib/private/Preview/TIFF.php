@@ -32,6 +32,16 @@ class TIFF extends Bitmap {
 	}
 
 	protected function hasExpectedMagicBytes(string $content): bool {
-		return $this->hasSignatureAt($content, "II*\0") || $this->hasSignatureAt($content, "MM\0*");
+		// Classic TIFF, both byte orders, plus BigTIFF ("TIFF64" in ImageMagick's own
+		// magic table) - verified against magick/magic.c's MagicMap[]. BigTIFF was
+		// reachable via the original, unpinned readImageBlob() call this replaces, so
+		// leaving it out here would be a real functional regression, not just an
+		// unverified edge case.
+		foreach (["II*\0", "MM\0*", "II+\0\x08\x00\x00\x00", "MM\0+\x00\x08\x00\x00"] as $signature) {
+			if ($this->hasSignatureAt($content, $signature)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
