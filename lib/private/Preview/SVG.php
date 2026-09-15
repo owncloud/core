@@ -63,7 +63,11 @@ class SVG implements IProvider2 {
 			# options above and of the isDangerousToDecode()-style reasoning in Bitmap.php.
 			# This has to be a "SVG:path" read, not setFormat()+readImageBlob(): the latter
 			# silently skips the actual rasterization step, same as in Bitmap.php.
-			$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
+			#
+			# RAM-backed like Bitmap.php's pin file: it is written, read and deleted again
+			# within this one call and exists purely to give Imagick a path to pin against,
+			# so it never needs to survive on disk.
+			$tmpPath = \OC::$server->getTempManager()->getRamTemporaryFile();
 			\file_put_contents($tmpPath, $output);
 			try {
 				$imagick->readImage('SVG:' . $tmpPath);
