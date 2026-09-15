@@ -67,4 +67,17 @@ interface ITempManager {
 	 * @since 8.2.0
 	 */
 	public function getTempBaseDir();
+
+	/**
+	 * Create a temporary file backed by a tmpfs/RAM-backed mount when one is
+	 * available and writable, falling back transparently to the regular
+	 * disk-backed temporary directory otherwise. Intended for callers that
+	 * write-then-immediately-read short-lived scratch content and want to
+	 * avoid real disk I/O for it.
+	 *
+	 * @param string $postFix
+	 * @return string|false
+	 * @since 11.0.0
+	 */
+	public function getRamTemporaryFile($postFix = '');
 }

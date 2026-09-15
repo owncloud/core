@@ -150,11 +150,9 @@ class TempManager implements ITempManager {
 	/**
 	 * Create a temporary file backed by a tmpfs/RAM-backed mount when one is
 	 * available and writable, falling back transparently to the regular
-	 * disk-backed temporary directory otherwise. Internal-only optimization
-	 * for callers that write-then-immediately-read short-lived scratch
-	 * content and want to avoid real disk I/O for it - deliberately not part
-	 * of the public ITempManager contract, matching overrideTempBaseDir()'s
-	 * existing precedent for a TempManager-only extra.
+	 * disk-backed temporary directory otherwise. Intended for callers that
+	 * write-then-immediately-read short-lived scratch content and want to
+	 * avoid real disk I/O for it.
 	 *
 	 * @param string $postFix Postfix appended to the temporary file name
 	 * @return string|false Same failure contract as getTemporaryFile():
