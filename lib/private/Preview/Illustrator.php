@@ -30,4 +30,8 @@ class Illustrator extends Bitmap {
 	public function getMimeType() {
 		return '/application\/illustrator/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		return 'AI';
+	}
 }

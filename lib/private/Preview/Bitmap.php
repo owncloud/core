@@ -49,7 +49,7 @@ abstract class Bitmap implements IProvider2 {
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
-			$bp = $this->getResizedPreview($stream, $maxX, $maxY);
+			$bp = $this->getResizedPreview($stream, $maxX, $maxY, $file->getMimeType());
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
@@ -82,10 +82,12 @@ abstract class Bitmap implements IProvider2 {
 	 * @param resource $stream the handle of the file to convert
 	 * @param int $maxX
 	 * @param int $maxY
+	 * @param string $mimeType the file's own detected mime type, used to pin the
+	 *   Imagick coder so it cannot be redirected by the file's actual content
 	 *
 	 * @return Imagick
 	 */
-	private function getResizedPreview($stream, int $maxX, int $maxY): Imagick {
+	private function getResizedPreview($stream, int $maxX, int $maxY, string $mimeType): Imagick {
 		$content = \stream_get_contents($stream);
 
 		if ($this->isDangerousToDecode($content)) {
@@ -94,16 +96,38 @@ abstract class Bitmap implements IProvider2 {
 
 		$bp = ImagickFactory::create();
 
-		# setIteratorIndex(0) will make previews to be generated from the first page
+		# Pin the coder instead of letting Imagick's own content-sniffing pick one:
+		# reading with no format set re-derives the format from a ~130-entry magic
+		# table independently of isDangerousToDecode()'s check above, so content that
+		# looks like PostScript/PDF (which that check must allow through for the
+		# Postscript/PDF providers) would otherwise reach the Ghostscript delegate via
+		# any Bitmap provider, not just those two.
+		#
+		# Deliberately not guarded by queryFormats(): if this build does not register
+		# the coder, throwing here is correct - the only alternative is falling back to
+		# the content-sniffing this pin exists to prevent.
+		$bp->setFormat($this->getImagickFormat($mimeType));
 		$bp->readImageBlob($content);
+
+		# setIteratorIndex(0) will make previews to be generated from the first page
 		$bp->setIteratorIndex(0);
 
 		$bp = $this->resize($bp, $maxX, $maxY);
 
+		# setFormat() above pins the wand's *output* format as well as the input coder,
+		# so both have to be set here. setImageFormat() alone would leave getThumbnail()'s
+		# (string) cast re-encoding back to the pinned input format instead of PNG.
 		$bp->setImageFormat('png');
+		$bp->setFormat('png');
 
 		return $bp;
 	}
+
+	/**
+	 * Maps this provider's own detected mime type(s) to the Imagick coder name that
+	 * must decode them - the format pinned in getResizedPreview() above.
+	 */
+	abstract protected function getImagickFormat(string $mimeType): string;
 
 	/**
 	 * Bitmap providers must never hand text-based content (SVG, XML, or any other

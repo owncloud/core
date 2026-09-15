@@ -30,4 +30,8 @@ class PDF extends Bitmap {
 	public function getMimeType() {
 		return '/application\/pdf/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		return 'PDF';
+	}
 }
