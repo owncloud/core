@@ -9,6 +9,8 @@ still reach the Ghostscript delegate through any other bitmap provider (SGI,
 Font, Illustrator, Photoshop, TIFF, Heic).
 
 Each provider now pins the exact Imagick coder it expects instead of letting
-ImageMagick guess from the file's content.
+ImageMagick guess from the file's content, using a tmpfs-backed temporary
+file (falling back to disk if none is available) so the pin adds no disk
+I/O to preview generation.
 
 https://github.com/owncloud/core/pull/41832
