@@ -1452,9 +1452,8 @@ $CONFIG = [
  *
  * Auto-detects /dev/shm by default and silently falls back to the regular
  * 'tempdirectory' location above if no writable tmpfs mount is found, or if
- * a specific write to it fails (e.g. the mount's own size limit is hit under
- * concurrent load) - this is always a best-effort optimization, never a hard
- * requirement.
+ * the temporary file cannot be created there - this is always a best-effort
+ * optimization, never a hard requirement.
  *
  * Set to a path to use a different tmpfs mount than /dev/shm. Set to false
  * to disable RAM-backed temporary files entirely.
