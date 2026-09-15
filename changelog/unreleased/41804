@@ -1,0 +1,11 @@
+Security: Prevent path traversal via appconfig public_/remote_ keys
+
+We've fixed a path traversal in the appconfig `public_`/`remote_` service
+handlers. An authenticated admin could set such a key on the `core` app to a
+traversal value which was later included by `public.php`, leading to remote
+code execution. The included path is now validated against traversal and the
+app-id guard can no longer be bypassed by mangled spellings such as a trailing
+space.
+
+https://github.com/owncloud/core/pull/41804
+https://github.com/owncloud/core/pull/41803
