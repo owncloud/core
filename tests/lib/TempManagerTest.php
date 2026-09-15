@@ -194,6 +194,56 @@ class TempManagerTest extends TestCase {
 		$this->assertStringEndsWith('.Traversal..FileName', $tmpManager);
 	}
 
+	public function testGetRamTemporaryFileUsesConfiguredRamDirWhenWritable(): void {
+		$ramDir = $this->baseDir . '/ram';
+		\mkdir($ramDir);
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnMap([
+				['tempdirectory', null, '/tmp'],
+				['ramtempdirectory', null, $ramDir],
+			]);
+		$manager = $this->getManager(null, $config);
+
+		$file = $manager->getRamTemporaryFile('txt');
+
+		$this->assertStringEndsWith('.txt', $file);
+		$this->assertStringStartsWith($ramDir, $file);
+		$this->assertTrue(\is_file($file));
+	}
+
+	public function testGetRamTemporaryFileFallsBackToDiskWhenRamDirMissing(): void {
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnMap([
+				['tempdirectory', null, '/tmp'],
+				['ramtempdirectory', null, '/nonexistent-ram-dir-for-testing'],
+			]);
+		$manager = $this->getManager(null, $config);
+
+		$file = $manager->getRamTemporaryFile('txt');
+
+		$this->assertStringEndsWith('.txt', $file);
+		$this->assertStringStartsWith($this->baseDir, $file);
+		$this->assertTrue(\is_file($file));
+	}
+
+	public function testGetRamTemporaryFileDisabledByExplicitFalse(): void {
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->willReturnMap([
+				['tempdirectory', null, '/tmp'],
+				['ramtempdirectory', null, false],
+			]);
+		$manager = $this->getManager(null, $config);
+
+		$file = $manager->getRamTemporaryFile('txt');
+
+		$this->assertStringEndsWith('.txt', $file);
+		$this->assertStringStartsWith($this->baseDir, $file);
+		$this->assertTrue(\is_file($file));
+	}
+
 	public function testGetTempBaseDirFromConfig(): void {
 		$dir = $this->getManager()->getTemporaryFolder();
 

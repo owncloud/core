@@ -40,6 +40,9 @@ class TempManager implements ITempManager {
 	protected array $current = [];
 	/** @var ?string i.e. /tmp on linux systems */
 	protected ?string $tmpBaseDir = null;
+	/** @var ?string tmpfs-backed directory to use for getRamTemporaryFile(), resolved lazily */
+	protected ?string $ramBaseDir = null;
+	protected bool $ramBaseDirChecked = false;
 	protected ILogger $logger;
 	protected IConfig $config;
 
@@ -142,6 +145,71 @@ class TempManager implements ITempManager {
 			]
 		);
 		return false;
+	}
+
+	/**
+	 * Create a temporary file backed by a tmpfs/RAM-backed mount when one is
+	 * available and writable, falling back transparently to the regular
+	 * disk-backed temporary directory otherwise. Internal-only optimization
+	 * for callers that write-then-immediately-read short-lived scratch
+	 * content and want to avoid real disk I/O for it - deliberately not part
+	 * of the public ITempManager contract, matching overrideTempBaseDir()'s
+	 * existing precedent for a TempManager-only extra.
+	 *
+	 * @param string $postFix Postfix appended to the temporary file name
+	 * @return string|false Same failure contract as getTemporaryFile():
+	 *   false only if even the disk-backed fallback fails.
+	 */
+	public function getRamTemporaryFile($postFix = '') {
+		$ramBaseDir = $this->resolveRamBaseDir();
+		if ($ramBaseDir !== null) {
+			$file = @\tempnam($ramBaseDir, self::TMP_PREFIX);
+			if ($file !== false) {
+				$this->current[] = $file;
+
+				if ($postFix !== '') {
+					$fileNameWithPostfix = $this->buildFileNameWithSuffix($file, $postFix);
+					$old_umask = \umask(0077);
+					\touch($fileNameWithPostfix);
+					\umask($old_umask);
+					$this->current[] = $fileNameWithPostfix;
+					return $fileNameWithPostfix;
+				}
+
+				return $file;
+			}
+
+			$this->logger->debug(
+				'Could not create a RAM-backed temporary file in {dir}, falling back to disk',
+				['dir' => $ramBaseDir]
+			);
+		}
+
+		return $this->getTemporaryFile($postFix);
+	}
+
+	/**
+	 * Resolve and cache the tmpfs-backed directory to use for
+	 * getRamTemporaryFile(), or null if none is available/enabled.
+	 *
+	 * @return ?string
+	 */
+	private function resolveRamBaseDir(): ?string {
+		if ($this->ramBaseDirChecked) {
+			return $this->ramBaseDir;
+		}
+		$this->ramBaseDirChecked = true;
+
+		$configured = $this->config->getSystemValue('ramtempdirectory', null);
+		if ($configured === false) {
+			return $this->ramBaseDir = null;
+		}
+		$candidate = \is_string($configured) && $configured !== '' ? $configured : '/dev/shm';
+
+		if (\is_dir($candidate) && \is_writable($candidate)) {
+			return $this->ramBaseDir = $candidate;
+		}
+		return $this->ramBaseDir = null;
 	}
 
 	/**

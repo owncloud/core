@@ -108,7 +108,11 @@ abstract class Bitmap implements IProvider2 {
 		# (PDF, EPS, AI, PSD, SGI, TIFF, HEIC, HEIF - i.e. all of them) it also silently
 		# skips the actual rasterization step, so setImageFormat('png') below ends up
 		# with no effect and getImageBlob() returns the original, undecoded bytes.
-		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
+		#
+		# Uses a RAM-backed (tmpfs) temp file rather than the regular disk-backed one:
+		# this write-then-immediately-read-then-delete file exists purely to give
+		# Imagick a path to pin against and never needs to survive on disk.
+		$tmpPath = \OC::$server->getTempManager()->getRamTemporaryFile();
 		\file_put_contents($tmpPath, $content);
 		try {
 			$bp->readImage($this->getImagickFormat($mimeType) . ':' . $tmpPath);
