@@ -21,6 +21,7 @@
 
 namespace OC\Core\Controller;
 
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\OCS\Result;
 use OCP\IDBConnection;
 use OCP\IRequest;
@@ -44,6 +45,9 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var AccountLockout */
+	private $accountLockout;
+
 	/**
 	 * OccController constructor.
 	 *
@@ -56,12 +60,14 @@ class OcsController extends \OCP\AppFramework\OCSController {
 		IRequest $request,
 		IDBConnection $dbConnection,
 		IUserSession $userSession,
-		IUserManager $userManager
+		IUserManager $userManager,
+		AccountLockout $accountLockout
 	) {
 		parent::__construct($appName, $request);
 		$this->dbConnection = $dbConnection;
 		$this->userSession = $userSession;
 		$this->userManager = $userManager;
+		$this->accountLockout = $accountLockout;
 	}
 
 	/**
@@ -92,12 +98,21 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 */
 	public function checkPerson($login, $password) {
 		if ($login && $password) {
+			// this endpoint verifies a password, so it has to respect the lockout
+			// as well - otherwise it stays an unthrottled oracle for the same
+			// passwords. The response is the one of a wrong password on purpose,
+			// it must not tell an attacker anything about the account.
+			if ($this->accountLockout->getRemainingLockTime($login) > 0) {
+				return new Result(null, 102);
+			}
 			$user = $this->userManager->checkPassword($login, $password);
 			if ($user !== false) {
+				$this->accountLockout->clearFailures($login, $user->getUID());
 				$xml = [];
 				$xml['person']['personid'] = $user->getUID();
 				return new Result($xml);
 			} else {
+				$this->accountLockout->recordFailure($login);
 				return new Result(null, 102);
 			}
 		} else {
