@@ -75,9 +75,7 @@ interface ITempManager {
 	 * write-then-immediately-read short-lived scratch content and want to
 	 * avoid real disk I/O for it.
 	 *
-	 * @param string $postFix
-	 * @return string|false
-	 * @since 11.0.0
+	 * @since 11.0.1
 	 */
-	public function getRamTemporaryFile($postFix = '');
+	public function getRamTemporaryFile(string $postFix = ''): string|false;
 }

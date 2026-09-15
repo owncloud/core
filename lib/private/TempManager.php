@@ -154,11 +154,10 @@ class TempManager implements ITempManager {
 	 * write-then-immediately-read short-lived scratch content and want to
 	 * avoid real disk I/O for it.
 	 *
-	 * @param string $postFix Postfix appended to the temporary file name
-	 * @return string|false Same failure contract as getTemporaryFile():
-	 *   false only if even the disk-backed fallback fails.
+	 * Same failure contract as getTemporaryFile(): returns false only if
+	 * even the disk-backed fallback fails.
 	 */
-	public function getRamTemporaryFile($postFix = '') {
+	public function getRamTemporaryFile(string $postFix = ''): string|false {
 		$ramBaseDir = $this->resolveRamBaseDir();
 		if ($ramBaseDir !== null) {
 			$file = @\tempnam($ramBaseDir, self::TMP_PREFIX);
