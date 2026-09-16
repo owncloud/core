@@ -59,9 +59,12 @@ class BitmapStreamTest extends TestCase {
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
 	 *
-	 * Needs no particular coder: no build has one for non-image XML, so readImageBlob()
-	 * throws everywhere. On #41827 it never reaches a coder at all, because the mime
-	 * gate rejects XML first - either way the throw is what this asserts about.
+	 * Needs no particular coder registered for the payload's own sake: ImageMagick's SVG
+	 * coder claims any blob opening with "<?xml" and then fails on a document with no
+	 * <svg> root, so readImageBlob() throws on every build. On #41827 it does not reach a
+	 * coder at all, because the mime gate rejects XML first. Either way the throw is what
+	 * this asserts about - but a different XML payload is not automatically substitutable,
+	 * since the guarantee rests on SVG rendering erroring out.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
 		list($file, $stream) = $this->makeFile(
@@ -97,17 +100,33 @@ class BitmapStreamTest extends TestCase {
 
 	/**
 	 * A TIFF needs no external delegate, so this skips only where the build cannot
-	 * handle TIFF at all - in which case the assertions above could not run either way.
+	 * round-trip one - in which case the assertions above could not run either way.
+	 *
+	 * The blob is read back inside the guard on purpose: coder rights are granted per
+	 * direction, so writing a TIFF does not establish that this build can read one.
+	 * Probing only the write half would let a write-but-not-read build produce a blob,
+	 * decline to skip, and then fail red - the failure mode this guard exists to remove.
 	 */
 	private function tiffBlob(): string {
+		$image = new \Imagick();
 		try {
-			$image = new \Imagick();
 			$image->newImage(64, 48, new \ImagickPixel('white'));
 			$image->setImageFormat('tiff');
 			$blob = $image->getImageBlob();
+
+			$probe = new \Imagick();
+			try {
+				$probe->readImageBlob($blob);
+			} finally {
+				$probe->clear();
+			}
+		} catch (\Exception $e) {
+			# \Exception, not \ImagickException: ImagickPixelException extends \Exception
+			# directly and is a sibling of ImagickException, so a pixel-wand failure would
+			# otherwise escape as an error rather than the intended skip
+			$this->markTestSkipped('This ImageMagick build cannot round-trip a TIFF: ' . $e->getMessage());
+		} finally {
 			$image->clear();
-		} catch (\ImagickException $e) {
-			$this->markTestSkipped('This ImageMagick build cannot produce a TIFF: ' . $e->getMessage());
 		}
 		return $blob;
 	}
