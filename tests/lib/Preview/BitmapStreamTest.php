@@ -97,36 +97,62 @@ class BitmapStreamTest extends TestCase {
 
 		$result = (new TIFF())->getThumbnail($file, 32, 32, false);
 
-		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the success path');
+		# outcome-neutral message: this assertion runs first, so it also fires where the
+		# decode did not succeed, and must not then claim the leak was on the success path
+		$this->assertFalse(\is_resource($stream), 'the stream must be closed once getThumbnail() returns');
 		$this->assertNotFalse($result, 'a TIFF should decode through the TIFF provider');
 	}
 
 	/**
-	 * Skips on exactly one condition - no TIFF coder in this build at all - and lets
-	 * every other failure be loud.
+	 * Skips when this build has no TIFF support, and is loud about everything else.
 	 *
-	 * That line is deliberate rather than convenient. A skip here costs the success-path
+	 * That line is deliberate rather than convenient. A skip costs the success-path
 	 * fclose() assertion, and a guard quietly withholding these assertions is how they
-	 * came to never run in CI in the first place, so anything that is a misconfiguration
-	 * rather than an absent feature should be visible: revoked TIFF coder rights, a
-	 * broken policy.xml, a wand that cannot be constructed. TIFF is safe to hold to that
-	 * standard because no stock policy revokes it - unlike PDF, which Debian and Ubuntu
-	 * deny out of the box, and which is why this does not use a PDF.
+	 * came to never run in CI in the first place - so an absent feature may skip, while a
+	 * broken setup (revoked coder rights, an unparsable policy.xml, a wand that will not
+	 * construct) has to be visible.
 	 *
-	 * This does not attempt to prove the whole path: getThumbnail() also needs PNG
-	 * encoding and GD to read the result back. Both are hard requirements of the product
-	 * (composer.json requires ext-gd), and PNG output is what every preview in ownCloud
-	 * depends on, so a build failing those should fail this test rather than skip it.
+	 * The two are told apart by what ImageMagick reports, because no registration check
+	 * can do it: coders/tiff.c registers TIFF, TIF, TIFF64 and friends unconditionally
+	 * and only assigns the decoder/encoder pointers when built against libtiff, while
+	 * GetMagickList() behind queryFormats() matches on the coder name alone. A build with
+	 * no libtiff therefore reports TIFF as registered and then fails with MagickCore's
+	 * "no encode delegate for this image format", whereas a policy denial says "not
+	 * allowed by the security policy" - so the message is what separates them.
+	 *
+	 * Both directions are exercised: coder rights are granted per direction, so writing a
+	 * TIFF does not establish that one can be read back, which is what the assertion
+	 * actually needs.
+	 *
+	 * This deliberately does not try to prove the whole path - getThumbnail() also needs
+	 * PNG encoding and GD to load the result. Both are hard product requirements
+	 * (composer.json requires ext-gd) and PNG output underpins every ownCloud preview, so
+	 * a build failing those should fail this test rather than skip it.
 	 */
 	private function tiffBlob(): string {
-		if (\count(\Imagick::queryFormats('TIFF')) === 0) {
-			$this->markTestSkipped('This ImageMagick build registers no TIFF coder');
-		}
 		$image = new \Imagick();
 		try {
 			$image->newImage(64, 48, new \ImagickPixel('white'));
 			$image->setImageFormat('tiff');
-			return $image->getImageBlob();
+			$blob = $image->getImageBlob();
+
+			$probe = new \Imagick();
+			try {
+				$probe->readImageBlob($blob);
+			} finally {
+				$probe->clear();
+			}
+			return $blob;
+		} catch (\Exception $e) {
+			# \Exception rather than \ImagickException: ImagickPixelException extends
+			# \Exception directly and is a sibling, not a subclass
+			$message = $e->getMessage();
+			if (\stripos($message, 'no encode delegate') !== false
+				|| \stripos($message, 'no decode delegate') !== false
+			) {
+				$this->markTestSkipped('This ImageMagick build has no TIFF delegate: ' . $message);
+			}
+			throw $e;
 		} finally {
 			$image->clear();
 		}
