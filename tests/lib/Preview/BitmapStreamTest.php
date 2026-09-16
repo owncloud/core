@@ -112,13 +112,26 @@ class BitmapStreamTest extends TestCase {
 	 * broken setup (revoked coder rights, an unparsable policy.xml, a wand that will not
 	 * construct) has to be visible.
 	 *
-	 * The two are told apart by what ImageMagick reports, because no registration check
-	 * can do it: coders/tiff.c registers TIFF, TIF, TIFF64 and friends unconditionally
-	 * and only assigns the decoder/encoder pointers when built against libtiff, while
-	 * GetMagickList() behind queryFormats() matches on the coder name alone. A build with
-	 * no libtiff therefore reports TIFF as registered and then fails with MagickCore's
-	 * "no encode delegate for this image format", whereas a policy denial says "not
-	 * allowed by the security policy" - so the message is what separates them.
+	 * It takes two checks, because neither sees the other's case. Without libtiff, a
+	 * modular build (Debian and Ubuntu configure --with-modules) never builds
+	 * coders/tiff.so, so TIFF is not registered and setImageFormat() fails before any
+	 * delegate is consulted - queryFormats() is what catches that. A non-modular build
+	 * registers TIFF regardless, because coders/tiff.c registers the entries
+	 * unconditionally and only assigns the decoder/encoder pointers when libtiff is
+	 * present, while GetMagickList() behind queryFormats() matches on the name alone; that
+	 * one fails later with MagickCore's "no encode delegate for this image format", which
+	 * is what the message check catches. A policy denial instead says "not allowed by the
+	 * security policy" and stays loud.
+	 *
+	 * Known limit: a module- or coder-domain policy denial can itself surface as
+	 * MissingDelegateError, which is textually identical to an absent delegate. Such a
+	 * build skips rather than failing. Rather than guess, this only rejects messages that
+	 * name a policy outright.
+	 *
+	 * TIFF rather than PDF because no stock policy revokes it, whereas Debian and Ubuntu
+	 * deny PDF out of the box. An allowlist-style policy.xml that denies all coders bar a
+	 * handful would still fail here - an accepted cost, since being loud about a
+	 * misconfiguration is the point.
 	 *
 	 * Both directions are exercised: coder rights are granted per direction, so writing a
 	 * TIFF does not establish that one can be read back, which is what the assertion
@@ -130,6 +143,9 @@ class BitmapStreamTest extends TestCase {
 	 * a build failing those should fail this test rather than skip it.
 	 */
 	private function tiffBlob(): string {
+		if (\count(\Imagick::queryFormats('TIFF')) === 0) {
+			$this->markTestSkipped('This ImageMagick build registers no TIFF coder');
+		}
 		$image = new \Imagick();
 		try {
 			$image->newImage(64, 48, new \ImagickPixel('white'));
@@ -147,9 +163,11 @@ class BitmapStreamTest extends TestCase {
 			# \Exception rather than \ImagickException: ImagickPixelException extends
 			# \Exception directly and is a sibling, not a subclass
 			$message = $e->getMessage();
-			if (\stripos($message, 'no encode delegate') !== false
-				|| \stripos($message, 'no decode delegate') !== false
-			) {
+			$missingDelegate = \stripos($message, 'no encode delegate') !== false
+				|| \stripos($message, 'no decode delegate') !== false;
+			$namesAPolicy = \stripos($message, 'policy') !== false
+				|| \stripos($message, 'not authorized') !== false;
+			if ($missingDelegate && !$namesAPolicy) {
 				$this->markTestSkipped('This ImageMagick build has no TIFF delegate: ' . $message);
 			}
 			throw $e;
