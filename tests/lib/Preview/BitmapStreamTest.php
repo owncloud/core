@@ -59,16 +59,20 @@ class BitmapStreamTest extends TestCase {
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
 	 *
-	 * Needs no particular coder registered for the payload's own sake: ImageMagick's SVG
-	 * coder claims any blob opening with "<?xml" and then fails on a document with no
-	 * <svg> root, so readImageBlob() throws on every build. On #41827 it does not reach a
-	 * coder at all, because the mime gate rejects XML first. Either way the throw is what
-	 * this asserts about - but a different XML payload is not automatically substitutable,
-	 * since the guarantee rests on SVG rendering erroring out.
+	 * The payload is bytes no coder claims: ImageMagick sniffs the format as "" and
+	 * readImageBlob() fails with "no decode delegate for this image format `'" on every
+	 * build, whatever delegates it has. That is deliberate. An XML payload would be
+	 * claimed by the SVG coder - IsSVG() matches any blob opening with "<?xml" - and would
+	 * then throw only where no SVG renderer is registered; with librsvg or the internal
+	 * MSVG renderer present, the lenient parser returns a blank canvas instead and this
+	 * case would fail for reasons unrelated to the stream.
+	 *
+	 * libmagic reads it as application/octet-stream, so it is not text and reaches the
+	 * decode on #41827 too, rather than being turned away by that branch's mime gate.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
 		list($file, $stream) = $this->makeFile(
-			'<?xml version="1.0"?><notanimage>x</notanimage>',
+			"\x00\x01\x02\x03 oc10-164 not an image \xff\xfe",
 			'application/x-photoshop'
 		);
 
