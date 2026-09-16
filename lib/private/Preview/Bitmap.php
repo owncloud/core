@@ -45,6 +45,13 @@ abstract class Bitmap implements IProvider2 {
 			return false;
 		}
 		$stream = $file->fopen('r');
+		if ($stream === false) {
+			// stream_get_contents() below cannot report this: on PHP 7.4 it warns and hands
+			// on false, so the failure is only noticed as a misleading decoder error later
+			// (and on PHP 8 it raises a TypeError, which escapes the handler underneath)
+			Util::writeLog('core', 'Could not open ' . $file->getPath() . ' for a preview', Util::ERROR);
+			return false;
+		}
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
@@ -52,9 +59,11 @@ abstract class Bitmap implements IProvider2 {
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
+		} finally {
+			// also on the failure path: any content ImageMagick has no coder for lands
+			// here, so leaking the handle would be routine rather than exceptional
+			\fclose($stream);
 		}
-
-		\fclose($stream);
 
 		//new bitmap image object
 		$image = new \OC_Image();
