@@ -76,10 +76,16 @@ class BitmapStreamTest extends TestCase {
 		# on #41834's tree a build whose libmagic called these bytes text/* would refuse
 		# them at the mime gate, keep this test green, and quietly stop covering the decode
 		# this test is named for.
-		# Mirrors isDangerousToDecode() rather than pinning one exact classification: any
-		# binary type reaches the decode, so asserting "octet-stream" specifically would
-		# fail on a libmagic that matched these bytes to some other binary magic entry
-		# while the behaviour under test was still correct.
+		# Mirrors the deny-list in OC\Preview\Bitmap::isDangerousToDecode(), which #41834
+		# adds and which is private, so it cannot be called from here. Mirroring beats
+		# pinning one exact classification: any binary type reaches the decode, so asserting
+		# "octet-stream" specifically would fail on a libmagic that matched these bytes to
+		# another binary magic entry while the behaviour under test was still correct.
+		#
+		# The copy is the cost. If that deny-list gains an entry - its own comment
+		# anticipates more text-ish types - this has to gain it too, or the payload starts
+		# being refused at the gate while this assertion stays green and the decode goes
+		# uncovered. Grep for isDangerousToDecode when changing either.
 		$detected = \strtolower(\trim(\explode(';', \OC::$server->getMimeTypeDetector()->detectString($content), 2)[0]));
 		$refusedBeforeDecoding = \strpos($detected, 'text/') === 0
 			|| \strpos($detected, 'image/svg') === 0
@@ -146,10 +152,13 @@ class BitmapStreamTest extends TestCase {
 	 * The mime type is stubbed even though the guard returns before reading it, so that the
 	 * case does not depend on where in getThumbnail() the mime type is first touched.
 	 *
-	 * It does not make the file runnable on a tree without that guard, and nothing can:
-	 * every case here asserts behaviour the guard and the finally introduced, so on a
-	 * branch predating them they fail by design. That is why this belongs on master rather
-	 * than folded into #41834 - CI builds the head-into-base merge, which always has both.
+	 * It does not make the file runnable on a tree without that guard. This case and the
+	 * undecodable one assert what the guard and the finally introduced, so on a branch
+	 * predating them they fail by design - measured on #41834's branch: one error, one
+	 * failure. testClosesTheStreamOnSuccess is not among them, since fclose() on the
+	 * success path predates #41835, which only moved it into the finally. That is why this
+	 * belongs on master rather than folded into #41834: CI builds the head-into-base merge
+	 * commit, which always carries both.
 	 */
 	public function testReturnsFalseWhenTheFileCannotBeOpened(): void {
 		$file = $this->createMock(File::class);
