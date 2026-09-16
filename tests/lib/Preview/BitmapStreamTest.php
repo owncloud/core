@@ -76,10 +76,17 @@ class BitmapStreamTest extends TestCase {
 		# on #41834's tree a build whose libmagic called these bytes text/* would refuse
 		# them at the mime gate, keep this test green, and quietly stop covering the decode
 		# this test is named for.
-		$this->assertStringStartsWith(
-			'application/octet-stream',
-			\OC::$server->getMimeTypeDetector()->detectString($content),
-			'the payload must not read as text, or the decode is never reached on the pinned branch'
+		# Mirrors isDangerousToDecode() rather than pinning one exact classification: any
+		# binary type reaches the decode, so asserting "octet-stream" specifically would
+		# fail on a libmagic that matched these bytes to some other binary magic entry
+		# while the behaviour under test was still correct.
+		$detected = \strtolower(\trim(\explode(';', \OC::$server->getMimeTypeDetector()->detectString($content), 2)[0]));
+		$refusedBeforeDecoding = \strpos($detected, 'text/') === 0
+			|| \strpos($detected, 'image/svg') === 0
+			|| \in_array($detected, ['application/xml', 'image/x-mvg'], true);
+		$this->assertFalse(
+			$refusedBeforeDecoding,
+			"the payload must reach the decode rather than the pre-decode mime gate, got: $detected"
 		);
 		list($file, $stream) = $this->makeFile($content, 'application/x-photoshop');
 
@@ -134,11 +141,20 @@ class BitmapStreamTest extends TestCase {
 	 * A storage that cannot open the file returns false rather than throwing, and
 	 * stream_get_contents(false) raises a TypeError - an \Error, so it would escape the
 	 * \Exception handler in getThumbnail() and surface as a 500 instead of a missing
-	 * preview. No mime type is stubbed here on purpose: this returns before one is read.
+	 * preview.
+	 *
+	 * The mime type is stubbed even though the guard returns before reading it, so that the
+	 * case does not depend on where in getThumbnail() the mime type is first touched.
+	 *
+	 * It does not make the file runnable on a tree without that guard, and nothing can:
+	 * every case here asserts behaviour the guard and the finally introduced, so on a
+	 * branch predating them they fail by design. That is why this belongs on master rather
+	 * than folded into #41834 - CI builds the head-into-base merge, which always has both.
 	 */
 	public function testReturnsFalseWhenTheFileCannotBeOpened(): void {
 		$file = $this->createMock(File::class);
 		$file->method('fopen')->willReturn(false);
+		$file->method('getMimeType')->willReturn('application/x-photoshop');
 		$file->method('getSize')->willReturn(1024);
 		$file->method('getPath')->willReturn('/test/unopenable');
 
