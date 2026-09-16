@@ -82,11 +82,11 @@ class BitmapStreamTest extends TestCase {
 		# "octet-stream" specifically would fail on a libmagic that matched these bytes to
 		# another binary magic entry while the behaviour under test was still correct.
 		#
-		# The copy is the cost, and only one kind of change drifts: an entry the `text/`
-		# prefix below does not already match, i.e. another of the application/xml or
-		# image/x-mvg shape. Add such an entry there without adding it here and the payload
-		# can start being refused at the gate while this assertion stays green, leaving the
-		# decode uncovered. Grep for isDangerousToDecode when changing either.
+		# The copy is the cost. What drifts is a deny-list entry that none of the three rules
+		# below already match, whether it is written as an exact match or as a prefix. Add
+		# one there without adding it here and the payload can start being refused at the
+		# gate while this assertion stays green, leaving the decode uncovered. Grep for
+		# isDangerousToDecode when changing either.
 		$detected = \strtolower(\trim(\explode(';', \OC::$server->getMimeTypeDetector()->detectString($content), 2)[0]));
 		$refusedBeforeDecoding = \strpos($detected, 'text/') === 0
 			|| \strpos($detected, 'image/svg') === 0
