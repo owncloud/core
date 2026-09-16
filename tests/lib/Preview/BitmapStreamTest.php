@@ -58,27 +58,37 @@ class BitmapStreamTest extends TestCase {
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
 	 *
-	 * The payload is bytes no coder claims, so ImageMagick sniffs the format as "" and
-	 * readImageBlob() fails identically on every build. An XML payload also throws
-	 * everywhere measured, but for a reason that varies with the build - no SVG delegate,
-	 * or a denied MVG coder, or MVG's own "must specify image size" once the coders are
-	 * installed and the policy opened - and libmagic reads it as text/xml, which #41827's
-	 * mime gate rejects before the decode is reached at all.
+	 * The payload is bytes no coder claims. Here that means ImageMagick sniffs the format
+	 * as "" and readImageBlob() reports no decode delegate; under #41827's pin there is no
+	 * sniffing at all and the pinned coder rejects the header instead. Different messages,
+	 * same outcome, and neither depends on which delegates the build happens to have.
 	 *
-	 * These bytes are read as application/octet-stream instead, so they are not text and
-	 * still reach the decode on that branch. Keeping the failure in one place, for one
-	 * reason, on both trees is the point.
+	 * An XML payload also throws everywhere measured, but for a reason that varies with the
+	 * build - no SVG delegate, or a denied MVG coder, or MVG's own "must specify image
+	 * size" once the coders are installed and the policy opened. More importantly libmagic
+	 * reads it as text/xml, and #41827 adds a pre-decode mime gate that denies text/*, so
+	 * it would stop reaching the decode at all on that branch. These bytes read as
+	 * application/octet-stream, which the assertion below pins so the drift is visible.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
-		list($file, $stream) = $this->makeFile(
-			"\x00\x01\x02\x03 oc10-164 not an image \xff\xfe",
-			'application/x-photoshop'
+		$content = "\x00\x01\x02\x03 oc10-164 not an image \xff\xfe";
+		# Pin why this throws. Both assertions below are satisfied by any early return, so
+		# on #41827's tree a build whose libmagic called these bytes text/* would refuse
+		# them at the mime gate, keep this test green, and quietly stop covering the decode
+		# this test is named for.
+		$this->assertStringStartsWith(
+			'application/octet-stream',
+			\OC::$server->getMimeTypeDetector()->detectString($content),
+			'the payload must not read as text, or the decode is never reached on the pinned branch'
 		);
+		list($file, $stream) = $this->makeFile($content, 'application/x-photoshop');
 
 		$result = (new Photoshop())->getThumbnail($file, 32, 32, false);
 
+		# stream first, as in testClosesTheStreamOnSuccess: PHPUnit stops at the first
+		# failure, and the handle is the regression guard worth keeping
+		$this->assertFalse(\is_resource($stream), 'the stream must be closed once getThumbnail() returns');
 		$this->assertFalse($result, 'undecodable content must not produce a preview');
-		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the failure path');
 	}
 
 	/**
