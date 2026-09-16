@@ -31,12 +31,11 @@ use Test\TestCase;
  */
 class BitmapStreamTest extends TestCase {
 	/**
-	 * The mime type is stubbed even though nothing in this tree reads it yet. It
-	 * anticipates the coder-pin change on #41827, where Bitmap providers derive the
-	 * Imagick coder from $file->getMimeType() and getResizedPreview() declares that
-	 * parameter as string: an unstubbed mock yields null, which is a TypeError rather
-	 * than a failed preview, and a TypeError is an \Error, so it escapes
-	 * getThumbnail()'s \Exception handler entirely.
+	 * Every File mock here must stub getMimeType(). Bitmap providers derive the Imagick
+	 * coder from it, and getResizedPreview() declares that parameter as string, so an
+	 * unstubbed mock yields null and a TypeError - which is an \Error, and therefore
+	 * escapes getThumbnail()'s \Exception handler instead of degrading to no preview.
+	 * Required rather than speculative: dropping these stubs is what turned #41827 red.
 	 *
 	 * @return array{0: File, 1: resource}
 	 */
@@ -59,16 +58,16 @@ class BitmapStreamTest extends TestCase {
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
 	 *
-	 * The payload is bytes no coder claims: ImageMagick sniffs the format as "" and
-	 * readImageBlob() fails with "no decode delegate for this image format `'" on every
-	 * build, whatever delegates it has. That is deliberate. An XML payload would be
-	 * claimed by the SVG coder - IsSVG() matches any blob opening with "<?xml" - and would
-	 * then throw only where no SVG renderer is registered; with librsvg or the internal
-	 * MSVG renderer present, the lenient parser returns a blank canvas instead and this
-	 * case would fail for reasons unrelated to the stream.
+	 * The payload is bytes no coder claims, so ImageMagick sniffs the format as "" and
+	 * readImageBlob() fails identically on every build. An XML payload also throws
+	 * everywhere measured, but for a reason that varies with the build - no SVG delegate,
+	 * or a denied MVG coder, or MVG's own "must specify image size" once the coders are
+	 * installed and the policy opened - and libmagic reads it as text/xml, which #41827's
+	 * mime gate rejects before the decode is reached at all.
 	 *
-	 * libmagic reads it as application/octet-stream, so it is not text and reaches the
-	 * decode on #41827 too, rather than being turned away by that branch's mime gate.
+	 * These bytes are read as application/octet-stream instead, so they are not text and
+	 * still reach the decode on that branch. Keeping the failure in one place, for one
+	 * reason, on both trees is the point.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
 		list($file, $stream) = $this->makeFile(
@@ -116,30 +115,24 @@ class BitmapStreamTest extends TestCase {
 	 * broken setup (revoked coder rights, an unparsable policy.xml, a wand that will not
 	 * construct) has to be visible.
 	 *
-	 * It takes two checks, because neither sees the other's case. Without libtiff, a
-	 * modular build (Debian and Ubuntu configure --with-modules) never builds
-	 * coders/tiff.so, so TIFF is not registered and setImageFormat() fails before any
-	 * delegate is consulted - queryFormats() is what catches that. A non-modular build
-	 * registers TIFF regardless, because coders/tiff.c registers the entries
-	 * unconditionally and only assigns the decoder/encoder pointers when libtiff is
-	 * present, while GetMagickList() behind queryFormats() matches on the name alone; that
-	 * one fails later with MagickCore's "no encode delegate for this image format", which
-	 * is what the message check catches. A policy denial instead says "not allowed by the
-	 * security policy" and stays loud.
+	 * It takes two checks, because neither sees the other's case. Depending on how
+	 * ImageMagick was built, a missing libtiff either leaves TIFF unregistered - which
+	 * queryFormats() catches - or leaves it registered and failing later at the delegate,
+	 * which the message check catches. A policy denial says "not allowed by the security
+	 * policy" instead and stays loud.
 	 *
 	 * Known limit: a module- or coder-domain policy denial can itself surface as
-	 * MissingDelegateError, which is textually identical to an absent delegate. Such a
-	 * build skips rather than failing. Rather than guess, this only rejects messages that
-	 * name a policy outright.
+	 * MissingDelegateError, textually identical to an absent delegate, so such a build
+	 * skips. Rather than guess, this only rejects messages naming a policy outright.
 	 *
 	 * TIFF rather than PDF because no stock policy revokes it, whereas Debian and Ubuntu
-	 * deny PDF out of the box. An allowlist-style policy.xml that denies all coders bar a
+	 * deny PDF out of the box. An allowlist-style policy.xml denying all coders bar a
 	 * handful would still fail here - an accepted cost, since being loud about a
 	 * misconfiguration is the point.
 	 *
-	 * Both directions are exercised: coder rights are granted per direction, so writing a
-	 * TIFF does not establish that one can be read back, which is what the assertion
-	 * actually needs.
+	 * Both directions are exercised because writing a TIFF does not establish that one can
+	 * be read back, and reading is what the assertion needs. Measured: with TIFF coder
+	 * rights revoked, getImageBlob() still returned a blob and only the read-back raised.
 	 *
 	 * This deliberately does not try to prove the whole path - getThumbnail() also needs
 	 * PNG encoding and GD to load the result. Both are hard product requirements
