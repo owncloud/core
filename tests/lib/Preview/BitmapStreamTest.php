@@ -83,52 +83,53 @@ class BitmapStreamTest extends TestCase {
 	 * whether the provider decodes by pinning a coder (#41827) or by letting ImageMagick
 	 * sniff one.
 	 *
-	 * TIFF rather than PDF, and a blob this test writes itself rather than a fixture:
-	 * PDF decoding depends on the Ghostscript delegate and is the coder most likely to
-	 * be revoked by a hardened policy.xml, neither of which queryFormats() reports - so
-	 * gating on it would leave this red on exactly the images OC10-164 hardens. Writing
-	 * and reading the blob with the same build cannot disagree with itself.
+	 * TIFF rather than PDF, and a blob this test writes itself rather than a fixture: PDF
+	 * decoding needs the Ghostscript delegate and is denied by Debian's and Ubuntu's
+	 * stock policy.xml, neither of which queryFormats() reports - so gating on a PDF
+	 * would be red on a plain apt-installed ImageMagick rather than skipped.
+	 *
+	 * The stream is asserted before the decode result, so that an environment which
+	 * cannot decode the blob still exercises the handle-release behaviour under test and
+	 * reports the decode as the failure it is.
 	 */
 	public function testClosesTheStreamOnSuccess(): void {
 		list($file, $stream) = $this->makeFile($this->tiffBlob(), 'image/tiff');
 
 		$result = (new TIFF())->getThumbnail($file, 32, 32, false);
 
-		$this->assertNotFalse($result, 'a TIFF should decode through the TIFF provider');
 		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the success path');
+		$this->assertNotFalse($result, 'a TIFF should decode through the TIFF provider');
 	}
 
 	/**
-	 * A TIFF needs no external delegate, so this skips only where the build cannot
-	 * round-trip one - in which case the assertions above could not run either way.
+	 * Skips on exactly one condition - no TIFF coder in this build at all - and lets
+	 * every other failure be loud.
 	 *
-	 * The blob is read back inside the guard on purpose: coder rights are granted per
-	 * direction, so writing a TIFF does not establish that this build can read one.
-	 * Probing only the write half would let a write-but-not-read build produce a blob,
-	 * decline to skip, and then fail red - the failure mode this guard exists to remove.
+	 * That line is deliberate rather than convenient. A skip here costs the success-path
+	 * fclose() assertion, and a guard quietly withholding these assertions is how they
+	 * came to never run in CI in the first place, so anything that is a misconfiguration
+	 * rather than an absent feature should be visible: revoked TIFF coder rights, a
+	 * broken policy.xml, a wand that cannot be constructed. TIFF is safe to hold to that
+	 * standard because no stock policy revokes it - unlike PDF, which Debian and Ubuntu
+	 * deny out of the box, and which is why this does not use a PDF.
+	 *
+	 * This does not attempt to prove the whole path: getThumbnail() also needs PNG
+	 * encoding and GD to read the result back. Both are hard requirements of the product
+	 * (composer.json requires ext-gd), and PNG output is what every preview in ownCloud
+	 * depends on, so a build failing those should fail this test rather than skip it.
 	 */
 	private function tiffBlob(): string {
+		if (\count(\Imagick::queryFormats('TIFF')) === 0) {
+			$this->markTestSkipped('This ImageMagick build registers no TIFF coder');
+		}
 		$image = new \Imagick();
 		try {
 			$image->newImage(64, 48, new \ImagickPixel('white'));
 			$image->setImageFormat('tiff');
-			$blob = $image->getImageBlob();
-
-			$probe = new \Imagick();
-			try {
-				$probe->readImageBlob($blob);
-			} finally {
-				$probe->clear();
-			}
-		} catch (\Exception $e) {
-			# \Exception, not \ImagickException: ImagickPixelException extends \Exception
-			# directly and is a sibling of ImagickException, so a pixel-wand failure would
-			# otherwise escape as an error rather than the intended skip
-			$this->markTestSkipped('This ImageMagick build cannot round-trip a TIFF: ' . $e->getMessage());
+			return $image->getImageBlob();
 		} finally {
 			$image->clear();
 		}
-		return $blob;
 	}
 
 	/**
