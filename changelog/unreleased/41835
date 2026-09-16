@@ -1,0 +1,12 @@
+Bugfix: Release the file handle when a bitmap preview cannot be decoded
+
+Bitmap previews closed the file they had opened only when decoding succeeded, so
+every file that could not be decoded leaked a file handle for the lifetime of
+the process. Generating previews for a directory of files that ImageMagick has
+no decoder for could therefore exhaust the available file handles.
+
+A file that cannot be opened at all is now reported as having no preview right
+away, instead of travelling on until ImageMagick rejects the empty content and an
+unrelated warning plus a misleading decoder error have been logged.
+
+https://github.com/owncloud/core/pull/41835
