@@ -12,4 +12,12 @@ Each provider now pins the exact Imagick coder it expects instead of letting
 ImageMagick guess from the file's content. The pin is applied in memory, so
 preview generation adds no filesystem access and no temporary file.
 
+Because media types are derived from the file name extension, a file whose
+extension does not match its actual content no longer gets a preview: a JPEG
+saved as photo.tif is routed to the TIFF provider, pinned to the TIFF coder,
+and falls back to a media type icon where content sniffing previously rendered
+it. This affects the tif, psd, sgi, heic and ai extensions and is the intended
+trade-off - content sniffing is what allowed a preview provider to be steered
+to an unrelated coder in the first place.
+
 https://github.com/owncloud/core/pull/41834

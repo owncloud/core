@@ -36,11 +36,10 @@ class SanitizeTest extends TestCase {
 	 * @dataProvider providesSVG
 	 */
 	public function test(string $svgContent, Bitmap $provider, string $mimeType): void {
-		# these are the coders the two providers below pin; an SVG coder is deliberately
-		# not required, since the whole point is that this content never reaches Imagick
-		if (\count(\Imagick::queryFormats('PDF')) === 0 || \count(\Imagick::queryFormats('TTF')) === 0) {
-			$this->markTestSkipped('This ImageMagick build registers no PDF/TTF coder');
-		}
+		# no coder guard on purpose: isDangerousToDecode() rejects this content before
+		# ImagickFactory::create() and before setFormat(), so these cases never reach a
+		# coder at all. Requiring one would only let a reduced build skip the OC10-164
+		# regression assertions silently.
 		# mock it all ....
 		$stream = fopen('php://memory', 'rb+');
 		fwrite($stream, $svgContent);

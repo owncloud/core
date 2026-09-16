@@ -37,16 +37,19 @@ class PDFTest extends Provider {
 	 * @throws NotFoundException
 	 */
 	public function setUp(): void {
-		if (\count(\Imagick::queryFormats('SVG')) === 1) {
-			parent::setUp();
-
-			$fileName = 'testimage.pdf';
-			$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-			$this->width = 595;
-			$this->height = 842;
-			$this->provider = new PDF();
-		} else {
-			$this->markTestSkipped('No PDF provider present');
+		# PDF is the coder PDF::getImagickFormat() pins. This used to gate on the SVG
+		# coder, which this provider never touches - so on any build registering no SVG
+		# coder (owncloudci/php:8.3 among them) every case here skipped, reporting "No
+		# PDF provider present" while the PDF coder was in fact present.
+		if (\count(\Imagick::queryFormats('PDF')) === 0) {
+			$this->markTestSkipped('This ImageMagick build registers no PDF coder');
 		}
+		parent::setUp();
+
+		$fileName = 'testimage.pdf';
+		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
+		$this->width = 595;
+		$this->height = 842;
+		$this->provider = new PDF();
 	}
 }
