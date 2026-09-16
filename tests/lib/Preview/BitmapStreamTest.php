@@ -82,10 +82,11 @@ class BitmapStreamTest extends TestCase {
 		# "octet-stream" specifically would fail on a libmagic that matched these bytes to
 		# another binary magic entry while the behaviour under test was still correct.
 		#
-		# The copy is the cost. If that deny-list gains an entry - its own comment
-		# anticipates more text-ish types - this has to gain it too, or the payload starts
-		# being refused at the gate while this assertion stays green and the decode goes
-		# uncovered. Grep for isDangerousToDecode when changing either.
+		# The copy is the cost, and only one kind of change drifts: an entry the `text/`
+		# prefix below does not already match, i.e. another of the application/xml or
+		# image/x-mvg shape. Add such an entry there without adding it here and the payload
+		# can start being refused at the gate while this assertion stays green, leaving the
+		# decode uncovered. Grep for isDangerousToDecode when changing either.
 		$detected = \strtolower(\trim(\explode(';', \OC::$server->getMimeTypeDetector()->detectString($content), 2)[0]));
 		$refusedBeforeDecoding = \strpos($detected, 'text/') === 0
 			|| \strpos($detected, 'image/svg') === 0
@@ -156,9 +157,7 @@ class BitmapStreamTest extends TestCase {
 	 * undecodable one assert what the guard and the finally introduced, so on a branch
 	 * predating them they fail by design - measured on #41834's branch: one error, one
 	 * failure. testClosesTheStreamOnSuccess is not among them, since fclose() on the
-	 * success path predates #41835, which only moved it into the finally. That is why this
-	 * belongs on master rather than folded into #41834: CI builds the head-into-base merge
-	 * commit, which always carries both.
+	 * success path predates #41835, which only moved it into the finally.
 	 */
 	public function testReturnsFalseWhenTheFileCannotBeOpened(): void {
 		$file = $this->createMock(File::class);
