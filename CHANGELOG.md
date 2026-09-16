@@ -45,6 +45,7 @@ ownCloud admins and users.
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41807](https://github.com/owncloud/core/pull/41807)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
+* Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 * Change - Restore Oracle database support in the command line installer: [#41808](https://github.com/owncloud/core/pull/41808)
@@ -125,6 +126,18 @@ ownCloud admins and users.
    The value is now cast to a string before hashing.
 
    https://github.com/owncloud/core/pull/41808
+
+* Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
+
+   Bitmap previews closed the file they had opened only when decoding succeeded, so
+   every file that could not be decoded leaked a file handle for the lifetime of
+   the process. Generating previews for a directory of files that ImageMagick has
+   no decoder for could therefore exhaust the available file handles.
+
+   Bitmap previews for a file that cannot be opened at all now report no preview
+   instead of failing the whole request.
+
+   https://github.com/owncloud/core/pull/41835
 
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
 
