@@ -30,4 +30,8 @@ class TIFF extends Bitmap {
 	public function getMimeType() {
 		return '/image\/tiff/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		return 'TIFF';
+	}
 }

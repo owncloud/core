@@ -30,6 +30,12 @@ namespace Test\Preview;
  */
 class BitmapTest extends Provider {
 	public function setUp(): void {
+		# Postscript::getImagickFormat() pins EPS, so on a build without that coder this
+		# provider cannot decode the fixture at all. Unguarded, that is a failure rather
+		# than a skip - previously ImageMagick's own sniffing hid the dependency.
+		if (\count(\Imagick::queryFormats('EPS')) === 0) {
+			$this->markTestSkipped('This ImageMagick build registers no EPS coder');
+		}
 		parent::setUp();
 
 		$fileName = 'testimage.eps';

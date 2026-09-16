@@ -75,8 +75,21 @@ class SVG implements IProvider2 {
 				return false;
 			}
 
+			# Pin the coder so Imagick's own content-sniffing cannot pick a different one
+			# than the svg:sanitize/embed/decode options set by ImagickFactory assume.
+			# Guarded, unlike Bitmap.php: a build that registers no SVG coder cannot be
+			# pinned to it and cannot decode SVG at all either way, and $output here is
+			# already DOMSanitizer's serialized output rather than the raw file bytes.
+			if (\count(\Imagick::queryFormats('SVG')) > 0) {
+				$imagick->setFormat('SVG');
+			}
 			$imagick->readImageBlob($output);
+
+			# setFormat() above pins the wand's *output* format as well as the input
+			# coder, so both have to be set - setImageFormat() alone would leave
+			# getImageBlob() below re-encoding back to SVG instead of PNG.
 			$imagick->setImageFormat('png32');
+			$imagick->setFormat('png32');
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
