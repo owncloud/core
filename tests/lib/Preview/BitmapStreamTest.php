@@ -21,6 +21,7 @@
 
 namespace Test\Preview;
 
+use OC\Preview\PDF;
 use OC\Preview\Photoshop;
 use OCP\Files\File;
 use Test\TestCase;
@@ -30,14 +31,21 @@ use Test\TestCase;
  */
 class BitmapStreamTest extends TestCase {
 	/**
+	 * The mime type has to be stubbed even where this test does not care about it:
+	 * Bitmap providers read $file->getMimeType() to decide which Imagick coder to use,
+	 * and an unstubbed mock returns null, which is a TypeError rather than a bad
+	 * preview - and a TypeError is an \Error, so it escapes getThumbnail()'s
+	 * \Exception handler entirely.
+	 *
 	 * @return array{0: File, 1: resource}
 	 */
-	private function makeFile(string $content): array {
+	private function makeFile(string $content, string $mimeType): array {
 		$stream = \fopen('php://memory', 'rb+');
 		\fwrite($stream, $content);
 		\rewind($stream);
 		$file = $this->createMock(File::class);
 		$file->method('fopen')->willReturn($stream);
+		$file->method('getMimeType')->willReturn($mimeType);
 		$file->method('getSize')->willReturn(\strlen($content));
 		$file->method('getPath')->willReturn('/test/bitmap-stream');
 		return [$file, $stream];
@@ -49,9 +57,15 @@ class BitmapStreamTest extends TestCase {
 	 * released on that path too. Otherwise a preview pre-generation run, or a cron
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
+	 *
+	 * XML content is rejected before any coder is consulted, so this case needs no
+	 * particular coder to be registered.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
-		list($file, $stream) = $this->makeFile('<?xml version="1.0"?><notanimage>x</notanimage>');
+		list($file, $stream) = $this->makeFile(
+			'<?xml version="1.0"?><notanimage>x</notanimage>',
+			'application/x-photoshop'
+		);
 
 		$result = (new Photoshop())->getThumbnail($file, 32, 32, false);
 
@@ -59,13 +73,21 @@ class BitmapStreamTest extends TestCase {
 		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the failure path');
 	}
 
+	/**
+	 * Uses PDF against a PDF, so the provider, the file's mime type and the content all
+	 * agree - the success path has to stay a success regardless of whether the provider
+	 * decodes by pinning a coder or by letting ImageMagick sniff one.
+	 */
 	public function testClosesTheStreamOnSuccess(): void {
-		$png = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.png');
-		list($file, $stream) = $this->makeFile($png);
+		if (\count(\Imagick::queryFormats('PDF')) === 0) {
+			$this->markTestSkipped('This ImageMagick build registers no PDF coder');
+		}
+		$pdf = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.pdf');
+		list($file, $stream) = $this->makeFile($pdf, 'application/pdf');
 
-		$result = (new Photoshop())->getThumbnail($file, 32, 32, false);
+		$result = (new PDF())->getThumbnail($file, 32, 32, false);
 
-		$this->assertNotFalse($result, 'a PNG should still decode');
+		$this->assertNotFalse($result, 'a PDF should decode through the PDF provider');
 		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the success path');
 	}
 
@@ -78,6 +100,7 @@ class BitmapStreamTest extends TestCase {
 	public function testReturnsFalseWhenTheFileCannotBeOpened(): void {
 		$file = $this->createMock(File::class);
 		$file->method('fopen')->willReturn(false);
+		$file->method('getMimeType')->willReturn('application/x-photoshop');
 		$file->method('getSize')->willReturn(1024);
 		$file->method('getPath')->willReturn('/test/unopenable');
 
