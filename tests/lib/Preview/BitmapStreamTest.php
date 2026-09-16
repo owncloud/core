@@ -21,8 +21,8 @@
 
 namespace Test\Preview;
 
-use OC\Preview\PDF;
 use OC\Preview\Photoshop;
+use OC\Preview\TIFF;
 use OCP\Files\File;
 use Test\TestCase;
 
@@ -31,11 +31,12 @@ use Test\TestCase;
  */
 class BitmapStreamTest extends TestCase {
 	/**
-	 * The mime type has to be stubbed even where this test does not care about it:
-	 * Bitmap providers read $file->getMimeType() to decide which Imagick coder to use,
-	 * and an unstubbed mock returns null, which is a TypeError rather than a bad
-	 * preview - and a TypeError is an \Error, so it escapes getThumbnail()'s
-	 * \Exception handler entirely.
+	 * The mime type is stubbed even though nothing in this tree reads it yet. It
+	 * anticipates the coder-pin change on #41827, where Bitmap providers derive the
+	 * Imagick coder from $file->getMimeType() and getResizedPreview() declares that
+	 * parameter as string: an unstubbed mock yields null, which is a TypeError rather
+	 * than a failed preview, and a TypeError is an \Error, so it escapes
+	 * getThumbnail()'s \Exception handler entirely.
 	 *
 	 * @return array{0: File, 1: resource}
 	 */
@@ -58,8 +59,9 @@ class BitmapStreamTest extends TestCase {
 	 * preview job, over a directory of undecodable files exhausts the process's
 	 * descriptors one file at a time.
 	 *
-	 * XML content is rejected before any coder is consulted, so this case needs no
-	 * particular coder to be registered.
+	 * Needs no particular coder: no build has one for non-image XML, so readImageBlob()
+	 * throws everywhere. On #41827 it never reaches a coder at all, because the mime
+	 * gate rejects XML first - either way the throw is what this asserts about.
 	 */
 	public function testClosesTheStreamWhenDecodingThrows(): void {
 		list($file, $stream) = $this->makeFile(
@@ -74,21 +76,40 @@ class BitmapStreamTest extends TestCase {
 	}
 
 	/**
-	 * Uses PDF against a PDF, so the provider, the file's mime type and the content all
-	 * agree - the success path has to stay a success regardless of whether the provider
-	 * decodes by pinning a coder or by letting ImageMagick sniff one.
+	 * Provider, mime type and content all agree, so the success path stays a success
+	 * whether the provider decodes by pinning a coder (#41827) or by letting ImageMagick
+	 * sniff one.
+	 *
+	 * TIFF rather than PDF, and a blob this test writes itself rather than a fixture:
+	 * PDF decoding depends on the Ghostscript delegate and is the coder most likely to
+	 * be revoked by a hardened policy.xml, neither of which queryFormats() reports - so
+	 * gating on it would leave this red on exactly the images OC10-164 hardens. Writing
+	 * and reading the blob with the same build cannot disagree with itself.
 	 */
 	public function testClosesTheStreamOnSuccess(): void {
-		if (\count(\Imagick::queryFormats('PDF')) === 0) {
-			$this->markTestSkipped('This ImageMagick build registers no PDF coder');
-		}
-		$pdf = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.pdf');
-		list($file, $stream) = $this->makeFile($pdf, 'application/pdf');
+		list($file, $stream) = $this->makeFile($this->tiffBlob(), 'image/tiff');
 
-		$result = (new PDF())->getThumbnail($file, 32, 32, false);
+		$result = (new TIFF())->getThumbnail($file, 32, 32, false);
 
-		$this->assertNotFalse($result, 'a PDF should decode through the PDF provider');
+		$this->assertNotFalse($result, 'a TIFF should decode through the TIFF provider');
 		$this->assertFalse(\is_resource($stream), 'the stream must be closed on the success path');
+	}
+
+	/**
+	 * A TIFF needs no external delegate, so this skips only where the build cannot
+	 * handle TIFF at all - in which case the assertions above could not run either way.
+	 */
+	private function tiffBlob(): string {
+		try {
+			$image = new \Imagick();
+			$image->newImage(64, 48, new \ImagickPixel('white'));
+			$image->setImageFormat('tiff');
+			$blob = $image->getImageBlob();
+			$image->clear();
+		} catch (\ImagickException $e) {
+			$this->markTestSkipped('This ImageMagick build cannot produce a TIFF: ' . $e->getMessage());
+		}
+		return $blob;
 	}
 
 	/**
