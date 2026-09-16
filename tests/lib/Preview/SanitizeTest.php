@@ -28,14 +28,18 @@ use OC\Preview\PDF;
 use OCP\Files\File;
 use Test\TestCase;
 
+/**
+ * @requires extension imagick
+ */
 class SanitizeTest extends TestCase {
 	/**
 	 * @dataProvider providesSVG
 	 */
-	public function test(string $svgContent, Bitmap $provider): void {
-		if (\count(\Imagick::queryFormats('SVG')) === 0) {
-			$this->markTestSkipped('No SVG provider present');
-		}
+	public function test(string $svgContent, Bitmap $provider, string $mimeType): void {
+		# no coder guard on purpose: isDangerousToDecode() rejects this content before
+		# ImagickFactory::create() and before setFormat(), so these cases never reach a
+		# coder at all. Requiring one would only let a reduced build skip the OC10-164
+		# regression assertions silently.
 		# mock it all ....
 		$stream = fopen('php://memory', 'rb+');
 		fwrite($stream, $svgContent);
@@ -43,6 +47,7 @@ class SanitizeTest extends TestCase {
 		$file = $this->createMock(File::class);
 		$file->method('getContent')->willReturn($svgContent);
 		$file->method('fopen')->willReturn($stream);
+		$file->method('getMimeType')->willReturn($mimeType);
 
 		# create the preview - SVG/text/script-shaped content must never reach Imagick via a Bitmap provider
 		$return = $provider->getThumbnail($file, 32, 32, false);
@@ -78,13 +83,13 @@ MVG;
 SVG;
 
 		# all Bitmap based providers use the same thumbnailing logic - two is enough ....
-		yield 'PDF provider - image tag' => [$svgContent0, new PDF()];
-		yield 'Font Provider - image tag' => [$svgContent0, new Font()];
-		yield 'PDF provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new PDF()];
-		yield 'Font Provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new Font()];
-		yield 'PDF provider - raw MVG' => [$rawMvg, new PDF()];
-		yield 'Font Provider - raw MVG' => [$rawMvg, new Font()];
-		yield 'PDF provider - well-formed SVG' => [$wellFormedSvg, new PDF()];
-		yield 'Font Provider - well-formed SVG' => [$wellFormedSvg, new Font()];
+		yield 'PDF provider - image tag' => [$svgContent0, new PDF(), 'application/pdf'];
+		yield 'Font Provider - image tag' => [$svgContent0, new Font(), 'application/font-sfnt'];
+		yield 'PDF provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new PDF(), 'application/pdf'];
+		yield 'Font Provider - malformed SVG with MSL href' => [$malformedSvgWithMslHref, new Font(), 'application/font-sfnt'];
+		yield 'PDF provider - raw MVG' => [$rawMvg, new PDF(), 'application/pdf'];
+		yield 'Font Provider - raw MVG' => [$rawMvg, new Font(), 'application/font-sfnt'];
+		yield 'PDF provider - well-formed SVG' => [$wellFormedSvg, new PDF(), 'application/pdf'];
+		yield 'Font Provider - well-formed SVG' => [$wellFormedSvg, new Font(), 'application/font-sfnt'];
 	}
 }

@@ -27,4 +27,8 @@ class SGI extends Bitmap {
 	public function getMimeType() {
 		return '/image\/sgi/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		return 'SGI';
+	}
 }

@@ -30,4 +30,10 @@ class Postscript extends Bitmap {
 	public function getMimeType() {
 		return '/application\/postscript/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		# EPS is the coder ImageMagick registers for application/postscript; it shares
+		# ReadPSImage() with the plain PS coder, so it covers .ps as well as .eps.
+		return 'EPS';
+	}
 }
