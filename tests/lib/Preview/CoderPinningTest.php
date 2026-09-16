@@ -196,6 +196,46 @@ class CoderPinningTest extends TestCase {
 	}
 
 	/**
+	 * The pin is derived from the file's own mime type, not from the one that selected
+	 * the provider - callers can override the latter via getThumbnail(['mimeType' => ...]),
+	 * and apps/files_trashbin/ajax/preview.php does exactly that, because a trashed
+	 * file's .d<timestamp> suffix defeats extension-based detection and leaves it
+	 * reporting application/octet-stream.
+	 *
+	 * So a provider must still decode when handed a mime type it does not serve. Guard
+	 * that: making the provider reject a mime type failing its own getMimeType() regex
+	 * looks like a tightening, but it would silently kill every trashbin bitmap preview.
+	 *
+	 * @dataProvider providesForeignMimeTypeButOwnContent
+	 */
+	public function testDecodesWhenTheStoredMimeTypeIsNotTheProvidersOwn(
+		string $fixture,
+		Bitmap $provider,
+		string $coder
+	): void {
+		$content = \file_get_contents(\OC::$SERVERROOT . '/' . $fixture);
+		$this->requireDecodableFixture($coder, $content);
+		# what a trashed "photo.tif.d1700000000" actually reports
+		$file = $this->makeFile($content, 'application/octet-stream');
+
+		$this->assertSame(
+			0,
+			\preg_match($provider->getMimeType(), 'application/octet-stream'),
+			'precondition: this mime type must NOT match the provider regex, or the case proves nothing'
+		);
+		$this->assertNotFalse(
+			$provider->getThumbnail($file, 32, 32, false),
+			'a provider pinning a constant coder must still decode its own content'
+		);
+	}
+
+	public function providesForeignMimeTypeButOwnContent(): Generator {
+		yield 'TIFF' => ['tests/data/testimage.tiff', new TIFF(), 'TIFF'];
+		yield 'Photoshop' => ['tests/data/testimage.psd', new Photoshop(), 'PSD'];
+		yield 'SGI' => ['tests/data/testimage.sgi', new SGI(), 'SGI'];
+	}
+
+	/**
 	 * setFormat() pins the wand's *output* format as well as the input coder, so a
 	 * provider that reset only the image format would hand back the input format
 	 * re-encoded instead of a PNG. Guard that explicitly: for TIFF the re-encode is

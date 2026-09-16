@@ -37,6 +37,13 @@ class Font extends Bitmap {
 		# .otf and .ttf are indistinguishable by mime type alone (both are
 		# application/font-sfnt); TTF is what actually decodes real font files here,
 		# both tagged variants included.
+		#
+		# This is the only provider whose coder depends on $mimeType, so it is also the
+		# only one where the divergence documented on Bitmap::getImagickFormat() is
+		# observable: a .pfb whose stored mime type is not application/x-font - a trashed
+		# one reports application/octet-stream - lands here rather than in the branch
+		# above and gets no preview. Deciding from the content instead would mean
+		# re-deriving the format from magic bytes, which is what the pin exists to avoid.
 		return 'TTF';
 	}
 }

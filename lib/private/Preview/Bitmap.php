@@ -126,6 +126,19 @@ abstract class Bitmap implements IProvider2 {
 	/**
 	 * Maps this provider's own detected mime type(s) to the Imagick coder name that
 	 * must decode them - the format pinned in getResizedPreview() above.
+	 *
+	 * $mimeType comes from $file->getMimeType(), deliberately not from the type that
+	 * selected this provider (OC\Preview::$mimeType). Those two can differ, because
+	 * callers may override the selection type via getThumbnail(['mimeType' => ...]) -
+	 * apps/files_trashbin/ajax/preview.php does, and apps/dav passes the request's query
+	 * parameters straight through. The file's own type cannot be steered by a request,
+	 * which is the property the pin depends on.
+	 *
+	 * The consequence is that an implementation must cope with a mime type it does not
+	 * serve: a trashed file reports application/octet-stream, because the .d<timestamp>
+	 * suffix defeats extension-based detection. Returning a constant handles that
+	 * correctly. Do NOT "fix" the divergence by rejecting a $mimeType that fails this
+	 * provider's own getMimeType() regex - that rejects every trashbin preview.
 	 */
 	abstract protected function getImagickFormat(string $mimeType): string;
 
