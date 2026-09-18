@@ -25,6 +25,7 @@
 
 namespace OC\Core\Controller;
 
+use OC\Authentication\AccountLockout\AccountLockedException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\User\Session;
 use OC_App;
@@ -249,20 +250,28 @@ class LoginController extends Controller {
 	 */
 	public function tryLogin($user, $password, $redirect_url, $timezone = null, $remember_login = null) {
 		$originalUser = $user;
+		$lockoutMessage = null;
 		// TODO: Add all the insane error handling
-		$loginResult = $this->userSession->login($user, $password);
-		if ($loginResult !== true && $this->config->getSystemValue('strict_login_enforced', false) !== true) {
-			$users = $this->userManager->getByEmail($user);
-			// we only allow login by email if unique
-			if (\count($users) === 1) {
-				$user = $users[0]->getUID();
-				$loginResult = $this->userSession->login($user, $password);
+		try {
+			$loginResult = $this->userSession->login($user, $password);
+			if ($loginResult !== true && $this->config->getSystemValue('strict_login_enforced', false) !== true) {
+				$users = $this->userManager->getByEmail($user);
+				// we only allow login by email if unique
+				if (\count($users) === 1) {
+					$user = $users[0]->getUID();
+					$loginResult = $this->userSession->login($user, $password);
+				}
 			}
+		} catch (AccountLockedException $e) {
+			// the lockout has to be explained on the login form - letting the
+			// exception through would render an error page instead
+			$loginResult = false;
+			$lockoutMessage = $e->getMessage();
 		}
 		if ($loginResult !== true) {
-			$this->session->set('loginMessages', [
-				['invalidpassword'], []
-			]);
+			$this->session->set('loginMessages', $lockoutMessage === null
+				? [['invalidpassword'], []]
+				: [[], [$lockoutMessage]]);
 			$args = [];
 			// Read current user and append if possible - we need to return the unmodified user otherwise we will leak the login name
 			if ($user !== null) {
