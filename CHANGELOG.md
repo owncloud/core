@@ -143,7 +143,11 @@ ownCloud admins and users.
 
    The following have been updated:
 
-   * google/apiclient-services (v0.452.0 to v0.458.0)
+   * firebase/php-jwt (v7.1.0 to v7.1.1)
+
+   * google/apiclient-services (v0.452.0 to v0.459.0)
+
+   * google/auth (v1.53.0 to v1.54.0)
 
    * guzzlehttp/guzzle (7.15.2 to 7.15.5)
 
@@ -165,21 +169,21 @@ ownCloud admins and users.
 
    * sabre/event (5.1.8 to 5.1.9)
 
-   * symfony/console (v7.4.14 to v7.4.18)
+   * symfony/console (v7.4.14 to v7.4.19)
 
    * symfony/event-dispatcher (v7.4.14 to v7.4.17)
 
-   * symfony/mailer (v7.4.14 to v7.4.17)
+   * symfony/mailer (v7.4.14 to v7.4.19)
 
-   * symfony/mime (v7.4.13 to v7.4.18)
+   * symfony/mime (v7.4.13 to v7.4.19)
 
-   * symfony/process (v7.4.13 to v7.4.18)
+   * symfony/process (v7.4.13 to v7.4.19)
 
    * symfony/routing (v7.4.13 to v7.4.18)
 
    * symfony/service-contracts (v3.7.1 to v3.7.3)
 
-   * symfony/string (v7.4.13 to v7.4.15)
+   * symfony/string (v7.4.13 to v7.4.19)
 
    * symfony/translation (v7.4.14 to v7.4.17)
 
@@ -188,6 +192,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41797
    https://github.com/owncloud/core/pull/41809
    https://github.com/owncloud/core/pull/41829
+   https://github.com/owncloud/core/pull/41839
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
