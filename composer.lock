@@ -3327,16 +3327,16 @@
         },
         {
             "name": "rhukster/dom-sanitizer",
-            "version": "1.0.16",
+            "version": "1.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rhukster/dom-sanitizer.git",
-                "reference": "f0eb17834e2fb52d9610aebcceaf5009d183cc86"
+                "reference": "fe182ad4a4df600034dfd07ba127e5c001e44407"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rhukster/dom-sanitizer/zipball/f0eb17834e2fb52d9610aebcceaf5009d183cc86",
-                "reference": "f0eb17834e2fb52d9610aebcceaf5009d183cc86",
+                "url": "https://api.github.com/repos/rhukster/dom-sanitizer/zipball/fe182ad4a4df600034dfd07ba127e5c001e44407",
+                "reference": "fe182ad4a4df600034dfd07ba127e5c001e44407",
                 "shasum": ""
             },
             "require": {
@@ -3366,9 +3366,9 @@
             "description": "A simple but effective DOM/SVG/MathML Sanitizer for PHP 7.4+",
             "support": {
                 "issues": "https://github.com/rhukster/dom-sanitizer/issues",
-                "source": "https://github.com/rhukster/dom-sanitizer/tree/1.0.16"
+                "source": "https://github.com/rhukster/dom-sanitizer/tree/1.0.17"
             },
-            "time": "2026-09-01T23:21:41+00:00"
+            "time": "2026-09-17T21:30:27+00:00"
         },
         {
             "name": "sabre/dav",
