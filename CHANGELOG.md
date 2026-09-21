@@ -143,9 +143,11 @@ ownCloud admins and users.
 
    The following have been updated:
 
+   * doctrine/lexer (3.0.1 to 3.0.2)
+
    * firebase/php-jwt (v7.1.0 to v7.1.1)
 
-   * google/apiclient-services (v0.452.0 to v0.459.0)
+   * google/apiclient-services (v0.452.0 to v0.460.0)
 
    * google/auth (v1.53.0 to v1.54.0)
 
@@ -165,7 +167,7 @@ ownCloud admins and users.
 
    * punic/punic (3.8.1 to 3.8.2)
 
-   * rhukster/dom-sanitizer (1.0.14 to 1.0.16)
+   * rhukster/dom-sanitizer (1.0.14 to 1.0.17)
 
    * sabre/event (5.1.8 to 5.1.9)
 
@@ -193,6 +195,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41809
    https://github.com/owncloud/core/pull/41829
    https://github.com/owncloud/core/pull/41839
+   https://github.com/owncloud/core/pull/41842
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
