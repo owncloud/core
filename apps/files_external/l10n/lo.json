@@ -54,6 +54,8 @@
     "Unsatisfied authentication mechanism parameters" : "ພາລາມິເຕີຂອງກົນໄກການຢືນຢັນຕົວຕົນບໍ່ຄົບຖ້ວນ",
     "Insufficient data: %s" : "ຂໍ້ມູນບໍ່ພຽງພໍ: %s",
     "%s" : "%s",
+    "Storage connection error. See server log for details." : "ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່ບ່ອນຈັດເກັບຂໍ້ມູນ. ເບິ່ງລາຍລະອຽດໃນບັນທຶກຂອງເຊີບເວີ. ",
+    "Storage with id \"%d\" not found" : "ບໍ່ພົບບ່ອນຈັດເກັບຂໍ້ມູນທີ່ມີໄອດີ \" 1%d \"",
     "Storage with id \"%i\" is not user editable" : "ບ່ອນເກັບຂໍ້ມູນທີ່ມີ id \"%i\" ຜູ້ໃຊ້ບໍ່ສາມາດແກ້ໄຂໄດ້",
     "OAuth1" : "OAuth1",
     "App key" : "ຄີແອັບ (App key)",
