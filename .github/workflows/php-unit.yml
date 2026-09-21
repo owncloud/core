@@ -78,6 +78,20 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: curl, gd, json, xml, zip, imagick${{ startsWith(matrix.database,'oracle:') && ', oci8' || '' }}
           ini-values: "memory_limit=2048M"
+        env:
+          # A failed extension is only a warning to setup-php, so without this the
+          # job carries on and dies later in Install Server with a misleading
+          # "Database <oci> is not supported" - maintenance:install derives the
+          # supported databases from the loaded extensions, so a missing oci8 looks
+          # like a database misconfiguration.
+          #
+          # Note this is setup-php's own option, not the matrix strategy.fail-fast
+          # above - but with that set to true the two compose, so a failed extension
+          # cancels the sibling database legs. Tolerable as ci.yml calls this today:
+          # oci8 is the only extension that downloads anything (the others come with
+          # setup-php's own PHP build and are merely enabled), and Oracle gets a
+          # single-database call of its own with no siblings to cancel.
+          fail-fast: true
 
       - name: Install ffmpeg & imagemagick
         run: |
