@@ -78,6 +78,13 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: curl, gd, json, xml, zip, imagick${{ case(startsWith(matrix.database,'oracle:'), ', oci8', '') }}
           ini-values: "memory_limit=2048M"
+        env:
+          # A failed extension is only a warning to setup-php, so without this the
+          # job carries on and dies later in Install Server with a misleading
+          # "Database <oci> is not supported" - maintenance:install derives the
+          # supported databases from the loaded extensions, so a missing oci8 looks
+          # like a database misconfiguration. Unrelated to strategy.fail-fast above.
+          fail-fast: true
 
       - name: Install ffmpeg & imagemagick
         run: |
