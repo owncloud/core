@@ -333,6 +333,47 @@ $CONFIG = [
  * Limit the users which are allowed to login to a specific user backend - e.g. LDAP
  * (`'allowed-user-backends' ⇒ ['LDAP']`)
  *
+ * audience::
+ * The value your identity provider puts into the access token's `aud` (audience) claim. Once set,
+ * an access token is accepted only if `aud` names it, and no other claim is used to identify
+ * ownCloud. Takes a single non-empty string or a list of them, and *replaces* `client-id` as the
+ * expected value rather than adding to it. `null` counts as not set; any other unusable value - a
+ * number, a boolean, an empty string, an empty list - is dropped with a warning naming it, and if
+ * nothing usable is left every access token is rejected, so a typo here fails closed.
+ * +
+ * Available starting app version 2.3.5, which is also the release that introduces the audience
+ * check on this server line - every released version up to and including 2.3.4 does not check the
+ * audience at all. Without the key, 2.3.5 accepts an access token whose `aud` carries the
+ * `client-id`, and also one whose `azp`, `appid` or `client_id` claim does - which is what keeps
+ * providers working that put the *resource server* into `aud`, as RFC 9068 section 3 defines it.
+ * The one shape the upgrade can lock out is an introspection response carrying neither `aud` nor
+ * `client_id`, which RFC 7662 permits and which no `audience` value can rescue. Which provider
+ * sends what is documented at
+ * https://doc.owncloud.com/server/10.16/admin_manual/configuration/user/oidc/oidc.html#access-token-audience
+ * +
+ * Microsoft ADFS is one of the providers that names the resource: it prefixes the identifier of
+ * the application the token was issued for with `microsoft:identityserver:`, unless that
+ * identifier is already a URL, in which case it is sent verbatim. Read the identifier with
+ * `Get-AdfsWebApiApplication` for an OpenID Connect application group registration, or with
+ * `Get-AdfsRelyingPartyTrust` for a legacy WS-Federation or SAML relying party trust. It is often
+ * configured to the same GUID as the `client-id`, which is why the prefixed value frequently
+ * repeats it - but it is a *resource* identifier, not the client, and the two are free to differ.
+ * Whatever your provider sends has to be reproduced here exactly, including case: the comparison is
+ * strict, so a difference in casing, or a numeric `aud` against a string here, will not match.
+ * +
+ * Setting it binds tokens to the *resource*: one that ownCloud's own client obtained for a
+ * different resource of the same provider - through an RFC 8707 `resource` parameter or an RFC 8693
+ * token exchange - stops being accepted. So do ID tokens, but only where the configured value
+ * differs from the `client-id`, since an ID token's `aud` is the `client-id` by definition. What it
+ * does not bind is the *client*: any token whose `aud` names ownCloud is accepted whichever client
+ * requested it. So choose a value only ownCloud can be issued a token for, do not reuse a
+ * tenant-wide resource identifier here, and control in the provider which clients may ask for it.
+ * +
+ * Do not set the key at all if your token introspection response omits `aud`, which RFC 7662
+ * permits, because every opaque token would then be rejected. And with
+ * `exchange-token-mode-before-introspection`, the first usable entry is also the audience the
+ * token exchange requests, so list the resource ownCloud should be given first.
+ *
  * auth-params::
  * Additional parameters which are sent to the IdP during the auth requests
  *
@@ -354,6 +395,20 @@ $CONFIG = [
  * When using the provisioning mode `auto-update`, user account info will update with the current
  * information provided by the OpenID Connect provider upon each user log in.
  *
+ * exchange-token-mode-before-introspection::
+ * If set, an RFC 8693 token exchange is performed before a token is introspected, and the
+ * exchanged token is what gets verified. The value selects the subject token type: `refresh-token`
+ * uses `urn:ietf:params:oauth:token-type:refresh_token`, and `access-token` - which is also what
+ * any other value falls back to - uses `urn:ietf:params:oauth:token-type:access_token`. The
+ * subject is taken from the OpenID Connect login session while a session is being verified, so it
+ * requires such a session: on a request authenticated by a bearer token alone there is none, and
+ * the exchange is attempted with an empty subject token and fails. When user information is read
+ * the subject is the client's current refresh or access token instead, and only if
+ * `use-access-token-introspection-for-user-info` is set as well. The audience requested for the
+ * exchanged token is the first usable entry of `audience`, the `client-id` when `audience` is not
+ * set, and none at all when `audience` is set but holds nothing usable. Use one of the two values
+ * or leave the key out: an empty or otherwise falsy value is not treated alike on both paths.
+ *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
  * IdP - **DO NOT use in production!**
@@ -372,6 +427,20 @@ $CONFIG = [
  * mode::
  * This is the attribute in the owncloud accounts table to search for users.
  * The default value is `email`. The alternative value is: `userid`.
+ *
+ * ocis-routing-policy-claim::
+ * For setups that run ownCloud Classic and ownCloud Infinite Scale side by side behind a proxy:
+ * the user information claim that holds the routing policy. After a successful login, when the
+ * claim is present, its value is written to the cookie named by `ocis-routing-policy-cookie` so
+ * that the proxy can route the user to the right backend. The default is `ocis.routing.policy`.
+ *
+ * ocis-routing-policy-cookie::
+ * Name of the cookie the value of `ocis-routing-policy-claim` is written to. The default is
+ * `owncloud-selector`.
+ *
+ * ocis-routing-policy-cookie-directives::
+ * Directives appended to the routing policy cookie, for example to scope or to secure it. The
+ * default is `path=/;`.
  *
  * post_logout_redirect_uri::
  * A given URL where the IdP should redirect to after logout.
@@ -405,9 +474,19 @@ $CONFIG = [
  * token-introspection-endpoint-client-secret::
  * Client secret to be used with the token introspection endpoint.
  *
+ * use-access-token-introspection-for-user-info::
+ * If set to `true`, user information is read from the token introspection response instead of from
+ * the userinfo endpoint, using `token-introspection-endpoint-client-id` and
+ * `token-introspection-endpoint-client-secret` and honouring
+ * `exchange-token-mode-before-introspection`. `use-access-token-payload-for-user-info` is
+ * evaluated first and wins for a JWT access token; an opaque token has no payload to read, so the
+ * introspection response is used even when both keys are set.
+ *
  * use-access-token-payload-for-user-info::
  * If set to `true` any user information will be read from the access token.
- * If set to `false` the userinfo endpoint is used (starting app version 1.1.0).
+ * If set to `false` the userinfo endpoint is used (starting app version 1.1.0) - unless
+ * `use-access-token-introspection-for-user-info` is set, which takes the introspection response
+ * instead.
  *
  */
 
