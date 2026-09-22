@@ -30,16 +30,17 @@ namespace Test\Preview;
  */
 class BitmapTest extends Provider {
 	public function setUp(): void {
-		# Postscript::getImagickFormat() pins EPS, so on a build without that coder this
-		# provider cannot decode the fixture at all. Unguarded, that is a failure rather
-		# than a skip - previously ImageMagick's own sniffing hid the dependency.
-		if (\count(\Imagick::queryFormats('EPS')) === 0) {
-			$this->markTestSkipped('This ImageMagick build registers no EPS coder');
-		}
+		# Postscript::getImagickFormat() pins EPS, so on a build that cannot decode through
+		# that coder this provider cannot produce a preview at all. Unguarded, that is a
+		# failure rather than a skip - previously ImageMagick's own sniffing hid the
+		# dependency. Registration alone does not answer it: coders/ps.c registers EPS
+		# whether or not Ghostscript is there, so the guard probes the fixture instead.
+		$fileName = 'testimage.eps';
+		$fixture = \OC::$SERVERROOT . '/tests/data/' . $fileName;
+		$this->requireDecodableFixtureFile('EPS', $fixture);
 		parent::setUp();
 
-		$fileName = 'testimage.eps';
-		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
+		$this->imgPath = $this->prepareTestFile($fileName, $fixture);
 		$this->width = 2400;
 		$this->height = 1707;
 		$this->provider = new \OC\Preview\Postscript;

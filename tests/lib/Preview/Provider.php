@@ -21,6 +21,7 @@
 
 namespace Test\Preview;
 
+use OC\Image\ImagickFactory;
 use OC\Preview\TXT;
 use OCP\Files\File;
 use OCP\Files\Node;
@@ -69,6 +70,49 @@ abstract class Provider extends TestCase {
 		self::logout();
 
 		parent::tearDown();
+	}
+
+	/**
+	 * Skips unless this ImageMagick build can actually decode the file at $fixturePath
+	 * through $coder - the coder the provider under test pins.
+	 *
+	 * Named for the *File* it takes, because Test\Preview\CoderPinningTest has a helper of
+	 * the same purpose that takes the content blob instead. Passing a path where a blob is
+	 * expected would make readImageBlob() throw, which a probe like this one converts into
+	 * a skip - so the mistake would silently stop a test running rather than fail.
+	 *
+	 * Imagick::queryFormats() is not enough on its own: it reports only whether a coder is
+	 * *registered*, and coders/pdf.c and coders/ps.c register PDF, AI and EPS
+	 * unconditionally, wiring the Ghostscript delegate behind them separately.
+	 * MagickQueryFormats() does not consult policy.xml either, and the stock Debian and
+	 * Ubuntu policy denies the PDF/PS/EPS/XPS coders outright. So on a build with no
+	 * Ghostscript, or under that policy, a registration check still answers "present" and
+	 * the calling test fails where it should skip. Probing the fixture covers both.
+	 *
+	 * The probe reads unpinned, which is the very thing the pin exists to prevent. That is
+	 * fine: it is only ever a capability probe, never an assertion.
+	 */
+	protected function requireDecodableFixtureFile(string $coder, string $fixturePath): void {
+		if (\count(\Imagick::queryFormats($coder)) === 0) {
+			$this->markTestSkipped("This ImageMagick build registers no $coder coder");
+		}
+
+		# read outside the try: an unreadable fixture is a broken test, not a build
+		# limitation, and must not be converted into a skip
+		$content = \file_get_contents($fixturePath);
+		$this->assertNotFalse($content, "fixture $fixturePath must be readable");
+
+		try {
+			$probe = ImagickFactory::create();
+			$probe->readImageBlob($content);
+			$probe->clear();
+		} catch (\Throwable $e) {
+			# \Throwable rather than \ImagickException: imagick reports some delegate and
+			# policy conditions at warning severity, and phpunit-autotest.xml sets
+			# failOnWarning="true", so those reach us as PHPUnit\Framework\Error\Warning
+			# instead. Both mean the same thing for a capability probe.
+			$this->markTestSkipped("This ImageMagick build cannot decode the $coder fixture: " . $e->getMessage());
+		}
 	}
 
 	public static function dimensionsDataProvider() {
