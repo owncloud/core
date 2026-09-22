@@ -37,7 +37,10 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: curl, gd, json, xml, zip
           ini-values: "memory_limit=1024M"
-          tools: phpstan, codesniffer
+        env:
+          # A failed extension or tool is only a warning to setup-php, which means
+          # the step passes and the problem resurfaces later as something unrelated.
+          fail-fast: true
 
       - name: Install Composer dependencies
         run: |
