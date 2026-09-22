@@ -236,6 +236,34 @@ class CoderPinningTest extends TestCase {
 	}
 
 	/**
+	 * The stored mime type can also be missing altogether, not just be the wrong one:
+	 * FileInfo::getMimetype() returns whatever Cache::get() put in the row, which is
+	 * MimeTypeLoader::getMimetypeById() - null for a mimetype id with no matching row in
+	 * oc_mimetypes. Nothing constrains that column, so a dangling id survives there.
+	 *
+	 * Uncast, that null hits getResizedPreview()'s string parameter as a TypeError, and a
+	 * TypeError is an \Error: it escapes getThumbnail()'s catch (\Exception) and reaches
+	 * the caller as a 500 instead of degrading to a media-type icon. assertNotFalse() is
+	 * what detects it - the \Error propagates out of this test as an error, not a failure.
+	 */
+	public function testDecodesWhenTheStoredMimeTypeIsMissingEntirely(): void {
+		$content = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.tiff');
+		$this->requireDecodableFixture('TIFF', $content);
+
+		$stream = \fopen('php://memory', 'rb+');
+		\fwrite($stream, $content);
+		\rewind($stream);
+		$file = $this->createMock(File::class);
+		$file->method('fopen')->willReturn($stream);
+		$file->method('getMimeType')->willReturn(null);
+
+		$this->assertNotFalse(
+			(new TIFF())->getThumbnail($file, 32, 32, false),
+			'a null stored mime type must still decode, because TIFF pins a constant coder'
+		);
+	}
+
+	/**
 	 * setFormat() pins the wand's *output* format as well as the input coder, so a
 	 * provider that reset only the image format would hand back the input format
 	 * re-encoded instead of a PNG. Guard that explicitly: for TIFF the re-encode is

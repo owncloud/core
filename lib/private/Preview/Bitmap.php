@@ -58,7 +58,13 @@ abstract class Bitmap implements IProvider2 {
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
-			$bp = $this->getResizedPreview($stream, $maxX, $maxY, $file->getMimeType());
+			// cast on purpose: getMimeType() reaches a string-typed parameter, but it comes
+			// from FileInfo::getMimetype(), which hands back whatever Cache::get() stored -
+			// and that is MimeTypeLoader::getMimetypeById(), null for an id with no row in
+			// oc_mimetypes. No foreign key guards that column, so a dangling id is
+			// reachable, and an uncast null would raise a TypeError. Being an \Error that
+			// escapes the handler below, it would turn a missing preview into a 500.
+			$bp = $this->getResizedPreview($stream, $maxX, $maxY, (string)$file->getMimeType());
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
