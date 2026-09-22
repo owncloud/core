@@ -58,10 +58,8 @@ try {
 	}
 
 	// The stored handler path is later require_once'd relative to the app
-	// directory, so reject any path traversal to prevent inclusion (and thus
-	// execution) of files outside the app tree. This mirrors the guard in
-	// remote.php and defends against a poisoned "core" public_* appconfig
-	// value (see OC10-146 / OC10-5).
+	// directory, so reject any path traversal early. This mirrors the guard in
+	// remote.php; the authoritative check is the containment check below.
 	if (\strpos($file, '../') !== false || \strpos($file, '/..') !== false) {
 		throw new Exception('Path not allowed');
 	}
@@ -83,7 +81,16 @@ try {
 
 	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';
 
-	require_once OC_App::getAppPath($app) . '/' . $parts[1];
+	// Only ever include a file which actually resolves inside the app's own
+	// directory. Concatenating getAppPath() unchecked would include an absolute
+	// path whenever the app has no directory on disk, because getAppPath()
+	// returns false there and false . '/' is '/'.
+	$handler = OC_App::getServiceHandlerPath($app, $parts[1] ?? '');
+	if ($handler === false) {
+		throw new Exception('Path not allowed');
+	}
+
+	require_once $handler;
 } catch (\Throwable $ex) {
 	try {
 		if ($ex instanceof \OC\ServiceUnavailableException) {

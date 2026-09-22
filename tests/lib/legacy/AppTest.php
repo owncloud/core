@@ -226,4 +226,134 @@ class AppTest extends TestCase {
 		}
 		self::assertFalse(true, 'expected a AppNotFoundException');
 	}
+
+	/**
+	 * A handler path stored in a core public_/remote_ appconfig key must only ever
+	 * resolve to a .php file inside the named app's own directory. Everything else
+	 * has to come back as false, because public.php/remote.php require_once the
+	 * result.
+	 */
+	public function testGetServiceHandlerPathAcceptsFileInsideTheApp() {
+		\file_put_contents("{$this->appPath}/appinfo/handler.php", '<?php');
+
+		self::assertSame(
+			\realpath("{$this->appPath}/appinfo/handler.php"),
+			\OC_App::getServiceHandlerPath('appinfotestapp', 'appinfo/handler.php')
+		);
+	}
+
+	public function testGetServiceHandlerPathAcceptsTraversalStayingInsideTheApp() {
+		\file_put_contents("{$this->appPath}/appinfo/handler.php", '<?php');
+
+		self::assertSame(
+			\realpath("{$this->appPath}/appinfo/handler.php"),
+			\OC_App::getServiceHandlerPath('appinfotestapp', 'appinfo/../appinfo/handler.php')
+		);
+	}
+
+	public function testGetServiceHandlerPathRejectsTraversalOutOfTheApp() {
+		self::assertFalse(
+			\OC_App::getServiceHandlerPath('appinfotestapp', '../../public.php')
+		);
+	}
+
+	/**
+	 * getAppPath() returns false for an app id with no directory on disk, and
+	 * false . '/' is '/', so concatenating it unchecked yields an *absolute*
+	 * include path - which contains no traversal sequence and therefore passes a
+	 * plain "../" check. An admin can make isInstalled() true for such an app id
+	 * by writing an appconfig `enabled` row for it, so this case has to be
+	 * rejected here.
+	 */
+	public function testGetServiceHandlerPathRejectsAppWithoutADirectory() {
+		self::assertFalse(\OC_App::getAppPath('appinfotestapp-not-on-disk'));
+		self::assertFalse(
+			\OC_App::getServiceHandlerPath('appinfotestapp-not-on-disk', __FILE__)
+		);
+	}
+
+	/**
+	 * The containment check has to compare against the app directory *plus* a
+	 * separator, otherwise "…/apps/appinfotestapp" would also accept targets
+	 * below the sibling directory "…/apps/appinfotestapp2".
+	 */
+	public function testGetServiceHandlerPathRejectsSiblingAppDirectory() {
+		$siblingPath = "{$this->appPath}2";
+		\mkdir($siblingPath, 0777, true);
+		\file_put_contents("{$siblingPath}/handler.php", '<?php');
+
+		try {
+			self::assertFalse(
+				\OC_App::getServiceHandlerPath('appinfotestapp', '../appinfotestapp2/handler.php')
+			);
+		} finally {
+			\unlink("{$siblingPath}/handler.php");
+			\rmdir($siblingPath);
+		}
+	}
+
+	public function testGetServiceHandlerPathRejectsNonPhpFile() {
+		self::assertFalse(
+			\OC_App::getServiceHandlerPath('appinfotestapp', 'appinfo/info.xml')
+		);
+	}
+
+	public function testGetServiceHandlerPathRejectsMissingFile() {
+		self::assertFalse(
+			\OC_App::getServiceHandlerPath('appinfotestapp', 'appinfo/not-there.php')
+		);
+	}
+
+	public function testGetServiceHandlerPathRejectsDirectoryNamedLikeAPhpFile() {
+		// realpath() succeeds for a directory and the suffix test is only a name
+		// test, so without an is_file() check this would be require_once'd - an
+		// E_COMPILE_ERROR the entry scripts' catch (\Throwable) cannot handle
+		// assert the fixture really was created, otherwise realpath() would fail
+		// for the wrong reason and this would pass with the is_file() check gone
+		self::assertTrue(\mkdir("{$this->appPath}/handler.php", 0777, true));
+
+		self::assertFalse(
+			\OC_App::getServiceHandlerPath('appinfotestapp', 'handler.php')
+		);
+	}
+
+	/**
+	 * The values actually shipped in the bundled apps' info.xml must keep
+	 * resolving - these are what public.php/remote.php serve in production, and
+	 * every hardcoded remote service resolves through the app path as app "dav".
+	 */
+	public function providesShippedServiceHandlers() {
+		return [
+			['dav', 'appinfo/v1/webdav.php'],
+			['dav', 'appinfo/v1/caldav.php'],
+			['dav', 'appinfo/v1/carddav.php'],
+			['dav', 'appinfo/v1/publicwebdav.php'],
+			['dav', 'appinfo/v2/remote.php'],
+			['files_sharing', 'public.php'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesShippedServiceHandlers
+	 */
+	public function testGetServiceHandlerPathAcceptsShippedHandlers($app, $relativePath) {
+		$expected = \realpath(\OC_App::getAppPath($app) . '/' . $relativePath);
+		self::assertNotFalse($expected, "fixture missing: {$app}/{$relativePath}");
+		self::assertSame($expected, \OC_App::getServiceHandlerPath($app, $relativePath));
+	}
+
+	public function providesEmptyServiceHandlerArguments() {
+		return [
+			'no relative path' => ['appinfotestapp', ''],
+			'no app id' => ['', 'appinfo/handler.php'],
+			'both empty' => ['', ''],
+		];
+	}
+
+	/**
+	 * @dataProvider providesEmptyServiceHandlerArguments
+	 */
+	public function testGetServiceHandlerPathRejectsEmptyArguments($app, $relativePath) {
+		self::assertFalse(\OC_App::getServiceHandlerPath($app, $relativePath));
+	}
 }

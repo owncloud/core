@@ -174,7 +174,14 @@ try {
 				throw new RemoteException('App not installed: ' . $app);
 			}
 			OC_App::loadApp($app);
-			$file = OC_App::getAppPath($app) .'/'. $parts[1];
+			// Only ever include a file which actually resolves inside the app's own
+			// directory. Concatenating getAppPath() unchecked would include an
+			// absolute path whenever the app has no directory on disk, because
+			// getAppPath() returns false there and false . '/' is '/'.
+			$file = OC_App::getServiceHandlerPath($app, $parts[1] ?? '');
+			if ($file === false) {
+				throw new RemoteException('Path not allowed');
+			}
 			break;
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';

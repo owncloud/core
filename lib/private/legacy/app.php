@@ -550,6 +550,50 @@ class OC_App {
 	}
 
 	/**
+	 * Resolve a stored "<appId>/<relative path>" service handler value - as used by
+	 * the core `public_*`/`remote_*` appconfig keys - to an absolute file which is
+	 * guaranteed to live inside that app's own directory.
+	 *
+	 * Returns false when the app has no directory on disk (getAppPath() returns
+	 * false, which would otherwise turn the include path absolute), when the
+	 * relative part is empty, when the target escapes the app directory through a
+	 * traversal sequence or a symlink, or when it is not a .php file. Callers must
+	 * treat false as "refuse the request" and never include the path.
+	 *
+	 * @param string $app
+	 * @param string $relativePath
+	 * @return string|false
+	 */
+	public static function getServiceHandlerPath($app, $relativePath) {
+		$appPath = self::getAppPath($app);
+		if ($appPath === false || (string)$relativePath === '') {
+			return false;
+		}
+
+		$base = \realpath($appPath);
+		$target = \realpath($appPath . '/' . $relativePath);
+		if ($base === false || $target === false) {
+			return false;
+		}
+
+		// the trailing separator is required, otherwise the app directory
+		// "…/apps/files" would also accept targets below "…/apps/files_sharing"
+		$base = \rtrim($base, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+		if (\strpos($target, $base) !== 0) {
+			return false;
+		}
+
+		// is_file() as well as the suffix: realpath() also succeeds for a directory,
+		// and require_once on a directory is an E_COMPILE_ERROR that the callers'
+		// catch (\Throwable) cannot handle
+		if (!\is_file($target) || \strtolower(\substr($target, -4)) !== '.php') {
+			return false;
+		}
+
+		return $target;
+	}
+
+	/**
 	 * Get the web path for the given app.
 	 * If the app exists in multiple directories, the most recent version is taken.
 	 * (false if not found)
