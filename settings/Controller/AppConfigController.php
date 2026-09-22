@@ -89,10 +89,12 @@ class AppConfigController extends Controller {
 	 *
 	 * The app name is normalized before the comparison so that mangled spellings
 	 * which the database folds back to the "core" row (e.g. "core " with a
-	 * trailing space, "CORE", "core/") cannot slip past the guard. See OC10-146
-	 * and the related OC10-5. Note this is best-effort defense-in-depth: the
-	 * authoritative protection against traversal is the containment check at the
-	 * include sites in public.php/remote.php.
+	 * trailing space, "CORE", "core/") cannot slip past the guard. The key prefix
+	 * is matched case-insensitively for the same reason: under a case-insensitive
+	 * collation "PUBLIC_webdav" folds onto the stored "public_webdav" row, so a
+	 * case-sensitive prefix test would let an admin overwrite it. Note this is
+	 * best-effort defense-in-depth: the authoritative protection against traversal
+	 * is the containment check at the include sites in public.php/remote.php.
 	 *
 	 * @param string $app
 	 * @param string $key
@@ -100,20 +102,59 @@ class AppConfigController extends Controller {
 	 */
 	private function isProtectedCoreServiceKey($app, $key) {
 		return $this->isCoreApp($app)
-			&& (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0);
+			&& \is_string($key) && \preg_match('/^(?:remote|public)_/i', $key) === 1;
 	}
 
 	/**
 	 * Whether the given (possibly mangled) app id resolves to the "core" app.
 	 * The name is stripped and normalized so that spellings which the database
 	 * folds back to the "core" row (e.g. "core " with a trailing space, "CORE",
-	 * "core/") are all recognised. See OC10-146.
+	 * "core/") are all recognised.
 	 *
 	 * @param string $app
 	 * @return bool
 	 */
 	private function isCoreApp($app) {
 		return \strtolower(\trim(\OC_App::cleanAppId((string)$app))) === 'core';
+	}
+
+	/**
+	 * Whether the app id is a canonical ownCloud app id, i.e. one an app could
+	 * actually be installed under.
+	 *
+	 * Recognising individual mangled spellings of "core" can never be complete,
+	 * because the only requirement for a bypass is that the written app id compares
+	 * equal to "core" under the database collation - an open set which depends on
+	 * the deployment (blank padding, accent-insensitive collations, silent
+	 * truncation into the varchar(32) appid column, invalid byte sequences). Every
+	 * such spelling needs a character outside this charset, so refusing
+	 * non-canonical app ids outright closes the whole class instead of enumerating
+	 * it. Case is deliberately still accepted here - this endpoint has always taken
+	 * mixed-case ids, and a case-insensitive collation is already covered because
+	 * isCoreApp() lowercases before comparing.
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	private function isCanonicalAppId($app) {
+		// \z, not $: PCRE's $ also matches before a single trailing newline, which
+		// would let "<32 chars>\n" through to be truncated onto an existing row
+		return \is_string($app) && \preg_match('/^[a-zA-Z0-9_.-]{1,32}\z/', $app) === 1;
+	}
+
+	/**
+	 * Whether the config key is a canonical one, i.e. one the database cannot fold
+	 * onto a different key. This mirrors isCanonicalAppId() for the key column
+	 * (varchar(64)) and is only enforced for the "core" app, where a fold onto a
+	 * stored `public_*`/`remote_*` row would overwrite a service handler: an
+	 * accent-insensitive collation folds "públic_webdav" onto "public_webdav",
+	 * which no prefix test can catch.
+	 *
+	 * @param string $key
+	 * @return bool
+	 */
+	private function isCanonicalConfigKey($key) {
+		return \is_string($key) && \preg_match('/^[a-zA-Z0-9_.-]{1,64}\z/', $key) === 1;
 	}
 
 	/**
@@ -127,12 +168,18 @@ class AppConfigController extends Controller {
 		if (!isset($app, $key, $value)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
+		if (!$this->isCanonicalAppId($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
 
 		// An admin should not be able to add remote and public services
 		// on its own. This should only be possible programmatically.
 		// This change is due the fact that an admin may not be expected
 		// to execute arbitrary code in every environment.
 		if ($this->isProtectedCoreServiceKey($app, $key)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		if ($this->isCoreApp($app) && !$this->isCanonicalConfigKey($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -148,7 +195,13 @@ class AppConfigController extends Controller {
 		if (!isset($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
+		if (!$this->isCanonicalAppId($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
 		if ($this->isProtectedCoreServiceKey($app, $key)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		if ($this->isCoreApp($app) && !$this->isCanonicalConfigKey($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -162,6 +215,9 @@ class AppConfigController extends Controller {
 	 */
 	public function deleteApp($app) {
 		if (!isset($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		if (!$this->isCanonicalAppId($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
