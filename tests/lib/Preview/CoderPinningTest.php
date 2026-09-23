@@ -40,22 +40,22 @@ use Test\TestCase;
  */
 class CoderPinningTest extends TestCase {
 	/**
-	 * The payload testRejectsPostScriptContentFromAForeignProvider() feeds to a provider it
-	 * is foreign to. Deliberately minimal and harmless: what is under test is which coder
-	 * ImageMagick hands it to, not what Ghostscript would draw from it. A square box is
-	 * fine there, because that test's observable is assertFalse(), which any successful
-	 * decode trips whatever shape it produced.
+	 * The payload both negative tests feed to a provider it is foreign to. Deliberately
+	 * minimal and harmless: what is under test is which coder ImageMagick hands it to, not
+	 * what Ghostscript would draw from it.
+	 *
+	 * The bounding box is portrait so that it stays portrait however this build treats it.
+	 * testFontNeverInvokesADangerousCoderForForeignContent() tells a Ghostscript render from
+	 * FreeType's output by shape, and the two known behaviours both give a portrait raster:
+	 * on owncloudci/php:8.3 an unpinned %!PS-Adobe read goes to the PS coder, which
+	 * rasterizes a whole page at Ghostscript's default 612x792 and ignores %%BoundingBox,
+	 * EPSF branding and setpagedevice alike (all three measured); where coders/ps.c instead
+	 * derives Ghostscript's -g geometry from %%BoundingBox, this box yields 600x800. A square
+	 * box would be portrait only under the first, so it would silently stop exercising the
+	 * Font pin under the second. That test still asserts the shape at runtime rather than
+	 * trusting either behaviour.
 	 */
-	private const FOREIGN_POSTSCRIPT = "%!PS-Adobe-3.0\n%%BoundingBox: 0 0 10 10\nshowpage\n";
-
-	/**
-	 * The same payload with a *portrait* bounding box. That is the only difference, and it
-	 * is the one testFontNeverInvokesADangerousCoderForForeignContent() rests on: its
-	 * observable is the thumbnail's shape, and the square box above thumbnails square
-	 * whichever coder produced it. The page stays blank on purpose - nothing here inspects
-	 * a pixel, so drawing operators would only suggest the assertion is stronger than it is.
-	 */
-	private const FOREIGN_POSTSCRIPT_PORTRAIT = "%!PS-Adobe-3.0\n%%BoundingBox: 0 0 600 800\nshowpage\n";
+	private const FOREIGN_POSTSCRIPT = "%!PS-Adobe-3.0\n%%BoundingBox: 0 0 600 800\nshowpage\n";
 
 	private function makeFile(string $content, string $mimeType): File {
 		$stream = \fopen('php://memory', 'rb+');
@@ -107,17 +107,54 @@ class CoderPinningTest extends TestCase {
 	}
 
 	/**
-	 * Skips unless this build can rasterize PostScript, which needs the PS coder to be both
-	 * registered and permitted by policy.xml plus a working Ghostscript delegate. Reads
-	 * unpinned, as every probe here does - a capability check, never an assertion.
+	 * Skips unless this build can rasterize PostScript at all - the PS coder registered,
+	 * permitted by policy.xml, with a working Ghostscript delegate behind it. Callers that
+	 * also depend on the render's *shape* want requirePortraitPostScriptRender() instead.
+	 *
+	 * Returns the wand so a caller can measure it; clear() is the caller's to make.
+	 *
+	 * Reads unpinned, as every probe here does - a capability check, never an assertion.
 	 */
-	private function requireRenderablePostScript(string $content): void {
+	private function requireRenderablePostScript(string $content): \Imagick {
 		try {
 			$probe = ImagickFactory::create();
 			$probe->readImageBlob($content);
-			$probe->clear();
+			return $probe;
 		} catch (\Exception $e) {
 			$this->markTestSkipped('This build cannot rasterize PostScript: ' . $e->getMessage());
+		}
+	}
+
+	/**
+	 * As requireRenderablePostScript(), and additionally that the render comes out portrait.
+	 *
+	 * testFontNeverInvokesADangerousCoderForForeignContent() tells a Ghostscript render from
+	 * FreeType's output by shape alone, and portrait-ness is not a given - it follows from
+	 * Ghostscript's default page, which no part of the payload reliably pins (see
+	 * FOREIGN_POSTSCRIPT). Asserting it means a build with a landscape default page skips
+	 * instead of passing with the coder pin removed.
+	 *
+	 * Measured after reproducing what Bitmap::getResizedPreview() does before its assertion
+	 * is observable - select the first frame, then bestfit to 32x32. A raster only a little
+	 * taller than it is wide collapses to exactly 32x32 there, so checking the raw geometry
+	 * would wave through a build on which the assertion cannot discriminate.
+	 */
+	private function requirePortraitPostScriptRender(string $content): void {
+		$probe = $this->requireRenderablePostScript($content);
+
+		$probe->setIteratorIndex(0);
+		if ($probe->getImageWidth() > 32 || $probe->getImageHeight() > 32) {
+			$probe->resizeImage(32, 32, \Imagick::FILTER_LANCZOS, 1, true);
+		}
+		$isPortrait = $probe->getImageHeight() > $probe->getImageWidth();
+		$geometry = $probe->getImageWidth() . 'x' . $probe->getImageHeight();
+		$probe->clear();
+
+		if (!$isPortrait) {
+			$this->markTestSkipped(
+				"This build's PostScript render thumbnails to $geometry, so shape cannot tell "
+				. 'a Ghostscript render from the TTF specimen sheet'
+			);
 		}
 	}
 
@@ -196,6 +233,9 @@ class CoderPinningTest extends TestCase {
 	 */
 	public function testRejectsPostScriptContentFromAForeignProvider(Bitmap $provider, string $mimeType, string $coder): void {
 		$this->requireCoder($coder);
+		# Without a usable PostScript path the mutant this guards against - the pin removed -
+		# cannot decode the payload either, so assertFalse() would hold with no pin in place.
+		$this->requireRenderablePostScript(self::FOREIGN_POSTSCRIPT)->clear();
 		$this->assertPayloadReachesTheCoderPin(self::FOREIGN_POSTSCRIPT);
 		$file = $this->makeFile(self::FOREIGN_POSTSCRIPT, $mimeType);
 
@@ -213,24 +253,25 @@ class CoderPinningTest extends TestCase {
 
 	public function testFontNeverInvokesADangerousCoderForForeignContent(): void {
 		$this->requireCoder('TTF');
-		# The mutant this test is meant to catch - the pin removed - only produces a portrait
-		# render on a build that can rasterize PostScript at all. Without Ghostscript, or
-		# under the stock Debian policy that denies the PS coder, readImageBlob() would throw
-		# instead, getThumbnail() would return false, and the assertion below would hold with
-		# no pin in place. Skip rather than report protection this build is not providing.
-		$this->requireRenderablePostScript(self::FOREIGN_POSTSCRIPT_PORTRAIT);
-		$this->assertPayloadReachesTheCoderPin(self::FOREIGN_POSTSCRIPT_PORTRAIT);
-		$file = $this->makeFile(self::FOREIGN_POSTSCRIPT_PORTRAIT, 'application/font-sfnt');
+		# Both preconditions the assertion below rests on, asserted rather than assumed: that
+		# the pin-removed mutant would rasterize this payload at all, and that it would come
+		# out portrait. Without Ghostscript, or under the stock Debian policy denying the PS
+		# coder, readImageBlob() throws, getThumbnail() returns false and the assertion would
+		# hold with no pin in place - green while protecting nothing.
+		$this->requirePortraitPostScriptRender(self::FOREIGN_POSTSCRIPT);
+		$this->assertPayloadReachesTheCoderPin(self::FOREIGN_POSTSCRIPT);
+		$file = $this->makeFile(self::FOREIGN_POSTSCRIPT, 'application/font-sfnt');
 
 		$result = (new Font())->getThumbnail($file, 32, 32, false);
 
 		# FreeType fails on non-font bytes either by refusing them outright or by producing
 		# a placeholder, never by invoking Ghostscript or a script coder - both are safe
 		# outcomes. What must never happen is the PostScript page itself coming back
-		# rendered. The payload's bounding box is portrait (600x800) while ImageMagick's TTF
-		# coder draws a fixed 800x480 specimen sheet, so the thumbnail's shape is what
-		# separates them: measured on owncloudci/php:8.3, 32x19 through the TTF pin against
-		# 25x32 with the pin removed.
+		# rendered. Shape is what separates the two: ImageMagick's TTF coder draws a fixed
+		# 800x480 specimen sheet, landscape, while the PS coder rasterizes a full page at
+		# Ghostscript's default size, portrait. Measured on owncloudci/php:8.3, 32x19 through
+		# the TTF pin against 25x32 with the pin removed - 25x32 being 612x792 scaled, i.e.
+		# the default page, NOT anything this payload asked for.
 		#
 		# Size cannot be used for this. OC_Image::data() re-encodes through GD, and by then
 		# the image is already downscaled to fit 32x32, so both outcomes land within a few
