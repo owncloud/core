@@ -140,12 +140,21 @@ try {
 
 	$file = resolveService($service);
 
-	if ($file === null) {
+	// an unregistered service ends up here as '' - getAppValue() returns '' rather
+	// than null, and OC\AppConfig normalizes a SQL NULL configvalue to '' too - so
+	// without the empty test it would fall through to "App not installed: "
+	if ($file === null || $file === '') {
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
 
+	// every RemoteException needs an explicit status: getCode() is 0 by default, and
+	// OC_Response::setStatus(0) emits a bogus "HTTP/1.1 0" that caches, monitoring
+	// and sync clients read as a success. 503 rather than 404 for the refusals
+	// below, because that is what handleException() already answered on a WebDAV
+	// request (code 0 matches no case in its switch and falls through to
+	// ServiceUnavailable) - a sync client must not be told the root is gone.
 	if (\strpos($file, '../') !== false || \strpos($file, '/..') !== false) {
-		throw new RemoteException('Path not allowed');
+		throw new RemoteException('Path not allowed', OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	}
 
 	// force language as given in the http request
@@ -162,18 +171,32 @@ try {
 	OC_App::loadApps(['filesystem', 'logging']);
 
 	switch ($app) {
+		// this branch is the one require_once site without a containment check, and
+		// is unreachable by contradiction: getting here needs $file to start with
+		// "core/", which only a stored remote_<service> value does, which in turn
+		// means $service was not hardcoded - and that is exactly what the in_array()
+		// below rejects. Should the hardcoded list ever gain a "core/…" entry, the
+		// path would become attacker-influenced and needs getServiceHandlerPath()
+		// (or an equivalent containment check against OC::$SERVERROOT) here.
 		case 'core':
 			if (!\in_array($service, \array_keys(getHardcodedServices()), true)) {
-				throw new RemoteException('Service not allowed');
+				throw new RemoteException('Service not allowed', OC_Response::STATUS_SERVICE_UNAVAILABLE);
 			}
 			$file =  OC::$SERVERROOT .'/'. $file;
 			break;
 		default:
 			if (!\OC::$server->getAppManager()->isInstalled($app)) {
-				throw new RemoteException('App not installed: ' . $app);
+				throw new RemoteException('App not installed: ' . $app, OC_Response::STATUS_SERVICE_UNAVAILABLE);
 			}
 			OC_App::loadApp($app);
-			$file = OC_App::getAppPath($app) .'/'. $parts[1];
+			// Only ever include a file which actually resolves inside the app's own
+			// directory. Concatenating getAppPath() unchecked would include an
+			// absolute path whenever the app has no directory on disk, because
+			// getAppPath() returns false there and false . '/' is '/'.
+			$file = OC_App::getServiceHandlerPath($app, $parts[1] ?? '');
+			if ($file === false) {
+				throw new RemoteException('Path not allowed', OC_Response::STATUS_SERVICE_UNAVAILABLE);
+			}
 			break;
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
