@@ -153,6 +153,11 @@ class AppConfigControllerTest extends TestCase {
 			'non-canonical key on core' => ['core', 'públic_webdav'],
 			'non-string key on core' => ['core', ['public_webdav']],
 			'non-string app id' => [['core'], 'public_webdav'],
+			// a non-string key has to be refused for every app, not just core: the
+			// two core predicates both short-circuit on a non-core app, so without
+			// its own is_string() test the array would reach OC\AppConfig as a
+			// subscript and TypeError into a 500 where setValue() answers 400
+			'non-string key on another app' => ['files_sharing', ['public_share_x']],
 		];
 	}
 

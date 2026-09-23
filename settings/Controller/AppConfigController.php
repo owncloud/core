@@ -74,7 +74,13 @@ class AppConfigController extends Controller {
 	 * @param string $default
 	 */
 	public function getValue($app, $key, $default = null) {
-		if (!\is_string($app)) {
+		// the key has to be string-checked here as well, not only on core below,
+		// exactly as setValue() does it: a non-string one reaches OC\AppConfig as an
+		// array subscript, which is an "Illegal offset type" warning on PHP 7 and a
+		// TypeError on PHP 8. The route's {key} is not a guarantee - a JSON request
+		// body is merged over the url parameters for a GET too
+		// (Request::decodeContent()), so both are attacker-controlled independently.
+		if (!\is_string($app) || !\is_string($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// a stored handler path must not be readable back either, so the read path
