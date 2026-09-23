@@ -163,7 +163,11 @@ jobs:
         env:
           ADDITIONAL_PACKAGES: ${{ inputs.additional-packages }}
         run: |
-          sudo apt-get install -y "$ADDITIONAL_PACKAGES"
+          # The runner image ships a stale package index, so the .deb versions it
+          # names can already be gone from the mirror - see
+          # https://github.com/actions/runner-images/issues/7452
+          sudo apt-get update
+          sudo apt-get install -y -o Acquire::Retries=3 "$ADDITIONAL_PACKAGES"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
@@ -180,8 +184,8 @@ jobs:
           PHP_VERSION: ${{ matrix.php }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y "libapache2-mod-php${PHP_VERSION}"
-          sudo apt-get install -y apache2
+          sudo apt-get install -y -o Acquire::Retries=3 "libapache2-mod-php${PHP_VERSION}"
+          sudo apt-get install -y -o Acquire::Retries=3 apache2
           sudo a2enmod rewrite headers env dir mime ssl expires dav dav_fs
           sudo service apache2 restart
 
@@ -441,7 +445,9 @@ jobs:
         run: echo "EMAIL_HOST=localhost" >> $GITHUB_ENV
 
       - name: Install libxml2-utils to get xmllint used by acceptance test script
-        run: sudo apt install -y libxml2-utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y -o Acquire::Retries=3 libxml2-utils
 
       - name: Run API acceptance tests
         if: ${{ inputs.do-api-tests }}
