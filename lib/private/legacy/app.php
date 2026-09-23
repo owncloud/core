@@ -76,6 +76,102 @@ class OC_App {
 	}
 
 	/**
+	 * Whether the given (possibly mangled) app id resolves to the "core" app.
+	 * The name is stripped and normalized so that spellings which the database
+	 * folds back to the "core" row (e.g. "core " with a trailing space, "CORE",
+	 * "core/") are all recognised.
+	 *
+	 * A non-string is not "core"; callers which must not pass one on have to
+	 * reject it themselves, either through isCanonicalAppId() or explicitly.
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	public static function isCoreApp($app) {
+		return \is_string($app) && \strtolower(\trim(self::cleanAppId($app))) === 'core';
+	}
+
+	/**
+	 * Whether the app id is a canonical ownCloud app id, i.e. one an app could
+	 * actually be installed under.
+	 *
+	 * Recognising individual mangled spellings of "core" can never be complete,
+	 * because the only requirement for a bypass is that the written app id compares
+	 * equal to "core" under the database collation - an open set which depends on
+	 * the deployment (blank padding, accent-insensitive collations, silent
+	 * truncation into the varchar(32) appid column, invalid byte sequences). Every
+	 * such spelling needs a character outside this charset, so refusing
+	 * non-canonical app ids outright closes the whole class instead of enumerating
+	 * it. Case is deliberately still accepted here - the appconfig endpoints have
+	 * always taken mixed-case ids, and a case-insensitive collation is already
+	 * covered because isCoreApp() lowercases before comparing.
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	public static function isCanonicalAppId($app) {
+		// \z, not $: PCRE's $ also matches before a single trailing newline, which
+		// would let "<32 chars>\n" through to be truncated onto an existing row
+		return \is_string($app) && \preg_match('/^[a-zA-Z0-9_.-]{1,32}\z/', $app) === 1;
+	}
+
+	/**
+	 * Whether the config key is a canonical one, i.e. one the database cannot fold
+	 * onto a different key. This mirrors isCanonicalAppId() for the appconfig key
+	 * column (varchar(64)) and is only enforced for the "core" app, where a fold
+	 * onto a stored `public_*`/`remote_*` row would overwrite a service handler: an
+	 * accent-insensitive collation folds "públic_webdav" onto "public_webdav",
+	 * which no prefix test can catch.
+	 *
+	 * @param string $key
+	 * @return bool
+	 */
+	public static function isCanonicalConfigKey($key) {
+		return \is_string($key) && \preg_match('/^[a-zA-Z0-9_.-]{1,64}\z/', $key) === 1;
+	}
+
+	/**
+	 * Whether the given app/key pair targets a protected "core" remote_/public_
+	 * service handler. These handlers are require_once'd by remote.php/public.php
+	 * and may only be registered programmatically (from an app's info.xml), never
+	 * through an admin-facing endpoint, otherwise an admin can point them at an
+	 * arbitrary file and achieve code execution.
+	 *
+	 * The app name is normalized before the comparison, and the key prefix is
+	 * matched case-insensitively, so that spellings the database folds onto the
+	 * stored row - "core " with a trailing space, "PUBLIC_webdav" under a
+	 * case-insensitive collation - cannot slip past the guard. Note this is
+	 * best-effort defense-in-depth: the authoritative protection against traversal
+	 * is getServiceHandlerPath() at the include sites in public.php/remote.php.
+	 *
+	 * @param string $app
+	 * @param string $key
+	 * @return bool
+	 */
+	public static function isProtectedCoreServiceKey($app, $key) {
+		return self::isCoreApp($app) && self::isServiceHandlerKey($key);
+	}
+
+	/**
+	 * Whether the config key is one that public.php/remote.php would read as a
+	 * service handler, judged on the key alone. Only the "core" rows are actually
+	 * read that way - see isProtectedCoreServiceKey() - but a guard which cannot
+	 * decide whether the app is core has to fall back to the key.
+	 *
+	 * The prefix is matched case-insensitively because under a case-insensitive
+	 * collation "PUBLIC_webdav" folds onto the stored "public_webdav" row.
+	 *
+	 * @param string $key
+	 * @return bool
+	 */
+	public static function isServiceHandlerKey($key) {
+		// !== 0, not === 1: preg_match() returns false on a PCRE error, and an
+		// undecidable key has to count as a handler key. isCanonicalAppId() and
+		// isCanonicalConfigKey() fail closed the same way through their !== 1.
+		return \is_string($key) && \preg_match('/^(?:remote|public)_/i', $key) !== 0;
+	}
+
+	/**
 	 * Check if an app is loaded
 	 *
 	 * @param string $app
@@ -547,6 +643,62 @@ class OC_App {
 	 */
 	public static function getAppPath($appId) {
 		return \OC::$server->getAppManager()->getAppPath($appId);
+	}
+
+	/**
+	 * Resolve a stored "<appId>/<relative path>" service handler value - as used by
+	 * the core `public_*`/`remote_*` appconfig keys - to an absolute file which is
+	 * guaranteed to live inside that app's own directory.
+	 *
+	 * Returns false when either part contains a NUL byte, when the relative part is
+	 * empty, when the app has no directory on disk (getAppPath() returns false,
+	 * which would otherwise turn the include path absolute), when the target
+	 * escapes the app directory through a traversal sequence or a symlink, or when
+	 * it is not a .php file. Callers must treat false as "refuse the request" and
+	 * never include the path.
+	 *
+	 * @param string $app
+	 * @param string $relativePath
+	 * @return string|false
+	 */
+	public static function getServiceHandlerPath($app, $relativePath) {
+		$app = (string)$app;
+		$relativePath = (string)$relativePath;
+		// a NUL byte has to be caught before either value is used as a path: neither
+		// is_dir() (reached through getAppPath()) nor realpath() returns false for
+		// it - they raise a warning on PHP 7 and throw on PHP 8 - so the documented
+		// "false means refuse" contract would not hold. cleanAppId() does not help
+		// here: its '\0' is a literal backslash-zero, not a NUL.
+		if (\strpos($app, "\0") !== false || \strpos($relativePath, "\0") !== false) {
+			return false;
+		}
+
+		$appPath = self::getAppPath($app);
+		if ($appPath === false || $relativePath === '') {
+			return false;
+		}
+
+		$base = \realpath($appPath);
+		$target = \realpath($appPath . '/' . $relativePath);
+		if ($base === false || $target === false) {
+			return false;
+		}
+
+		// the trailing separator is required, otherwise the app directory
+		// "…/apps/files" would also accept targets below "…/apps/files_sharing"
+		$base = \rtrim($base, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+		if (\strpos($target, $base) !== 0) {
+			return false;
+		}
+
+		// is_file() as well as the suffix: realpath() also succeeds for a directory,
+		// and require_once on a directory is an E_COMPILE_ERROR that the callers'
+		// catch (\Throwable) cannot handle
+		if (!\is_file($target) || \strtolower(\substr($target, -4)) !== '.php') {
+			return false;
+		}
+
+		return $target;
 	}
 
 	/**
