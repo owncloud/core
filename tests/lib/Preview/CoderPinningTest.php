@@ -40,11 +40,22 @@ use Test\TestCase;
  */
 class CoderPinningTest extends TestCase {
 	/**
-	 * The payload both negative tests feed to a provider it is foreign to. Deliberately
-	 * minimal and harmless: what is under test is which coder ImageMagick hands it to,
-	 * not what Ghostscript would draw from it.
+	 * The payload testRejectsPostScriptContentFromAForeignProvider() feeds to a provider it
+	 * is foreign to. Deliberately minimal and harmless: what is under test is which coder
+	 * ImageMagick hands it to, not what Ghostscript would draw from it. A square box is
+	 * fine there, because that test's observable is assertFalse(), which any successful
+	 * decode trips whatever shape it produced.
 	 */
 	private const FOREIGN_POSTSCRIPT = "%!PS-Adobe-3.0\n%%BoundingBox: 0 0 10 10\nshowpage\n";
+
+	/**
+	 * The same payload with a *portrait* bounding box. That is the only difference, and it
+	 * is the one testFontNeverInvokesADangerousCoderForForeignContent() rests on: its
+	 * observable is the thumbnail's shape, and the square box above thumbnails square
+	 * whichever coder produced it. The page stays blank on purpose - nothing here inspects
+	 * a pixel, so drawing operators would only suggest the assertion is stronger than it is.
+	 */
+	private const FOREIGN_POSTSCRIPT_PORTRAIT = "%!PS-Adobe-3.0\n%%BoundingBox: 0 0 600 800\nshowpage\n";
 
 	private function makeFile(string $content, string $mimeType): File {
 		$stream = \fopen('php://memory', 'rb+');
@@ -83,8 +94,30 @@ class CoderPinningTest extends TestCase {
 			$probe = ImagickFactory::create();
 			$probe->readImageBlob($content);
 			$probe->clear();
-		} catch (\ImagickException $e) {
+		} catch (\Exception $e) {
+			# \Exception, not \ImagickException: imagick reports some delegate and policy
+			# conditions at warning severity, and PHPUnit 9 converts PHP warnings into
+			# PHPUnit\Framework\Error\Warning by default (convertWarningsToExceptions,
+			# unset in tests/phpunit-autotest.xml and defaulting to true - failOnWarning
+			# only decides whether an emitted warning fails the run). That class extends
+			# \Exception via PHPUnit\Framework\Exception, so one catch covers both, and
+			# an \Error still surfaces rather than being turned into a green skip.
 			$this->markTestSkipped("This ImageMagick build cannot decode the $coder fixture: " . $e->getMessage());
+		}
+	}
+
+	/**
+	 * Skips unless this build can rasterize PostScript, which needs the PS coder to be both
+	 * registered and permitted by policy.xml plus a working Ghostscript delegate. Reads
+	 * unpinned, as every probe here does - a capability check, never an assertion.
+	 */
+	private function requireRenderablePostScript(string $content): void {
+		try {
+			$probe = ImagickFactory::create();
+			$probe->readImageBlob($content);
+			$probe->clear();
+		} catch (\Exception $e) {
+			$this->markTestSkipped('This build cannot rasterize PostScript: ' . $e->getMessage());
 		}
 	}
 
@@ -180,19 +213,36 @@ class CoderPinningTest extends TestCase {
 
 	public function testFontNeverInvokesADangerousCoderForForeignContent(): void {
 		$this->requireCoder('TTF');
-		$this->assertPayloadReachesTheCoderPin(self::FOREIGN_POSTSCRIPT);
-		$file = $this->makeFile(self::FOREIGN_POSTSCRIPT, 'application/font-sfnt');
+		# The mutant this test is meant to catch - the pin removed - only produces a portrait
+		# render on a build that can rasterize PostScript at all. Without Ghostscript, or
+		# under the stock Debian policy that denies the PS coder, readImageBlob() would throw
+		# instead, getThumbnail() would return false, and the assertion below would hold with
+		# no pin in place. Skip rather than report protection this build is not providing.
+		$this->requireRenderablePostScript(self::FOREIGN_POSTSCRIPT_PORTRAIT);
+		$this->assertPayloadReachesTheCoderPin(self::FOREIGN_POSTSCRIPT_PORTRAIT);
+		$file = $this->makeFile(self::FOREIGN_POSTSCRIPT_PORTRAIT, 'application/font-sfnt');
 
 		$result = (new Font())->getThumbnail($file, 32, 32, false);
 
 		# FreeType fails on non-font bytes either by refusing them outright or by producing
-		# a blank placeholder, never by invoking Ghostscript or a script coder - both are
-		# safe outcomes. What must never happen is a large image carrying rendered
-		# PostScript content. Assert that as one branch-free expression: branching would
-		# leave the test assertion-less on builds that return false, and failOnRisky in
-		# tests/phpunit-autotest.xml turns a zero-assertion test into a hard failure.
-		$renderedBytes = $result === false ? 0 : \strlen((string)$result->data());
-		$this->assertLessThan(2048, $renderedBytes, 'Font must not render PostScript content');
+		# a placeholder, never by invoking Ghostscript or a script coder - both are safe
+		# outcomes. What must never happen is the PostScript page itself coming back
+		# rendered. The payload's bounding box is portrait (600x800) while ImageMagick's TTF
+		# coder draws a fixed 800x480 specimen sheet, so the thumbnail's shape is what
+		# separates them: measured on owncloudci/php:8.3, 32x19 through the TTF pin against
+		# 25x32 with the pin removed.
+		#
+		# Size cannot be used for this. OC_Image::data() re-encodes through GD, and by then
+		# the image is already downscaled to fit 32x32, so both outcomes land within a few
+		# hundred bytes of each other - an earlier revision of this test asserted a 2048
+		# byte ceiling and could not fail. Nor can assertFalse(): the placeholder is a
+		# valid image on this build, so that would fail where the pin is working.
+		#
+		# One branch-free expression on purpose - branching would leave the test
+		# assertion-less on a build that returns false, and failOnRisky in
+		# tests/phpunit-autotest.xml makes a zero-assertion test a hard failure.
+		$renderedThePortraitPage = $result !== false && $result->height() > $result->width();
+		$this->assertFalse($renderedThePortraitPage, 'Font must not render PostScript content');
 	}
 
 	/**

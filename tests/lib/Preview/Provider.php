@@ -106,11 +106,14 @@ abstract class Provider extends TestCase {
 			$probe = ImagickFactory::create();
 			$probe->readImageBlob($content);
 			$probe->clear();
-		} catch (\Throwable $e) {
-			# \Throwable rather than \ImagickException: imagick reports some delegate and
-			# policy conditions at warning severity, and phpunit-autotest.xml sets
-			# failOnWarning="true", so those reach us as PHPUnit\Framework\Error\Warning
-			# instead. Both mean the same thing for a capability probe.
+		} catch (\Exception $e) {
+			# \Exception rather than \ImagickException: imagick reports some delegate and
+			# policy conditions at warning severity, and PHPUnit 9 converts PHP warnings
+			# into PHPUnit\Framework\Error\Warning by default (convertWarningsToExceptions,
+			# which phpunit-autotest.xml leaves unset; failOnWarning only decides whether an
+			# emitted warning fails the run). That class reaches \Exception via
+			# PHPUnit\Framework\Exception, so one catch covers both - and unlike \Throwable
+			# it still lets an \Error fail instead of becoming a green skip.
 			$this->markTestSkipped("This ImageMagick build cannot decode the $coder fixture: " . $e->getMessage());
 		}
 	}
