@@ -40,6 +40,7 @@ ownCloud admins and users.
 
 ## Summary
 
+* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41856](https://github.com/owncloud/core/pull/41856)
 * Bugfix - Reduce priority of checkPropFind event: [#41676](https://github.com/owncloud/core/pull/41676)
 * Bugfix - Do not echo secrets when setting config values via occ: [#41779](https://github.com/owncloud/core/issues/41779)
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
@@ -51,6 +52,31 @@ ownCloud admins and users.
 * Change - Restore Oracle database support in the command line installer: [#41808](https://github.com/owncloud/core/pull/41808)
 
 ## Details
+
+* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41856](https://github.com/owncloud/core/pull/41856)
+
+   We've fixed a path traversal in the appconfig `public_`/`remote_` service
+   handlers. An authenticated admin could set such a key on the `core` app to a
+   traversal value which was later included by `public.php`, leading to remote code
+   execution. An included handler must now resolve to a PHP file inside the app's
+   own directory, and the app-id guard can no longer be bypassed by mangled
+   spellings such as a trailing space.
+
+   Note for integrators: the appconfig endpoints now refuse to *read* a `core`
+   `public_`/`remote_` key as well as to write one. `getValue`/`hasKey` on the
+   legacy `core/ajax/appconfig` endpoint had no such guard at all and returned the
+   stored handler path; `GET /settings/appconfig/core/...` refused the exact
+   lowercase prefix already, and now refuses a mangled spelling of it too
+   (`PUBLIC_webdav`, app id `CORE` or `core `), as well as any key on `core`
+   outside `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it
+   with `occ config:app:get`.
+
+   Requesting a service which is not registered now answers 404 on both
+   `public.php` and `remote.php`. `public.php` previously reported a logged 500,
+   and `remote.php` sent a malformed status line; its refusals now answer 503,
+   which is the status a WebDAV client already saw for them.
+
+   https://github.com/owncloud/core/pull/41856
 
 * Bugfix - Reduce priority of checkPropFind event: [#41676](https://github.com/owncloud/core/pull/41676)
 
