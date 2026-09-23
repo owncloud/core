@@ -52,7 +52,11 @@ try {
 		list($service) = \explode('/', $pathInfo);
 	}
 	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . \strip_tags($service));
-	if ($file === null) {
+	// an unregistered service ends up here as '' - getAppValue() returns '' rather
+	// than null, and OC\AppConfig normalizes a SQL NULL configvalue to '' too - so
+	// without the empty test it falls through to "App not installed: " and is
+	// reported as a logged 500 instead of a 404
+	if ($file === null || $file === '') {
 		\http_response_code(404);
 		exit;
 	}

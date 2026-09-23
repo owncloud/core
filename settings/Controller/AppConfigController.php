@@ -74,87 +74,20 @@ class AppConfigController extends Controller {
 	 * @param string $default
 	 */
 	public function getValue($app, $key, $default = null) {
-		if ($this->isProtectedCoreServiceKey($app, $key)) {
+		if (!\is_string($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// a stored handler path must not be readable back either, so the read path
+		// carries the same pair of guards as setValue()/deleteKey() - not because a
+		// read can fold (it cannot: OC\AppConfig::getValue() is an exact lookup in
+		// the preloaded cache, so the database collation never sees the key), but so
+		// that the three entry points stay one predicate and cannot drift apart
+		if (\OC_App::isProtectedCoreServiceKey($app, $key)
+			|| (\OC_App::isCoreApp($app) && !\OC_App::isCanonicalConfigKey($key))
+		) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		return new JSONResponse($this->appConfig->getValue($app, $key, $default));
-	}
-
-	/**
-	 * Whether the given app/key pair targets a protected "core" remote_/public_
-	 * service handler. These handlers are require_once'd by remote.php/public.php
-	 * and may only be registered programmatically (from an app's info.xml), never
-	 * through this admin-facing controller, otherwise an admin can point them at
-	 * an arbitrary file and achieve code execution.
-	 *
-	 * The app name is normalized before the comparison so that mangled spellings
-	 * which the database folds back to the "core" row (e.g. "core " with a
-	 * trailing space, "CORE", "core/") cannot slip past the guard. The key prefix
-	 * is matched case-insensitively for the same reason: under a case-insensitive
-	 * collation "PUBLIC_webdav" folds onto the stored "public_webdav" row, so a
-	 * case-sensitive prefix test would let an admin overwrite it. Note this is
-	 * best-effort defense-in-depth: the authoritative protection against traversal
-	 * is the containment check at the include sites in public.php/remote.php.
-	 *
-	 * @param string $app
-	 * @param string $key
-	 * @return bool
-	 */
-	private function isProtectedCoreServiceKey($app, $key) {
-		return $this->isCoreApp($app)
-			&& \is_string($key) && \preg_match('/^(?:remote|public)_/i', $key) === 1;
-	}
-
-	/**
-	 * Whether the given (possibly mangled) app id resolves to the "core" app.
-	 * The name is stripped and normalized so that spellings which the database
-	 * folds back to the "core" row (e.g. "core " with a trailing space, "CORE",
-	 * "core/") are all recognised.
-	 *
-	 * @param string $app
-	 * @return bool
-	 */
-	private function isCoreApp($app) {
-		return \strtolower(\trim(\OC_App::cleanAppId((string)$app))) === 'core';
-	}
-
-	/**
-	 * Whether the app id is a canonical ownCloud app id, i.e. one an app could
-	 * actually be installed under.
-	 *
-	 * Recognising individual mangled spellings of "core" can never be complete,
-	 * because the only requirement for a bypass is that the written app id compares
-	 * equal to "core" under the database collation - an open set which depends on
-	 * the deployment (blank padding, accent-insensitive collations, silent
-	 * truncation into the varchar(32) appid column, invalid byte sequences). Every
-	 * such spelling needs a character outside this charset, so refusing
-	 * non-canonical app ids outright closes the whole class instead of enumerating
-	 * it. Case is deliberately still accepted here - this endpoint has always taken
-	 * mixed-case ids, and a case-insensitive collation is already covered because
-	 * isCoreApp() lowercases before comparing.
-	 *
-	 * @param string $app
-	 * @return bool
-	 */
-	private function isCanonicalAppId($app) {
-		// \z, not $: PCRE's $ also matches before a single trailing newline, which
-		// would let "<32 chars>\n" through to be truncated onto an existing row
-		return \is_string($app) && \preg_match('/^[a-zA-Z0-9_.-]{1,32}\z/', $app) === 1;
-	}
-
-	/**
-	 * Whether the config key is a canonical one, i.e. one the database cannot fold
-	 * onto a different key. This mirrors isCanonicalAppId() for the key column
-	 * (varchar(64)) and is only enforced for the "core" app, where a fold onto a
-	 * stored `public_*`/`remote_*` row would overwrite a service handler: an
-	 * accent-insensitive collation folds "públic_webdav" onto "public_webdav",
-	 * which no prefix test can catch.
-	 *
-	 * @param string $key
-	 * @return bool
-	 */
-	private function isCanonicalConfigKey($key) {
-		return \is_string($key) && \preg_match('/^[a-zA-Z0-9_.-]{1,64}\z/', $key) === 1;
 	}
 
 	/**
@@ -168,7 +101,16 @@ class AppConfigController extends Controller {
 		if (!isset($app, $key, $value)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if (!$this->isCanonicalAppId($app)) {
+		// a non-canonical app id must never be written, because the database may
+		// fold it onto an existing row - "core" above all
+		if (!\OC_App::isCanonicalAppId($app)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// the key is only charset-checked on core below, but a non-string one has to
+		// go for every app: it reaches OC\AppConfig as an array subscript, which is
+		// an "Illegal offset type" warning on PHP 7 and a TypeError on PHP 8, and
+		// then binds as "Array"
+		if (!\is_string($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -176,10 +118,10 @@ class AppConfigController extends Controller {
 		// on its own. This should only be possible programmatically.
 		// This change is due the fact that an admin may not be expected
 		// to execute arbitrary code in every environment.
-		if ($this->isProtectedCoreServiceKey($app, $key)) {
+		if (\OC_App::isProtectedCoreServiceKey($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if ($this->isCoreApp($app) && !$this->isCanonicalConfigKey($key)) {
+		if (\OC_App::isCoreApp($app) && !\OC_App::isCanonicalConfigKey($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -195,13 +137,33 @@ class AppConfigController extends Controller {
 		if (!isset($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if (!$this->isCanonicalAppId($app)) {
+		// as in setValue(), a non-string of either kind must not reach OC\AppConfig,
+		// where it would be used as an array subscript
+		if (!\is_string($app) || !\is_string($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if ($this->isProtectedCoreServiceKey($app, $key)) {
+
+		// Deliberately no blanket isCanonicalAppId() here, unlike setValue()/
+		// deleteApp(): a row written under a non-canonical app id before that guard
+		// existed - or by occ, or by an app calling setAppValue() - must stay
+		// removable. It may only be removed key by key and only for a plainly
+		// harmless key, though. isCoreApp() compares a normalized string, so it
+		// cannot see a spelling that only the collation folds onto "core": on an
+		// accent-insensitive collation - utf8mb4_general_ci or utf8mb4_0900_ai_ci,
+		// which is the MySQL default whenever the database is pre-created rather
+		// than created by ownCloud - deleting "córe"/"public_webdav" would remove
+		// core's registered handler, and it is only re-registered on an app version
+		// bump. Canonical app ids are untouched, so files_sharing keeps its
+		// legitimate public_share_* keys.
+		if (!\OC_App::isCanonicalAppId($app)
+			&& (!\OC_App::isCanonicalConfigKey($key) || \OC_App::isServiceHandlerKey($key))
+		) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if ($this->isCoreApp($app) && !$this->isCanonicalConfigKey($key)) {
+		if (\OC_App::isProtectedCoreServiceKey($app, $key)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		if (\OC_App::isCoreApp($app) && !\OC_App::isCanonicalConfigKey($key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -217,14 +179,19 @@ class AppConfigController extends Controller {
 		if (!isset($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		if (!$this->isCanonicalAppId($app)) {
+		// isCoreApp() below compares a normalized string, so it cannot recognise a
+		// spelling only the database folds onto "core" (an accent-insensitive
+		// collation turns a delete of "córe" into a delete of every core row). The
+		// canonical charset is what makes that guard complete, so unlike
+		// deleteKey() this path keeps it.
+		if (!\OC_App::isCanonicalAppId($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
 		// Deleting the whole "core" appconfig would drop the programmatically
 		// managed remote_/public_ service handlers (and all other core config),
 		// so it must never be possible through this admin-facing controller.
-		if ($this->isCoreApp($app)) {
+		if (\OC_App::isCoreApp($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
