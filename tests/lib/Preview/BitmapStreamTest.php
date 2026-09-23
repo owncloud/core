@@ -148,7 +148,7 @@ class BitmapStreamTest extends TestCase {
 	 * A storage that cannot open the file returns false rather than throwing, and
 	 * stream_get_contents(false) raises a TypeError - an \Error, so it would escape the
 	 * \Exception handler in getThumbnail() and surface as a 500 instead of a missing
-	 * preview.
+	 * preview. View::fopen() has a null return for the same situation, hence both rows.
 	 *
 	 * The mime type is stubbed even though the guard returns before reading it, so that the
 	 * case does not depend on where in getThumbnail() the mime type is first touched.
@@ -158,14 +158,25 @@ class BitmapStreamTest extends TestCase {
 	 * predating them they fail by design - measured on #41834's branch: one error, one
 	 * failure. testClosesTheStreamOnSuccess is not among them, since fclose() on the
 	 * success path predates #41835, which only moved it into the finally.
+	 *
+	 * @dataProvider providesUnusableHandles
+	 *
+	 * @param false|null $handle
 	 */
-	public function testReturnsFalseWhenTheFileCannotBeOpened(): void {
+	public function testReturnsFalseWhenTheFileCannotBeOpened($handle): void {
 		$file = $this->createMock(File::class);
-		$file->method('fopen')->willReturn(false);
+		$file->method('fopen')->willReturn($handle);
 		$file->method('getMimeType')->willReturn('application/x-photoshop');
 		$file->method('getSize')->willReturn(1024);
 		$file->method('getPath')->willReturn('/test/unopenable');
 
 		$this->assertFalse((new Photoshop())->getThumbnail($file, 32, 32, false));
+	}
+
+	public function providesUnusableHandles(): array {
+		# View::fopen() returns null rather than false for a path isForbiddenFileOrDir()
+		# rejects, and for one no storage resolves for. Uncaught, that reaches
+		# stream_get_contents() as a TypeError and fclose() as a second one.
+		return ['fopen returned false' => [false], 'fopen returned null' => [null]];
 	}
 }

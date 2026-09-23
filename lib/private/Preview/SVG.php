@@ -46,11 +46,28 @@ class SVG implements IProvider2 {
 			$imagick->setBackgroundColor(new \ImagickPixel('transparent'));
 
 			$stream = $file->fopen('r');
-			$content = \stream_get_contents($stream);
+			if (!\is_resource($stream)) {
+				// stream_get_contents() below would raise a TypeError, which is an \Error and
+				// so would escape the handler underneath rather than degrade to no preview.
+				// Not a === false check: View::fopen() returns null for a path
+				// isForbiddenFileOrDir() rejects and for one Filesystem::resolvePath() finds
+				// no storage for, and that reaches stream_get_contents() just as badly.
+				\OCP\Util::writeLog('core', 'Could not open ' . $file->getPath() . ' for a preview', \OCP\Util::ERROR);
+				return false;
+			}
+
+			try {
+				$content = \stream_get_contents($stream);
+			} finally {
+				// the read itself can throw from the wrapper stack - the encryption module
+				// does, on a corrupt or missing key - and that is caught below, so without
+				// this the descriptor and the view's shared lock would both be held on
+				\fclose($stream);
+			}
+
 			if (\strpos($content, '<?xml') !== 0) {
 				$content = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . $content;
 			}
-			\fclose($stream);
 
 			# sanitize SVG content
 			$output = self::sanitizeSVGContent($content);
