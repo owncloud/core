@@ -21,4 +21,4 @@ Requesting a service which is not registered now answers 404 on both
 and `remote.php` sent a malformed status line; its refusals now answer 503,
 which is the status a WebDAV client already saw for them.
 
-https://github.com/owncloud/core/pull/41855
+https://github.com/owncloud/core/pull/41856
