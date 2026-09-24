@@ -346,8 +346,12 @@ $CONFIG = [
  * audience at all. Without the key, 2.3.5 accepts an access token whose `aud` carries the
  * `client-id`, and also one whose `azp`, `appid` or `client_id` claim does - which is what keeps
  * providers working that put the *resource server* into `aud`, as RFC 9068 section 3 defines it.
- * The one shape the upgrade can lock out is an introspection response carrying neither `aud` nor
- * `client_id`, which RFC 7662 permits and which no `audience` value can rescue. Which provider
+ * Of those three claims only the most authoritative one the token actually carries is consulted, in
+ * that order, so a token that reaches this fallback with an `azp` naming a different client is
+ * refused even where a `client_id` names ownCloud. The shapes the upgrade can lock out, none of
+ * them rescuable by setting this key, are an introspection response carrying neither `aud` nor
+ * `client_id`, which RFC 7662 permits; an access token whose own type label is not an access-token
+ * one; and a JWT access token with no usable `exp` claim. Which provider
  * sends what is documented at
  * https://doc.owncloud.com/server/10.16/admin_manual/configuration/user/oidc/oidc.html#access-token-audience
  * +
@@ -363,11 +367,20 @@ $CONFIG = [
  * +
  * Setting it binds tokens to the *resource*: one that ownCloud's own client obtained for a
  * different resource of the same provider - through an RFC 8707 `resource` parameter or an RFC 8693
- * token exchange - stops being accepted. So do ID tokens, but only where the configured value
- * differs from the `client-id`, since an ID token's `aud` is the `client-id` by definition. What it
- * does not bind is the *client*: any token whose `aud` names ownCloud is accepted whichever client
- * requested it. So choose a value only ownCloud can be issued a token for, do not reuse a
- * tenant-wide resource identifier here, and control in the provider which clients may ask for it.
+ * token exchange - stops being accepted. What it does not bind is the *client*: any token whose
+ * `aud` names ownCloud is accepted whichever client requested it. So choose a value only ownCloud
+ * can be issued a token for, do not reuse a tenant-wide resource identifier here, and control in
+ * the provider which clients may ask for it.
+ * +
+ * ID tokens are a separate matter, and this key is not on its own what decides them. Starting with
+ * app version 2.3.5 a token that labels its own type has to label itself an access token, so where
+ * the provider puts the ID token's type in the payload - `typ` of `ID` on Keycloak, `token_use` of
+ * `id` on AWS Cognito - the token is refused whatever this key says, including not set at all.
+ * Where the provider puts no type claim in the payload, as Entra ID and ADFS do not, an ID token
+ * still satisfies the default expectation, since an ID token's `aud` is the `client-id` by
+ * definition: it is accepted for as long as the `client-id` is an accepted audience, and setting
+ * this key to anything else is then what rejects it, as a side effect rather than as this key's
+ * purpose. Where setting it is not an option, treat ID tokens as credentials.
  * +
  * Do not set the key at all if your token introspection response omits `aud`, which RFC 7662
  * permits, because every opaque token would then be rejected. And with
