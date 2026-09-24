@@ -30,4 +30,8 @@ class Photoshop extends Bitmap {
 	public function getMimeType() {
 		return '/application\/x-photoshop/';
 	}
+
+	protected function getImagickFormat(string $mimeType): string {
+		return 'PSD';
+	}
 }

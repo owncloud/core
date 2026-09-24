@@ -237,19 +237,33 @@ class Detection implements IMimeTypeDetector {
 			// use mime magic extension if available
 			$mimeType = \mime_content_type($path);
 		}
-		if (!$isWrapped and $mimeType === 'application/octet-stream' && \OC_Helper::canExecute("file")) {
+		// canExecute() only tells us the binary is there, not that we may start it. popen()
+		// is a common entry in disable_functions, which makes function_exists() report it
+		// absent, and it is documented to return false when the process cannot be forked.
+		// Neither is fatal here: on PHP 7.4 the call and the fgets()/pclose() that follow
+		// only warn, and hand back a reply that is not a media type. But an install without
+		// ext-fileinfo reaches this code on every bitmap preview, so it would warn on each
+		// one and then blame detection for a result it never produced. (On PHP 8 a disabled
+		// function is undefined and those calls raise an \Error instead, which escapes
+		// callers that guard a failed detection - OC\Preview\Bitmap::getThumbnail() among
+		// them, where a missing media type icon becomes a failed request.)
+		if (!$isWrapped and $mimeType === 'application/octet-stream' && \OC_Helper::canExecute("file")
+			&& \function_exists('popen')
+		) {
 			// it looks like we have a 'file' command,
 			// lets see if it does have mime support
 			$path = \escapeshellarg($path);
 			$fp = \popen("file -b --mime-type $path 2>/dev/null", "r");
-			$reply = \fgets($fp);
-			\pclose($fp);
+			if (\is_resource($fp)) {
+				$reply = \fgets($fp);
+				\pclose($fp);
 
-			//trim the newline
-			$mimeType = \trim($reply);
+				//trim the newline
+				$mimeType = \trim((string)$reply);
 
-			if (empty($mimeType)) {
-				$mimeType = 'application/octet-stream';
+				if (empty($mimeType)) {
+					$mimeType = 'application/octet-stream';
+				}
 			}
 		}
 		return $mimeType;
@@ -262,12 +276,47 @@ class Detection implements IMimeTypeDetector {
 	 * @return string
 	 */
 	public function detectString($data) {
-		if (\function_exists('finfo_open') and \function_exists('finfo_file')) {
-			$finfo = \finfo_open(FILEINFO_MIME);
-			return \finfo_buffer($finfo, $data);
+		if (\function_exists('finfo_open') and \function_exists('finfo_buffer')) {
+			// suppressed like finfo_file() below: libmagic warns when it cannot load its
+			// magic database - reachable through the MAGIC environment variable, or a
+			// broken install - and then returns false. On PHP 7.4 finfo_buffer(false, ...)
+			// warns and returns false in turn, and that false used to become this method's
+			// return value: OC\Preview\Bitmap compares it against a deny-list of media
+			// types it refuses to decode, where it collapses to '' and matches no entry, so
+			// the very content the list exists to reject would be admitted. (On PHP 8 the
+			// same call raises a TypeError, an \Error rather than an \Exception, so there it
+			// escapes that caller's handler and turns a missing preview into a 500 instead.)
+			$finfo = @\finfo_open(FILEINFO_MIME);
+			if ($finfo === false) {
+				return 'application/octet-stream';
+			}
+
+			// finfo_buffer() is typed string|false. An unusable return has to become the
+			// fallback rather than reach a caller, because this method is documented as
+			// returning a string and OC\Preview\Bitmap compares the result against a
+			// deny-list of media types it refuses to decode - '' matches no entry there
+			// and would admit the very content the list exists to reject.
+			$mimeType = \finfo_buffer($finfo, $data);
+			return \is_string($mimeType) && $mimeType !== '' ? $mimeType : 'application/octet-stream';
 		} else {
+			// This branch is only reached without ext-fileinfo, but it is now reached from a
+			// preview request, so the same reasoning as above applies: getTemporaryFile()
+			// returns false when its directory is not writable, and fopen(false, ...) then
+			// fails too, leaving fwrite() and fclose() to warn about a handle that was never
+			// opened and detect() to answer for a file that was never written. (On PHP 8
+			// fopen(false, ...) is a ValueError - an \Error, so there it escapes the
+			// catch (\Exception) in OC\Preview\Bitmap::getThumbnail() and fails the request
+			// instead of falling back to a media type icon.)
 			$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
+			if ($tmpFile === false) {
+				return 'application/octet-stream';
+			}
+
 			$fh = \fopen($tmpFile, 'wb');
+			if ($fh === false) {
+				return 'application/octet-stream';
+			}
+
 			\fwrite($fh, $data, 8024);
 			\fclose($fh);
 			$mime = $this->detect($tmpFile);
