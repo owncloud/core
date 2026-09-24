@@ -44,4 +44,4 @@ policy denies by default. Deployments that enable those coders should keep that
 policy as the control, because it applies process-wide rather than per provider.
 
 https://github.com/owncloud/core/pull/41834
-https://github.com/owncloud/core/pull/41828
+https://github.com/owncloud/core/pull/41863

@@ -22,4 +22,4 @@ Previews that read a file also no longer pass it to ImageMagick before the
 hardened Imagick options are applied.
 
 https://github.com/owncloud/core/pull/41827
-https://github.com/owncloud/core/pull/41828
+https://github.com/owncloud/core/pull/41863

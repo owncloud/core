@@ -17,4 +17,4 @@ type icon with nothing logged that points at the wrong cause, and the SVG provid
 releases the handle whether or not the read succeeds.
 
 https://github.com/owncloud/core/pull/41855
-https://github.com/owncloud/core/pull/41828
+https://github.com/owncloud/core/pull/41863
