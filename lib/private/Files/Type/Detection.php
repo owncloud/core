@@ -262,9 +262,25 @@ class Detection implements IMimeTypeDetector {
 	 * @return string
 	 */
 	public function detectString($data) {
-		if (\function_exists('finfo_open') and \function_exists('finfo_file')) {
-			$finfo = \finfo_open(FILEINFO_MIME);
-			return \finfo_buffer($finfo, $data);
+		if (\function_exists('finfo_open') and \function_exists('finfo_buffer')) {
+			// suppressed like finfo_file() below: libmagic warns when it cannot load its
+			// magic database - reachable through the MAGIC environment variable, or a
+			// broken install - and then returns false. Handing that false to
+			// finfo_buffer() is a TypeError, an \Error rather than an \Exception, so it
+			// escapes callers that guard against a failed detection: it would turn a
+			// missing bitmap preview into a 500 in OC\Preview\Bitmap::getThumbnail().
+			$finfo = @\finfo_open(FILEINFO_MIME);
+			if ($finfo === false) {
+				return 'application/octet-stream';
+			}
+
+			// finfo_buffer() is typed string|false. An unusable return has to become the
+			// fallback rather than reach a caller, because this method is documented as
+			// returning a string and OC\Preview\Bitmap compares the result against a
+			// deny-list of media types it refuses to decode - '' matches no entry there
+			// and would admit the very content the list exists to reject.
+			$mimeType = \finfo_buffer($finfo, $data);
+			return \is_string($mimeType) && $mimeType !== '' ? $mimeType : 'application/octet-stream';
 		} else {
 			$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
 			$fh = \fopen($tmpFile, 'wb');
