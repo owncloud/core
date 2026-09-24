@@ -148,24 +148,31 @@ class BitmapStreamTest extends TestCase {
 	}
 
 	/**
-	 * A storage that cannot open the file returns false rather than throwing. On PHP 7.4
-	 * stream_get_contents(false) only warns and hands on false, which is then coerced on
-	 * its way to Imagick and rejected there, so the return value alone cannot tell this
-	 * apart from an undecodable file - it is false either way. The observable difference is
-	 * the noise: unhandled, the attempt warns from stream_get_contents() before blaming
-	 * ImageMagick for a file it never saw. (The sanitizer used to warn too, behind @; the
-	 * mime gate replaced that path, and only unsuppressed warnings are asserted on here.)
+	 * A storage that cannot open the file returns false rather than throwing, and
+	 * View::fopen() has a null return for the same situation - hence both rows.
 	 *
-	 * (On PHP 8 the same call raises a TypeError instead - an \Error, so it escapes the
+	 * On PHP 7.4 stream_get_contents() only warns for either value and hands on false,
+	 * which is then coerced on its way to Imagick and rejected there, so the return value
+	 * alone cannot tell this apart from an undecodable file - it is false either way. The
+	 * observable difference is the noise: unguarded, the attempt warns from
+	 * stream_get_contents() before blaming ImageMagick for a file it never saw, and the
+	 * null row warns a second time from fclose() in the finally. So the assertion has to be
+	 * on the warnings; asserting the return value, as master does, cannot fail here.
+	 *
+	 * (On PHP 8 those calls raise a TypeError instead - an \Error, so it escapes the
 	 * \Exception handler in getThumbnail() and surfaces as a 500. That is the failure this
 	 * guard prevents there, and why master's version of this test asserts the return.)
 	 *
 	 * The mime type is stubbed even though the guard returns before reading it, so that the
 	 * case does not depend on where in getThumbnail() the mime type is first touched.
+	 *
+	 * @dataProvider providesUnusableHandles
+	 *
+	 * @param false|null $handle
 	 */
-	public function testReportsNoPreviewWithoutWarningsWhenTheFileCannotBeOpened(): void {
+	public function testReportsNoPreviewWithoutWarningsWhenTheFileCannotBeOpened($handle): void {
 		$file = $this->createMock(File::class);
-		$file->method('fopen')->willReturn(false);
+		$file->method('fopen')->willReturn($handle);
 		$file->method('getMimeType')->willReturn('application/x-photoshop');
 		$file->method('getSize')->willReturn(1024);
 		$file->method('getPath')->willReturn('/test/unopenable');
@@ -188,5 +195,13 @@ class BitmapStreamTest extends TestCase {
 
 		$this->assertFalse($result, 'an unopenable file must not produce a preview');
 		$this->assertSame([], $warnings, 'the failure must be handled, not warned about');
+	}
+
+	public function providesUnusableHandles(): array {
+		# View::fopen() returns null rather than false for a path isForbiddenFileOrDir()
+		# rejects, and for one no storage resolves for. Unguarded on PHP 7.4, that null warns
+		# once from stream_get_contents() and again from fclose() in the finally; on PHP 8
+		# each of those is a TypeError instead.
+		return ['fopen returned false' => [false], 'fopen returned null' => [null]];
 	}
 }

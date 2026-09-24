@@ -1,0 +1,20 @@
+Bugfix: Report a preview file that cannot be opened without logging noise
+
+Generating an SVG preview read the file without checking that it had been opened.
+A file the storage could not open, or one whose name the filesystem rejects, still
+fell back to a media type icon, but only after warning about the read and then
+logging ImageMagick's complaint about content it had never received. The bitmap
+providers shared that gap for one of the two values an unsuccessful open can
+return.
+
+Generating an SVG preview for a file that opened but then failed to be read - an
+encrypted file with a missing or damaged key, for instance - already fell back to
+the icon, but held the file handle and its lock until the request ended. The
+bitmap providers were not affected by this one.
+
+Both providers now check the handle before reading, so such a file gets the media
+type icon with nothing logged that points at the wrong cause, and the SVG provider
+releases the handle whether or not the read succeeds.
+
+https://github.com/owncloud/core/pull/41855
+https://github.com/owncloud/core/pull/41828

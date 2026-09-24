@@ -46,10 +46,14 @@ abstract class Bitmap implements IProvider2 {
 			return false;
 		}
 		$stream = $file->fopen('r');
-		if ($stream === false) {
+		if (!\is_resource($stream)) {
 			// stream_get_contents() below cannot report this: on PHP 7.4 it warns and hands
 			// on false, so the failure is only noticed as a misleading decoder error later
-			// (and on PHP 8 it raises a TypeError, which escapes the handler underneath)
+			// (and on PHP 8 it raises a TypeError, which escapes the handler underneath).
+			// Not a === false check: View::fopen() returns null for a path
+			// isForbiddenFileOrDir() rejects and for one Filesystem::resolvePath() finds no
+			// storage for, and that null reaches fclose() in the finally below as a second
+			// warning of its own.
 			Util::writeLog('core', 'Could not open ' . $file->getPath() . ' for a preview', Util::ERROR);
 			return false;
 		}

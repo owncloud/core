@@ -46,11 +46,32 @@ class SVG implements IProvider2 {
 			$imagick->setBackgroundColor(new \ImagickPixel('transparent'));
 
 			$stream = $file->fopen('r');
-			$content = \stream_get_contents($stream);
+			if (!\is_resource($stream)) {
+				// stream_get_contents() below cannot report this: on PHP 7.4 it warns and
+				// hands on false, which the prefix check then turns into a bare XML
+				// declaration and Imagick rejects, so the failure is only ever visible as a
+				// warning plus a decoder error about content that was never read. (On PHP 8
+				// the same call raises a TypeError, an \Error that escapes the handler
+				// underneath rather than degrading to no preview.) Not a === false check:
+				// View::fopen() returns null for a path isForbiddenFileOrDir() rejects and
+				// for one Filesystem::resolvePath() finds no storage for, and that reaches
+				// stream_get_contents() just as badly.
+				\OCP\Util::writeLog('core', 'Could not open ' . $file->getPath() . ' for a preview', \OCP\Util::ERROR);
+				return false;
+			}
+
+			try {
+				$content = \stream_get_contents($stream);
+			} finally {
+				// the read itself can throw from the wrapper stack - the encryption module
+				// does, on a corrupt or missing key - and that is caught below, so without
+				// this the descriptor and the view's shared lock would both be held on
+				\fclose($stream);
+			}
+
 			if (\strpos($content, '<?xml') !== 0) {
 				$content = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . $content;
 			}
-			\fclose($stream);
 
 			# sanitize SVG content
 			$output = self::sanitizeSVGContent($content);
@@ -69,8 +90,9 @@ class SVG implements IProvider2 {
 			$imagick->readImageBlob($output);
 
 			# setFormat() above pins the wand's *output* format as well as the input
-			# coder, so both have to be set - setImageFormat() alone would leave
-			# getImageBlob() below re-encoding back to SVG instead of PNG.
+			# coder, so both have to be set - setImageFormat() alone would leave the
+			# loadFromData($imagick) below, which stringifies the wand through
+			# getImageBlob(), re-encoding back to SVG instead of PNG.
 			$imagick->setImageFormat('png32');
 			$imagick->setFormat('png32');
 		} catch (\Exception $e) {
