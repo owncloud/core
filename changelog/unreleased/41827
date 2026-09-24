@@ -12,4 +12,13 @@ any content that is detected as text, XML, SVG, or MVG before ImageMagick
 ever sees it, and decode through the same hardened Imagick options already
 used by the dedicated SVG preview provider.
 
+Media type detection from file content now always reports a media type. It
+previously passed an unusable value on to its caller when the magic database
+behind it could not be loaded, which made a bitmap preview fail the request
+with a server error rather than fall back to a media type icon, and left the
+new check above with nothing to test the content against.
+
+Previews that read a file also no longer pass it to ImageMagick before the
+hardened Imagick options are applied.
+
 https://github.com/owncloud/core/pull/41827

@@ -35,4 +35,12 @@ covers the PDF LibreOffice has just produced rather than anything the user
 uploaded, and for SVG content that is not parseable XML never reached a coder
 before this change either.
 
+One route is deliberately left open, and is worth stating so the expectation is
+set: which provider handles a preview can be steered by the request, so asking for
+a file to be previewed as a PDF hands that file's bytes to the PDF coder whatever
+they are. This is not a change - content sniffing reached the same coder before -
+and the PDF, PostScript and EPS coders are the ones a distribution's ImageMagick
+policy denies by default. Deployments that enable those coders should keep that
+policy as the control, because it applies process-wide rather than per provider.
+
 https://github.com/owncloud/core/pull/41834
