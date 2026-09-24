@@ -282,8 +282,22 @@ class Detection implements IMimeTypeDetector {
 			$mimeType = \finfo_buffer($finfo, $data);
 			return \is_string($mimeType) && $mimeType !== '' ? $mimeType : 'application/octet-stream';
 		} else {
+			// This branch is only reached without ext-fileinfo, but it is now reached from
+			// a preview request, so the same reasoning as above applies: getTemporaryFile()
+			// returns false when its directory is not writable, and fopen(false, ...) is a
+			// ValueError on PHP 8 - an \Error, so it would escape the catch (\Exception) in
+			// OC\Preview\Bitmap::getThumbnail() and fail the request instead of falling
+			// back to a media type icon.
 			$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
+			if ($tmpFile === false) {
+				return 'application/octet-stream';
+			}
+
 			$fh = \fopen($tmpFile, 'wb');
+			if ($fh === false) {
+				return 'application/octet-stream';
+			}
+
 			\fwrite($fh, $data, 8024);
 			\fclose($fh);
 			$mime = $this->detect($tmpFile);
