@@ -163,6 +163,17 @@ abstract class Bitmap implements IProvider2 {
 	 * Bitmap providers must never hand text-based content (SVG, XML, or any other
 	 * text/* type, e.g. a raw MVG script) to Imagick::readImageBlob() - ImageMagick's
 	 * text/vector coders can be abused to read and write arbitrary files.
+	 *
+	 * Known limitation, pre-dating this check and deliberately not closed here: the
+	 * deny-list can only be as good as the detection behind it. Detection::detectString()
+	 * needs either ext-fileinfo or the "file" binary, and ext-fileinfo is not actually
+	 * required to run ownCloud - OC_Util::checkServer() does not list it, and
+	 * OC_Util::fileInfoLoaded() only raises an admin-panel recommendation. On an install
+	 * with neither, every payload is reported as application/octet-stream and this method
+	 * returns false for all of them, leaving the per-provider coder pin in
+	 * getResizedPreview() as the only remaining layer. Failing closed instead would cost
+	 * every bitmap preview on a configuration ownCloud supports, which is why it is
+	 * recorded here rather than rejected.
 	 */
 	private function isDangerousToDecode(string $content): bool {
 		$mimeType = \OC::$server->getMimeTypeDetector()->detectString($content);
