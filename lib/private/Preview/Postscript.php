@@ -32,8 +32,11 @@ class Postscript extends Bitmap {
 	}
 
 	protected function getImagickFormat(string $mimeType): string {
-		# EPS is the coder ImageMagick registers for application/postscript; it shares
-		# ReadPSImage() with the plain PS coder, so it covers .ps as well as .eps.
+		# EPS is the coder ImageMagick registers for application/postscript, and it covers
+		# .ps as well as .eps. Measured rather than inferred from the coder internals:
+		# plain PostScript and EPSF-tagged content declaring a bounding box smaller than
+		# the page both render to the same geometry read unpinned, pinned EPS and pinned
+		# PS, so the pin does not change what a .ps file previews as.
 		return 'EPS';
 	}
 }
