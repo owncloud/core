@@ -71,9 +71,25 @@ class SVG implements IProvider2 {
 
 			# sanitize SVG content
 			$output = self::sanitizeSVGContent($content);
+			if ($output === null) {
+				return false;
+			}
 
+			# Pin the coder so Imagick's own content-sniffing cannot pick a different one
+			# than the svg:sanitize/embed/decode options set by ImagickFactory assume.
+			# Guarded, unlike Bitmap.php: a build that registers no SVG coder cannot be
+			# pinned to it and cannot decode SVG at all either way, and $output here is
+			# already DOMSanitizer's serialized output rather than the raw file bytes.
+			if (\count(\Imagick::queryFormats('SVG')) > 0) {
+				$imagick->setFormat('SVG');
+			}
 			$imagick->readImageBlob($output);
+
+			# setFormat() above pins the wand's *output* format as well as the input
+			# coder, so both have to be set - setImageFormat() alone would leave
+			# getImageBlob() below re-encoding back to SVG instead of PNG.
 			$imagick->setImageFormat('png32');
+			$imagick->setFormat('png32');
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
@@ -98,7 +114,7 @@ class SVG implements IProvider2 {
 		return true;
 	}
 
-	public static function sanitizeSVGContent(string $content): string {
+	public static function sanitizeSVGContent(string $content): ?string {
 		$sanitizer = new DOMSanitizer(DOMSanitizer::SVG);
 		$sanitizer->addDisallowedTags(['image']);
 		$sanitizer->addDisallowedAttributes(['xlink:href']);
@@ -106,6 +122,10 @@ class SVG implements IProvider2 {
 
 		// XML errors are expected here if the SVG is malformed
 		\libxml_clear_errors();
+
+		if (!\is_string($sanitized_content)) {
+			return null;
+		}
 
 		return $sanitized_content;
 	}

@@ -96,6 +96,41 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	/**
+	 * detectString() is documented as returning a string, and OC\Preview\Bitmap's
+	 * media-type deny-list depends on that: it compares the return value against a
+	 * list of types it refuses to hand to ImageMagick, so a non-string return would
+	 * match nothing and admit the content.
+	 *
+	 * libmagic reads the MAGIC environment variable when finfo_open() is called, so
+	 * pointing it at a file that is not a magic database makes finfo_open() return
+	 * false - the one condition under which finfo_buffer() used to be handed a bool
+	 * and raise a TypeError. Being an \Error rather than an \Exception, that escaped
+	 * the handler in Bitmap::getThumbnail() and turned a missing preview into a 500.
+	 */
+	public function testDetectStringWithUnusableMagicDatabase(): void {
+		$previous = \getenv('MAGIC');
+		\putenv('MAGIC=' . \OC::$SERVERROOT . '/tests/data/no-such-magic-database');
+
+		try {
+			# Precondition, not decoration: if this build ignores MAGIC and opens its
+			# compiled-in database anyway, the case below proves nothing at all and has
+			# to report that rather than pass quietly.
+			$this->assertFalse(
+				@\finfo_open(FILEINFO_MIME),
+				'MAGIC must make finfo_open() fail, or this case exercises the normal path'
+			);
+
+			$this->assertSame('application/octet-stream', $this->detection->detectString('anything'));
+		} finally {
+			if ($previous === false) {
+				\putenv('MAGIC');
+			} else {
+				\putenv('MAGIC=' . $previous);
+			}
+		}
+	}
+
 	public function testMimeTypeIcon(): void {
 		$confDir = vfsStream::setup();
 		$mimetypealiases_dist = vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
