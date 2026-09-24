@@ -45,9 +45,12 @@ abstract class Bitmap implements IProvider2 {
 			return false;
 		}
 		$stream = $file->fopen('r');
-		if ($stream === false) {
+		if (!\is_resource($stream)) {
 			// stream_get_contents() below would raise a TypeError, which is an \Error and
-			// so would escape the handler underneath rather than degrade to no preview
+			// so would escape the handler underneath rather than degrade to no preview.
+			// Not a === false check: View::fopen() returns null for a path
+			// isForbiddenFileOrDir() rejects and for one Filesystem::resolvePath() finds no
+			// storage for, and fclose(null) in the finally below is a TypeError of its own.
 			Util::writeLog('core', 'Could not open ' . $file->getPath() . ' for a preview', Util::ERROR);
 			return false;
 		}

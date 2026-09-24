@@ -1,0 +1,18 @@
+Bugfix: Show a media type icon when a preview file cannot be opened
+
+Generating an SVG preview read the file without checking that it had been opened.
+A file the storage could not open, or one whose name the filesystem rejects, made
+the request fail with a server error instead of falling back to a media type icon.
+The bitmap providers shared that gap for one of the two values an unsuccessful
+open can return.
+
+Generating an SVG preview for a file that opened but then failed to be read - an
+encrypted file with a missing or damaged key, for instance - already fell back to
+the icon, but held the file handle and its lock until the request ended. The
+bitmap providers were not affected by this one.
+
+Both providers now check the handle before reading, so such a file gets the media
+type icon, and the SVG provider releases the handle whether or not the read
+succeeds.
+
+https://github.com/owncloud/core/pull/41855
