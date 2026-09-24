@@ -237,19 +237,30 @@ class Detection implements IMimeTypeDetector {
 			// use mime magic extension if available
 			$mimeType = \mime_content_type($path);
 		}
-		if (!$isWrapped and $mimeType === 'application/octet-stream' && \OC_Helper::canExecute("file")) {
+		// canExecute() only tells us the binary is there, not that we may start it:
+		// popen() is a common entry in disable_functions, and on PHP 8 a disabled function
+		// is undefined, so calling it raises an \Error. popen() is also documented to
+		// return false if the process cannot be forked, which makes fgets() and pclose()
+		// raise a TypeError. All three are \Error rather than \Exception, so they escape
+		// callers that guard a failed detection - OC\Preview\Bitmap::getThumbnail() among
+		// them, where the result is a failed request instead of a media type icon.
+		if (!$isWrapped and $mimeType === 'application/octet-stream' && \OC_Helper::canExecute("file")
+			&& \function_exists('popen')
+		) {
 			// it looks like we have a 'file' command,
 			// lets see if it does have mime support
 			$path = \escapeshellarg($path);
 			$fp = \popen("file -b --mime-type $path 2>/dev/null", "r");
-			$reply = \fgets($fp);
-			\pclose($fp);
+			if (\is_resource($fp)) {
+				$reply = \fgets($fp);
+				\pclose($fp);
 
-			//trim the newline
-			$mimeType = \trim($reply);
+				//trim the newline
+				$mimeType = \trim((string)$reply);
 
-			if (empty($mimeType)) {
-				$mimeType = 'application/octet-stream';
+				if (empty($mimeType)) {
+					$mimeType = 'application/octet-stream';
+				}
 			}
 		}
 		return $mimeType;
