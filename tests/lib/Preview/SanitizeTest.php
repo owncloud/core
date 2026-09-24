@@ -29,9 +29,6 @@ use OC\Preview\Postscript;
 use OCP\Files\File;
 use Test\TestCase;
 
-/**
- * @requires extension imagick
- */
 class SanitizeTest extends TestCase {
 	/**
 	 * @dataProvider providesSVG
