@@ -36,7 +36,8 @@ class Postscript extends Bitmap {
 		# .ps as well as .eps. Measured rather than inferred from the coder internals:
 		# plain PostScript and EPSF-tagged content declaring a bounding box smaller than
 		# the page both render to the same geometry read unpinned, pinned EPS and pinned
-		# PS, so the pin does not change what a .ps file previews as.
+		# PS, so the pin does not change what a .ps file previews as. Measured on
+		# ImageMagick 6.9.11-60 with Ghostscript 9.55.0, the owncloudci/php:8.3 build.
 		return 'EPS';
 	}
 }
