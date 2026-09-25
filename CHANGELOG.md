@@ -1,6 +1,6 @@
 # Table of Contents
 
-* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 11.0.1](#changelog-for-owncloud-core-1101-2026-09-25)
 * [Changelog for 11.0.0](#changelog-for-owncloud-core-1100-2026-07-30)
 * [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
 * [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
@@ -31,12 +31,12 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
-# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+# Changelog for ownCloud Core [11.0.1] (2026-09-25)
 
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 11.0.1 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v11.0.0...master
+[11.0.1]: https://github.com/owncloud/core/compare/v11.0.0...v11.0.1
 
 ## Summary
 
@@ -48,8 +48,10 @@ ownCloud admins and users.
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41807](https://github.com/owncloud/core/pull/41807)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
+* Bugfix - Ship only the app payload in the release tarballs: [#41824](https://github.com/owncloud/core/issues/41824)
 * Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
 * Bugfix - Show a media type icon when a preview file cannot be opened: [#41855](https://github.com/owncloud/core/pull/41855)
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 * Change - Restore Oracle database support in the command line installer: [#41808](https://github.com/owncloud/core/pull/41808)
@@ -230,6 +232,30 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41808
 
+* Bugfix - Ship only the app payload in the release tarballs: [#41824](https://github.com/owncloud/core/issues/41824)
+
+   The release bundles contained 13 bundled apps as the working tree they had been
+   built in, rather than as the app's release artifact. Each of those app
+   directories carried `.git/` (a shallow clone including its pack file),
+   `.github/`, `tests/`, `vendor-bin/` and `build/artifacts/`, the last holding a
+   second copy of the app's own tarball. That was 101.94 MB of the 441.8 MB
+   uncompressed complete tarball, in 16 shipped git repositories.
+
+   Three things made it more than dead weight. `files_antivirus` shipped its
+   anti-virus acceptance data, so a ClamAV scan of the tarball, or of any image
+   built from it, reported `Eicar-Test-Signature FOUND` and could be rejected by an
+   anti-virus gate. The development files were covered by the app's
+   `appinfo/signature.json`, so an administrator could not delete them without
+   breaking `occ integrity:check-app`. And the shipped `.git/` carried the release
+   engineer's clone metadata, including their name and e-mail address.
+
+   The affected app releases have been repackaged, and the release tooling now
+   refuses to build a bundle that contains a build working tree, so this cannot
+   recur unnoticed. The standard tarball was affected as well, through
+   `notifications`.
+
+   https://github.com/owncloud/core/issues/41824
+
 * Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
 
    Bitmap previews closed the file they had opened only when decoding succeeded, so
@@ -261,9 +287,22 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41855
 
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
+
+   The federated system address book sync could request resources that do not
+   belong to the trusted server it was syncing with, and could follow redirects
+   away from that server.
+
+   Requests which would leave the trusted server are now refused, and resource
+   references which do not belong to it are skipped and logged.
+
+   https://github.com/owncloud/core/pull/41869
+
 * Change - Update PHP dependencies: [#41775](https://github.com/owncloud/core/pull/41775)
 
    The following have been updated:
+
+   * composer/semver (3.4.4 to 3.5.0)
 
    * doctrine/lexer (3.0.1 to 3.0.2)
 
@@ -284,6 +323,8 @@ ownCloud admins and users.
    * laravel/serializable-closure (2.0.15 to 2.1.0)
 
    * monolog/monolog (3.10.0 to 3.12.0)
+
+   * nikic/php-parser (v5.8.0 to v5.9.0)
 
    * pear/archive_tar (1.6.0 to 1.6.1)
 

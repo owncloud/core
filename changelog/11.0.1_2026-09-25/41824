@@ -1,0 +1,23 @@
+Bugfix: Ship only the app payload in the release tarballs
+
+The release bundles contained 13 bundled apps as the working tree they had been
+built in, rather than as the app's release artifact. Each of those app
+directories carried `.git/` (a shallow clone including its pack file),
+`.github/`, `tests/`, `vendor-bin/` and `build/artifacts/`, the last holding a
+second copy of the app's own tarball. That was 101.94 MB of the 441.8 MB
+uncompressed complete tarball, in 16 shipped git repositories.
+
+Three things made it more than dead weight. `files_antivirus` shipped its
+anti-virus acceptance data, so a ClamAV scan of the tarball, or of any image
+built from it, reported `Eicar-Test-Signature FOUND` and could be rejected by an
+anti-virus gate. The development files were covered by the app's
+`appinfo/signature.json`, so an administrator could not delete them without
+breaking `occ integrity:check-app`. And the shipped `.git/` carried the release
+engineer's clone metadata, including their name and e-mail address.
+
+The affected app releases have been repackaged, and the release tooling now
+refuses to build a bundle that contains a build working tree, so this cannot
+recur unnoticed. The standard tarball was affected as well, through
+`notifications`.
+
+https://github.com/owncloud/core/issues/41824
