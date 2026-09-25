@@ -8,3 +8,4 @@ Requests which would leave the trusted server are now refused, and resource
 references which do not belong to it are skipped and logged.
 
 https://github.com/owncloud/core/pull/41869
+https://github.com/owncloud/core/pull/41870
