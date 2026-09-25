@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.5](#changelog-for-owncloud-core-10165-2026-09-25)
 * [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
 * [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
 * [Changelog for 10.16.2](#changelog-for-owncloud-core-10162-2026-04-02)
@@ -29,6 +30,326 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.5] (2026-09-25)
+
+The following sections list the changes in ownCloud core 10.16.5 relevant to
+ownCloud admins and users.
+
+[10.16.5]: https://github.com/owncloud/core/compare/v10.16.4...v10.16.5
+
+## Summary
+
+* Security - Update PHP dependencies to close published advisories: [#41784](https://github.com/owncloud/core/pull/41784)
+* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41803](https://github.com/owncloud/core/pull/41803)
+* Security - Reject SVG/script content before it reaches ImageMagick bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
+* Security - Pin the Imagick coder for each preview provider: [#41834](https://github.com/owncloud/core/pull/41834)
+* Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
+* Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
+* Bugfix - Show federated users in the share dialog when local users also match: [#41814](https://github.com/owncloud/core/pull/41814)
+* Bugfix - Speed up Oracle schema introspection: [#41815](https://github.com/owncloud/core/pull/41815)
+* Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
+* Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
+* Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
+
+## Details
+
+* Security - Update PHP dependencies to close published advisories: [#41784](https://github.com/owncloud/core/pull/41784)
+
+   The 10.16 branch had not seen a dependency update since the 10.16.4 release, and
+   several bundled packages were carrying published advisories. They have been
+   updated to versions that are not affected:
+
+   - guzzlehttp/guzzle (7.10.0 to 7.15.3) - guzzlehttp/promises (2.3.0 to 2.5.2) -
+   guzzlehttp/psr7 (2.8.0 to 2.13.0) - phpseclib/phpseclib (3.0.52 to 3.0.56) -
+   rhukster/dom-sanitizer (dev-main to 1.0.14) - symfony/polyfill-php80 (v1.33.0 to
+   v1.37.0) - symfony/routing (v5.4.52 to v5.4.53)
+
+   This closes sixteen advisories: CVE-2026-69246, CVE-2026-69245, CVE-2026-67354,
+   CVE-2026-67355, CVE-2026-67353, CVE-2026-67339, CVE-2026-59883, CVE-2026-55767
+   and CVE-2026-55568 in guzzlehttp/guzzle; CVE-2026-59882, CVE-2026-55766,
+   CVE-2026-48998 and CVE-2026-49214 in guzzlehttp/psr7; CVE-2026-55599 in
+   phpseclib/phpseclib; CVE-2026-48784 in symfony/routing; and CVE-2026-40301 in
+   rhukster/dom-sanitizer.
+
+   Rhukster/dom-sanitizer was required as "dev-main", an unversioned branch pin.
+   Such a pin carries no version number, so vulnerability scanners cannot match it
+   against advisory ranges and silently report nothing for the package. It is now
+   required as a tagged release, which both applies the CVE-2026-40301 fix and
+   makes the dependency visible to scanners.
+
+   Firebase/php-jwt remains at 6.10.0 and is still affected by CVE-2025-45769 (low,
+   weak encryption). The advisory is only fixed in 7.0.0, and every 7.x release
+   requires PHP 8.0 or later, so it cannot be applied to the 10.16 line, which
+   supports PHP 7.4.
+
+   https://github.com/owncloud/core/pull/41784
+
+* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41803](https://github.com/owncloud/core/pull/41803)
+
+   We've fixed a path traversal in the appconfig `public_`/`remote_` service
+   handlers. An authenticated admin could set such a key on the `core` app to a
+   traversal value which was later included by `public.php`, leading to remote code
+   execution. An included handler must now resolve to a PHP file inside the app's
+   own directory, and the app-id guard can no longer be bypassed by mangled
+   spellings such as a trailing space.
+
+   Note for integrators: the appconfig endpoints now refuse to *read* a `core`
+   `public_`/`remote_` key as well as to write one. `getValue`/`hasKey` on the
+   legacy `core/ajax/appconfig` endpoint had no such guard at all and returned the
+   stored handler path; `GET /settings/appconfig/core/...` refused the exact
+   lowercase prefix already, and now refuses a mangled spelling of it too
+   (`PUBLIC_webdav`, app id `CORE` or `core `), as well as any key on `core`
+   outside `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it
+   with `occ config:app:get`.
+
+   Requesting a service which is not registered now answers 404 on both
+   `public.php` and `remote.php`. `public.php` previously reported a logged 500,
+   and `remote.php` sent a malformed status line; its refusals now answer 503,
+   which is the status a WebDAV client already saw for them.
+
+   https://github.com/owncloud/core/pull/41803
+
+* Security - Reject SVG/script content before it reaches ImageMagick bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
+
+   Bitmap previews (PDF, Font, ...) sanitized SVG content before decoding it, but
+   fell back to the original, unsanitized bytes whenever the sanitizer could not
+   parse the input - which happened for any malformed SVG or non-XML payload, not
+   only for genuinely broken SVG files. A crafted malformed SVG or a raw MVG script
+   could therefore reach ImageMagick unsanitized and trigger an MSL script that
+   reads or writes arbitrary files as the web server user.
+
+   Bitmap previews no longer attempt to sanitize and fall back; they now reject any
+   content that is detected as text, XML, SVG, or MVG before ImageMagick ever sees
+   it, and decode through the same hardened Imagick options already used by the
+   dedicated SVG preview provider.
+
+   Media type detection from file content now always reports a media type. It
+   previously passed an unusable value on to its caller when the magic database
+   behind it could not be loaded, which left the new check above with nothing to
+   test the content against - so the content that check exists to reject was
+   admitted instead.
+
+   Previews that read a file also no longer pass it to ImageMagick before the
+   hardened Imagick options are applied.
+
+   https://github.com/owncloud/core/pull/41827
+   https://github.com/owncloud/core/pull/41863
+
+* Security - Pin the Imagick coder for each preview provider: [#41834](https://github.com/owncloud/core/pull/41834)
+
+   Bitmap and SVG previews decoded content with no format hint, so ImageMagick's
+   own content-sniffing - independent of the mime-type check that decides whether a
+   preview is attempted at all - could pick a different coder than the one a
+   provider actually serves. PostScript-looking content, which the mime check must
+   allow through for the PDF and Postscript providers, could therefore still reach
+   the Ghostscript delegate through any other bitmap provider (SGI, Font,
+   Illustrator, Photoshop, TIFF, Heic).
+
+   Each provider now pins the exact Imagick coder it expects instead of letting
+   ImageMagick guess from the file's content. The pin is applied in memory and
+   introduces no temporary file of its own.
+
+   Because media types are derived from the file name extension, a file whose
+   extension does not match its actual content no longer gets a preview: a JPEG
+   saved as photo.tif is routed to the TIFF provider, pinned to the TIFF coder, and
+   falls back to a media type icon where content sniffing previously rendered it.
+   This is the intended trade-off - content sniffing is what allowed a preview
+   provider to be steered to an unrelated coder in the first place.
+
+   The affected extensions are ai, bw, eps, heic, heif, int, inta, pdf, ps, psd,
+   rgb, rgba, sgi, tif and tiff. Of those providers only SGI and Heic are
+   registered by default, so on a stock install this is visible for bw, int, inta,
+   rgb, rgba, sgi, heic and heif; the rest need their provider enabled in
+   enabledPreviewProviders.
+
+   The font extensions otf, pfb and ttf change differently: the font coder accepts
+   any bytes, so a mismatched file still produces a thumbnail, just one drawn by
+   the font coder rather than reflecting the file's real content. Real .otf files
+   gain previews they did not have before, because an unpinned read had no decode
+   delegate for them at all.
+
+   Office documents and SVG are pinned too but are not affected. For Office the pin
+   covers the PDF LibreOffice has just produced rather than anything the user
+   uploaded, and for SVG content that is not parseable XML never reached a coder
+   before this change either.
+
+   One route is deliberately left open, and is worth stating so the expectation is
+   set: which provider handles a preview can be steered by the request, so asking
+   for a file to be previewed as a PDF hands that file's bytes to the PDF coder
+   whatever they are. This is not a change - content sniffing reached the same
+   coder before - and the PDF, PostScript and EPS coders are the ones a
+   distribution's ImageMagick policy denies by default. Deployments that enable
+   those coders should keep that policy as the control, because it applies
+   process-wide rather than per provider.
+
+   https://github.com/owncloud/core/pull/41834
+   https://github.com/owncloud/core/pull/41863
+
+* Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
+
+   On Oracle every compare column of an upsert was wrapped in to_char(). That cast
+   is only needed for text and binary columns, which Oracle cannot compare
+   directly, but it was applied to all of them - and to_char(column) cannot use an
+   index on that column. Writes to the file cache compare storage and path_hash, so
+   uploads, renames and file scans could no longer use the unique index
+   fs_storage_path_hash and became very slow on large installations.
+
+   Only text and binary compare columns are cast now, so every other comparison
+   uses its index again.
+
+   https://github.com/owncloud/core/issues/41782
+   https://github.com/owncloud/core/pull/41783
+
+* Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
+
+   Oracle cannot store empty strings, so the file cache converts them to null
+   before writing a row. For the storage root, whose path is the empty string, that
+   left md5() being called with null. PHP 8 reports that as a deprecated implicit
+   null to string conversion: noise in the log whenever a storage root is inserted,
+   and an error under PHPUnit's strict error handling. The stored path_hash itself
+   was never wrong, because md5(null) coerces to md5('').
+
+   The value is now cast to a string before hashing.
+
+   https://github.com/owncloud/core/pull/41808
+   https://github.com/owncloud/core/pull/41815
+
+* Bugfix - Show federated users in the share dialog when local users also match: [#41814](https://github.com/owncloud/core/pull/41814)
+
+   The share dialog only offered federated users when the search returned no local
+   users and no local groups, so a single local match hid every federated result -
+   including exact federated cloud id matches. Searching for a surname stem shared
+   by local accounts therefore made federated users unreachable unless the full
+   cloud id was typed.
+
+   The suggestion that made this filtering necessary is generated by the server: a
+   search term containing an "@" was always offered as a federated cloud id, even
+   when it was the email address of an existing local account. That guess is now
+   skipped whenever the search matched a local user or group exactly, so the share
+   dialog no longer needs to discard genuine federated results.
+
+   https://github.com/owncloud/enterprise/issues/4392
+   https://github.com/owncloud/core/pull/41814
+
+* Bugfix - Speed up Oracle schema introspection: [#41815](https://github.com/owncloud/core/pull/41815)
+
+   Installing and upgrading ownCloud on Oracle took an unreasonably long time. A
+   fresh `occ maintenance:install` on the 10.16 branch needed over 40 minutes,
+   while the same install on the master branch finished in well under a minute.
+
+   The cause was the bundled doctrine/dbal 2.13, which introspects a schema by
+   describing every table on its own: for each table it issues one query for the
+   columns, one for the indexes, one for the foreign keys and one for the table
+   comment. Each of those queries inlines the table name as a literal, so Oracle
+   cannot share cursors between them and hard parses every single one, which costs
+   a few hundred milliseconds each. The migration code then asks for the full
+   schema once per applied migration, so the number of queries grows with the
+   number of tables multiplied by the number of migrations. With 68 migrations and
+   roughly 48 tables that added up to thousands of hard parsed queries.
+
+   Oracle schema introspection now reads the whole data dictionary with a fixed
+   number of queries instead of four per table. Reading a 48 table schema went down
+   from 194 queries to 6, and `occ maintenance:install` against Oracle on PHP 7.4
+   went down from 43 minutes to 30 seconds. The resulting schema is unchanged; it
+   is compared against the previous implementation in the test suite.
+
+   Doctrine/dbal does the same thing natively from version 3.4 onwards, which is
+   why the master branch was never affected. Upgrading doctrine/dbal on the 10.16
+   branch is not an option, because its 3.x line changes public API that
+   third-party apps use.
+
+   https://github.com/owncloud/core/pull/41815
+   https://github.com/owncloud/core/pull/41819
+
+* Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
+
+   Bitmap previews closed the file they had opened only when decoding succeeded, so
+   every file that could not be decoded leaked a file handle for the lifetime of
+   the process. Generating previews for a directory of files that ImageMagick has
+   no decoder for could therefore exhaust the available file handles.
+
+   A file that cannot be opened at all is now reported as having no preview right
+   away, instead of travelling on until ImageMagick rejects the empty content and
+   an unrelated warning plus a misleading decoder error have been logged.
+
+   https://github.com/owncloud/core/pull/41835
+   https://github.com/owncloud/core/pull/41837
+
+* Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
+
+   Generating an SVG preview read the file without checking that it had been
+   opened. A file the storage could not open, or one whose name the filesystem
+   rejects, still fell back to a media type icon, but only after warning about the
+   read and then logging ImageMagick's complaint about content it had never
+   received. The bitmap providers shared that gap for one of the two values an
+   unsuccessful open can return.
+
+   Generating an SVG preview for a file that opened but then failed to be read - an
+   encrypted file with a missing or damaged key, for instance - already fell back
+   to the icon, but held the file handle and its lock until the request ended. The
+   bitmap providers were not affected by this one.
+
+   Both providers now check the handle before reading, so such a file gets the
+   media type icon with nothing logged that points at the wrong cause, and the SVG
+   provider releases the handle whether or not the read succeeds.
+
+   https://github.com/owncloud/core/pull/41855
+   https://github.com/owncloud/core/pull/41863
+
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
+
+   The federated system address book sync could request resources that do not
+   belong to the trusted server it was syncing with, and could follow redirects
+   away from that server.
+
+   Requests which would leave the trusted server are now refused, and resource
+   references which do not belong to it are skipped and logged.
+
+   https://github.com/owncloud/core/pull/41869
+   https://github.com/owncloud/core/pull/41870
+
+* Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
+
+   The following have been updated:
+
+   * deepdiver/zipstreamer (2.0.3 to 3.0.1)
+
+   * dg/composer-cleaner (v2.2.1 to v2.2.2)
+
+   * guzzlehttp/guzzle (7.15.3 to 7.15.5)
+
+   * guzzlehttp/promises (2.5.2 to 2.5.3)
+
+   * guzzlehttp/psr7 (2.13.0 to 2.13.1)
+
+   * monolog/monolog (2.11.0 to 2.11.1)
+
+   * nikic/php-parser (v5.7.0 to v5.9.0)
+
+   * pear/archive_tar (1.6.0 to 1.6.1)
+
+   * phpseclib/phpseclib (3.0.56 to 3.0.57)
+
+   * pimple/pimple (v3.6.1 to v3.6.2)
+
+   * punic/punic (3.8.1 to 3.8.2)
+
+   * rhukster/dom-sanitizer (1.0.14 to 1.0.17)
+
+   * sabre/dav (4.7.0 to 4.7.1)
+
+   * sabre/event (5.1.7 to 5.1.9)
+
+   * sabre/vobject (4.5.8 to 4.6.1)
+
+   https://github.com/owncloud/core/pull/41787
+   https://github.com/owncloud/core/pull/41788
+   https://github.com/owncloud/core/pull/41793
+   https://github.com/owncloud/core/pull/41810
+   https://github.com/owncloud/core/pull/41830
+   https://github.com/owncloud/core/pull/41843
+
 # Changelog for ownCloud Core [10.16.4] (2026-07-29)
 
 The following sections list the changes in ownCloud core 10.16.4 relevant to
