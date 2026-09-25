@@ -302,6 +302,8 @@ ownCloud admins and users.
 
    The following have been updated:
 
+   * composer/semver (3.4.4 to 3.5.0)
+
    * doctrine/lexer (3.0.1 to 3.0.2)
 
    * firebase/php-jwt (v7.1.0 to v7.2.0)
@@ -321,6 +323,8 @@ ownCloud admins and users.
    * laravel/serializable-closure (2.0.15 to 2.1.0)
 
    * monolog/monolog (3.10.0 to 3.12.0)
+
+   * nikic/php-parser (v5.8.0 to v5.9.0)
 
    * pear/archive_tar (1.6.0 to 1.6.1)
 
