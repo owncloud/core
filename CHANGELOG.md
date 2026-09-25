@@ -49,6 +49,7 @@ ownCloud admins and users.
 * Bugfix - Speed up Oracle schema introspection: [#41815](https://github.com/owncloud/core/pull/41815)
 * Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
 * Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
 * Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
 
 ## Details
@@ -295,6 +296,18 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41855
    https://github.com/owncloud/core/pull/41863
+
+* Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
+
+   The federated system address book sync could request resources that do not
+   belong to the trusted server it was syncing with, and could follow redirects
+   away from that server.
+
+   Requests which would leave the trusted server are now refused, and resource
+   references which do not belong to it are skipped and logged.
+
+   https://github.com/owncloud/core/pull/41869
+   https://github.com/owncloud/core/pull/41870
 
 * Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
 
