@@ -23,18 +23,75 @@ namespace OCA\DAV\Tests\Unit\TrashBin;
 
 use OCA\DAV\TrashBin\ITrashBinNode;
 use OCA\DAV\TrashBin\TrashBinPlugin;
+use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
+use Sabre\DAV\Tree;
 use Sabre\DAV\Xml\Property\GetLastModified;
 use Test\TestCase;
 
 class TrashBinPluginTest extends TestCase {
 	public function testInit() {
 		$server = $this->createMock(Server::class);
-		$server->expects($this->once())->method('on')->with('propFind');
+		$server->expects($this->exactly(2))
+			->method('on')
+			->withConsecutive(
+				['propFind', $this->anything()],
+				['beforeMove', $this->anything()]
+			);
 
 		$plugin = new TrashBinPlugin();
 		$plugin->initialize($server);
+	}
+
+	public function testBeforeMoveTrashBinSourceDestinationExistsThrows() {
+		$sourceNode = $this->createMock(ITrashBinNode::class);
+
+		$tree = $this->createMock(Tree::class);
+		$tree->method('getNodeForPath')->with('trash-bin/user/1')->willReturn($sourceNode);
+		$tree->method('nodeExists')->with('files/user/foo.txt')->willReturn(true);
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $tree;
+
+		$plugin = new TrashBinPlugin();
+		$plugin->initialize($server);
+
+		$this->expectException(Forbidden::class);
+		$plugin->beforeMove('trash-bin/user/1', 'files/user/foo.txt');
+	}
+
+	public function testBeforeMoveTrashBinSourceDestinationMissingReturnsTrue() {
+		$sourceNode = $this->createMock(ITrashBinNode::class);
+
+		$tree = $this->createMock(Tree::class);
+		$tree->method('getNodeForPath')->with('trash-bin/user/1')->willReturn($sourceNode);
+		$tree->method('nodeExists')->with('files/user/foo.txt')->willReturn(false);
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $tree;
+
+		$plugin = new TrashBinPlugin();
+		$plugin->initialize($server);
+
+		self::assertTrue($plugin->beforeMove('trash-bin/user/1', 'files/user/foo.txt'));
+	}
+
+	public function testBeforeMoveNonTrashBinSourceReturnsTrue() {
+		$sourceNode = $this->createMock(INode::class);
+
+		$tree = $this->createMock(Tree::class);
+		$tree->method('getNodeForPath')->willReturn($sourceNode);
+		$tree->expects(self::never())->method('nodeExists');
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $tree;
+
+		$plugin = new TrashBinPlugin();
+		$plugin->initialize($server);
+
+		self::assertTrue($plugin->beforeMove('files/user/a.txt', 'files/user/b.txt'));
 	}
 
 	/**
