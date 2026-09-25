@@ -1,0 +1,47 @@
+Security: Pin the Imagick coder for each preview provider
+
+Bitmap and SVG previews decoded content with no format hint, so ImageMagick's
+own content-sniffing - independent of the mime-type check that decides whether
+a preview is attempted at all - could pick a different coder than the one a
+provider actually serves. PostScript-looking content, which the mime check must
+allow through for the PDF and Postscript providers, could therefore still reach
+the Ghostscript delegate through any other bitmap provider (SGI, Font,
+Illustrator, Photoshop, TIFF, Heic).
+
+Each provider now pins the exact Imagick coder it expects instead of letting
+ImageMagick guess from the file's content. The pin is applied in memory and
+introduces no temporary file of its own.
+
+Because media types are derived from the file name extension, a file whose
+extension does not match its actual content no longer gets a preview: a JPEG
+saved as photo.tif is routed to the TIFF provider, pinned to the TIFF coder,
+and falls back to a media type icon where content sniffing previously rendered
+it. This is the intended trade-off - content sniffing is what allowed a preview
+provider to be steered to an unrelated coder in the first place.
+
+The affected extensions are ai, bw, eps, heic, heif, int, inta, pdf, ps, psd,
+rgb, rgba, sgi, tif and tiff. Of those providers only SGI and Heic are registered
+by default, so on a stock install this is visible for bw, int, inta, rgb, rgba,
+sgi, heic and heif; the rest need their provider enabled in enabledPreviewProviders.
+
+The font extensions otf, pfb and ttf change differently: the font coder accepts
+any bytes, so a mismatched file still produces a thumbnail, just one drawn by the
+font coder rather than reflecting the file's real content. Real .otf files gain
+previews they did not have before, because an unpinned read had no decode delegate
+for them at all.
+
+Office documents and SVG are pinned too but are not affected. For Office the pin
+covers the PDF LibreOffice has just produced rather than anything the user
+uploaded, and for SVG content that is not parseable XML never reached a coder
+before this change either.
+
+One route is deliberately left open, and is worth stating so the expectation is
+set: which provider handles a preview can be steered by the request, so asking for
+a file to be previewed as a PDF hands that file's bytes to the PDF coder whatever
+they are. This is not a change - content sniffing reached the same coder before -
+and the PDF, PostScript and EPS coders are the ones a distribution's ImageMagick
+policy denies by default. Deployments that enable those coders should keep that
+policy as the control, because it applies process-wide rather than per provider.
+
+https://github.com/owncloud/core/pull/41834
+https://github.com/owncloud/core/pull/41863
