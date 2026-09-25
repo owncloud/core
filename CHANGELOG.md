@@ -267,11 +267,13 @@ ownCloud admins and users.
 
    * doctrine/lexer (3.0.1 to 3.0.2)
 
-   * firebase/php-jwt (v7.1.0 to v7.1.1)
+   * firebase/php-jwt (v7.1.0 to v7.2.0)
+
+   * google/apiclient (v2.19.4 to v2.20.0)
 
    * google/apiclient-services (v0.452.0 to v0.460.0)
 
-   * google/auth (v1.53.0 to v1.54.0)
+   * google/auth (v1.53.0 to v1.55.0)
 
    * guzzlehttp/guzzle (7.15.2 to 7.15.5)
 
@@ -279,7 +281,7 @@ ownCloud admins and users.
 
    * guzzlehttp/psr7 (2.13.0 to 2.13.1)
 
-   * laravel/serializable-closure (2.0.15 to 2.0.16)
+   * laravel/serializable-closure (2.0.15 to 2.1.0)
 
    * monolog/monolog (3.10.0 to 3.12.0)
 
@@ -318,6 +320,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41829
    https://github.com/owncloud/core/pull/41839
    https://github.com/owncloud/core/pull/41842
+   https://github.com/owncloud/core/pull/41864
 
 * Change - Require rhukster/dom-sanitizer as a tagged release: [#41785](https://github.com/owncloud/core/pull/41785)
 
