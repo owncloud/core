@@ -27,7 +27,6 @@ use OCP\AppFramework\Http;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
-use Sabre\DAV\Client;
 use Sabre\DAV\Xml\Response\MultiStatus;
 use Sabre\DAV\Xml\Service;
 use Sabre\HTTP\ClientHttpException;
@@ -82,8 +81,46 @@ class SyncService {
 
 		// 3. apply changes
 		// TODO: use multi-get for download
+		// Note that a skipped resource is skipped for good: the sync token below
+		// still advances, and a sync-collection report only reports a resource
+		// once per token, so it is not offered again. That is the right outcome
+		// for a resource which does not belong to the server reporting it.
 		foreach ($response['response'] as $resource => $status) {
+			// The href is text the server chose, and xml text keeps literal
+			// newlines, so it must not reach the log as it arrived.
+			$reported = TrustedServerClient::forLog($resource);
+			// An href has no business carrying control characters, and a
+			// character reference survives the parser's line-ending handling,
+			// so they can arrive as real control bytes. Sanitising for the log
+			// is not enough: the raw value is what reaches curl, and what
+			// basename() would store as the card uri and we would serve back to
+			// our own clients. Reject it outright.
+			if (\preg_match('/[\x00-\x1f\x7f]/', (string)$resource) === 1) {
+				$this->logger->warning(
+					"Ignoring resource \"$reported\" reported by trusted server $url: contains control characters",
+					['app' => 'dav']
+				);
+				continue;
+			}
+			if (!TrustedServerClient::isSameOrigin($url, (string)$resource)) {
+				$this->logger->warning(
+					"Ignoring resource \"$reported\" reported by trusted server $url: not on the trusted server",
+					['app' => 'dav']
+				);
+				continue;
+			}
 			$cardUri = \basename($resource);
+			// '.' and '..' pass the origin check - resolve() normalises them
+			// away - but name no card. Storing one would leave a row our own
+			// clients resolve to the collection itself, so it could never be
+			// addressed or deleted again.
+			if ($cardUri === '' || $cardUri === '.' || $cardUri === '..') {
+				$this->logger->warning(
+					"Ignoring resource \"$reported\" reported by trusted server $url: no usable card name",
+					['app' => 'dav']
+				);
+				continue;
+			}
 			if (isset($status[200])) {
 				$vCard = $this->download($url, $sharedSecret, $resource);
 				$existingCard = $this->backend->getCard($addressBookId, $cardUri);
@@ -130,7 +167,7 @@ class SyncService {
 			'userName' => $userName,
 			'password' => $sharedSecret,
 		];
-		$client = new Client($settings);
+		$client = new TrustedServerClient($settings, $url);
 		$client->setThrowExceptions(true);
 
 		$addressBookUrl = "remote.php/dav/addressbooks/system/system/system";
@@ -157,7 +194,7 @@ class SyncService {
 			'userName' => 'system',
 			'password' => $sharedSecret,
 		];
-		$client = new Client($settings);
+		$client = new TrustedServerClient($settings, $url);
 		$client->setThrowExceptions(true);
 
 		$response = $client->request('GET', $resourcePath);
