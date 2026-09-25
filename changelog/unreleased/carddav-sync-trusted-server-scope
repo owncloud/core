@@ -1,0 +1,8 @@
+Bugfix: Restrict federated address book sync to the trusted server
+
+The federated system address book sync could request resources that do not
+belong to the trusted server it was syncing with, and could follow redirects
+away from that server.
+
+Requests which would leave the trusted server are now refused, and resource
+references which do not belong to it are skipped and logged.
