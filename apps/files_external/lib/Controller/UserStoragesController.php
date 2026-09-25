@@ -31,6 +31,7 @@ use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IUserStoragesService;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -51,14 +52,16 @@ class UserStoragesController extends StoragesController {
 		IL10N $l10n,
 		IUserStoragesService $userStoragesService,
 		IUserSession $userSession,
-		ILogger $logger
+		ILogger $logger,
+		IConfig $config = null
 	) {
 		parent::__construct(
 			$AppName,
 			$request,
 			$l10n,
 			$userStoragesService,
-			$logger
+			$logger,
+			$config
 		);
 		$this->userSession = $userSession;
 	}
