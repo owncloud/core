@@ -100,6 +100,7 @@ class DAV extends Common {
 			} elseif (\substr($host, 0, 7) == "http://") {
 				$host = \substr($host, 7);
 			}
+			$this->validateHost($host);
 			$this->host = $host;
 			$this->user = $params['user'];
 			$this->password = $params['password'];
@@ -124,6 +125,74 @@ class DAV extends Common {
 			}
 		} else {
 			throw new \InvalidArgumentException('Invalid webdav storage configuration');
+		}
+	}
+
+	/**
+	 * Validate that the host does not point to a private, loopback, or
+	 * link-local address to prevent Server-Side Request Forgery (SSRF).
+	 *
+	 * The host string has already had any http:// / https:// prefix stripped
+	 * and may contain a port (host:port) or a path component (host/path).
+	 *
+	 * @param string $host
+	 * @throws \InvalidArgumentException when the host resolves to a blocked range
+	 */
+	protected function validateHost($host) {
+		// A bare IPv6 address (e.g. "::1", "fe80::1") contains colons but no
+		// brackets, so parse_url cannot handle it as a URL host component.
+		// Detect this early and validate directly.
+		if (\strpos($host, ':') !== false && \strpos($host, '[') === false) {
+			// Strip any trailing path component, e.g. "::1/some/path"
+			$ipv6 = \explode('/', $host, 2)[0];
+			if (\filter_var($ipv6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+				$this->checkIpNotBlocked($ipv6);
+				return;
+			}
+		}
+
+		// Reconstruct a full URL so parse_url can reliably extract the hostname
+		// for both IPv4 literals and hostnames (including bracket-enclosed IPv6).
+		$parsed = \parse_url('http://' . $host);
+		$hostname = isset($parsed['host']) ? $parsed['host'] : $host;
+
+		// Strip IPv6 brackets, e.g. [::1] -> ::1
+		$hostname = \trim($hostname, '[]');
+
+		if ($hostname === '') {
+			throw new \InvalidArgumentException('Invalid webdav storage configuration: empty host');
+		}
+
+		// Block loopback / link-local / private IP literals for both IPv4 and IPv6.
+		if (\filter_var($hostname, FILTER_VALIDATE_IP) !== false) {
+			$this->checkIpNotBlocked($hostname);
+			return;
+		}
+
+		// Block localhost by name (covers localhost, localhost.localdomain, etc.).
+		if (\preg_match('/^localhost(\..*)?$/i', $hostname)) {
+			throw new \InvalidArgumentException(
+				'WebDAV host points to a blocked IP address range'
+			);
+		}
+	}
+
+	/**
+	 * Throws an InvalidArgumentException if the given validated IP address
+	 * falls into a private, loopback, link-local, or reserved range.
+	 *
+	 * @param string $ip a value already confirmed to be a valid IP address
+	 * @throws \InvalidArgumentException
+	 */
+	private function checkIpNotBlocked($ip) {
+		if (\filter_var(
+			$ip,
+			FILTER_VALIDATE_IP,
+			FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+		) === false) {
+			throw new \InvalidArgumentException(
+				'WebDAV host points to a blocked IP address range'
+			);
 		}
 	}
 
