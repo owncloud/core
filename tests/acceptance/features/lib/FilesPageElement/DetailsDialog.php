@@ -92,7 +92,7 @@ class DetailsDialog extends OwncloudPage {
 	/**
 	 * sets the NodeElement for the current dialog
 	 * a little bit like __construct() but as we access this "sub-page-object"
-	 * from an other Page Object or a Context file by
+	 * from another Page Object or a Context file by
 	 * $this->getPage("FilesPageElement\\DetailsDialog")
 	 * there is no real __construct() that can take arguments
 	 * In the rest of the class we can use $this->detailsDialogElement to find

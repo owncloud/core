@@ -652,7 +652,7 @@ class UsersPage extends OwncloudPage {
 		} else {
 			$selectOption->click();
 		}
-		//a valid quota will be send by AJAX to the server
+		//a valid quota will be sent by AJAX to the server
 		//invalid quotas are checked by JS, so we just wait for the notification to appear
 		if ($valid === true) {
 			$this->waitForAjaxCallsToStartAndFinish($session);

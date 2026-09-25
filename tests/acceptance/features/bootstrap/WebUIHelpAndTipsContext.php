@@ -64,7 +64,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * return link id for for help and tips links
+	 * return link id for help and tips links
 	 *
 	 * @param string $linkTitle
 	 *
