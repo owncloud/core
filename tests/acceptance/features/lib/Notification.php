@@ -42,7 +42,7 @@ class Notification extends OwncloudPage {
 	/**
 	 * sets the NodeElement for the current notification
 	 * a little bit like __construct() but as we access this "sub-page-object"
-	 * from an other Page Object by $this->getPage("Notification")
+	 * from another Page Object by $this->getPage("Notification")
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param NodeElement $notificationElement

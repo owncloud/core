@@ -500,7 +500,7 @@ class SharingDialog extends OwncloudPage {
 			);
 		} else {
 			// For users having same display name we pass $shareReceiverName in the format "displayName (userName)"
-			// Let's hope display name of user in other cases is not in the above mentioned format, otherwise this will fail
+			// Let's hope display name of user in other cases is not in the above-mentioned format, otherwise this will fail
 			if (\preg_match('/\(*\)/', (string)$shareReceiverName)
 				&& !\strpos($shareReceiverName, '(federated)')
 			) {
@@ -605,7 +605,7 @@ class SharingDialog extends OwncloudPage {
 			if (($value === "yes" && !$permissionCheckBox->isChecked())
 				|| ($value === "no" && $permissionCheckBox->isChecked())
 			) {
-				// Some times when we try to click the label it gives StaleElementReference.
+				// Sometimes when we try to click the label it gives StaleElementReference.
 				try {
 					$permissionLabel->click();
 				} catch (StaleElementReference $e) {
@@ -790,7 +790,7 @@ class SharingDialog extends OwncloudPage {
 		$this->clickRemoveBtn($session, $number);
 		// In some cases, it takes some time for the oc dialog to appear.
 		// Here, if oc dialog is not present we are waiting for 0.1 second
-		// and then checking it's visibility on the webUI
+		// and then checking its visibility on the webUI
 		for ($i = 0; $i < 20; $i++) {
 			$ocDialog = $this->getLastOcDialog($session);
 			if ($ocDialog) {

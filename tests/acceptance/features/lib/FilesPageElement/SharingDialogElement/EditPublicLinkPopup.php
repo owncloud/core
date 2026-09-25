@@ -61,7 +61,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 * sets the NodeElement for the current popup
 	 * a little bit like __construct() but as we access this "sub-page-object"
-	 * from an other Page Object by
+	 * from another Page Object by
 	 * $this->getPage("FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup")
 	 * there is no real __construct() that can take arguments
 	 *

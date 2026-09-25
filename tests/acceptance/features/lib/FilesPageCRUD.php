@@ -226,7 +226,7 @@ class FilesPageCRUD extends FilesPageBasic {
 	}
 
 	/**
-	 * moves a file or folder into an other folder by drag and drop
+	 * moves a file or folder into another folder by drag and drop
 	 *
 	 * @param string|array $name
 	 * @param string|array $destination

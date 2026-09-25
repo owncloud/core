@@ -49,7 +49,7 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * sets the NodeElement for the current action menu
 	 * a little bit like __construct() but as we access this "sub-page-object"
-	 * from an other Page Object by
+	 * from another Page Object by
 	 * $this->getPage("FilesPageElement\\FileActionsMenu")
 	 * there is no real __construct() that can take arguments
 	 *

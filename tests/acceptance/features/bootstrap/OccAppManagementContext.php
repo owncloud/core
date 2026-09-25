@@ -135,7 +135,7 @@ class OccAppManagementContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$configOutputArray = \json_decode($lastOutput, true);
 
-		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
+		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}'
 		if (\substr_compare($appPath, "/apps/$appName", 0)) {
 			return;
 		}
