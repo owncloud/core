@@ -30,6 +30,7 @@ namespace OC\Core;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Core\Controller\AppRegistryController;
 use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\CloudController;
@@ -144,7 +145,8 @@ class Application extends App {
 				$c->query('UserManager'),
 				$c->query('ServerContainer')->query('OC\Authentication\Token\IProvider'),
 				$c->query('TwoFactorAuthManager'),
-				$c->query('SecureRandom')
+				$c->query('SecureRandom'),
+				$c->query('ServerContainer')->query(AccountLockout::class)
 			);
 		});
 		$container->registerService('CloudController', static function (SimpleContainer $c) {
