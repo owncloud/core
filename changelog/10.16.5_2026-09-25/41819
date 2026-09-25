@@ -27,4 +27,5 @@ why the master branch was never affected. Upgrading doctrine/dbal on the 10.16
 branch is not an option, because its 3.x line changes public API that
 third-party apps use.
 
+https://github.com/owncloud/core/pull/41815
 https://github.com/owncloud/core/pull/41819

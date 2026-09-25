@@ -10,3 +10,4 @@ away, instead of travelling on until ImageMagick rejects the empty content and a
 unrelated warning plus a misleading decoder error have been logged.
 
 https://github.com/owncloud/core/pull/41835
+https://github.com/owncloud/core/pull/41837

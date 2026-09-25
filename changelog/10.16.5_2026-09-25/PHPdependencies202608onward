@@ -4,6 +4,8 @@ The following have been updated:
 
  * deepdiver/zipstreamer (2.0.3 to 3.0.1)
 
+ * dg/composer-cleaner (v2.2.1 to v2.2.2)
+
  * guzzlehttp/guzzle (7.15.3 to 7.15.5)
 
  * guzzlehttp/promises (2.5.2 to 2.5.3)
@@ -12,14 +14,25 @@ The following have been updated:
 
  * monolog/monolog (2.11.0 to 2.11.1)
 
+ * nikic/php-parser (v5.7.0 to v5.9.0)
+
  * pear/archive_tar (1.6.0 to 1.6.1)
 
  * phpseclib/phpseclib (3.0.56 to 3.0.57)
+
+ * pimple/pimple (v3.6.1 to v3.6.2)
 
  * punic/punic (3.8.1 to 3.8.2)
 
  * rhukster/dom-sanitizer (1.0.14 to 1.0.17)
 
+ * sabre/dav (4.7.0 to 4.7.1)
+
+ * sabre/event (5.1.7 to 5.1.9)
+
+ * sabre/vobject (4.5.8 to 4.6.1)
+
+https://github.com/owncloud/core/pull/41787
 https://github.com/owncloud/core/pull/41788
 https://github.com/owncloud/core/pull/41793
 https://github.com/owncloud/core/pull/41810

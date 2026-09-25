@@ -46,10 +46,10 @@ ownCloud admins and users.
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41814](https://github.com/owncloud/core/pull/41814)
-* Bugfix - Speed up Oracle schema introspection: [#41819](https://github.com/owncloud/core/pull/41819)
+* Bugfix - Speed up Oracle schema introspection: [#41815](https://github.com/owncloud/core/pull/41815)
 * Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
 * Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
-* Change - Update PHP dependencies: [#41788](https://github.com/owncloud/core/pull/41788)
+* Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
 
 ## Details
 
@@ -231,7 +231,7 @@ ownCloud admins and users.
    https://github.com/owncloud/enterprise/issues/4392
    https://github.com/owncloud/core/pull/41814
 
-* Bugfix - Speed up Oracle schema introspection: [#41819](https://github.com/owncloud/core/pull/41819)
+* Bugfix - Speed up Oracle schema introspection: [#41815](https://github.com/owncloud/core/pull/41815)
 
    Installing and upgrading ownCloud on Oracle took an unreasonably long time. A
    fresh `occ maintenance:install` on the 10.16 branch needed over 40 minutes,
@@ -258,6 +258,7 @@ ownCloud admins and users.
    branch is not an option, because its 3.x line changes public API that
    third-party apps use.
 
+   https://github.com/owncloud/core/pull/41815
    https://github.com/owncloud/core/pull/41819
 
 * Bugfix - Release the file handle when a bitmap preview cannot be decoded: [#41835](https://github.com/owncloud/core/pull/41835)
@@ -272,6 +273,7 @@ ownCloud admins and users.
    an unrelated warning plus a misleading decoder error have been logged.
 
    https://github.com/owncloud/core/pull/41835
+   https://github.com/owncloud/core/pull/41837
 
 * Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
 
@@ -294,11 +296,13 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41855
    https://github.com/owncloud/core/pull/41863
 
-* Change - Update PHP dependencies: [#41788](https://github.com/owncloud/core/pull/41788)
+* Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
 
    The following have been updated:
 
    * deepdiver/zipstreamer (2.0.3 to 3.0.1)
+
+   * dg/composer-cleaner (v2.2.1 to v2.2.2)
 
    * guzzlehttp/guzzle (7.15.3 to 7.15.5)
 
@@ -308,14 +312,25 @@ ownCloud admins and users.
 
    * monolog/monolog (2.11.0 to 2.11.1)
 
+   * nikic/php-parser (v5.7.0 to v5.9.0)
+
    * pear/archive_tar (1.6.0 to 1.6.1)
 
    * phpseclib/phpseclib (3.0.56 to 3.0.57)
+
+   * pimple/pimple (v3.6.1 to v3.6.2)
 
    * punic/punic (3.8.1 to 3.8.2)
 
    * rhukster/dom-sanitizer (1.0.14 to 1.0.17)
 
+   * sabre/dav (4.7.0 to 4.7.1)
+
+   * sabre/event (5.1.7 to 5.1.9)
+
+   * sabre/vobject (4.5.8 to 4.6.1)
+
+   https://github.com/owncloud/core/pull/41787
    https://github.com/owncloud/core/pull/41788
    https://github.com/owncloud/core/pull/41793
    https://github.com/owncloud/core/pull/41810
