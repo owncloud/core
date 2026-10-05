@@ -59,6 +59,26 @@ jobs:
         'apiShareReshareToShares1,apiShareReshareToShares2,apiShareReshareToShares3,apiShareUpdateToRoot,apiShareUpdateToShares,apiSharingNotificationsToRoot,apiSharingNotificationsToShares,apiTags,apiTranslation,apiTrashbin,apiTrashbinRestore,apiVersions,apiWebdavDelete,apiWebdavEtagPropagation1,apiWebdavEtagPropagation2,apiWebdavLocks',
         'apiWebdavLocks2,apiWebdavLocks3,apiWebdavLocksUnlock,apiWebdavMove1,apiWebdavMove2,apiWebdavOperations,apiWebdavPreviews,apiWebdavProperties1,apiWebdavProperties2,apiWebdavUpload1,apiWebdavUpload2,apiWebdavUploadTUS']"
 
+  acceptance-api-smoke-s3:
+    # There is no full-ci variant on S3, so this runs on every PR.
+    name: API Smoke Tests on S3
+    needs: [semantic-git-messages, php-unit, calens]
+    uses: ./.github/workflows/acceptance.yml
+    with:
+      do-api-tests: true
+      server-folder: 'server'
+      federated-folder: 'federated'
+      additional-app: 'notifications'
+      additional-packages: 'imagemagick'
+      filter-tags: '@smokeTest'
+      use-scality-s3: true
+      test-suites: "[
+        'apiAuth,apiAuthOcs,apiAuthWebDav,apiCapabilities,apiComments,apiFavorites,apiFederationToRoot1,apiFederationToRoot2,apiFederationToShares1,apiFederationToShares2,apiMain',
+        'apiProvisioning-v1,apiProvisioning-v2,apiProvisioningGroups-v1,apiProvisioningGroups-v2,apiShareCreateSpecialToRoot1,apiShareCreateSpecialToRoot2,apiShareCreateSpecialToShares1,apiShareCreateSpecialToShares2,apiSharees,apiShareManagementBasicToRoot,apiShareManagementBasicToShares',
+        'apiShareManagementToRoot,apiShareManagementToShares,apiShareOperationsToRoot1,apiShareOperationsToRoot2,apiShareOperationsToShares1,apiShareOperationsToShares2,apiSharePublicLink1,apiSharePublicLink2,apiSharePublicLink3,apiShareReshareToRoot1,apiShareReshareToRoot2,apiShareReshareToRoot3',
+        'apiShareReshareToShares1,apiShareReshareToShares2,apiShareReshareToShares3,apiShareUpdateToRoot,apiShareUpdateToShares,apiSharingNotificationsToRoot,apiSharingNotificationsToShares,apiTags,apiTranslation,apiTrashbin,apiTrashbinRestore,apiVersions,apiWebdavDelete,apiWebdavEtagPropagation1,apiWebdavEtagPropagation2,apiWebdavLocks',
+        'apiWebdavLocks2,apiWebdavLocks3,apiWebdavLocksUnlock,apiWebdavMove1,apiWebdavMove2,apiWebdavOperations,apiWebdavPreviews,apiWebdavProperties1,apiWebdavProperties2,apiWebdavUpload1,apiWebdavUpload2']"
+
   acceptance-api:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: API Tests
@@ -161,7 +181,7 @@ jobs:
   acceptance-api-pass:
     if: always()
     name: API Acceptance Tests
-    needs: [acceptance-api, acceptance-api-federation, acceptance-api-notifications, acceptance-api-previews, acceptance-api-smoke]
+    needs: [acceptance-api, acceptance-api-federation, acceptance-api-notifications, acceptance-api-previews, acceptance-api-smoke, acceptance-api-smoke-s3]
     runs-on: ubuntu-latest
     steps:
       - name: Check status of API Acceptance Tests
@@ -171,6 +191,7 @@ jobs:
           API_NOTIFICATIONS_RESULT: ${{ needs.acceptance-api-notifications.result }}
           API_PREVIEWS_RESULT: ${{ needs.acceptance-api-previews.result }}
           API_SMOKE_RESULT: ${{ needs.acceptance-api-smoke.result }}
+          API_SMOKE_S3_RESULT: ${{ needs.acceptance-api-smoke-s3.result }}
         run: |
           RETURN_STATUS=0
           if [[ "${API_RESULT}" != "success" && "${API_RESULT}" != "skipped" ]]; then
@@ -191,6 +212,10 @@ jobs:
           fi
           if [[ "${API_SMOKE_RESULT}" != "success" && "${API_SMOKE_RESULT}" != "skipped" ]]; then
             echo "The acceptance-api-smoke job was not successful"
+            RETURN_STATUS=1
+          fi
+          if [[ "${API_SMOKE_S3_RESULT}" != "success" ]]; then
+            echo "The acceptance-api-smoke-s3 job was not successful"
             RETURN_STATUS=1
           fi
           if [[ "${API_RESULT}" == "skipped" && "${API_FEDERATION_RESULT}" == "skipped" && "${API_NOTIFICATIONS_RESULT}" == "skipped" && "${API_PREVIEWS_RESULT}" == "skipped" && "${API_SMOKE_RESULT}" == "skipped" ]]; then

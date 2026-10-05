@@ -71,6 +71,11 @@ on:
         required: false
         type: boolean
         default: false
+      use-scality-s3:
+        description: 'Use a scality S3 server as primary storage, via the files_primary_s3 app'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -185,6 +190,31 @@ jobs:
           fail-fast: true
           KRB5_LINUX_LIBS: libkrb5-dev
 
+      - name: Checkout files_primary_s3 app
+        if: ${{ inputs.use-scality-s3 }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: apps/files_primary_s3
+          repository: owncloud/files_primary_s3
+
+      - name: Setup files_primary_s3 app
+        if: ${{ inputs.use-scality-s3 }}
+        run: |
+          cd apps/files_primary_s3
+          make vendor
+
+      - name: Scality S3 Server
+        if: ${{ inputs.use-scality-s3 }}
+        run: |
+          docker run -d --rm --network host \
+            --name scality \
+            owncloudci/scality-s3server
+
+      - name: Wait for Scality S3 Server
+        if: ${{ inputs.use-scality-s3 }}
+        run: |
+          timeout 120 bash -c 'until (exec 3<>/dev/tcp/localhost/8000) 2>/dev/null; do sleep 2; done'
+
       - name: Install Apache
         env:
           PHP_VERSION: ${{ matrix.php }}
@@ -292,6 +322,16 @@ jobs:
         run: |
           cd "${SERVER_ROOT}"
           sudo -u www-data php occ app:enable ${ADDITIONAL_APP}
+
+      - name: Use Scality S3 Server as primary storage
+        if: ${{ inputs.use-scality-s3 }}
+        env:
+          SERVER_ROOT: /var/www/html${{ steps.prepend.outputs.server-dir }}
+        run: |
+          cd "${SERVER_ROOT}"
+          sudo -u www-data php occ app:enable files_primary_s3
+          sudo -u www-data cp apps/files_primary_s3/tests/drone/scality.config.php config
+          sudo -u www-data php occ s3:create-bucket owncloud --accept-warning
 
       - name: Create database for federated server
         if: ${{ inputs.federated-folder != '' }}
@@ -464,6 +504,7 @@ jobs:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
         run: |
           make test-acceptance-api
 
@@ -473,6 +514,7 @@ jobs:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
         run: |
           make test-acceptance-cli
 
@@ -485,6 +527,7 @@ jobs:
           SELENIUM_PORT: "4444"
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
+          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
         run: |
           make test-acceptance-webui
 
