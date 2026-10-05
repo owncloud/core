@@ -40,9 +40,9 @@ ownCloud admins and users.
 ## Summary
 
 * Security - Update PHP dependencies to close published advisories: [#41784](https://github.com/owncloud/core/pull/41784)
-* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41803](https://github.com/owncloud/core/pull/41803)
-* Security - Reject SVG/script content before it reaches ImageMagick bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
-* Security - Pin the Imagick coder for each preview provider: [#41834](https://github.com/owncloud/core/pull/41834)
+* Security - Restrict the configuration of public and remote service handlers: [#41803](https://github.com/owncloud/core/pull/41803)
+* Security - Validate file content before generating bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
+* Security - Decode each preview with the format its provider expects: [#41834](https://github.com/owncloud/core/pull/41834)
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41814](https://github.com/owncloud/core/pull/41814)
@@ -85,23 +85,17 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41784
 
-* Security - Prevent path traversal via appconfig public_/remote_ keys: [#41803](https://github.com/owncloud/core/pull/41803)
+* Security - Restrict the configuration of public and remote service handlers: [#41803](https://github.com/owncloud/core/pull/41803)
 
-   We've fixed a path traversal in the appconfig `public_`/`remote_` service
-   handlers. An authenticated admin could set such a key on the `core` app to a
-   traversal value which was later included by `public.php`, leading to remote code
-   execution. An included handler must now resolve to a PHP file inside the app's
-   own directory, and the app-id guard can no longer be bypassed by mangled
-   spellings such as a trailing space.
+   The handlers that serve `public.php` and `remote.php` services, configured as
+   `public_*` and `remote_*` appconfig keys, are now validated more strictly: a
+   handler must resolve to a PHP file inside its app's own directory.
 
-   Note for integrators: the appconfig endpoints now refuse to *read* a `core`
-   `public_`/`remote_` key as well as to write one. `getValue`/`hasKey` on the
-   legacy `core/ajax/appconfig` endpoint had no such guard at all and returned the
-   stored handler path; `GET /settings/appconfig/core/...` refused the exact
-   lowercase prefix already, and now refuses a mangled spelling of it too
-   (`PUBLIC_webdav`, app id `CORE` or `core `), as well as any key on `core`
-   outside `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it
-   with `occ config:app:get`.
+   Note for integrators: the appconfig endpoints (`core/ajax/appconfig` and
+   `/settings/appconfig`) no longer read or write the `public_`/`remote_` keys of
+   the `core` app, matched case-insensitively, nor any key on `core` outside
+   `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it with
+   `occ config:app:get`.
 
    Requesting a service which is not registered now answers 404 on both
    `public.php` and `remote.php`. `public.php` previously reported a logged 500,
@@ -110,25 +104,15 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41803
 
-* Security - Reject SVG/script content before it reaches ImageMagick bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
+* Security - Validate file content before generating bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
 
-   Bitmap previews (PDF, Font, ...) sanitized SVG content before decoding it, but
-   fell back to the original, unsanitized bytes whenever the sanitizer could not
-   parse the input - which happened for any malformed SVG or non-XML payload, not
-   only for genuinely broken SVG files. A crafted malformed SVG or a raw MVG script
-   could therefore reach ImageMagick unsanitized and trigger an MSL script that
-   reads or writes arbitrary files as the web server user.
+   Bitmap previews (PDF, Font, ...) now check the content of a file more strictly
+   before it is handed to ImageMagick, and decode it through the same hardened
+   Imagick options already used by the dedicated SVG preview provider. Content that
+   does not pass the check gets a media type icon instead of a preview.
 
-   Bitmap previews no longer attempt to sanitize and fall back; they now reject any
-   content that is detected as text, XML, SVG, or MVG before ImageMagick ever sees
-   it, and decode through the same hardened Imagick options already used by the
-   dedicated SVG preview provider.
-
-   Media type detection from file content now always reports a media type. It
-   previously passed an unusable value on to its caller when the magic database
-   behind it could not be loaded, which left the new check above with nothing to
-   test the content against - so the content that check exists to reject was
-   admitted instead.
+   Media type detection from file content now always reports a media type, also
+   when the magic database behind it cannot be loaded.
 
    Previews that read a file also no longer pass it to ImageMagick before the
    hardened Imagick options are applied.
@@ -136,26 +120,16 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41827
    https://github.com/owncloud/core/pull/41863
 
-* Security - Pin the Imagick coder for each preview provider: [#41834](https://github.com/owncloud/core/pull/41834)
+* Security - Decode each preview with the format its provider expects: [#41834](https://github.com/owncloud/core/pull/41834)
 
-   Bitmap and SVG previews decoded content with no format hint, so ImageMagick's
-   own content-sniffing - independent of the mime-type check that decides whether a
-   preview is attempted at all - could pick a different coder than the one a
-   provider actually serves. PostScript-looking content, which the mime check must
-   allow through for the PDF and Postscript providers, could therefore still reach
-   the Ghostscript delegate through any other bitmap provider (SGI, Font,
-   Illustrator, Photoshop, TIFF, Heic).
-
-   Each provider now pins the exact Imagick coder it expects instead of letting
-   ImageMagick guess from the file's content. The pin is applied in memory and
-   introduces no temporary file of its own.
+   Each preview provider now tells ImageMagick which format to decode, instead of
+   letting ImageMagick guess the format from the file's content. This is applied in
+   memory and introduces no temporary file of its own.
 
    Because media types are derived from the file name extension, a file whose
    extension does not match its actual content no longer gets a preview: a JPEG
-   saved as photo.tif is routed to the TIFF provider, pinned to the TIFF coder, and
-   falls back to a media type icon where content sniffing previously rendered it.
-   This is the intended trade-off - content sniffing is what allowed a preview
-   provider to be steered to an unrelated coder in the first place.
+   saved as photo.tif is routed to the TIFF provider, decoded as TIFF, and falls
+   back to a media type icon where it was previously rendered.
 
    The affected extensions are ai, bw, eps, heic, heif, int, inta, pdf, ps, psd,
    rgb, rgba, sgi, tif and tiff. Of those providers only SGI and Heic are
@@ -166,22 +140,13 @@ ownCloud admins and users.
    The font extensions otf, pfb and ttf change differently: the font coder accepts
    any bytes, so a mismatched file still produces a thumbnail, just one drawn by
    the font coder rather than reflecting the file's real content. Real .otf files
-   gain previews they did not have before, because an unpinned read had no decode
-   delegate for them at all.
+   gain previews they did not have before.
 
-   Office documents and SVG are pinned too but are not affected. For Office the pin
-   covers the PDF LibreOffice has just produced rather than anything the user
-   uploaded, and for SVG content that is not parseable XML never reached a coder
-   before this change either.
+   Office documents and SVG previews are not affected.
 
-   One route is deliberately left open, and is worth stating so the expectation is
-   set: which provider handles a preview can be steered by the request, so asking
-   for a file to be previewed as a PDF hands that file's bytes to the PDF coder
-   whatever they are. This is not a change - content sniffing reached the same
-   coder before - and the PDF, PostScript and EPS coders are the ones a
-   distribution's ImageMagick policy denies by default. Deployments that enable
-   those coders should keep that policy as the control, because it applies
-   process-wide rather than per provider.
+   As before, we recommend keeping the ImageMagick security policy your
+   distribution ships, which disables the PDF, PostScript and EPS coders by
+   default.
 
    https://github.com/owncloud/core/pull/41834
    https://github.com/owncloud/core/pull/41863
@@ -266,8 +231,7 @@ ownCloud admins and users.
 
    Bitmap previews closed the file they had opened only when decoding succeeded, so
    every file that could not be decoded leaked a file handle for the lifetime of
-   the process. Generating previews for a directory of files that ImageMagick has
-   no decoder for could therefore exhaust the available file handles.
+   the process.
 
    A file that cannot be opened at all is now reported as having no preview right
    away, instead of travelling on until ImageMagick rejects the empty content and
