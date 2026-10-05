@@ -1,0 +1,11 @@
+Change: Stricter handling of service handler configuration
+
+The appconfig endpoints (`core/ajax/appconfig` and `/settings/appconfig`) no
+longer read or write the `public_`/`remote_` keys of the `core` app, nor keys of
+`core` outside `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should
+read it with `occ config:app:get`.
+
+Requesting a service which is not registered now answers 404 on both
+`public.php` and `remote.php`; refusals on `remote.php` answer 503.
+
+https://github.com/owncloud/core/pull/41856

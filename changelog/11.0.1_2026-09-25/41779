@@ -3,8 +3,8 @@ Bugfix: Do not echo secrets when setting config values via occ
 config:system:set and config:app:set printed the value that had just been
 written back to stdout, so every secret configured through occ ended up in the
 terminal scrollback, the container log or the CI log of whoever ran the command.
-WOPI signing keys and the JWT secrets of apps leaked out of Docker deployments
-that configure them from a startup hook this way.
+Administrators who have set secrets through occ should review where that output
+was kept.
 
 Both commands now print a placeholder instead of the value when the config key
 holds a secret. Recognition reuses the existing list of sensitive keys in
