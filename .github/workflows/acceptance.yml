@@ -5,7 +5,7 @@ on:
         description: JSON array of PHP versions
         required: false
         type: string
-        default: '["8.3"]'
+        default: '["7.4"]'
       databases:
         description: JSON array of databases
         required: false
@@ -43,6 +43,11 @@ on:
         default: false
       additional-app:
         description: 'Additional app to install and enable (if needed for testing)'
+        required: false
+        type: string
+        default: ''
+      additional-app-ref:
+        description: 'Branch or tag of the additional app to check out - the default branch if empty'
         required: false
         type: string
         default: ''
@@ -148,6 +153,7 @@ jobs:
         with:
           path: apps/${{ inputs.additional-app }}
           repository: owncloud/${{ inputs.additional-app }}
+          ref: ${{ inputs.additional-app-ref }}
           token: ${{ inputs.additional-app-github-token || github.token }}
 
       - name: Setup additional app
@@ -156,7 +162,7 @@ jobs:
           ADDITIONAL_APP: ${{ inputs.additional-app }}
         run: |
           cd "apps/${ADDITIONAL_APP}"
-          make ci
+          make vendor
 
       - name: Install Linux packages
         if: ${{ inputs.additional-packages }}

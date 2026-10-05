@@ -49,6 +49,7 @@ jobs:
       server-folder: 'server'
       federated-folder: 'federated'
       additional-app: 'notifications'
+      additional-app-ref: 'v0.6.0'
       additional-packages: 'imagemagick'
       filter-tags: '@smokeTest'
       test-suites: "[
@@ -100,6 +101,7 @@ jobs:
       do-api-tests: true
       server-folder: 'server'
       additional-app: 'notifications'
+      additional-app-ref: 'v0.6.0'
       test-suites: "['apiSharingNotificationsToRoot,apiSharingNotificationsToShares']"
 
   acceptance-api-previews:
