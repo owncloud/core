@@ -1,0 +1,19 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+ * firebase/php-jwt (v7.2.0 to v7.2.1)
+
+ * google/apiclient (v2.20.0 to v2.20.1)
+
+ * google/apiclient-services (v0.460.0 to v0.461.0)
+
+ * google/auth (v1.55.0 to v1.55.1)
+
+ * monolog/monolog (3.12.0 to 3.12.1)
+
+ * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+ * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
+
+https://github.com/owncloud/core/pull/41875
