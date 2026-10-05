@@ -1,18 +1,7 @@
-Security: Restrict the configuration of public and remote service handlers
+Security: Prevent code execution by administrators
 
-The handlers that serve `public.php` and `remote.php` services, configured as
-`public_*` and `remote_*` appconfig keys, are now validated more strictly: a
-handler must resolve to a PHP file inside its app's own directory.
+Impact: An administrator may be able to execute arbitrary code on the server.
 
-Note for integrators: the appconfig endpoints (`core/ajax/appconfig` and
-`/settings/appconfig`) no longer read or write the `public_`/`remote_` keys of
-the `core` app, matched case-insensitively, nor any key on `core` outside
-`[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it with
-`occ config:app:get`.
-
-Requesting a service which is not registered now answers 404 on both
-`public.php` and `remote.php`. `public.php` previously reported a logged 500,
-and `remote.php` sent a malformed status line; its refusals now answer 503,
-which is the status a WebDAV client already saw for them.
+Description: An input validation issue was addressed with improved checks.
 
 https://github.com/owncloud/core/pull/41856
