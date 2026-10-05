@@ -301,7 +301,8 @@ jobs:
         if: ${{ inputs.federated-folder != '' }}
         env:
           FEDERATED_ROOT: /var/www/html${{ steps.prepend.outputs.federated-dir }}
-          VERSION: 'daily-master-qa'
+          # There is no daily 10.16 tarball, so use the latest 10.16 release.
+          CORE_DOWNLOAD_URL: 'https://github.com/owncloud/core/releases/download/v10.16.5/owncloud-10.16.5-qa.tar.bz2'
           CORE_PATH: /var/www/html${{ steps.prepend.outputs.federated-dir }}
           DB_TYPE: 'mysql'
           DB_NAME: federateddb
@@ -311,14 +312,14 @@ jobs:
         run: |
           docker run -v ${FEDERATED_ROOT}:${FEDERATED_ROOT} \
             --network=host \
-            -e PLUGIN_VERSION=${VERSION} \
+            -e CORE_DOWNLOAD_URL=${CORE_DOWNLOAD_URL} \
             -e PLUGIN_CORE_PATH=${CORE_PATH} \
             -e PLUGIN_DB_TYPE=${DB_TYPE} \
             -e PLUGIN_DB_NAME=${DB_NAME} \
             -e PLUGIN_DB_HOST=${DB_HOST} \
             -e PLUGIN_DB_USERNAME=${DB_USERNAME} \
             -e PLUGIN_DB_PASSWORD=${DB_PASSWORD} \
-            owncloudci/core:php83
+            owncloudci/core:nodejs14
 
       - name: Setup permissions for the backend of the federated Apache server
         if: ${{ inputs.federated-folder != '' }}
