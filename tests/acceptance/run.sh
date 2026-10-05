@@ -1173,6 +1173,11 @@ then
 	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip_on_objectstore"
 fi
 
+if [ -n "${S3_TYPE}" ]
+then
+	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skipOnStorage:${S3_TYPE}"
+fi
+
 # If the caller did not mention specific tags, skip the skipped tests by default
 if [ "${BEHAT_TAGS_OPTION_FOUND}" = false ]
 then
