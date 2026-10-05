@@ -1,0 +1,33 @@
+Security: Update PHP dependencies to close published advisories
+
+The 10.16 branch had not seen a dependency update since the 10.16.4 release, and
+several bundled packages were carrying published advisories. They have been
+updated to versions that are not affected:
+
+- guzzlehttp/guzzle (7.10.0 to 7.15.3)
+- guzzlehttp/promises (2.3.0 to 2.5.2)
+- guzzlehttp/psr7 (2.8.0 to 2.13.0)
+- phpseclib/phpseclib (3.0.52 to 3.0.56)
+- rhukster/dom-sanitizer (dev-main to 1.0.14)
+- symfony/polyfill-php80 (v1.33.0 to v1.37.0)
+- symfony/routing (v5.4.52 to v5.4.53)
+
+This closes sixteen advisories: CVE-2026-69246, CVE-2026-69245, CVE-2026-67354,
+CVE-2026-67355, CVE-2026-67353, CVE-2026-67339, CVE-2026-59883, CVE-2026-55767
+and CVE-2026-55568 in guzzlehttp/guzzle; CVE-2026-59882, CVE-2026-55766,
+CVE-2026-48998 and CVE-2026-49214 in guzzlehttp/psr7; CVE-2026-55599 in
+phpseclib/phpseclib; CVE-2026-48784 in symfony/routing; and CVE-2026-40301 in
+rhukster/dom-sanitizer.
+
+rhukster/dom-sanitizer was required as "dev-main", an unversioned branch pin.
+Such a pin carries no version number, so vulnerability scanners cannot match it
+against advisory ranges and silently report nothing for the package. It is now
+required as a tagged release, which both applies the CVE-2026-40301 fix and makes
+the dependency visible to scanners.
+
+firebase/php-jwt remains at 6.10.0 and is still affected by CVE-2025-45769 (low,
+weak encryption). The advisory is only fixed in 7.0.0, and every 7.x release
+requires PHP 8.0 or later, so it cannot be applied to the 10.16 line, which
+supports PHP 7.4.
+
+https://github.com/owncloud/core/pull/41784

@@ -1,0 +1,8 @@
+Security: Prevent a security bypass by users
+
+Impact: An authenticated user may be able to bypass security restrictions.
+
+Description: A validation issue was addressed with improved checks.
+
+https://github.com/owncloud/core/pull/41834
+https://github.com/owncloud/core/pull/41863
