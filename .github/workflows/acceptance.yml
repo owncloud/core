@@ -190,8 +190,10 @@ jobs:
           PHP_VERSION: ${{ matrix.php }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y -o Acquire::Retries=3 "libapache2-mod-php${PHP_VERSION}"
           sudo apt-get install -y -o Acquire::Retries=3 apache2
+          # Ubuntu 24.04 has no libapache2-mod-php7.4; setup-php's PHP 7.4 build ships the module itself
+          sudo a2dismod mpm_event
+          sudo a2enmod mpm_prefork "php${PHP_VERSION}"
           sudo a2enmod rewrite headers env dir mime ssl expires dav dav_fs
           sudo service apache2 restart
 
