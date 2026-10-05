@@ -1,15 +1,8 @@
-Security: Validate file content before generating bitmap previews
+Security: Prevent unauthorized file access by users
 
-Bitmap previews (PDF, Font, ...) now check the content of a file more strictly
-before it is handed to ImageMagick, and decode it through the same hardened
-Imagick options already used by the dedicated SVG preview provider. Content
-that does not pass the check gets a media type icon instead of a preview.
+Impact: An authenticated user may be able to read or modify files on the server.
 
-Media type detection from file content now always reports a media type, also
-when the magic database behind it cannot be loaded.
-
-Previews that read a file also no longer pass it to ImageMagick before the
-hardened Imagick options are applied.
+Description: An input validation issue was addressed with improved validation.
 
 https://github.com/owncloud/core/pull/41827
 https://github.com/owncloud/core/pull/41863

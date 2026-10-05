@@ -40,9 +40,9 @@ ownCloud admins and users.
 ## Summary
 
 * Security - Update PHP dependencies to close published advisories: [#41784](https://github.com/owncloud/core/pull/41784)
-* Security - Restrict the configuration of public and remote service handlers: [#41803](https://github.com/owncloud/core/pull/41803)
-* Security - Validate file content before generating bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
-* Security - Decode each preview with the format its provider expects: [#41834](https://github.com/owncloud/core/pull/41834)
+* Security - Prevent code execution by administrators: [#41803](https://github.com/owncloud/core/pull/41803)
+* Security - Prevent unauthorized file access by users: [#41827](https://github.com/owncloud/core/pull/41827)
+* Security - Prevent a security bypass by users: [#41834](https://github.com/owncloud/core/pull/41834)
 * Bugfix - Restore index usage for filecache writes on Oracle: [#41782](https://github.com/owncloud/core/issues/41782)
 * Bugfix - Avoid a deprecation notice when hashing the file cache path on Oracle: [#41808](https://github.com/owncloud/core/pull/41808)
 * Bugfix - Show federated users in the share dialog when local users also match: [#41814](https://github.com/owncloud/core/pull/41814)
@@ -51,6 +51,8 @@ ownCloud admins and users.
 * Bugfix - Report a preview file that cannot be opened without logging noise: [#41855](https://github.com/owncloud/core/pull/41855)
 * Bugfix - Restrict federated address book sync to the trusted server: [#41869](https://github.com/owncloud/core/pull/41869)
 * Change - Update PHP dependencies: [#41787](https://github.com/owncloud/core/pull/41787)
+* Change - Stricter handling of service handler configuration: [#41803](https://github.com/owncloud/core/pull/41803)
+* Change - Previews are decoded in the format of the file extension: [#41834](https://github.com/owncloud/core/pull/41834)
 
 ## Details
 
@@ -85,68 +87,28 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41784
 
-* Security - Restrict the configuration of public and remote service handlers: [#41803](https://github.com/owncloud/core/pull/41803)
+* Security - Prevent code execution by administrators: [#41803](https://github.com/owncloud/core/pull/41803)
 
-   The handlers that serve `public.php` and `remote.php` services, configured as
-   `public_*` and `remote_*` appconfig keys, are now validated more strictly: a
-   handler must resolve to a PHP file inside its app's own directory.
+   Impact: An administrator may be able to execute arbitrary code on the server.
 
-   Note for integrators: the appconfig endpoints (`core/ajax/appconfig` and
-   `/settings/appconfig`) no longer read or write the `public_`/`remote_` keys of
-   the `core` app, matched case-insensitively, nor any key on `core` outside
-   `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should read it with
-   `occ config:app:get`.
-
-   Requesting a service which is not registered now answers 404 on both
-   `public.php` and `remote.php`. `public.php` previously reported a logged 500,
-   and `remote.php` sent a malformed status line; its refusals now answer 503,
-   which is the status a WebDAV client already saw for them.
+   Description: An input validation issue was addressed with improved checks.
 
    https://github.com/owncloud/core/pull/41803
 
-* Security - Validate file content before generating bitmap previews: [#41827](https://github.com/owncloud/core/pull/41827)
+* Security - Prevent unauthorized file access by users: [#41827](https://github.com/owncloud/core/pull/41827)
 
-   Bitmap previews (PDF, Font, ...) now check the content of a file more strictly
-   before it is handed to ImageMagick, and decode it through the same hardened
-   Imagick options already used by the dedicated SVG preview provider. Content that
-   does not pass the check gets a media type icon instead of a preview.
+   Impact: An authenticated user may be able to read or modify files on the server.
 
-   Media type detection from file content now always reports a media type, also
-   when the magic database behind it cannot be loaded.
-
-   Previews that read a file also no longer pass it to ImageMagick before the
-   hardened Imagick options are applied.
+   Description: An input validation issue was addressed with improved validation.
 
    https://github.com/owncloud/core/pull/41827
    https://github.com/owncloud/core/pull/41863
 
-* Security - Decode each preview with the format its provider expects: [#41834](https://github.com/owncloud/core/pull/41834)
+* Security - Prevent a security bypass by users: [#41834](https://github.com/owncloud/core/pull/41834)
 
-   Each preview provider now tells ImageMagick which format to decode, instead of
-   letting ImageMagick guess the format from the file's content. This is applied in
-   memory and introduces no temporary file of its own.
+   Impact: An authenticated user may be able to bypass security restrictions.
 
-   Because media types are derived from the file name extension, a file whose
-   extension does not match its actual content no longer gets a preview: a JPEG
-   saved as photo.tif is routed to the TIFF provider, decoded as TIFF, and falls
-   back to a media type icon where it was previously rendered.
-
-   The affected extensions are ai, bw, eps, heic, heif, int, inta, pdf, ps, psd,
-   rgb, rgba, sgi, tif and tiff. Of those providers only SGI and Heic are
-   registered by default, so on a stock install this is visible for bw, int, inta,
-   rgb, rgba, sgi, heic and heif; the rest need their provider enabled in
-   enabledPreviewProviders.
-
-   The font extensions otf, pfb and ttf change differently: the font coder accepts
-   any bytes, so a mismatched file still produces a thumbnail, just one drawn by
-   the font coder rather than reflecting the file's real content. Real .otf files
-   gain previews they did not have before.
-
-   Office documents and SVG previews are not affected.
-
-   As before, we recommend keeping the ImageMagick security policy your
-   distribution ships, which disables the PDF, PostScript and EPS coders by
-   default.
+   Description: A validation issue was addressed with improved checks.
 
    https://github.com/owncloud/core/pull/41834
    https://github.com/owncloud/core/pull/41863
@@ -313,6 +275,34 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41810
    https://github.com/owncloud/core/pull/41830
    https://github.com/owncloud/core/pull/41843
+
+* Change - Stricter handling of service handler configuration: [#41803](https://github.com/owncloud/core/pull/41803)
+
+   The appconfig endpoints (`core/ajax/appconfig` and `/settings/appconfig`) no
+   longer read or write the `public_`/`remote_` keys of the `core` app, nor keys of
+   `core` outside `[a-zA-Z0-9_.-]{1,64}`. Scripts which need a handler path should
+   read it with `occ config:app:get`.
+
+   Requesting a service which is not registered now answers 404 on both
+   `public.php` and `remote.php`; refusals on `remote.php` answer 503.
+
+   https://github.com/owncloud/core/pull/41803
+
+* Change - Previews are decoded in the format of the file extension: [#41834](https://github.com/owncloud/core/pull/41834)
+
+   A file whose extension does not match its actual content no longer gets a
+   preview and shows a media type icon instead - for example a JPEG saved as
+   photo.tif. The affected extensions are ai, bw, eps, heic, heif, int, inta, pdf,
+   ps, psd, rgb, rgba, sgi, tif and tiff. Of those providers only SGI and Heic are
+   registered by default, so on a stock install this is visible for bw, int, inta,
+   rgb, rgba, sgi, heic and heif; the rest need their provider enabled in
+   enabledPreviewProviders.
+
+   Font files (otf, pfb, ttf) with mismatched content still get a thumbnail, and
+   real .otf files gain previews they did not have before.
+
+   https://github.com/owncloud/core/pull/41834
+   https://github.com/owncloud/core/pull/41863
 
 # Changelog for ownCloud Core [10.16.4] (2026-07-29)
 
