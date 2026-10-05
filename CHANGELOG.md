@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 11.0.1](#changelog-for-owncloud-core-1101-2026-09-25)
 * [Changelog for 11.0.0](#changelog-for-owncloud-core-1100-2026-07-30)
 * [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
@@ -31,6 +32,39 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v11.0.1...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
+
+## Details
+
+* Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
+
+   The following have been updated:
+
+   * firebase/php-jwt (v7.2.0 to v7.2.1)
+
+   * google/apiclient (v2.20.0 to v2.20.1)
+
+   * google/apiclient-services (v0.460.0 to v0.461.0)
+
+   * google/auth (v1.55.0 to v1.55.1)
+
+   * monolog/monolog (3.12.0 to 3.12.1)
+
+   * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+   * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
+
+   https://github.com/owncloud/core/pull/41875
+
 # Changelog for ownCloud Core [11.0.1] (2026-09-25)
 
 The following sections list the changes in ownCloud core 11.0.1 relevant to
