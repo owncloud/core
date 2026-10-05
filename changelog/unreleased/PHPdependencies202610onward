@@ -1,0 +1,9 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+ * composer/semver (3.4.4 to 3.5.0)
+
+ * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+https://github.com/owncloud/core/pull/41876
