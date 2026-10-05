@@ -210,10 +210,12 @@ jobs:
         if: ${{ inputs.use-scality-s3 }}
         run: |
           # The app's tests/drone/scality.config.php, as of v1.6.4, points at
-          # the drone service name rather than localhost.
+          # the drone service name rather than localhost. HOST_NAME adds that
+          # name to the server's restEndpoints, as drone's service did.
           echo "127.0.0.1 scality" | sudo tee -a /etc/hosts
           docker run -d --rm --network host \
             --name scality \
+            -e HOST_NAME=scality \
             owncloudci/scality-s3server
 
       - name: Wait for Scality S3 Server
