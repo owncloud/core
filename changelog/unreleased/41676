@@ -7,3 +7,4 @@ number of checkPropFind, increasing its priority, so that it always executes
 first, regardless of any other sort order.
 
 https://github.com/owncloud/core/pull/41676
+https://github.com/owncloud/core/pull/41886
