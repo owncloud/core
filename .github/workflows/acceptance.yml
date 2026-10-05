@@ -505,6 +505,7 @@ jobs:
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
           OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
+          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
         run: |
           make test-acceptance-api
 
@@ -515,6 +516,7 @@ jobs:
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
           OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
+          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
         run: |
           make test-acceptance-cli
 
@@ -528,6 +530,7 @@ jobs:
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
           OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
+          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
         run: |
           make test-acceptance-webui
 
