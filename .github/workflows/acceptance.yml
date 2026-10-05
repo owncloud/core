@@ -504,8 +504,8 @@ jobs:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
-          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
-          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
+          OC_TEST_ON_OBJECTSTORE: ${{ case(inputs.use-scality-s3, '1', '') }}
+          S3_TYPE: ${{ case(inputs.use-scality-s3, 'scality', '') }}
         run: |
           make test-acceptance-api
 
@@ -515,8 +515,8 @@ jobs:
           TEST_SERVER_URL: http://localhost${{ steps.prepend.outputs.server-dir }}
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
-          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
-          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
+          OC_TEST_ON_OBJECTSTORE: ${{ case(inputs.use-scality-s3, '1', '') }}
+          S3_TYPE: ${{ case(inputs.use-scality-s3, 'scality', '') }}
         run: |
           make test-acceptance-cli
 
@@ -529,8 +529,8 @@ jobs:
           SELENIUM_PORT: "4444"
           BEHAT_SUITES_STRING: ${{ matrix.suites }}
           BEHAT_FILTER_TAGS: "${{ inputs.filter-tags }}"
-          OC_TEST_ON_OBJECTSTORE: ${{ inputs.use-scality-s3 && '1' || '' }}
-          S3_TYPE: ${{ inputs.use-scality-s3 && 'scality' || '' }}
+          OC_TEST_ON_OBJECTSTORE: ${{ case(inputs.use-scality-s3, '1', '') }}
+          S3_TYPE: ${{ case(inputs.use-scality-s3, 'scality', '') }}
         run: |
           make test-acceptance-webui
 
