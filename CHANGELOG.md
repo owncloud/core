@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.6](#changelog-for-owncloud-core-10166-2026-10-06)
 * [Changelog for 10.16.5](#changelog-for-owncloud-core-10165-2026-09-25)
 * [Changelog for 10.16.4](#changelog-for-owncloud-core-10164-2026-07-29)
 * [Changelog for 10.16.3](#changelog-for-owncloud-core-10163-2026-05-22)
@@ -30,6 +31,44 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.6] (2026-10-06)
+
+The following sections list the changes in ownCloud core 10.16.6 relevant to
+ownCloud admins and users.
+
+[10.16.6]: https://github.com/owncloud/core/compare/v10.16.5...v10.16.6
+
+## Summary
+
+* Bugfix - Return 404 again for a PROPFIND on a missing path: [#41890](https://github.com/owncloud/core/pull/41890)
+* Change - Update PHP dependencies: [#41876](https://github.com/owncloud/core/pull/41876)
+
+## Details
+
+* Bugfix - Return 404 again for a PROPFIND on a missing path: [#41890](https://github.com/owncloud/core/pull/41890)
+
+   Since 10.16.5, a PROPFIND request on a path that does not exist, or on a
+   create-only share, returned a malformed 207 Multi-Status response instead of 404
+   Not Found. The sabre/event update in 10.16.5 changed the order in which
+   listeners of equal priority run, so the Sabre DAV httpPropFind handler ran
+   before the checkPropFind check. checkPropFind now has a higher priority, so it
+   always runs first.
+
+   https://github.com/owncloud/core/pull/41890
+   https://github.com/owncloud/core/pull/41797
+
+* Change - Update PHP dependencies: [#41876](https://github.com/owncloud/core/pull/41876)
+
+   The following have been updated:
+
+   * composer/semver (3.4.4 to 3.5.0)
+
+   * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+   * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
+
+   https://github.com/owncloud/core/pull/41876
+
 # Changelog for ownCloud Core [10.16.5] (2026-09-25)
 
 The following sections list the changes in ownCloud core 10.16.5 relevant to

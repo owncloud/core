@@ -1,0 +1,11 @@
+Bugfix: Return 404 again for a PROPFIND on a missing path
+
+Since 10.16.5, a PROPFIND request on a path that does not exist, or on a
+create-only share, returned a malformed 207 Multi-Status response instead of
+404 Not Found. The sabre/event update in 10.16.5 changed the order in which
+listeners of equal priority run, so the Sabre DAV httpPropFind handler ran
+before the checkPropFind check. checkPropFind now has a higher priority, so it
+always runs first.
+
+https://github.com/owncloud/core/pull/41890
+https://github.com/owncloud/core/pull/41797
