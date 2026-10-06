@@ -196,9 +196,9 @@ jobs:
         with:
           path: apps/files_primary_s3
           repository: owncloud/files_primary_s3
-          # The version the 10.16.5 bundle ships. The app's default branch
+          # The latest release for the 10.16 line. The app's default branch
           # requires ownCloud 11 and PHP 8.3.
-          ref: v1.6.4
+          ref: v1.6.5
 
       - name: Setup files_primary_s3 app
         if: ${{ inputs.use-scality-s3 }}
@@ -209,7 +209,7 @@ jobs:
       - name: Scality S3 Server
         if: ${{ inputs.use-scality-s3 }}
         run: |
-          # The app's tests/drone/scality.config.php, as of v1.6.4, points at
+          # The app's tests/drone/scality.config.php, as of v1.6.5, points at
           # the drone service name rather than localhost. HOST_NAME adds that
           # name to the server's restEndpoints, as drone's service did.
           echo "127.0.0.1 scality" | sudo tee -a /etc/hosts
