@@ -1,0 +1,7 @@
+Security: Prevent code execution by administrators
+
+Impact: An administrator may be able to execute arbitrary code on the server.
+
+Description: An input validation issue was addressed with improved checks.
+
+https://github.com/owncloud/core/pull/41803

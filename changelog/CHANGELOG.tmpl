@@ -15,6 +15,22 @@ ownCloud admins and users.
 {{ $next := add1 $index -}}
 {{ if ne (len $allVersions) $next -}}
 {{ $previousVersion := (index $allVersions $next).Version -}}
+{{- /* compare with the highest older release below this version, so links stay within a release line */ -}}
+{{ $below := ">=0.0.0" -}}
+{{ if ne .Version "unreleased" -}}
+{{ $below = printf "<%s" .Version -}}
+{{ end -}}
+{{ $best := "0.0.0" -}}
+{{ range $i, $v := $allVersions -}}
+{{ if gt $i $index -}}
+{{ if and (semverCompare $below $v.Version) (semverCompare (printf ">%s" $best) $v.Version) -}}
+{{ $best = $v.Version -}}
+{{ end -}}
+{{ end -}}
+{{ end -}}
+{{ if ne $best "0.0.0" -}}
+{{ $previousVersion = $best -}}
+{{ end -}}
 {{ if eq .Version "unreleased" -}}
 [{{ .Version }}]: https://github.com/owncloud/core/compare/v{{ $previousVersion }}...master
 {{- else -}}
