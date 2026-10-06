@@ -55,7 +55,7 @@ ownCloud admins and users.
    always runs first.
 
    https://github.com/owncloud/core/pull/41890
-   https://github.com/owncloud/core/pull/41676
+   https://github.com/owncloud/core/pull/41797
 
 * Change - Update PHP dependencies: [#41876](https://github.com/owncloud/core/pull/41876)
 

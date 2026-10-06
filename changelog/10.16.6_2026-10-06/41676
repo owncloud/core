@@ -8,4 +8,4 @@ before the checkPropFind check. checkPropFind now has a higher priority, so it
 always runs first.
 
 https://github.com/owncloud/core/pull/41890
-https://github.com/owncloud/core/pull/41676
+https://github.com/owncloud/core/pull/41797
