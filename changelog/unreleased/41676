@@ -1,0 +1,9 @@
+Bugfix: reduce priority of checkPropFind event
+
+The checkPropFind event that triggers during an HTTP PROPFIND request must
+happen before the Sabre DAV httpPropFind event. That has been happening
+because it sorts alphabetically first. This change reduces the priority
+number of checkPropFind, increasing its priority, so that it always executes
+first, regardless of any other sort order.
+
+https://github.com/owncloud/core/pull/41676
