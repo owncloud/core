@@ -15,6 +15,19 @@ ownCloud admins and users.
 {{ $next := add1 $index -}}
 {{ if ne (len $allVersions) $next -}}
 {{ $previousVersion := (index $allVersions $next).Version -}}
+{{- /* compare a release with the previous one of the same major.minor line, if any */ -}}
+{{ if ne .Version "unreleased" -}}
+{{ $line := splitList "." .Version | initial | join "." -}}
+{{ $found := "" -}}
+{{ range $i, $v := $allVersions -}}
+{{ if and (gt $i $index) (eq $found "") (eq (splitList "." $v.Version | initial | join ".") $line) -}}
+{{ $found = $v.Version -}}
+{{ end -}}
+{{ end -}}
+{{ if ne $found "" -}}
+{{ $previousVersion = $found -}}
+{{ end -}}
+{{ end -}}
 {{ if eq .Version "unreleased" -}}
 [{{ .Version }}]: https://github.com/owncloud/core/compare/v{{ $previousVersion }}...master
 {{- else -}}

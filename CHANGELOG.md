@@ -71,7 +71,7 @@ ownCloud admins and users.
 The following sections list the changes in ownCloud core 11.0.1 relevant to
 ownCloud admins and users.
 
-[11.0.1]: https://github.com/owncloud/core/compare/v10.16.5...v11.0.1
+[11.0.1]: https://github.com/owncloud/core/compare/v11.0.0...v11.0.1
 
 ## Summary
 
@@ -390,7 +390,7 @@ ownCloud admins and users.
 The following sections list the changes in ownCloud core 10.16.5 relevant to
 ownCloud admins and users.
 
-[10.16.5]: https://github.com/owncloud/core/compare/v11.0.0...v10.16.5
+[10.16.5]: https://github.com/owncloud/core/compare/v10.16.4...v10.16.5
 
 ## Summary
 
