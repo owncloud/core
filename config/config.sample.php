@@ -282,6 +282,34 @@ $CONFIG = [
 'token_auth_enforced' => false,
 
 /**
+ * Temporarily lock an account after too many failed password attempts.
+ *
+ * Only accounts of the built-in user backend are locked. Accounts provided by
+ * LDAP/AD or an OpenID Connect provider are left to the policy of that identity
+ * provider.
+ *
+ * The lockout always expires on its own, no administrative action is needed, and
+ * a successful login resets the counter immediately.
+ */
+'account_lockout.enabled' => true,
+
+/**
+ * Number of failed password attempts which triggers the lockout.
+ */
+'account_lockout.max_attempts' => 5,
+
+/**
+ * How long an account stays locked, in seconds.
+ */
+'account_lockout.duration' => 600,
+
+/**
+ * Seconds of inactivity after which the counter of failed attempts is forgotten,
+ * so that occasional typos spread over a long time never add up to a lockout.
+ */
+'account_lockout.attempt_window' => 900,
+
+/**
  * Enforce a strict login check with the user backend
  * If enabled, a strict login check for password in the user backend will be enforced,
  * meaning only the login name typed by the user would  be validated. With this

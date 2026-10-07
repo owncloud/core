@@ -35,6 +35,8 @@ namespace OC\User;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Exception;
 use OC;
+use OC\Authentication\AccountLockout\AccountLockedException;
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
@@ -116,6 +118,9 @@ class Session implements IUserSession, Emitter {
 	/** @var EventDispatcher */
 	protected $eventDispatcher;
 
+	/** @var AccountLockout */
+	private $accountLockout;
+
 	/**
 	 * Session constructor.
 	 *
@@ -128,6 +133,7 @@ class Session implements IUserSession, Emitter {
 	 * @param IServiceLoader $serviceLoader
 	 * @param SyncService $userSyncService
 	 * @param EventDispatcher $eventDispatcher
+	 * @param AccountLockout $accountLockout
 	 */
 	public function __construct(
 		IUserManager $manager,
@@ -138,7 +144,8 @@ class Session implements IUserSession, Emitter {
 		ILogger $logger,
 		IServiceLoader $serviceLoader,
 		SyncService $userSyncService,
-		EventDispatcher $eventDispatcher
+		EventDispatcher $eventDispatcher,
+		AccountLockout $accountLockout
 	) {
 		$this->manager = $manager;
 		$this->session = $session;
@@ -149,6 +156,7 @@ class Session implements IUserSession, Emitter {
 		$this->serviceLoader = $serviceLoader;
 		$this->userSyncService = $userSyncService;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->accountLockout = $accountLockout;
 	}
 
 	/**
@@ -516,6 +524,12 @@ class Session implements IUserSession, Emitter {
 				}
 			} catch (PasswordLoginForbiddenException $ex) {
 				// Nothing to do
+			} catch (AccountLockedException $ex) {
+				// The callers of \OC::handleLogin() do not all handle a
+				// LoginException, so report the lockout the same way a wrong
+				// password is reported here. The endpoints which can carry the
+				// explanation - the login form and the DAV backend - do not use
+				// this method.
 			}
 		}
 		return false;
@@ -535,12 +549,44 @@ class Session implements IUserSession, Emitter {
 	 * compatibility.
 	 */
 	private function loginWithPassword($login, $password) {
+		// deliberately ahead of the credential check: a locked out account must
+		// not pay the cost of hashing the password, nor reach an external backend
+		$this->throwIfLockedOut($login);
+
 		$user = $this->manager->checkPassword($login, $password);
 		if ($user === false) {
+			$this->accountLockout->recordFailure($login);
 			$this->emitFailedLogin($login);
 			return false;
 		}
+		$this->accountLockout->clearFailures($login, $user->getUID());
 		return $this->loginInOwnCloud('password', $user, $password);
+	}
+
+	/**
+	 * @param string $login
+	 * @throws AccountLockedException if too many passwords have been tried
+	 */
+	private function throwIfLockedOut($login) {
+		$remaining = $this->accountLockout->getRemainingLockTime($login);
+		if ($remaining <= 0) {
+			return;
+		}
+
+		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+		$l = \OC::$server->getL10N('lib');
+		$minutes = (int)\ceil($remaining / 60);
+		$retryIn = $minutes > 1
+			? $l->n('%n minute', '%n minutes', $minutes)
+			: $l->n('%n second', '%n seconds', $remaining);
+		// the wording must not depend on whether the account exists - that would
+		// turn the lockout into a user enumeration oracle
+		$message = $l->t(
+			'Too many failed login attempts. This account is temporarily locked. Please try again in %s.',
+			[$retryIn]
+		);
+		$this->logger->info("login $login refused, account is temporarily locked", ['app' => __METHOD__]);
+		throw new AccountLockedException($message);
 	}
 
 	/**
