@@ -167,17 +167,31 @@ class Application {
 
 	private function loadCommandsFromInfoXml($commands) {
 		foreach ($commands as $command) {
+			// A single broken command (unknown class, failing constructor,
+			// etc.) must never abort loading or render occ unusable - skip it,
+			// log a warning, and continue with the remaining commands.
 			try {
-				$c = \OC::$server->query($command);
-			} catch (QueryException $e) {
-				if (\class_exists($command)) {
-					$c = new $command();
-				} else {
-					throw new \Exception("Console command '$command' is unknown and could not be loaded");
+				try {
+					$c = \OC::$server->query($command);
+				} catch (QueryException $e) {
+					if (\class_exists($command)) {
+						$c = new $command();
+					} else {
+						throw new \Exception("Console command '$command' is unknown and could not be loaded");
+					}
 				}
-			}
 
-			$this->application->addCommand($c);
+				$this->application->addCommand($c);
+			} catch (\Throwable $e) {
+				\OC::$server->getLogger()->warning(
+					"Console command '{command}' could not be loaded and was skipped: {message}",
+					[
+						'command' => $command,
+						'message' => $e->getMessage(),
+						'app' => 'core',
+					]
+				);
+			}
 		}
 	}
 }
