@@ -788,8 +788,11 @@ class Request implements ArrayAccess, Countable, IRequest {
 		}
 
 		$trustedList = $this->config->getSystemValue('trusted_domains', []);
-		if (!empty($trustedList)) {
-			return $trustedList[0];
+		if (!empty($trustedList) && \is_array($trustedList)) {
+			// first configured entry, whatever its key: after entries are removed
+			// from config.php the list can be e.g. [2 => 'host'], where
+			// $trustedList[0] would be null
+			return (string)\reset($trustedList);
 		}
 
 		return '';
