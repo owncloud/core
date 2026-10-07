@@ -111,11 +111,11 @@ class User implements IUser {
 		Account $account,
 		AccountMapper $mapper,
 		$emitter = null,
-		IConfig $config = null,
+		?IConfig $config = null,
 		$urlGenerator = null,
-		EventDispatcher $eventDispatcher = null,
-		\OC\Group\Manager $groupManager = null,
-		Session $userSession = null
+		?EventDispatcher $eventDispatcher = null,
+		?\OC\Group\Manager $groupManager = null,
+		?Session $userSession = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;

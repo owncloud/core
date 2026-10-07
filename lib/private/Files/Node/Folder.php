@@ -106,7 +106,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @param FileInfo $info
 	 * @return File|Folder
 	 */
-	protected function createNode($path, FileInfo $info = null) {
+	protected function createNode($path, ?FileInfo $info = null) {
 		if ($info === null) {
 			$isDir = $this->view->is_dir($path);
 		} else {

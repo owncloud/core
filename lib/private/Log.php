@@ -129,9 +129,9 @@ class Log implements ILogger {
 	 */
 	public function __construct(
 		$logger = null,
-		SystemConfig $config = null,
+		?SystemConfig $config = null,
 		$normalizer = null,
-		EventDispatcherInterface $eventDispatcher = null
+		?EventDispatcherInterface $eventDispatcher = null
 	) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if ($config === null) {

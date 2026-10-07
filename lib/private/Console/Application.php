@@ -156,7 +156,7 @@ class Application {
 	 * @return int
 	 * @throws \Exception
 	 */
-	public function run(InputInterface $input = null, OutputInterface $output = null) {
+	public function run(?InputInterface $input = null, ?OutputInterface $output = null) {
 		$args = isset($this->request->server['argv']) ? $this->request->server['argv'] : [];
 		$this->dispatcher->dispatch(
 			new ConsoleEvent(ConsoleEvent::EVENT_RUN, $args),

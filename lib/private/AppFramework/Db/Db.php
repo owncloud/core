@@ -108,7 +108,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null) {
+	public function insertIfNotExist($table, $input, ?array $compare = null) {
 		return $this->connection->insertIfNotExist($table, $input, $compare);
 	}
 
@@ -269,7 +269,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function upsert($table, $input, array $compare = null) {
+	public function upsert($table, $input, ?array $compare = null) {
 		return $this->connection->upsert($table, $input, $compare);
 	}
 }

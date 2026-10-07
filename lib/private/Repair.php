@@ -69,7 +69,7 @@ class Repair implements IOutput {
 	 * @param IRepairStep[] $repairSteps array of RepairStep instances
 	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct($repairSteps = [], EventDispatcherInterface $dispatcher = null) {
+	public function __construct($repairSteps = [], ?EventDispatcherInterface $dispatcher = null) {
 		$this->repairSteps = $repairSteps;
 		$this->dispatcher = $dispatcher;
 	}

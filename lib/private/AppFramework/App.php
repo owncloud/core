@@ -63,7 +63,7 @@ class App {
 	 * @param DIContainer $container an instance of a pimple container.
 	 * @param array $urlParams list of URL parameters (optional)
 	 */
-	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
+	public static function main($controllerName, $methodName, DIContainer $container, ?array $urlParams = null) {
 		if ($urlParams !== null) {
 			$container['OCP\\IRequest']->setUrlParameters($urlParams);
 		} elseif (isset($container['urlParams']) && $container['urlParams'] !== null) {

@@ -67,7 +67,7 @@ class SessionCredentials extends AuthMechanism {
 		$this->session->set('password::sessioncredentials/credentials', $this->crypto->encrypt(\json_encode($params)));
 	}
 
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, ?IUser $user = null) {
 		$encrypted = $this->session->get('password::sessioncredentials/credentials');
 		if (!isset($encrypted)) {
 			throw new InsufficientDataForMeaningfulAnswerException('No session credentials saved');

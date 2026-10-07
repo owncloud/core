@@ -105,9 +105,9 @@ class AppManager implements IAppManager {
 	 * @param IConfig $config
 	 */
 	public function __construct(
-		IUserSession $userSession = null,
-		IAppConfig $appConfig = null,
-		IGroupManager $groupManager = null,
+		?IUserSession $userSession,
+		?IAppConfig $appConfig,
+		?IGroupManager $groupManager,
 		ICacheFactory $memCacheFactory,
 		EventDispatcherInterface $dispatcher,
 		IConfig $config
@@ -159,7 +159,7 @@ class AppManager implements IAppManager {
 	 * @param \OCP\IUser|null $user
 	 * @return string[]
 	 */
-	public function getEnabledAppsForUser(IUser $user = null) {
+	public function getEnabledAppsForUser(?IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
 		$appsForUser = \array_filter($apps, function ($enabled, $appName) use ($user) {
 			return $this->checkAppForUser($enabled, $appName, $user);

@@ -92,13 +92,13 @@ class Checker implements OnDiskHasher {
 		EnvironmentHelper $environmentHelper,
 		FileAccessHelper $fileAccessHelper,
 		AppLocator $appLocator,
-		IConfig $config = null,
-		ICacheFactory $cacheFactory = null,
-		IAppManager $appManager = null,
-		ITempManager $tempManager = null,
-		Verifier $verifier = null,
-		IClientService $clientService = null,
-		ILogger $logger = null
+		?IConfig $config = null,
+		?ICacheFactory $cacheFactory = null,
+		?IAppManager $appManager = null,
+		?ITempManager $tempManager = null,
+		?Verifier $verifier = null,
+		?IClientService $clientService = null,
+		?ILogger $logger = null
 	) {
 		$this->environmentHelper = $environmentHelper;
 		$this->fileAccessHelper = $fileAccessHelper;
