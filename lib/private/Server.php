@@ -44,6 +44,8 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Authentication\AccountLockout\AccountLockout;
+use OC\Authentication\AccountLockout\LockoutMapper;
 use OC\Authentication\AccountModule\Manager as AccountModuleManager;
 use OC\Authentication\LoginPolicies\LoginPolicyManager;
 use OC\Authentication\LoginPolicies\GroupLoginPolicy;
@@ -321,6 +323,18 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new TimeFactory();
 		});
 		$this->registerAlias('OCP\AppFramework\Utility\ITimeFactory', 'TimeFactory');
+		$this->registerService(LockoutMapper::class, function (Server $c) {
+			return new LockoutMapper($c->getDatabaseConnection());
+		});
+		$this->registerService(AccountLockout::class, function (Server $c) {
+			return new AccountLockout(
+				$c->query(LockoutMapper::class),
+				$c->getConfig(),
+				$c->getUserManager(),
+				new TimeFactory(),
+				$c->getLogger()
+			);
+		});
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
 			$session = new Memory();
@@ -347,7 +361,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getLogger(),
 				$this,
 				$userSyncService,
-				$c->getEventDispatcher()
+				$c->getEventDispatcher(),
+				$c->query(AccountLockout::class)
 			);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
@@ -363,6 +378,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			$userSession->listen('\OC\User', 'postDelete', function ($user) {
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'post_deleteUser', ['uid' => $user->getUID()]);
+				// a recreated account must not inherit the failed attempts of its namesake
+				$this->query(AccountLockout::class)->clearFailures($user->getUID());
 				$this->emittingCall(function () {
 					return true;
 				}, ['before' => [], 'after' => ['uid' => $user->getUID()]], 'user', 'delete');
