@@ -13,4 +13,4 @@ All implicitly nullable parameters are now explicit (`?Type $x = null`, or
 keep their position but lose the `= null` default, which PHP already treated
 as required, so existing call sites are unaffected.
 
-https://github.com/owncloud/core/pull/TBD
+https://github.com/owncloud/core/pull/41893
