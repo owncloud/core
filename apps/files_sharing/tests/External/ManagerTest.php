@@ -102,7 +102,7 @@ class ManagerTest extends TestCase {
 
 	public function testAddShare(): void {
 		$shareData1 = [
-			'remote' => 'http://localhost',
+			'remote' => 'https://oc-federation-test.example.com',
 			'token' => 'token1',
 			'password' => '',
 			'name' => '/SharedFolder',
@@ -164,7 +164,7 @@ class ManagerTest extends TestCase {
 							if ($e->getArgument('shareAcceptedFrom') !== 'foobar') {
 								return false;
 							}
-							if ($e->getArgument('remoteUrl') !== 'http://localhost') {
+							if ($e->getArgument('remoteUrl') !== 'https://oc-federation-test.example.com') {
 								return false;
 							}
 							if ($e->getArgument('shareId') !== $openShares[0]['id']) {
@@ -216,7 +216,7 @@ class ManagerTest extends TestCase {
 			[
 				'sharedItem' => '/SharedFolder',
 				'shareAcceptedFrom' => 'foobar',
-				'remoteUrl' => 'http://localhost',
+				'remoteUrl' => 'https://oc-federation-test.example.com',
 			]
 		);
 
@@ -290,7 +290,7 @@ class ManagerTest extends TestCase {
 
 	public function testAddShareAccepted(): void {
 		$shareData1 = [
-			'remote' => 'http://localhost',
+			'remote' => 'https://oc-federation-test.example.com',
 			'token' => 'token1',
 			'password' => '',
 			'name' => '/SharedFolder',
@@ -357,7 +357,7 @@ class ManagerTest extends TestCase {
 
 	public function testRemoveShare(): void {
 		/*$shareData1 = [
-			'remote' => 'http://localhost',
+			'remote' => 'https://oc-federation-test.example.com',
 			'token' => 'token1',
 			'password' => '',
 			'name' => '/SharedFolder',
