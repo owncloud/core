@@ -214,7 +214,7 @@ class User implements IUser {
 		if (!$this->canChangeDisplayName()) {
 			return false;
 		}
-		$displayName = \trim($displayName);
+		$displayName = \trim($displayName ?? '');
 		if ($displayName === $this->account->getDisplayName()) {
 			return false;
 		}
@@ -245,7 +245,7 @@ class User implements IUser {
 			throw new NotPermittedActionException("Operation cannot be allowed as other apps are fetching extended attributes of this user.");
 		}
 
-		$mailAddress = \trim($mailAddress);
+		$mailAddress = \trim($mailAddress ?? '');
 		if ($mailAddress === $this->account->getEmail()) {
 			return;
 		}
