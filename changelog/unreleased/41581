@@ -1,0 +1,12 @@
+Security: Add SSRF host validation to external storage backend configuration
+
+The external storage controller accepted arbitrary host values for
+network-capable backends such as WebDAV without validating against
+private IP ranges, loopback, or link-local addresses. When user
+storage mounting was enabled, any authenticated user could force the
+server to make HTTP requests to cloud metadata endpoints or internal
+services. Validation now blocks RFC-1918, loopback, link-local, and
+equivalent IPv6 ranges, with an admin opt-out for legitimate internal
+storage.
+
+https://github.com/owncloud/core/pull/41581

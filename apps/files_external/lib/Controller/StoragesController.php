@@ -36,6 +36,7 @@ use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -64,6 +65,11 @@ abstract class StoragesController extends Controller {
 	protected $logger;
 
 	/**
+	 * @var IConfig
+	 */
+	protected $config;
+
+	/**
 	 * Creates a new storages controller.
 	 *
 	 * @param string $AppName application name
@@ -71,18 +77,21 @@ abstract class StoragesController extends Controller {
 	 * @param IL10N $l10n l10n service
 	 * @param IStoragesService $storagesService storage service
 	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
 		IStoragesService $storagesService,
-		ILogger $logger
+		ILogger $logger,
+		IConfig $config = null
 	) {
 		parent::__construct($AppName, $request);
 		$this->l10n = $l10n;
 		$this->service = $storagesService;
 		$this->logger = $logger;
+		$this->config = $config ?? \OC::$server->getConfig();
 	}
 
 	/**
@@ -217,7 +226,134 @@ abstract class StoragesController extends Controller {
 			);
 		}
 
+		$hostValidation = $this->validateHostOption($storage);
+		if ($hostValidation !== null) {
+			return $hostValidation;
+		}
+
 		return null;
+	}
+
+	/**
+	 * Validate the host backend option against SSRF (Server-Side Request Forgery).
+	 *
+	 * Rejects private/reserved/loopback/link-local addresses unless the admin
+	 * has explicitly allowed them via the 'files_external_allow_private_address'
+	 * system config key.
+	 *
+	 * @param IStorageConfig $storage storage config
+	 * @return DataResponse|null returns a 403 response when the host is blocked,
+	 *                           null when the host is acceptable
+	 */
+	protected function validateHostOption(IStorageConfig $storage) {
+		// Admins may explicitly allow private-network targets (e.g. internal NAS)
+		if ($this->config->getSystemValue('files_external_allow_private_address', false)) {
+			return null;
+		}
+
+		$host = $storage->getBackendOption('host');
+		if ($host === null || $host === '') {
+			return null;
+		}
+
+		// Strip a trailing path component and an explicit scheme so that
+		// parse_url() can reliably extract just the hostname / IP.
+		// Handles all of these forms:
+		//   192.168.1.1
+		//   192.168.1.1:445
+		//   https://192.168.1.1/path
+		//   169.254.169.254/latest/meta-data/
+		$normalised = (string)$host;
+		if (!\preg_match('#^[a-zA-Z][a-zA-Z0-9+\-.]*://#', $normalised)) {
+			// Prepend a dummy scheme so parse_url works on bare host[:port][/path]
+			$normalised = 'dummy://' . $normalised;
+		}
+		$parsed = \parse_url($normalised);
+		$hostname = isset($parsed['host']) ? \trim($parsed['host'], '[]') : '';
+
+		if ($hostname === '') {
+			// Cannot parse host — reject to be safe
+			return new DataResponse(
+				[
+					'message' => (string)$this->l10n->t('Invalid host')
+				],
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+
+		// Resolve hostname to an IP address for range checks.
+		// gethostbyname() returns the original string on failure, which is fine
+		// because filter_var() will then just validate it as-is.
+		$ip = \filter_var($hostname, FILTER_VALIDATE_IP)
+			? $hostname
+			: \gethostbyname($hostname);
+
+		if ($this->isBlockedAddress($ip, $hostname)) {
+			return new DataResponse(
+				[
+					'message' => (string)$this->l10n->t(
+						'Host "%s" is not allowed (private/reserved address)',
+						[$host]
+					)
+				],
+				Http::STATUS_FORBIDDEN
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns true when the given IP (or unresolvable hostname) targets a
+	 * private, loopback, link-local, or otherwise reserved address.
+	 *
+	 * @param string $ip   The resolved IPv4 / IPv6 address (or original hostname
+	 *                     when DNS resolution failed).
+	 * @param string $hostname  The original hostname before resolution.
+	 * @return bool
+	 */
+	private function isBlockedAddress($ip, $hostname) {
+		// Explicit loopback hostnames
+		if (\in_array(\strtolower($hostname), ['localhost', 'localhost.localdomain'], true)) {
+			return true;
+		}
+
+		// If the value is not a valid IP at all we cannot perform range checks —
+		// allow it (the backend will fail with a connection error anyway).
+		if (\filter_var($ip, FILTER_VALIDATE_IP) === false) {
+			return false;
+		}
+
+		// Block loopback (127.0.0.0/8, ::1)
+		if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === false) {
+			return true;
+		}
+
+		// Block RFC-1918 / ULA private ranges
+		if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE) === false) {
+			return true;
+		}
+
+		// Block IPv4 link-local (169.254.0.0/16) — not covered by FILTER_FLAG_NO_PRIV_RANGE
+		if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
+			$long = \ip2long($ip);
+			// 169.254.0.0 = 0xA9FE0000, mask /16 = 0xFFFF0000
+			if (($long & 0xFFFF0000) === 0xA9FE0000) {
+				return true;
+			}
+		}
+
+		// Block IPv6 link-local (fe80::/10)
+		if (\filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+			// fe80:: through febf::
+			if (\stripos($ip, 'fe80:') === 0 ||
+				\stripos($ip, 'fe81:') === 0 ||
+				\preg_match('/^fe[89ab][0-9a-f]:/i', $ip) === 1) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function manipulateStorageConfig(IStorageConfig $storage) {
