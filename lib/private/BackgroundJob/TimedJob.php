@@ -48,7 +48,7 @@ abstract class TimedJob extends Job {
 	 * @param JobList $jobList
 	 * @param ILogger $logger
 	 */
-	public function execute($jobList, ILogger $logger = null) {
+	public function execute($jobList, ?ILogger $logger = null) {
 		if ((\time() - $this->lastRun) > $this->interval) {
 			if ($logger !== null) {
 				$id = $this->getId();

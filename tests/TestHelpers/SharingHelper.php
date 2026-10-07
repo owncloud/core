@@ -100,7 +100,7 @@ class SharingHelper {
 		string $xRequestId = '',
 		?string $shareWith = null,
 		?bool	$publicUpload = false,
-		string $sharePassword = null,
+		?string $sharePassword = null,
 		$permissions = null,
 		?string  $linkName = null,
 		?string $expireDate = null,

@@ -10,7 +10,7 @@ use function PHPUnit\Framework\assertTrue;
 
 trait AssertQueryCountTrait {
 	private static bool $trackingStarted = false;
-	public function assertNoQueriesExecuted(Closure $closure = null): void {
+	public function assertNoQueriesExecuted(?Closure $closure = null): void {
 		if ($closure) {
 			self::trackQueries();
 
@@ -25,7 +25,7 @@ trait AssertQueryCountTrait {
 		}
 	}
 
-	public function assertQueryCountMatches(int $count, Closure $closure = null): void {
+	public function assertQueryCountMatches(int $count, ?Closure $closure = null): void {
 		if ($closure) {
 			self::trackQueries();
 
@@ -40,7 +40,7 @@ trait AssertQueryCountTrait {
 		}
 	}
 
-	public function assertQueryCountLessThan(int $count, Closure $closure = null): void {
+	public function assertQueryCountLessThan(int $count, ?Closure $closure = null): void {
 		if ($closure) {
 			self::trackQueries();
 
@@ -55,7 +55,7 @@ trait AssertQueryCountTrait {
 		}
 	}
 
-	public function assertQueryCountGreaterThan(int $count, Closure $closure = null): void {
+	public function assertQueryCountGreaterThan(int $count, ?Closure $closure = null): void {
 		if ($closure) {
 			self::trackQueries();
 

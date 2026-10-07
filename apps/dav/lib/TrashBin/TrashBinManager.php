@@ -49,7 +49,7 @@ class TrashBinManager {
 		}
 	}
 
-	public function getChildren(string $user, string $fileId = null) {
+	public function getChildren(string $user, ?string $fileId = null) {
 		try {
 			$view = new View('/' . $user . '/files_trashbin/files');
 			$path = '/';

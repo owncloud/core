@@ -32,7 +32,7 @@ class StorageConnectionException extends StorageNotAvailableException {
 	 * @param \Exception $previous
 	 * @since 9.0.0
 	 */
-	public function __construct($message = '', \Exception $previous = null) {
+	public function __construct($message = '', ?\Exception $previous = null) {
 		$l = \OC::$server->getL10N('lib');
 		parent::__construct($l->t('Storage connection error. %s', $message), self::STATUS_NETWORK_ERROR, $previous);
 	}

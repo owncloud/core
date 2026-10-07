@@ -53,7 +53,7 @@ class RepairMimeTypes implements IRepairStep {
 	 * @param \OCP\IConfig $config
 	 * @param IMimeTypeLoader|null $mimeTypeLoader
 	 */
-	public function __construct($config, IMimeTypeLoader $mimeTypeLoader = null) {
+	public function __construct($config, ?IMimeTypeLoader $mimeTypeLoader = null) {
 		$this->config = $config;
 		$this->mimeTypeLoader = $mimeTypeLoader ?? \OC::$server->getMimeTypeLoader();
 	}

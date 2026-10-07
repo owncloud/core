@@ -172,7 +172,7 @@ class Session implements IUserSession, Emitter {
 	 * @param string $method optional
 	 * @param callable $callback optional
 	 */
-	public function removeListener($scope = null, $method = null, callable $callback = null) {
+	public function removeListener($scope = null, $method = null, ?callable $callback = null) {
 		$this->manager->removeListener($scope, $method, $callback);
 	}
 
@@ -937,7 +937,7 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	public function loginUser(IUser $user = null, $password = null, $authModuleClass = '') {
+	public function loginUser(?IUser $user = null, $password = null, $authModuleClass = '') {
 		if ($user === null) {
 			$this->emitFailedLogin(null);
 			return false;

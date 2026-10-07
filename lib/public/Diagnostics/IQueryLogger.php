@@ -42,7 +42,7 @@ interface IQueryLogger extends SQLLogger {
 	 * @param array $types
 	 * @since 8.0.0
 	 */
-	public function startQuery($sql, array $params = null, array $types = null);
+	public function startQuery($sql, ?array $params = null, ?array $types = null);
 
 	/**
 	 * Mark the end of the current active query. Ending query should store \OCP\Diagnostics\IQuery to

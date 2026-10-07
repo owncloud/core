@@ -211,7 +211,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		string $attemptTo,
 		string $username,
 		?string $email,
-		TableNode $groupsTable = null
+		?TableNode $groupsTable = null
 	):void {
 		$this->theAdminCreatesAUserUsingTheWebUI(
 			$attemptTo,
