@@ -1,0 +1,8 @@
+Bugfix: Store an empty file cache mimetype as unknown
+
+A storage backend reporting an empty mimetype ('' or null) reached the
+mimetype loader, which registered an empty string as a new mimetype (or failed
+on the NOT NULL column for null) and stored a bogus mimepart. Empty mimetypes
+are now stored as unknown (-1), like a mimetype of false already was.
+
+https://github.com/owncloud/core/pull/41896
