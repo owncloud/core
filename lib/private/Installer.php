@@ -214,6 +214,8 @@ class Installer {
 	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
 	public static function updateApp($info= [], $isShipped=false) {
+		$l = \OC::$server->getL10N('lib');
+
 		list($extractDir, $path) = self::downloadApp($info);
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
@@ -230,16 +232,25 @@ class Installer {
 			$basedir = $currentDir;
 		}
 
-		if (\is_dir($basedir)) {
-			OC_Helper::rmdirr($basedir);
-		}
-
 		$appInExtractDir = $extractDir;
 		if (\substr($extractDir, -1) !== '/') {
 			$appInExtractDir .= '/';
 		}
 
 		$appInExtractDir .= $info['id'];
+
+		// Verify the archive actually contains the app directory before
+		// removing the currently installed app, otherwise an invalid archive
+		// would leave the user without the previously installed app.
+		if (!\is_dir($appInExtractDir)) {
+			OC_Helper::rmdirr($extractDir);
+			throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
+		}
+
+		if (\is_dir($basedir)) {
+			OC_Helper::rmdirr($basedir);
+		}
+
 		OC_Helper::copyr($appInExtractDir, $basedir);
 		OC_Helper::rmdirr($extractDir);
 

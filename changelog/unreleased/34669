@@ -1,0 +1,14 @@
+Bugfix: Validate app archive before deleting installed app on update
+
+We've fixed a bug where updating an app with an invalid archive produced a
+misleading error and could destroy the already-installed app.
+Installer::updateApp() removed the installed app before copying the new
+version, without first checking that the extracted archive contained a
+directory named after the app id. An archive whose top-level directory did not
+match the app id therefore left the app broken. The update now validates the
+archive up front, mirroring the guard in installApp(), and throws a clear
+"Archive does not contain a directory named %s" error while leaving the
+installed app intact.
+
+https://github.com/owncloud/core/issues/34669
+https://github.com/owncloud/core/pull/41643
