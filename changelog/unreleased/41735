@@ -1,0 +1,11 @@
+Bugfix: Clear stale integrity check results when rescanning
+
+The code integrity checker stores one cache entry per checked scope, but a
+rescan only removed the entry holding the combined results. The per app entries
+had no expiry either, so a verdict about an app was cached indefinitely and was
+served even after the app had been repaired or replaced. Rescanning now clears
+all of them, the entries expire, and the results are kept in the host local
+cache tier - they describe the files on disk of one host and are of no use to
+another.
+
+https://github.com/owncloud/core/pull/41735

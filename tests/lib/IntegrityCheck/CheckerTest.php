@@ -27,11 +27,12 @@ use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\IntegrityCheck\Verifier\Verifier;
 use OC\IntegrityCheck\Verifier\VerificationResult;
+use OC\Memcache\ArrayCache;
 use OC\Memcache\NullCache;
 use OC\Memcache\Redis;
 use OCP\App\IAppManager;
-use OCP\ICacheFactory;
 use OCP\IConfig;
+use Test\Memcache\FixedCacheFactory;
 use Test\TestCase;
 
 /**
@@ -48,7 +49,7 @@ class CheckerTest extends TestCase {
 	private $fileAccessHelper;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
-	/** @var ICacheFactory | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var FixedCacheFactory */
 	private $cacheFactory;
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $appManager;
@@ -61,7 +62,7 @@ class CheckerTest extends TestCase {
 		$this->fileAccessHelper = $this->createMock(FileAccessHelper::class);
 		$this->appLocator = $this->createMock(AppLocator::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->cacheFactory = $this->createMock(ICacheFactory::class);
+		$this->cacheFactory = new FixedCacheFactory(new NullCache());
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->verifier = $this->createMock(Verifier::class);
 
@@ -87,12 +88,6 @@ class CheckerTest extends TestCase {
 			->method('getAllApps')
 			->willReturn([]);
 
-		$this->cacheFactory
-			->expects($this->any())
-			->method('create')
-			->with('oc.integritycheck.checker')
-			->willReturn(new NullCache());
-
 		$this->checker = new Checker(
 			$this->environmentHelper,
 			$this->fileAccessHelper,
@@ -103,6 +98,69 @@ class CheckerTest extends TestCase {
 			\OC::$server->getTempManager(),
 			$this->verifier
 		);
+
+		$this->assertSame([Checker::CACHE_KEY], $this->cacheFactory->getRequestedPrefixes());
+	}
+
+	/**
+	 * The results describe the files on disk of this host, so they belong in the
+	 * host local cache tier - not in a distributed one where another host could
+	 * hand back a verdict about an installation it cannot see.
+	 */
+	public function testUsesTheLocalCacheTier() {
+		$cacheFactory = $this->createMock(FixedCacheFactory::class);
+		$cacheFactory->expects($this->once())
+			->method('createLocal')
+			->with(Checker::CACHE_KEY)
+			->willReturn(new NullCache());
+		$cacheFactory->expects($this->never())->method('createDistributed');
+		$cacheFactory->expects($this->never())->method('create');
+
+		new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$this->config,
+			$cacheFactory,
+			$this->appManager,
+			\OC::$server->getTempManager(),
+			$this->verifier
+		);
+	}
+
+	/**
+	 * storeResults() writes one entry per scope next to CACHE_KEY, and a rescan
+	 * has to invalidate all of them - removing CACHE_KEY alone left every per app
+	 * verdict cached forever.
+	 */
+	public function testRescanningDropsThePerAppResults() {
+		$cache = new ArrayCache();
+		$checker = new Checker(
+			$this->environmentHelper,
+			$this->fileAccessHelper,
+			$this->appLocator,
+			$this->config,
+			new FixedCacheFactory($cache),
+			$this->appManager,
+			\OC::$server->getTempManager(),
+			$this->verifier
+		);
+
+		$this->environmentHelper->method('getChannel')->willReturn('stable');
+		$this->environmentHelper->method('getServerRoot')->willReturn(\OC::$SERVERROOT);
+		$this->verifier->method('verify')->willReturn(VerificationResult::passed());
+
+		$cache->set('SomeApp', '{"SomeApp":[]}');
+		$cache->set('SomeOtherApp', '{"SomeOtherApp":[]}');
+		$cache->set(Checker::CACHE_KEY, '{"SomeApp":[]}');
+
+		$checker->runInstanceVerification();
+
+		// only the results of this run are left - the verification passed, so
+		// there is nothing to report
+		$this->assertNull($cache->get('SomeApp'));
+		$this->assertNull($cache->get('SomeOtherApp'));
+		$this->assertSame('[]', $cache->get(Checker::CACHE_KEY));
 	}
 
 	public function testIgnoredAppSignatureWithoutSignatureData() {
@@ -630,12 +688,7 @@ class CheckerTest extends TestCase {
 		$redisObj->method('get')
 			->with('SomeApp')
 			->willReturn('[]');
-		$cacheFactory = $this->createMock(ICacheFactory::class);
-		$cacheFactory
-			->expects($this->any())
-			->method('create')
-			->with('oc.integritycheck.checker')
-			->will($this->returnValue($redisObj));
+		$cacheFactory = new FixedCacheFactory($redisObj);
 		$checker = new Checker(
 			$this->environmentHelper,
 			$this->fileAccessHelper,
@@ -654,12 +707,7 @@ class CheckerTest extends TestCase {
 		$redisObj->method('get')
 			->with('SomeApp')
 			->willReturn(null);
-		$cacheFactory = $this->createMock(ICacheFactory::class);
-		$cacheFactory
-			->expects($this->any())
-			->method('create')
-			->with('oc.integritycheck.checker')
-			->will($this->returnValue($redisObj));
+		$cacheFactory = new FixedCacheFactory($redisObj);
 		$checker = new Checker(
 			$this->environmentHelper,
 			$this->fileAccessHelper,
@@ -702,10 +750,7 @@ class CheckerTest extends TestCase {
 				]
 			]));
 
-		$cacheFactory = $this->createMock(ICacheFactory::class);
-		$cacheFactory->expects($this->any())
-			->method('create')
-			->willReturn(new NullCache());
+		$cacheFactory = new FixedCacheFactory(new NullCache());
 
 		$checker = new Checker(
 			$this->environmentHelper,
@@ -732,10 +777,7 @@ class CheckerTest extends TestCase {
 			->with('core', 'oc.integritycheck.checker', '{}')
 			->willReturn('{}');
 
-		$cacheFactory = $this->createMock(ICacheFactory::class);
-		$cacheFactory->expects($this->any())
-			->method('create')
-			->willReturn(new NullCache());
+		$cacheFactory = new FixedCacheFactory(new NullCache());
 
 		$checker = new Checker(
 			$this->environmentHelper,
@@ -766,10 +808,7 @@ class CheckerTest extends TestCase {
 				]
 			]));
 
-		$cacheFactory = $this->createMock(ICacheFactory::class);
-		$cacheFactory->expects($this->any())
-			->method('create')
-			->willReturn(new NullCache());
+		$cacheFactory = new FixedCacheFactory(new NullCache());
 
 		$checker = new Checker(
 			$this->environmentHelper,
