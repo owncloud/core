@@ -1,9 +1,6 @@
-Bugfix: Accept null in User::setEMailAddress() and setDisplayName() without a deprecation
+Bugfix: Accept null in User::setEMailAddress() and setDisplayName()
 
-User::setEMailAddress() is documented to accept null to remove the address,
-but passed it straight to trim(), which raises "Passing null to parameter #1
-($string) of type string is deprecated" on PHP 8.1 and later. null is now
-treated as an empty string, which is what trim() already returned. The same
-applies to setDisplayName().
+Avoid deprecation messages from the trim() function when removing a user's
+email address or display name.
 
 https://github.com/owncloud/core/pull/41897
