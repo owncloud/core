@@ -51,6 +51,8 @@ ownCloud admins and users.
 
    The following have been updated:
 
+   * composer/semver (3.5.0 to 3.5.1)
+
    * firebase/php-jwt (v7.2.0 to v7.2.1)
 
    * google/apiclient (v2.20.0 to v2.20.1)
@@ -66,6 +68,7 @@ ownCloud admins and users.
    * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
 
    https://github.com/owncloud/core/pull/41875
+   https://github.com/owncloud/core/pull/41898
 
 # Changelog for ownCloud Core [10.16.6] (2026-10-06)
 
