@@ -445,6 +445,7 @@ class Setup {
 
 	public static function installBackgroundJobs() {
 		\OC::$server->getJobList()->add('\OC\Authentication\Token\DefaultTokenCleanupJob');
+		\OC::$server->getJobList()->add('\OC\Authentication\AccountLockout\ExpireLockoutsJob');
 	}
 
 	/**
