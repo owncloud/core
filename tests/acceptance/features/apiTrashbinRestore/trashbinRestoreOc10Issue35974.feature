@@ -5,7 +5,7 @@ Feature: Restore deleted files/folders
   So that I can recover accidentally deleted files/folders in ownCloud
 
   @issue-35974
-  Scenario Outline: restoring a file to an already existing path overrides the file
+  Scenario Outline: restoring a file to an already existing path is refused and does not overwrite the file
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "file to delete" to "/textfile0.txt"
     And user "Alice" has uploaded file with content "file to delete" to "/.hiddenfile0.txt"
@@ -14,18 +14,12 @@ Feature: Restore deleted files/folders
     And user "Alice" has uploaded file with content "PARENT file content" to <upload-path>
     And user "Alice" has deleted file <delete-path>
     When user "Alice" restores the file with original path <delete-path> to <upload-path> using the trashbin API
-    Then the HTTP status code should be "204"
-    # Sometimes <upload-path> is found in the trashbin. Should it? Or not?
-    # That seems to be what happens when the restore-overwrite happens properly,
-    # The original <upload-path> seems to be "deleted" and so goes to the trashbin
-    #And as "Alice" the file with original path <upload-path> should not exist in the trashbin
+    Then the HTTP status code should be "403"
+    # the restore is refused, so the existing target is left untouched (no data loss)
     And as "Alice" file <upload-path> should exist
-    # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
-    # the current observed behavior is that if the original <upload-path> ended up in the trashbin,
-    # then the new <upload-path> has the "file to delete" content.
-    # otherwise <upload-path> has its old content
-    And the content of file <upload-path> for user "Alice" if the file is also in the trashbin should be "file to delete" otherwise "PARENT file content"
-    #And the content of file <upload-path> for user "Alice" should be "file to delete"
+    And the content of file <upload-path> for user "Alice" should be "PARENT file content"
+    # and the deleted file remains in the trashbin
+    And as "Alice" the file with original path <delete-path> should exist in the trashbin
     Examples:
       | dav-path | upload-path                | delete-path        |
       | old      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |

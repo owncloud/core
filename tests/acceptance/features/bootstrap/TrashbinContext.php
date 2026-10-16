@@ -873,37 +873,6 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" if the file is also in the trashbin should be "([^"]*)" otherwise "([^"]*)"$/
-	 *
-	 * Note: this is a special step for an unusual bug combination.
-	 *       Delete it when the bug is fixed and the step is no longer needed.
-	 *
-	 * @param string|null $fileName
-	 * @param string|null $user
-	 * @param string|null $content
-	 * @param string|null $alternativeContent
-	 *
-	 * @return void
-	 * @throws JsonException
-	 * @throws Exception
-	 */
-	public function contentOfFileForUserIfAlsoInTrashShouldBeOtherwise(
-		?string $fileName,
-		?string $user,
-		?string $content,
-		?string $alternativeContent
-	):void {
-		$isInTrash = $this->isInTrash($user, $fileName);
-		$user = $this->featureContext->getActualUsername($user);
-		$this->featureContext->downloadFileAsUserUsingPassword($user, $fileName);
-		if ($isInTrash) {
-			$this->featureContext->downloadedContentShouldBe($content);
-		} else {
-			$this->featureContext->downloadedContentShouldBe($alternativeContent);
-		}
-	}
-
-	/**
 	 * @When /^user "([^"]*)" tries to restore the (?:file|folder|entry) with original path "([^"]*)" using the trashbin API$/
 	 *
 	 * @param string $user
