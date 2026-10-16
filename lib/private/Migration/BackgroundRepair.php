@@ -53,7 +53,7 @@ class BackgroundRepair extends TimedJob {
 	 * @param JobList $jobList
 	 * @param ILogger $logger
 	 */
-	public function execute($jobList, ILogger $logger = null) {
+	public function execute($jobList, ?ILogger $logger = null) {
 		// add an interval of 15 mins
 		$this->setInterval(15*60);
 

@@ -66,9 +66,9 @@ class MigrationService {
 	public function __construct(
 		$appName,
 		IDBConnection $connection,
-		IOutput $output = null,
-		AppLocator $appLocator = null,
-		ILogger $logger = null
+		?IOutput $output = null,
+		?AppLocator $appLocator = null,
+		?ILogger $logger = null
 	) {
 		$this->appName = $appName;
 		$this->connection = $connection;

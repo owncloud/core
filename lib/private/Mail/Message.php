@@ -216,7 +216,7 @@ class Message {
 		return $this;
 	}
 
-	public function attach($body, string $name = null, string $contentType = null): self {
+	public function attach($body, ?string $name = null, ?string $contentType = null): self {
 		$this->message->attach($body, $name, $contentType);
 		return $this;
 	}

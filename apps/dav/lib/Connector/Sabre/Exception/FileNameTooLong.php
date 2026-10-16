@@ -25,7 +25,7 @@ namespace OCA\DAV\Connector\Sabre\Exception;
 use Exception;
 
 class FileNameTooLong extends \Sabre\DAV\Exception {
-	public function __construct($message = '', $code = 0, Exception $previous = null) {
+	public function __construct($message = '', $code = 0, ?Exception $previous = null) {
 		if ($message === '') {
 			$message = 'File name is too long.';
 		}

@@ -52,7 +52,7 @@ class Storage extends Wrapper {
 	/** @var  TrashbinSkipChecker */
 	private $trashbinSkipChecker;
 
-	public function __construct($parameters, IUserManager $userManager = null, TrashbinSkipChecker $trashbinSkipChecker = null) {
+	public function __construct($parameters, ?IUserManager $userManager = null, ?TrashbinSkipChecker $trashbinSkipChecker = null) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->userManager = $userManager;
 		$this->trashbinSkipChecker = $trashbinSkipChecker;

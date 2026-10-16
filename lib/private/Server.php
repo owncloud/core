@@ -1712,7 +1712,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	/**
 	 * @inheritdoc
 	 */
-	public function load(array $xmlPath, IUser $user = null) {
+	public function load(array $xmlPath, ?IUser $user = null) {
 		$appManager = $this->getAppManager();
 		$allApps = $appManager->getEnabledAppsForUser($user);
 

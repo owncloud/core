@@ -46,5 +46,5 @@ interface IServiceLoader {
 	 * @return \Generator
 	 * @since 10.0.4
 	 */
-	public function load(array $xmlPath, IUser $user = null);
+	public function load(array $xmlPath, ?IUser $user = null);
 }

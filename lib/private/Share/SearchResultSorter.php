@@ -38,7 +38,7 @@ class SearchResultSorter {
 	 * @param string $encoding optional, encoding to use, defaults to UTF-8
 	 * @param ILogger $log optional
 	 */
-	public function __construct($search, $key, ILogger $log = null, $encoding = 'UTF-8') {
+	public function __construct($search, $key, ?ILogger $log = null, $encoding = 'UTF-8') {
 		$this->encoding = $encoding;
 		$this->key = $key;
 		$this->log = $log;

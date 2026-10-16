@@ -85,7 +85,7 @@ interface IAppManager {
 	 * @return string[]
 	 * @since 8.1.0
 	 */
-	public function getEnabledAppsForUser(IUser $user = null);
+	public function getEnabledAppsForUser(?IUser $user = null);
 
 	/**
 	 * List all installed apps

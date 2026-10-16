@@ -119,9 +119,9 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 */
 	public function __construct(
 		array $vars= [],
-		ISecureRandom $secureRandom = null,
-		IConfig $config = null,
-		CsrfTokenManager $csrfTokenManager = null,
+		?ISecureRandom $secureRandom = null,
+		?IConfig $config = null,
+		?CsrfTokenManager $csrfTokenManager = null,
 		$stream = 'php://input'
 	) {
 		$this->inputStream = $stream;

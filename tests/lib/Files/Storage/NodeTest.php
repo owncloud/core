@@ -52,7 +52,7 @@ abstract class NodeTest extends TestCase {
 	 * @param IStorage $storage
 	 * @return Node
 	 */
-	abstract protected function createTestNode($path, IStorage $storage = null);
+	abstract protected function createTestNode($path, ?IStorage $storage = null);
 
 	public function testGetMimetype() {
 		$this->storage->expects($this->once())

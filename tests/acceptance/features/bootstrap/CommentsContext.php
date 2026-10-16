@@ -270,7 +270,7 @@ class CommentsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userHasDeletedLastComment(string $user = null):void {
+	public function userHasDeletedLastComment(?string $user = null):void {
 		$this->userDeletesLastComment($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe("204");
 	}

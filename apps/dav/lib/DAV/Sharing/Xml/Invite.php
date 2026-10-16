@@ -79,7 +79,7 @@ class Invite implements XmlSerializable {
 	 *
 	 * @param array $users
 	 */
-	public function __construct(array $users, array $organizer = null) {
+	public function __construct(array $users, ?array $organizer = null) {
 		$this->users = $users;
 		$this->organizer = $organizer;
 	}
