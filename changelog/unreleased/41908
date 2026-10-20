@@ -1,0 +1,7 @@
+Bugfix: Update the CA bundle
+
+The bundled CA certificates were replaced with curl's 2026-10-20 extract of
+the Mozilla store. This removed emSign ECC Root CA - G3, whose intermediate
+CA keys were compromised.
+
+https://github.com/owncloud/core/pull/41908
