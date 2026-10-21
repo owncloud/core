@@ -67,6 +67,9 @@ class UpdateCertificateStoreTest extends TestCase {
 	public function testRunWarnsInsteadOfFailing() {
 		$server = $this->createMock(\OC\Server::class);
 		$server->method('getCertificateManager')->willThrowException(new \Exception('boom'));
+		$logger = $this->createMock(\OCP\ILogger::class);
+		$logger->expects($this->once())->method('logException');
+		$server->method('getLogger')->willReturn($logger);
 		$out = $this->createMock(IOutput::class);
 		$out->expects($this->once())->method('warning')
 			->with('Could not update certificate stores: boom');
