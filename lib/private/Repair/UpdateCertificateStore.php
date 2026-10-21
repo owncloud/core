@@ -64,12 +64,16 @@ class UpdateCertificateStore implements IRepairStep {
 
 	/** {@inheritDoc} */
 	public function run(IOutput $out) {
-		$rootView = new View();
-		$dataDirectory = $this->config->getSystemValue('datadirectory', null);
-		if ($dataDirectory === null) {
-			throw new \Exception('No data directory specified');
+		// a stale certificate cache must not abort the upgrade
+		try {
+			$this->updateCertificateStores();
+		} catch (\Throwable $e) {
+			$out->warning('Could not update certificate stores: ' . $e->getMessage());
 		}
+	}
 
+	private function updateCertificateStores() {
+		$rootView = new View();
 		$pathToRootCerts = '/files_external/rootcerts.crt';
 
 		// Regenerate the system certificate bundle first, the user bundles include it

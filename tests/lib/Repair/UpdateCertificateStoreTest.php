@@ -34,6 +34,8 @@ class UpdateCertificateStoreTest extends TestCase {
 	private $view;
 	/** @var string */
 	private $systemBundle;
+	/** @var string|false */
+	private $originalSystemBundle;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -43,11 +45,34 @@ class UpdateCertificateStoreTest extends TestCase {
 
 		$this->view = new View();
 		$this->systemBundle = \OC::$server->getCertificateManager(null)->getCertificateBundle();
+		$this->originalSystemBundle = $this->view->file_exists($this->systemBundle)
+			? $this->view->file_get_contents($this->systemBundle)
+			: false;
 	}
 
 	protected function tearDown(): void {
-		$this->view->unlink($this->systemBundle);
+		if ($this->originalSystemBundle === false) {
+			$this->view->unlink($this->systemBundle);
+		} else {
+			$this->view->file_put_contents($this->systemBundle, $this->originalSystemBundle);
+		}
 		parent::tearDown();
+	}
+
+	public function testIsRegistered() {
+		$steps = \array_map('get_class', \OC\Repair::getRepairSteps());
+		$this->assertContains(UpdateCertificateStore::class, $steps);
+	}
+
+	public function testRunWarnsInsteadOfFailing() {
+		$server = $this->createMock(\OC\Server::class);
+		$server->method('getCertificateManager')->willThrowException(new \Exception('boom'));
+		$out = $this->createMock(IOutput::class);
+		$out->expects($this->once())->method('warning')
+			->with('Could not update certificate stores: boom');
+
+		$repair = new UpdateCertificateStore($server, \OC::$server->getConfig());
+		$repair->run($out);
 	}
 
 	public function testRunRegeneratesSystemBundle() {
