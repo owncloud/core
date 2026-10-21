@@ -48,6 +48,7 @@ use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
 use OC\Repair\RepairInvalidShares;
 use OC\Repair\RepairUnmergedShares;
+use OC\Repair\UpdateCertificateStore;
 use OCP\AppFramework\QueryException;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -172,6 +173,7 @@ class Repair implements IOutput {
 				\OC::$server->getConfig(),
 				\OC::$server->getAppConfig()
 			),
+			new UpdateCertificateStore(\OC::$server, \OC::$server->getConfig()),
 		];
 	}
 

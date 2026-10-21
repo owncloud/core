@@ -29,9 +29,9 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 /**
- * Class UpdateCertificateStore rewrites the user specific certificate store after
- * an update has been performed. This is done because a new root certificate file
- * might have been added.
+ * Class UpdateCertificateStore rewrites the system and the user specific certificate
+ * stores after an update has been performed. This is done because the bundled root
+ * certificates might have changed.
  *
  * @package OC\Repair
  */
@@ -59,7 +59,7 @@ class UpdateCertificateStore implements IRepairStep {
 
 	/** {@inheritDoc} */
 	public function getName() {
-		return 'Update user certificate stores with new root certificates';
+		return 'Update certificate stores with new root certificates';
 	}
 
 	/** {@inheritDoc} */
@@ -71,6 +71,11 @@ class UpdateCertificateStore implements IRepairStep {
 		}
 
 		$pathToRootCerts = '/files_external/rootcerts.crt';
+
+		// Regenerate the system certificate bundle first, the user bundles include it
+		$systemCertificateManager = $this->server->getCertificateManager(null);
+		'@phan-var \OC\Security\CertificateManager $systemCertificateManager';
+		$systemCertificateManager->createCertificateBundle();
 
 		foreach ($rootView->getDirectoryContent('', 'httpd/unix-directory') as $fileInfo) {
 			$uid = \trim($fileInfo->getPath(), '/');
