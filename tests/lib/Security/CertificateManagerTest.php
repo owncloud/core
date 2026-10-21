@@ -25,6 +25,8 @@ class CertificateManagerTest extends \Test\TestCase {
 	private $username;
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
+	/** @var string|false|null system bundle content to restore, false if there was none */
+	private $originalSystemBundle;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -45,6 +47,19 @@ class CertificateManagerTest extends \Test\TestCase {
 			->with('installed', false)->willReturn(true);
 
 		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $this->config);
+	}
+
+	protected function tearDown(): void {
+		if ($this->originalSystemBundle !== null) {
+			$view = new \OC\Files\View();
+			$systemBundle = $this->certificateManager->getCertificateBundle(null);
+			if ($this->originalSystemBundle === false) {
+				$view->unlink($systemBundle);
+			} else {
+				$view->file_put_contents($systemBundle, $this->originalSystemBundle);
+			}
+		}
+		parent::tearDown();
 	}
 
 	protected function assertEqualsArrays($expected, $actual) {
@@ -131,6 +146,9 @@ class CertificateManagerTest extends \Test\TestCase {
 	public function testNeedsRebundlingDependsOnSystemBundle($systemOffset, $expected) {
 		$view = new \OC\Files\View();
 		$systemManager = new CertificateManager(null, $view, $this->config);
+		$this->originalSystemBundle = $view->file_exists($systemManager->getCertificateBundle())
+			? $view->file_get_contents($systemManager->getCertificateBundle())
+			: false;
 		$systemManager->createCertificateBundle();
 		$this->certificateManager->createCertificateBundle();
 
@@ -140,7 +158,5 @@ class CertificateManagerTest extends \Test\TestCase {
 		$view->touch($systemManager->getCertificateBundle(), $userMTime + $systemOffset);
 
 		$this->assertSame($expected, self::invokePrivate($this->certificateManager, 'needsRebundling'));
-
-		$view->unlink($systemManager->getCertificateBundle());
 	}
 }
