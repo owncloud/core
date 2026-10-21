@@ -1,0 +1,8 @@
+Bugfix: Rebuild user certificate bundles when the system bundle changes
+
+A user's certificate bundle includes the system certificate bundle, but the
+check for a stale user bundle ignored the system bundle's modification time.
+After an administrator imported or removed a system certificate, users who
+had uploaded their own certificates kept using the old bundle.
+
+https://github.com/owncloud/core/pull/41909
