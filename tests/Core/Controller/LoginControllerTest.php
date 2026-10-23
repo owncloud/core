@@ -590,12 +590,13 @@ class LoginControllerTest extends TestCase {
 	public function testLoginWithLockedOutAccount() {
 		$user = 'unknown';
 		$loginPageUrl = 'some url';
-		$message = 'Too many failed login attempts. This account is temporarily locked. Please try again in 10 minutes.';
+		$message = 'Zu viele fehlgeschlagene Anmeldeversuche.';
 
 		$this->userSession->expects($this->once())
 			->method('login')
-			->will($this->throwException(new AccountLockedException($message)));
-		// the lockout must be explained instead of being reported as a wrong password
+			->will($this->throwException(new AccountLockedException('Too many failed login attempts.', $message)));
+		// the lockout must be explained, in the language of the user, instead of
+		// being reported as a wrong password
 		$this->session->expects($this->once())
 			->method('set')
 			->with('loginMessages', [[], [$message]]);

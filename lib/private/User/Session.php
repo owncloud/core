@@ -551,7 +551,7 @@ class Session implements IUserSession, Emitter {
 	private function loginWithPassword($login, $password) {
 		// deliberately ahead of the credential check: a locked out account must
 		// not pay the cost of hashing the password, nor reach an external backend
-		$this->throwIfLockedOut($login);
+		$this->accountLockout->throwIfLockedOut($login);
 
 		$user = $this->manager->checkPassword($login, $password);
 		if ($user === false) {
@@ -561,32 +561,6 @@ class Session implements IUserSession, Emitter {
 		}
 		$this->accountLockout->clearFailures($login, $user->getUID());
 		return $this->loginInOwnCloud('password', $user, $password);
-	}
-
-	/**
-	 * @param string $login
-	 * @throws AccountLockedException if too many passwords have been tried
-	 */
-	private function throwIfLockedOut($login) {
-		$remaining = $this->accountLockout->getRemainingLockTime($login);
-		if ($remaining <= 0) {
-			return;
-		}
-
-		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-		$l = \OC::$server->getL10N('lib');
-		$minutes = (int)\ceil($remaining / 60);
-		$retryIn = $minutes > 1
-			? $l->n('%n minute', '%n minutes', $minutes)
-			: $l->n('%n second', '%n seconds', $remaining);
-		// the wording must not depend on whether the account exists - that would
-		// turn the lockout into a user enumeration oracle
-		$message = $l->t(
-			'Too many failed login attempts. This account is temporarily locked. Please try again in %s.',
-			[$retryIn]
-		);
-		$this->logger->info("login $login refused, account is temporarily locked", ['app' => __METHOD__]);
-		throw new AccountLockedException($message);
 	}
 
 	/**

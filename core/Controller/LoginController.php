@@ -266,7 +266,7 @@ class LoginController extends Controller {
 			// the lockout has to be explained on the login form - letting the
 			// exception through would render an error page instead
 			$loginResult = false;
-			$lockoutMessage = $e->getMessage();
+			$lockoutMessage = $e->getTranslatedMessage();
 		}
 		if ($loginResult !== true) {
 			$this->session->set('loginMessages', $lockoutMessage === null
