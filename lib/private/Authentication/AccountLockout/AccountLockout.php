@@ -23,6 +23,7 @@ namespace OC\Authentication\AccountLockout;
 
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserManager;
 
@@ -73,12 +74,14 @@ class AccountLockout {
 	/**
 	 * One HTTP request may attempt the same credentials twice - a login by
 	 * email is retried with the resolved user id, see Session::logClientIn().
-	 * That is one failure, not two. And if the retry succeeds, it was no
-	 * failure at all, see clearFailures().
+	 * That counts once for the email address and once for the account, so that
+	 * logging in by email does not open a second budget of attempts on top of
+	 * the user id. And if the retry succeeds, the email address did not fail
+	 * at all, see clearFailures().
 	 *
-	 * @var string|null the key this request counted a failure for
+	 * @var array<string,true> the keys this request counted a failure for
 	 */
-	private $failureRecordedFor = null;
+	private $failuresRecordedFor = [];
 
 	public function __construct(
 		LockoutMapper $mapper,
@@ -131,20 +134,57 @@ class AccountLockout {
 	}
 
 	/**
+	 * @param string $login the login name as submitted
+	 * @throws AccountLockedException if too many passwords have been tried
+	 */
+	public function throwIfLockedOut($login) {
+		$remaining = $this->getRemainingLockTime($login);
+		if ($remaining <= 0) {
+			return;
+		}
+
+		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+		$l10nFactory = \OC::$server->getL10NFactory();
+		$this->logger->info("login $login refused, account is temporarily locked", ['app' => __METHOD__]);
+		throw new AccountLockedException(
+			$this->lockedMessage($l10nFactory->get('lib', 'en'), $remaining),
+			$this->lockedMessage($l10nFactory->get('lib'), $remaining)
+		);
+	}
+
+	/**
+	 * @param IL10N $l
+	 * @param int $remaining seconds
+	 * @return string
+	 */
+	private function lockedMessage(IL10N $l, $remaining) {
+		$minutes = (int)\ceil($remaining / 60);
+		$retryIn = $minutes > 1
+			? $l->n('%n minute', '%n minutes', $minutes)
+			: $l->n('%n second', '%n seconds', $remaining);
+		// the wording must not depend on whether the account exists - that would
+		// turn the lockout into a user enumeration oracle
+		return $l->t(
+			'Too many failed login attempts. This account is temporarily locked. Please try again in %s.',
+			[$retryIn]
+		);
+	}
+
+	/**
 	 * Count one failed password attempt and lock the account once the
 	 * configured threshold is reached.
 	 *
 	 * @param string $login the login name as submitted
 	 */
 	public function recordFailure($login) {
-		if (!$this->isEnabled() || $this->failureRecordedFor !== null) {
-			return;
-		}
-		if (!$this->isTracked($login)) {
+		if (!$this->isEnabled()) {
 			return;
 		}
 		$key = $this->keyFor($login);
-		$this->failureRecordedFor = $key;
+		if (isset($this->failuresRecordedFor[$key]) || !$this->isTracked($login)) {
+			return;
+		}
+		$this->failuresRecordedFor[$key] = true;
 		$now = $this->timeFactory->getTime();
 
 		// Each statement stands on its own, so parallel requests - including
@@ -166,11 +206,7 @@ class AccountLockout {
 
 		if ($this->mapper->lock($key, $now + $this->getDuration(), $maxAttempts) > 0) {
 			$this->logger->warning(
-				\sprintf(
-					'Temporarily locked out after %d failed login attempts: %s',
-					$row['fail_count'],
-					$key
-				),
+				"Temporarily locked out after {$row['fail_count']} failed login attempts: $key",
 				['app' => 'core']
 			);
 		}
@@ -191,20 +227,20 @@ class AccountLockout {
 		if ($uid !== null) {
 			$keys[] = $this->keyFor($uid);
 		}
-		if ($uid !== null && $this->failureRecordedFor !== null) {
+		$user = ($uid !== null && $this->failuresRecordedFor !== []) ? $this->userManager->get($uid) : null;
+		foreach (\array_keys($this->failuresRecordedFor) as $failed) {
 			// the email address which failed against the user id just before -
 			// but only if it is this account's and not also the user id of
 			// another one, or one account could reset the counter of another
-			$user = $this->userManager->get($uid);
-			$owner = $this->userManager->get($this->failureRecordedFor);
+			$owner = $this->userManager->get($failed);
 			if ($user !== null
-				&& $this->keyFor($user->getEMailAddress()) === $this->failureRecordedFor
+				&& $this->keyFor($user->getEMailAddress()) === $failed
 				&& ($owner === null || $owner->getUID() === $user->getUID())
 			) {
-				$keys[] = $this->failureRecordedFor;
+				$keys[] = $failed;
 			}
 		}
-		$this->failureRecordedFor = null;
+		$this->failuresRecordedFor = [];
 		foreach (\array_unique($keys) as $key) {
 			$this->mapper->delete($key);
 		}

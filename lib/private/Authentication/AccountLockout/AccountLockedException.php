@@ -32,4 +32,22 @@ use OC\User\LoginException;
  * 401 - keep working unchanged.
  */
 class AccountLockedException extends LoginException {
+	/** @var string|null */
+	private $translatedMessage;
+
+	/**
+	 * @param string $message in English, for logs and API responses
+	 * @param string|null $translatedMessage for the login form, see getTranslatedMessage()
+	 */
+	public function __construct($message, $translatedMessage = null) {
+		parent::__construct($message);
+		$this->translatedMessage = $translatedMessage;
+	}
+
+	/**
+	 * @return string the message in the language of the user
+	 */
+	public function getTranslatedMessage() {
+		return $this->translatedMessage ?? $this->getMessage();
+	}
 }

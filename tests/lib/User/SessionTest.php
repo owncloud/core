@@ -465,9 +465,9 @@ class SessionTest extends TestCase {
 			->with('bar')
 			->will($this->throwException(new InvalidTokenException()));
 		$this->accountLockout->expects($this->once())
-			->method('getRemainingLockTime')
+			->method('throwIfLockedOut')
 			->with('foo')
-			->willReturn(300);
+			->willThrowException(new AccountLockedException('locked'));
 
 		// the password must not even be hashed while the account is locked
 		$manager->expects($this->never())
@@ -476,7 +476,6 @@ class SessionTest extends TestCase {
 			->method('recordFailure');
 
 		$this->expectException(AccountLockedException::class);
-		$this->expectExceptionMessage('Too many failed login attempts. This account is temporarily locked. Please try again in 5 minutes.');
 
 		$userSession->login('foo', 'bar');
 	}

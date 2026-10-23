@@ -21,6 +21,7 @@
 
 namespace Test\Authentication\AccountLockout;
 
+use OC\Authentication\AccountLockout\AccountLockedException;
 use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Authentication\AccountLockout\LockoutMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -253,15 +254,43 @@ class AccountLockoutTest extends TestCase {
 		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('ADMIN'));
 	}
 
-	public function testLoginByEmailRetryCountsOnce() {
+	public function testLoginByEmailRetryCountsOncePerKey() {
 		// one request, two attempts: the typed email address and the account it
 		// was resolved to - see Session::logClientIn()
 		$request = $this->newRequest();
 		$request->recordFailure('alice@example.com');
 		$request->recordFailure('alice');
+		$request->recordFailure('ALICE');
 
 		$this->assertSame(1, $this->mapper->find('alice@example.com')['fail_count']);
-		$this->assertNull($this->mapper->find('alice'));
+		$this->assertSame(1, $this->mapper->find('alice')['fail_count']);
+	}
+
+	public function testLoginByEmailSharesTheBudgetOfTheAccount() {
+		$this->badPassword('alice', 3);
+		for ($i = 0; $i < 2; $i++) {
+			$request = $this->newRequest();
+			$request->recordFailure('alice@example.com');
+			$request->recordFailure('alice');
+		}
+
+		// five attempts on alice's password in total, not three plus five
+		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('alice'));
+	}
+
+	public function testThrowIfLockedOut() {
+		$this->newRequest()->throwIfLockedOut('alice');
+
+		$this->badPassword('alice', 5);
+		$this->now += 1;
+		try {
+			$this->newRequest()->throwIfLockedOut('alice');
+			$this->fail('a locked account must be refused');
+		} catch (AccountLockedException $e) {
+			$expected = 'Too many failed login attempts. This account is temporarily locked. Please try again in 10 minutes.';
+			$this->assertSame($expected, $e->getMessage());
+			$this->assertSame($expected, $e->getTranslatedMessage());
+		}
 	}
 
 	public function testSuccessfulLoginByEmailNeverLocksTheAccount() {
