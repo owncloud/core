@@ -21,11 +21,28 @@
 
 namespace OC\Command;
 
+use Laravel\SerializableClosure\SerializableClosure;
+use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use OC\BackgroundJob\QueuedJob;
 
 class ClosureJob extends QueuedJob {
+	/**
+	 * List of classes that are permitted during unserialize().
+	 * Restricting to these prevents PHP Object Injection via arbitrary
+	 * gadget chains while still allowing SerializableClosure to reconstruct
+	 * itself correctly.
+	 */
+	private const ALLOWED_CLASSES = [
+		SerializableClosure::class,
+		UnsignedSerializableClosure::class,
+		\Laravel\SerializableClosure\Serializers\Native::class,
+		\Laravel\SerializableClosure\Serializers\Signed::class,
+		\Laravel\SerializableClosure\Support\ClosureScope::class,
+		\Laravel\SerializableClosure\Support\SelfReference::class,
+	];
+
 	protected function run($serializedCallable) {
-		$serializedClosure = \unserialize($serializedCallable);
+		$serializedClosure = \unserialize($serializedCallable, ['allowed_classes' => self::ALLOWED_CLASSES]);
 		if (\method_exists($serializedClosure, 'getClosure')) {
 			$callable = $serializedClosure->getClosure();
 			if (\is_callable($callable)) {
