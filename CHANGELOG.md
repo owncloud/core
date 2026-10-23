@@ -43,10 +43,20 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Rebuild user certificate bundles when the system bundle changes: [#41909](https://github.com/owncloud/core/pull/41909)
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 
 ## Details
+
+* Bugfix - Rebuild user certificate bundles when the system bundle changes: [#41909](https://github.com/owncloud/core/pull/41909)
+
+   A user's certificate bundle includes the system certificate bundle, but the
+   check for a stale user bundle ignored the system bundle's modification time.
+   After an administrator imported or removed a system certificate, users who had
+   uploaded their own certificates kept using the old bundle.
+
+   https://github.com/owncloud/core/pull/41909
 
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 
