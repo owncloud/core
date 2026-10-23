@@ -3,8 +3,9 @@ Security: Temporarily lock out local accounts after repeated failed logins
 We've added throttling of password authentication for local accounts. Core did
 not limit the number of failed password attempts, so an account with a weak
 password could be brute-forced online without any additional app installed.
-After five failed attempts within 15 minutes an account is now locked for ten
-minutes, and the login form explains when it can be tried again. The lockout
+After five failed attempts, each within 15 minutes of the previous one, an
+account is now locked for ten minutes, and the login form explains when it can
+be tried again. The lockout
 always expires on its own - no administrative unlock is needed and no account is
 ever disabled permanently. A successful login clears the counter immediately.
 Accounts of an external backend such as LDAP/AD are not affected, they are
