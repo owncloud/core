@@ -44,6 +44,7 @@ ownCloud admins and users.
 ## Summary
 
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
+* Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 
 ## Details
 
@@ -69,6 +70,22 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41875
    https://github.com/owncloud/core/pull/41898
+
+* Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
+
+   The bundled CA certificates were replaced with curl's 2026-10-20 extract of the
+   Mozilla root store. This removes emSign ECC Root CA - G3, which anchors eMudhra
+   intermediate CAs whose private keys were compromised.
+
+   The update removes 35 roots in line with the Mozilla store and adds 7. The
+   removed roots include DigiCert Global Root CA, DigiCert Assured ID Root CA,
+   DigiCert High Assurance EV Root CA, the Entrust root CAs, COMODO Certification
+   Authority, QuoVadis Root CA 2 and 3, emSign Root CA - C1 and emSign ECC Root CA
+   - C3. Outgoing HTTPS connections to servers whose certificates chain only to a
+   removed root now fail verification. To keep trusting such a root, import it with
+   `occ security:certificates:import`.
+
+   https://github.com/owncloud/core/pull/41908
 
 # Changelog for ownCloud Core [10.16.6] (2026-10-06)
 
