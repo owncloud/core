@@ -23,6 +23,10 @@ class CertificateManagerTest extends \Test\TestCase {
 	private $certificateManager;
 	/** @var String */
 	private $username;
+	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
+	private $config;
+	/** @var string|false|null system bundle content to restore, false if there was none */
+	private $originalSystemBundle;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -38,11 +42,24 @@ class CertificateManagerTest extends \Test\TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($this->username);
 
-		$config = $this->createMock('OCP\IConfig');
-		$config->expects($this->any())->method('getSystemValue')
+		$this->config = $this->createMock('OCP\IConfig');
+		$this->config->expects($this->any())->method('getSystemValue')
 			->with('installed', false)->willReturn(true);
 
-		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config);
+		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $this->config);
+	}
+
+	protected function tearDown(): void {
+		if ($this->originalSystemBundle !== null) {
+			$view = new \OC\Files\View();
+			$systemBundle = $this->certificateManager->getCertificateBundle(null);
+			if ($this->originalSystemBundle === false) {
+				$view->unlink($systemBundle);
+			} else {
+				$view->file_put_contents($systemBundle, $this->originalSystemBundle);
+			}
+		}
+		parent::tearDown();
 	}
 
 	protected function assertEqualsArrays($expected, $actual) {
@@ -114,5 +131,32 @@ class CertificateManagerTest extends \Test\TestCase {
 
 	public function testGetCertificateBundle() {
 		$this->assertSame('/' . $this->username . '/files_external/rootcerts.crt', $this->certificateManager->getCertificateBundle());
+	}
+
+	public function providesSystemBundleAge() {
+		return [
+			'system bundle newer than user bundle' => [1000, true],
+			'system bundle older than user bundle' => [-1000, false],
+		];
+	}
+
+	/**
+	 * @dataProvider providesSystemBundleAge
+	 */
+	public function testNeedsRebundlingDependsOnSystemBundle($systemOffset, $expected) {
+		$view = new \OC\Files\View();
+		$systemManager = new CertificateManager(null, $view, $this->config);
+		$this->originalSystemBundle = $view->file_exists($systemManager->getCertificateBundle())
+			? $view->file_get_contents($systemManager->getCertificateBundle())
+			: false;
+		$systemManager->createCertificateBundle();
+		$this->certificateManager->createCertificateBundle();
+
+		// both bundles are newer than resources/config/ca-bundle.crt
+		$userMTime = \time() + 10000;
+		$view->touch($this->certificateManager->getCertificateBundle(), $userMTime);
+		$view->touch($systemManager->getCertificateBundle(), $userMTime + $systemOffset);
+
+		$this->assertSame($expected, self::invokePrivate($this->certificateManager, 'needsRebundling'));
 	}
 }
