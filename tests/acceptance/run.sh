@@ -565,9 +565,12 @@ function run_behat_tests() {
 				# FAILED_SCENARIO_PATHS - for example looking for apiComments/comments.feature:9
 				# we want to match lines like:
 				# tests/acceptance/features/apiComments/comments.feature:9
+				# tests/acceptance/features/apiComments/comments.feature:9 (on line 15)
 				# but not lines like::
 				# tests/acceptance/features/apiComments/comments.feature:902
-				echo "${FAILED_SCENARIO_PATHS}" | grep ${SUITE_SCENARIO}$ > /dev/null
+				# Behat can append " (on line N)", the line of the failed step: 3.34 does it
+				# for every failed scenario, while 3.13 printed these paths without it.
+				echo "${FAILED_SCENARIO_PATHS}" | grep -E "${SUITE_SCENARIO}( [(]on line [0-9]+[)])?$" > /dev/null
 				if [ $? -ne 0 ]
 				then
 					echo "Info: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
