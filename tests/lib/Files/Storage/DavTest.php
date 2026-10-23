@@ -192,6 +192,86 @@ class DavTest extends TestCase {
 		new \OC\Files\Storage\DAV($params);
 	}
 
+	/**
+	 * Hosts that must be rejected to prevent SSRF.
+	 */
+	public function ssrfBlockedHostDataProvider() {
+		return [
+			// IPv4 loopback
+			['127.0.0.1'],
+			['127.0.0.1:9200'],
+			// IPv4 link-local (AWS/GCP metadata)
+			['169.254.169.254'],
+			['169.254.169.254/latest/meta-data/'],
+			// Private RFC-1918 ranges
+			['10.0.0.1'],
+			['10.255.255.255'],
+			['172.16.0.1'],
+			['172.31.255.255'],
+			['192.168.0.1'],
+			['192.168.1.100:8080'],
+			// IPv6 loopback
+			['::1'],
+			['[::1]'],
+			['[::1]:8080'],
+			// IPv6 link-local
+			['fe80::1'],
+			['[fe80::1]'],
+			// IPv6 private (ULA)
+			['fc00::1'],
+			['fd00::1'],
+			// localhost by name
+			['localhost'],
+			['localhost:6379'],
+			['localhost.localdomain'],
+			// Scheme-prefixed variants (stripping happens before validation)
+			['http://127.0.0.1'],
+			['https://169.254.169.254'],
+		];
+	}
+
+	/**
+	 * @dataProvider ssrfBlockedHostDataProvider
+	 */
+	public function testSsrfBlockedHostThrows($host) {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessageMatches('/blocked/i');
+
+		new \OC\Files\Storage\DAV([
+			'user'     => 'davuser',
+			'password' => 'davpassword',
+			'host'     => $host,
+		]);
+	}
+
+	/**
+	 * Hosts that must be allowed (public/routable addresses).
+	 */
+	public function ssrfAllowedHostDataProvider() {
+		return [
+			['example.com'],
+			['webdav.example.org'],
+			['webdav.example.org:8080'],
+			['8.8.8.8'],
+			['2001:db8::1'],
+			['[2001:db8::1]'],
+			['[2001:db8::1]:8080'],
+		];
+	}
+
+	/**
+	 * @dataProvider ssrfAllowedHostDataProvider
+	 */
+	public function testSsrfAllowedHostDoesNotThrow($host) {
+		// Should not throw; we don't need a real connection here
+		$instance = new \OC\Files\Storage\DAV([
+			'user'     => 'davuser',
+			'password' => 'davpassword',
+			'host'     => $host,
+		]);
+		$this->assertInstanceOf(\OC\Files\Storage\DAV::class, $instance);
+	}
+
 	private function createClientHttpException($statusCode) {
 		$response = $this->createMock(\Sabre\HTTP\ResponseInterface::class);
 		$response->method('getStatusText')->willReturn('');
