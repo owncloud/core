@@ -57,6 +57,16 @@ class AccountLockoutTest extends TestCase {
 	private $accounts = [
 		'alice' => 'Database',
 		'ldapuser' => 'LDAP',
+		'bob@corp.com' => 'Database',
+		'mallory' => 'Database',
+	];
+
+	/** @var array login name (lower case) => email address */
+	private $emails = [
+		'alice' => 'alice@example.com',
+		'bob@corp.com' => 'bob@example.com',
+		// a user id of somebody else - see testLoginAsAnotherAccountKeepsTheFailedOne()
+		'mallory' => 'bob@corp.com',
 	];
 
 	/** @var string[] keys to clean up */
@@ -67,6 +77,8 @@ class AccountLockoutTest extends TestCase {
 		'ldapuser2',
 		'nosuchuser',
 		'alice@example.com',
+		'bob@corp.com',
+		'mallory',
 	];
 
 	protected function setUp(): void {
@@ -89,6 +101,7 @@ class AccountLockoutTest extends TestCase {
 				$user = $this->createMock(IUser::class);
 				$user->method('getUID')->willReturn($key);
 				$user->method('getBackendClassName')->willReturn($this->accounts[$key]);
+				$user->method('getEMailAddress')->willReturn($this->emails[$key] ?? null);
 				return $user;
 			});
 
@@ -249,6 +262,46 @@ class AccountLockoutTest extends TestCase {
 
 		$this->assertSame(1, $this->mapper->find('alice@example.com')['fail_count']);
 		$this->assertNull($this->mapper->find('alice'));
+	}
+
+	public function testSuccessfulLoginByEmailNeverLocksTheAccount() {
+		// the typed email address always fails against the user id first, the
+		// retry with the resolved account then succeeds in the same request
+		for ($i = 0; $i < 10; $i++) {
+			$request = $this->newRequest();
+			$this->assertSame(0, $request->getRemainingLockTime('alice@example.com'));
+			$request->recordFailure('alice@example.com');
+			$request->clearFailures('alice', 'alice');
+		}
+
+		$this->assertNull($this->mapper->find('alice@example.com'));
+	}
+
+	public function testLoginAsAnotherAccountKeepsTheFailedOne() {
+		$this->badPassword('bob@corp.com', 4);
+
+		// mallory set their email address to bob's user id: the attempt fails
+		// for bob, the email retry then logs mallory in
+		$request = $this->newRequest();
+		$request->recordFailure('bob@corp.com');
+		$request->clearFailures('mallory', 'mallory');
+
+		$this->assertSame(5, $this->mapper->find('bob@corp.com')['fail_count']);
+		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('bob@corp.com'));
+	}
+
+	public function testClearingForgetsTheFailureOfTheRequest() {
+		$this->badPassword('nosuchuser', 4);
+
+		$request = $this->newRequest();
+		$request->recordFailure('alice@example.com');
+		$request->clearFailures('alice', 'alice');
+		// a later clear in the same process - e.g. a user being deleted - must
+		// not reach back to that failure, and later failures count again
+		$request->recordFailure('nosuchuser');
+		$request->clearFailures('mallory', 'mallory');
+
+		$this->assertSame(5, $this->mapper->find('nosuchuser')['fail_count']);
 	}
 
 	public function testConcurrentFailuresDoNotOvershoot() {

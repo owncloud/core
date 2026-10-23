@@ -73,11 +73,12 @@ class AccountLockout {
 	/**
 	 * One HTTP request may attempt the same credentials twice - a login by
 	 * email is retried with the resolved user id, see Session::logClientIn().
-	 * That is one failure, not two.
+	 * That is one failure, not two. And if the retry succeeds, it was no
+	 * failure at all, see clearFailures().
 	 *
-	 * @var bool
+	 * @var string|null the key this request counted a failure for
 	 */
-	private $failureRecorded = false;
+	private $failureRecordedFor = null;
 
 	public function __construct(
 		LockoutMapper $mapper,
@@ -136,15 +137,14 @@ class AccountLockout {
 	 * @param string $login the login name as submitted
 	 */
 	public function recordFailure($login) {
-		if (!$this->isEnabled() || $this->failureRecorded) {
+		if (!$this->isEnabled() || $this->failureRecordedFor !== null) {
 			return;
 		}
 		if (!$this->isTracked($login)) {
 			return;
 		}
-		$this->failureRecorded = true;
-
 		$key = $this->keyFor($login);
+		$this->failureRecordedFor = $key;
 		$now = $this->timeFactory->getTime();
 
 		// Each statement stands on its own, so parallel requests - including
@@ -191,6 +191,20 @@ class AccountLockout {
 		if ($uid !== null) {
 			$keys[] = $this->keyFor($uid);
 		}
+		if ($uid !== null && $this->failureRecordedFor !== null) {
+			// the email address which failed against the user id just before -
+			// but only if it is this account's and not also the user id of
+			// another one, or one account could reset the counter of another
+			$user = $this->userManager->get($uid);
+			$owner = $this->userManager->get($this->failureRecordedFor);
+			if ($user !== null
+				&& $this->keyFor($user->getEMailAddress()) === $this->failureRecordedFor
+				&& ($owner === null || $owner->getUID() === $user->getUID())
+			) {
+				$keys[] = $this->failureRecordedFor;
+			}
+		}
+		$this->failureRecordedFor = null;
 		foreach (\array_unique($keys) as $key) {
 			$this->mapper->delete($key);
 		}
