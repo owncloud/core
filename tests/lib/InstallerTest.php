@@ -92,6 +92,57 @@ class InstallerTest extends TestCase {
 	}
 
 	/**
+	 * Tests that updating with an archive whose top-level directory is not
+	 * named after the app id fails with a clear error message and, crucially,
+	 * does not destroy the already-installed app.
+	 */
+	public function testUpdateWithInvalidArchiveKeepsInstalledApp() {
+		// Install the valid app first
+		$pathOfOldTestApp = __DIR__ . '/../data/testapp.zip';
+		$oldTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
+		\OC_Helper::copyr($pathOfOldTestApp, $oldTmp);
+		$oldData = [
+			'path' => $oldTmp,
+			'source' => 'path',
+			'appdata' => [
+				'id' => 'testapp',
+				'level' => 100,
+			]
+		];
+		Installer::installApp($oldData);
+		$this->assertTrue(Installer::isInstalled(self::$appid));
+		$appPath = \OC_App::getAppPath(self::$appid);
+		$this->assertNotFalse($appPath);
+		$this->assertTrue(\is_dir($appPath));
+
+		// Attempt to update with an invalid archive: its top-level directory is
+		// "wrongname" although info.xml declares the id "testapp".
+		$pathOfInvalidTestApp = __DIR__ . '/../data/testapp_invalid.zip';
+		$invalidTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
+		\OC_Helper::copyr($pathOfInvalidTestApp, $invalidTmp);
+		$invalidData = [
+			'path' => $invalidTmp,
+			'source' => 'path',
+			'appdata' => [
+				'id' => 'testapp',
+				'level' => 100,
+			]
+		];
+
+		$thrown = false;
+		try {
+			Installer::updateApp($invalidData);
+		} catch (\Exception $e) {
+			$thrown = true;
+			$this->assertStringStartsWith('Archive does not contain a directory named', $e->getMessage());
+		}
+		$this->assertTrue($thrown, 'updateApp() should throw for an invalid archive');
+
+		// The previously installed app must still be present and untouched.
+		$this->assertTrue(\is_dir($appPath), 'The installed app directory must not be deleted on invalid update');
+	}
+
+	/**
 	 * Tests that update is installed into writable app dir if the original app dir is not writable
 	 */
 	public function testUpdateIntoWritableAppDir() {
