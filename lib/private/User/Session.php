@@ -35,6 +35,8 @@ namespace OC\User;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Exception;
 use OC;
+use OC\Authentication\AccountLockout\AccountLockedException;
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
@@ -116,6 +118,9 @@ class Session implements IUserSession, Emitter {
 	/** @var EventDispatcher */
 	protected $eventDispatcher;
 
+	/** @var AccountLockout */
+	private $accountLockout;
+
 	/**
 	 * Session constructor.
 	 *
@@ -128,6 +133,7 @@ class Session implements IUserSession, Emitter {
 	 * @param IServiceLoader $serviceLoader
 	 * @param SyncService $userSyncService
 	 * @param EventDispatcher $eventDispatcher
+	 * @param AccountLockout $accountLockout
 	 */
 	public function __construct(
 		IUserManager $manager,
@@ -138,7 +144,8 @@ class Session implements IUserSession, Emitter {
 		ILogger $logger,
 		IServiceLoader $serviceLoader,
 		SyncService $userSyncService,
-		EventDispatcher $eventDispatcher
+		EventDispatcher $eventDispatcher,
+		AccountLockout $accountLockout
 	) {
 		$this->manager = $manager;
 		$this->session = $session;
@@ -149,6 +156,7 @@ class Session implements IUserSession, Emitter {
 		$this->serviceLoader = $serviceLoader;
 		$this->userSyncService = $userSyncService;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->accountLockout = $accountLockout;
 	}
 
 	/**
@@ -516,6 +524,12 @@ class Session implements IUserSession, Emitter {
 				}
 			} catch (PasswordLoginForbiddenException $ex) {
 				// Nothing to do
+			} catch (AccountLockedException $ex) {
+				// The callers of \OC::handleLogin() do not all handle a
+				// LoginException, so report the lockout the same way a wrong
+				// password is reported here. The endpoints which can carry the
+				// explanation - the login form and the DAV backend - do not use
+				// this method.
 			}
 		}
 		return false;
@@ -535,11 +549,17 @@ class Session implements IUserSession, Emitter {
 	 * compatibility.
 	 */
 	private function loginWithPassword($login, $password) {
+		// deliberately ahead of the credential check: a locked out account must
+		// not pay the cost of hashing the password, nor reach an external backend
+		$this->accountLockout->throwIfLockedOut($login);
+
 		$user = $this->manager->checkPassword($login, $password);
 		if ($user === false) {
+			$this->accountLockout->recordFailure($login);
 			$this->emitFailedLogin($login);
 			return false;
 		}
+		$this->accountLockout->clearFailures($login, $user->getUID());
 		return $this->loginInOwnCloud('password', $user, $password);
 	}
 

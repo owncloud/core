@@ -22,6 +22,7 @@
 namespace OC\Core\Controller;
 
 use OC\AppFramework\Http;
+use OC\Authentication\AccountLockout\AccountLockout;
 use OC\Authentication\Token\DefaultTokenProvider;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
@@ -46,19 +47,24 @@ class TokenController extends Controller {
 	/** @var ISecureRandom */
 	private $secureRandom;
 
+	/** @var AccountLockout */
+	private $accountLockout;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param Manager $userManager
 	 * @param DefaultTokenProvider $tokenProvider
 	 * @param ISecureRandom $secureRandom
+	 * @param AccountLockout $accountLockout
 	 */
-	public function __construct($appName, IRequest $request, UserManager $userManager, IProvider $tokenProvider, TwoFactorAuthManager $twoFactorAuthManager, ISecureRandom $secureRandom) {
+	public function __construct($appName, IRequest $request, UserManager $userManager, IProvider $tokenProvider, TwoFactorAuthManager $twoFactorAuthManager, ISecureRandom $secureRandom, AccountLockout $accountLockout) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->tokenProvider = $tokenProvider;
 		$this->secureRandom = $secureRandom;
 		$this->twoFactorAuthManager = $twoFactorAuthManager;
+		$this->accountLockout = $accountLockout;
 	}
 
 	/**
@@ -79,12 +85,23 @@ class TokenController extends Controller {
 			return $response;
 		}
 		$loginName = $user;
-		$user = $this->userManager->checkPassword($loginName, $password);
-		if ($user === false) {
+
+		// this endpoint verifies a password, so it has to respect the lockout as
+		// well - otherwise it stays an unthrottled oracle for the same passwords
+		if ($this->accountLockout->getRemainingLockTime($loginName) > 0) {
 			$response = new JSONResponse();
 			$response->setStatus(Http::STATUS_UNAUTHORIZED);
 			return $response;
 		}
+
+		$user = $this->userManager->checkPassword($loginName, $password);
+		if ($user === false) {
+			$this->accountLockout->recordFailure($loginName);
+			$response = new JSONResponse();
+			$response->setStatus(Http::STATUS_UNAUTHORIZED);
+			return $response;
+		}
+		$this->accountLockout->clearFailures($loginName, $user->getUID());
 
 		if ($this->twoFactorAuthManager->isTwoFactorAuthenticated($user)) {
 			$resp = new JSONResponse();
