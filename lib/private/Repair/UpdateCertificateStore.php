@@ -29,9 +29,9 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 /**
- * Class UpdateCertificateStore rewrites the user specific certificate store after
- * an update has been performed. This is done because a new root certificate file
- * might have been added.
+ * Class UpdateCertificateStore rewrites the system and the user specific certificate
+ * stores after an update has been performed. This is done because the bundled root
+ * certificates might have changed.
  *
  * @package OC\Repair
  */
@@ -59,36 +59,55 @@ class UpdateCertificateStore implements IRepairStep {
 
 	/** {@inheritDoc} */
 	public function getName() {
-		return 'Update user certificate stores with new root certificates';
+		return 'Update certificate stores with new root certificates';
 	}
 
 	/** {@inheritDoc} */
 	public function run(IOutput $out) {
-		$rootView = new View();
-		$dataDirectory = $this->config->getSystemValue('datadirectory', null);
-		if ($dataDirectory === null) {
-			throw new \Exception('No data directory specified');
+		// a stale certificate cache must not abort the upgrade
+		try {
+			$this->updateCertificateStores($out);
+		} catch (\Throwable $e) {
+			$this->warn($out, 'Could not update certificate stores', $e);
 		}
+	}
 
+	private function warn(IOutput $out, $message, \Throwable $e) {
+		$out->warning($message . ': ' . $e->getMessage());
+		$this->server->getLogger()->logException($e, ['app' => 'core']);
+	}
+
+	private function updateCertificateStores(IOutput $out) {
+		$rootView = new View();
 		$pathToRootCerts = '/files_external/rootcerts.crt';
+
+		// Regenerate the system certificate bundle first, the user bundles include it
+		$systemCertificateManager = $this->server->getCertificateManager(null);
+		'@phan-var \OC\Security\CertificateManager $systemCertificateManager';
+		$systemCertificateManager->createCertificateBundle();
 
 		foreach ($rootView->getDirectoryContent('', 'httpd/unix-directory') as $fileInfo) {
 			$uid = \trim($fileInfo->getPath(), '/');
-			if ($rootView->file_exists($uid . $pathToRootCerts)) {
-				// Delete the existing root certificate
-				$rootView->unlink($uid . $pathToRootCerts);
+			try {
+				if ($rootView->file_exists($uid . $pathToRootCerts)) {
+					// Delete the existing root certificate
+					$rootView->unlink($uid . $pathToRootCerts);
 
-				/**
-				 * FIXME: The certificate manager does only allow specifying the user
-				 *        within the constructor. This makes DI impossible.
-				 */
-				// Regenerate the certificates
-				$certificateManager = $this->server->getCertificateManager($uid);
-				// ICertificateManager does not have createCertificateBundle
-				// But CertificateManager has createCertificateBundle
-				// ToDo: sort that out
-				'@phan-var \OC\Security\CertificateManager $certificateManager';
-				$certificateManager->createCertificateBundle();
+					/**
+					 * FIXME: The certificate manager does only allow specifying the user
+					 *        within the constructor. This makes DI impossible.
+					 */
+					// Regenerate the certificates
+					$certificateManager = $this->server->getCertificateManager($uid);
+					// ICertificateManager does not have createCertificateBundle
+					// But CertificateManager has createCertificateBundle
+					// ToDo: sort that out
+					'@phan-var \OC\Security\CertificateManager $certificateManager';
+					$certificateManager->createCertificateBundle();
+				}
+			} catch (\Throwable $e) {
+				// one broken user store must not keep the others stale
+				$this->warn($out, "Could not update the certificate store of $uid", $e);
 			}
 		}
 	}
