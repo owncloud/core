@@ -44,7 +44,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted date string
 	 * @since 8.0.0
 	 */
-	public function formatDate($timestamp, $format = 'long', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null);
+	public function formatDate($timestamp, $format = 'long', ?\DateTimeZone $timeZone = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Formats the date of the given timestamp
@@ -62,7 +62,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted relative date string
 	 * @since 8.0.0
 	 */
-	public function formatDateRelativeDay($timestamp, $format = 'long', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null);
+	public function formatDateRelativeDay($timestamp, $format = 'long', ?\DateTimeZone $timeZone = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Gives the relative date of the timestamp
@@ -78,7 +78,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted date span
 	 * @since 8.0.0
 	 */
-	public function formatDateSpan($timestamp, $baseTimestamp = null, \OCP\IL10N $l = null);
+	public function formatDateSpan($timestamp, $baseTimestamp = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Formats the time of the given timestamp
@@ -95,7 +95,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted time string
 	 * @since 8.0.0
 	 */
-	public function formatTime($timestamp, $format = 'medium', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null);
+	public function formatTime($timestamp, $format = 'medium', ?\DateTimeZone $timeZone = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Gives the relative past time of the timestamp
@@ -113,7 +113,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted time span
 	 * @since 8.0.0
 	 */
-	public function formatTimeSpan($timestamp, $baseTimestamp = null, \OCP\IL10N $l = null);
+	public function formatTimeSpan($timestamp, $baseTimestamp = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Formats the date and time of the given timestamp
@@ -126,7 +126,7 @@ interface IDateTimeFormatter {
 	 * @return string Formatted date and time string
 	 * @since 8.0.0
 	 */
-	public function formatDateTime($timestamp, $formatDate = 'long', $formatTime = 'medium', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null);
+	public function formatDateTime($timestamp, $formatDate = 'long', $formatTime = 'medium', ?\DateTimeZone $timeZone = null, ?\OCP\IL10N $l = null);
 
 	/**
 	 * Formats the date and time of the given timestamp
@@ -140,5 +140,5 @@ interface IDateTimeFormatter {
 	 * @return string Formatted relative date and time string
 	 * @since 8.0.0
 	 */
-	public function formatDateTimeRelativeDay($timestamp, $formatDate = 'long', $formatTime = 'medium', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null);
+	public function formatDateTimeRelativeDay($timestamp, $formatDate = 'long', $formatTime = 'medium', ?\DateTimeZone $timeZone = null, ?\OCP\IL10N $l = null);
 }

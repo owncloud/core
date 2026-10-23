@@ -59,8 +59,8 @@ class Database extends \OC\Group\Backend {
 	 * @param \OCP\IConfig|null $config
 	 */
 	public function __construct(
-		\OCP\IDBConnection $dbConn = null,
-		\OCP\IConfig $config = null
+		?\OCP\IDBConnection $dbConn = null,
+		?\OCP\IConfig $config = null
 	) {
 		$this->dbConn = $dbConn;
 		$this->config = $config;

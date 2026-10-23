@@ -129,7 +129,7 @@ class Manager implements IManager {
 		View $view,
 		IDBConnection $connection,
 		ActivityIManager $activityManager,
-		IUserSession $userSession = null
+		?IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;

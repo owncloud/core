@@ -1,0 +1,16 @@
+Bugfix: Make implicitly nullable parameters explicit for PHP 8.4
+
+PHP 8.4 deprecates implicitly nullable parameter types (`Type $x = null`).
+ownCloud compiles such a declaration in OC\DB\Connection while it is being
+loaded as the DBAL wrapper class; the deprecation is routed to the error
+handler, logging needs the database connection, and DBAL then rejects the
+half-loaded class with "The given 'wrapperClass' OC\DB\Connection has to be a
+subtype of \Doctrine\DBAL\Connection". On PHP 8.4 an instance installs but
+every occ command and web request afterwards fails.
+
+All implicitly nullable parameters are now explicit (`?Type $x = null`, or
+`A|B|null` for union types). Optional parameters that precede a required one
+keep their position but lose the `= null` default, which PHP already treated
+as required, so existing call sites are unaffected.
+
+https://github.com/owncloud/core/pull/41893

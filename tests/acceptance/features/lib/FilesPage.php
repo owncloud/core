@@ -149,7 +149,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function createFolder(
 		Session $session,
-		string  $name = null,
+		?string  $name = null,
 		int $timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
 		bool $useCreateButton = false
 	): string {

@@ -51,7 +51,7 @@ class SearchContext implements Context {
 		string    $user,
 		string  $pattern,
 		?string	  $limit = null,
-		TableNode $properties = null
+		?TableNode $properties = null
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();

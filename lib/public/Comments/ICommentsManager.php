@@ -111,7 +111,7 @@ interface ICommentsManager {
 		$objectId,
 		$limit = 0,
 		$offset = 0,
-		\DateTime $notOlderThan = null
+		?\DateTime $notOlderThan = null
 	);
 
 	/**
@@ -143,7 +143,7 @@ interface ICommentsManager {
 	 * @return Int
 	 * @since 9.0.0
 	 */
-	public function getNumberOfCommentsForObject($objectType, $objectId, \DateTime $notOlderThan = null);
+	public function getNumberOfCommentsForObject($objectType, $objectId, ?\DateTime $notOlderThan = null);
 
 	/**
 	 * creates a new comment and returns it. At this point of time, it is not

@@ -34,7 +34,7 @@ class FileTest extends NodeTest {
 	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage
 	 * @return File
 	 */
-	protected function createTestNode($path, IStorage $storage = null) {
+	protected function createTestNode($path, ?IStorage $storage = null) {
 		if ($storage === null) {
 			$storage = $this->storage;
 		}

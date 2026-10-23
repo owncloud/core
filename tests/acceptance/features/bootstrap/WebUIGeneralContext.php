@@ -363,7 +363,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
 		$count = null,
-		TableNode $table = null
+		?TableNode $table = null
 	):void {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
