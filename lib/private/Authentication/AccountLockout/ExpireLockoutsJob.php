@@ -27,8 +27,10 @@ use OC\BackgroundJob\Job;
 /**
  * Removes failed login counters which are too old to lock anybody out.
  *
- * Purely housekeeping - a lockout expires on its own whether this job runs or
- * not, see AccountLockout.
+ * A lockout expires on its own whether this job runs or not, see AccountLockout.
+ * The job is still required: a counter is otherwise only removed by a successful
+ * login, which never happens for login names an attacker merely guessed, so
+ * without it the table would keep a row for every name ever tried.
  */
 class ExpireLockoutsJob extends Job {
 	protected function run($argument) {

@@ -290,6 +290,11 @@ $CONFIG = [
  *
  * The lockout always expires on its own, no administrative action is needed, and
  * a successful login resets the counter immediately.
+ *
+ * Note that anybody who knows a user name can keep that account locked by
+ * repeatedly submitting wrong passwords for it. This is inherent to any lockout;
+ * where it matters more than online password guessing, shorten
+ * `account_lockout.duration` or disable the lockout.
  */
 'account_lockout.enabled' => true,
 
@@ -306,6 +311,11 @@ $CONFIG = [
 /**
  * Seconds of inactivity after which the counter of failed attempts is forgotten,
  * so that occasional typos spread over a long time never add up to a lockout.
+ *
+ * The window restarts with every failure rather than sliding over a fixed
+ * period: failures less than this far apart keep adding up, however long the
+ * whole series takes. With the defaults, five failures twelve minutes apart lock
+ * the account at the fifth.
  */
 'account_lockout.attempt_window' => 900,
 
