@@ -1,0 +1,9 @@
+Bugfix: Keep the VERSION file of google/auth
+
+The google/auth library reads its VERSION file for every Google API request.
+The file was removed when the composer packages were cleaned, so every
+request of a Google Drive external storage logged an error that the file
+could not be opened. The file is kept now.
+
+https://github.com/owncloud/core/issues/41917
+https://github.com/owncloud/core/pull/41918
