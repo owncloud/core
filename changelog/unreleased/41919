@@ -1,0 +1,10 @@
+Bugfix: Remove log errors for unset Google Drive time fields
+
+Google Drive returns no time for a file the user never opened in Drive. The
+Google Drive external storage passed this to strtotime(), which is deprecated
+since PHP 8.1 and logged an error for every such file whenever a folder was
+listed. Unset times are now handled without the deprecation, the file
+information stays the same.
+
+https://github.com/owncloud/core/issues/41917
+https://github.com/owncloud/core/pull/41919
