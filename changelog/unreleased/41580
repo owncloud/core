@@ -1,0 +1,9 @@
+Security: Enforce minimum search length server-side in sharees endpoint
+
+The admin-configured minimum search length was only enforced client-side
+and in the remote search path. The user and group search paths only
+blocked empty strings, allowing a single-character query to bypass the
+configured limit and enumerate users. The missing server-side guard has
+been added to both paths.
+
+https://github.com/owncloud/core/pull/41580
