@@ -43,11 +43,30 @@ ownCloud admins and users.
 
 ## Summary
 
+* Security - Temporarily lock out local accounts after repeated failed logins: [#41805](https://github.com/owncloud/core/pull/41805)
 * Bugfix - Rebuild user certificate bundles when the system bundle changes: [#41909](https://github.com/owncloud/core/pull/41909)
+* Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
+* Bugfix - Remove log errors for unset Google Drive time fields: [#41917](https://github.com/owncloud/core/issues/41917)
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 
 ## Details
+
+* Security - Temporarily lock out local accounts after repeated failed logins: [#41805](https://github.com/owncloud/core/pull/41805)
+
+   We've added throttling of password authentication for local accounts. Core did
+   not limit the number of failed password attempts, so an account with a weak
+   password could be brute-forced online without any additional app installed.
+   After five failed attempts, each within 15 minutes of the previous one, an
+   account is now locked for ten minutes, and the login form explains when it can
+   be tried again. The lockout always expires on its own - no administrative unlock
+   is needed and no account is ever disabled permanently. A successful login clears
+   the counter immediately. Accounts of an external backend such as LDAP/AD are not
+   affected, they are throttled by their identity provider. The thresholds can be
+   adjusted with the new `account_lockout.*` config parameters.
+
+   https://github.com/owncloud/core/pull/41805
+   https://doc.owncloud.com/server/next/admin_manual/configuration/server/config_sample_php_parameters.html
 
 * Bugfix - Rebuild user certificate bundles when the system bundle changes: [#41909](https://github.com/owncloud/core/pull/41909)
 
@@ -58,29 +77,67 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41909
 
+* Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
+
+   The google/auth library reads its VERSION file for every Google API request. The
+   file was removed when the composer packages were cleaned, so every request of a
+   Google Drive external storage logged an error that the file could not be opened.
+   The file is kept now.
+
+   https://github.com/owncloud/core/issues/41917
+   https://github.com/owncloud/core/pull/41918
+
+* Bugfix - Remove log errors for unset Google Drive time fields: [#41917](https://github.com/owncloud/core/issues/41917)
+
+   Google Drive returns no time for a file the user never opened in Drive. The
+   Google Drive external storage passed this to strtotime(), which is deprecated
+   since PHP 8.1 and logged an error for every such file whenever a folder was
+   listed. Unset times are now handled without the deprecation, the file
+   information stays the same.
+
+   https://github.com/owncloud/core/issues/41917
+   https://github.com/owncloud/core/pull/41919
+
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 
    The following have been updated:
 
    * composer/semver (3.5.0 to 3.5.2)
 
+   * doctrine/lexer (3.0.2 to 3.0.3)
+
    * firebase/php-jwt (v7.2.0 to v7.2.1)
 
    * google/apiclient (v2.20.0 to v2.20.1)
 
-   * google/apiclient-services (v0.460.0 to v0.461.0)
+   * google/apiclient-services (v0.460.0 to v0.465.0)
 
-   * google/auth (v1.55.0 to v1.55.1)
+   * google/auth (v1.55.0 to v1.55.2)
+
+   * guzzlehttp/guzzle (7.15.5 to 7.16.1)
+
+   * guzzlehttp/promises (2.5.3 to 2.6.0)
+
+   * guzzlehttp/psr7 (2.13.1 to 2.13.2)
 
    * monolog/monolog (3.12.0 to 3.12.1)
 
    * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+   * symfony/console (v7.4.19 to v7.4.21)
+
+   * symfony/process (v7.4.19 to v7.4.21)
+
+   * symfony/routing (v7.4.18 to v7.4.21)
+
+   * symfony/string (v7.4.19 to v7.4.21)
 
    * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
 
    https://github.com/owncloud/core/pull/41875
    https://github.com/owncloud/core/pull/41898
    https://github.com/owncloud/core/pull/41921
+   https://github.com/owncloud/core/pull/41926
 
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 
