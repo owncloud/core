@@ -253,7 +253,9 @@ class AccountLockout {
 	 * Takes any login name, as locked out names need not belong to an account.
 	 * When it resolves to one - by user id, or by an email address of exactly
 	 * one account - the user id and the email address of that account are
-	 * released too, as both are separate login names of the same account.
+	 * released too, as both are separate login names of the same account. The
+	 * email address is not when it is also the user id of another account:
+	 * that one has to be unlocked by its own user id.
 	 *
 	 * Works whether the lockout is enabled or not, so that disabling it is no
 	 * prerequisite and enabling it again does not bring an old lockout back.
@@ -278,7 +280,7 @@ class AccountLockout {
 			$email = (string)$user->getEMailAddress();
 			// not if the email address is also the user id of another account,
 			// see clearFailures()
-			$owner = $email === '' ? null : $this->userManager->get($email);
+			$owner = $email === '' ? null : $this->userManager->get($this->keyFor($email));
 			if ($email !== '' && ($owner === null || $owner->getUID() === $user->getUID())) {
 				$keys[] = $this->keyFor($email);
 			}
