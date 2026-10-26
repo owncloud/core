@@ -18,9 +18,11 @@ on:
 permissions:
   contents: read
 
+# Only pull request runs cancel each other: a push to the default branch and
+# the weekly run share a ref, and neither should cancel the other.
 concurrency:
   group: zizmor-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   zizmor:
