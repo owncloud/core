@@ -47,8 +47,47 @@ updates:
           - minor
           - patch
 
+  # npm for the 10.16 release branch. Major updates are ignored: 10.16's
+  # karma/jasmine test stack is pinned and only takes non-breaking updates.
+  - package-ecosystem: npm
+    directory: "/build"
+    target-branch: "10.16"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
   - package-ecosystem: github-actions
     directory: "/"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+      timezone: Etc/UTC
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # The 10.16 release branch has its own workflows with their own pinned SHAs.
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: "10.16"
     schedule:
       interval: weekly
       day: sunday
