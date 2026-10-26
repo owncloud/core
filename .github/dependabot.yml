@@ -47,8 +47,8 @@ updates:
           - minor
           - patch
 
-  # npm for the 10.16 release branch. Major updates are ignored: 10.16's
-  # karma/jasmine test stack is pinned and only takes non-breaking updates.
+  # npm for the 10.16 release branch. Major updates are ignored: 10.16 is a
+  # maintenance branch, and its CI runs no JS unit tests to catch a breaking bump.
   - package-ecosystem: npm
     directory: "/build"
     target-branch: "10.16"
