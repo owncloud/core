@@ -380,6 +380,29 @@ class AccountLockoutTest extends TestCase {
 		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('nosuchuser'));
 	}
 
+	public function testUnlockKeepsTheLockoutOfAnotherAccount() {
+		// mallory's email address is bob's user id
+		$this->badPassword('bob@corp.com', 5);
+
+		$this->assertSame(0, $this->newRequest()->unlock('mallory'));
+
+		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('bob@corp.com'));
+	}
+
+	public function testUnlockIgnoresSurroundingWhitespace() {
+		$this->badPassword('alice', 5);
+
+		$this->assertSame(1, $this->newRequest()->unlock(' alice@example.com '));
+
+		$this->assertNull($this->mapper->find('alice'));
+	}
+
+	public function testUnlockOfAnEmptyLoginNameRemovesNothing() {
+		$this->userManager->expects($this->never())->method('getByEmail');
+
+		$this->assertSame(0, $this->newRequest()->unlock(' '));
+	}
+
 	public function testUnlockWithoutLockoutRemovesNothing() {
 		$this->assertSame(0, $this->newRequest()->unlock('alice'));
 	}
