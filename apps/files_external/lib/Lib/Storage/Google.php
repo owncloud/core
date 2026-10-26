@@ -306,6 +306,24 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		return $this->getGoogleDocExtension($file->getMimeType()) !== '';
 	}
 
+	/**
+	 * Converts a Drive time field (RFC 3339) to a unix timestamp
+	 *
+	 * Drive returns null for a time that is not set, e.g. viewedByMeTime of a
+	 * file the user never opened in Drive. strtotime(null) returns false as
+	 * well but is deprecated since PHP 8.1 and logs an error on every stat.
+	 *
+	 * @param string|null $time
+	 *
+	 * @return int|false unix timestamp, false if the time is not set or invalid
+	 */
+	private static function toTimestamp(?string $time) {
+		if ($time === null) {
+			return false;
+		}
+		return \strtotime($time);
+	}
+
 	public function mkdir($path) {
 		if (!$this->is_dir($path)) {
 			$parentFolder = $this->getDriveFile(\dirname($path));
@@ -414,9 +432,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			} else {
 				$stat['size'] = $file->getSize();
 			}
-			$stat['atime'] = \strtotime($file->getViewedByMeTime());
-			$stat['mtime'] = \strtotime($file->getModifiedTime());
-			$stat['ctime'] = \strtotime($file->getCreatedTime());
+			$stat['atime'] = self::toTimestamp($file->getViewedByMeTime());
+			$stat['mtime'] = self::toTimestamp($file->getModifiedTime());
+			$stat['ctime'] = self::toTimestamp($file->getCreatedTime());
 			return $stat;
 		} else {
 			return false;
@@ -770,7 +788,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			}
 
 			foreach ($children->getFiles() as $child) {
-				$childMTime = \strtotime($child->getModifiedTime());
+				$childMTime = self::toTimestamp($child->getModifiedTime());
 				if ($childMTime > $time) {
 					// a child has changed since that time, no need to keep on going
 					return true;
