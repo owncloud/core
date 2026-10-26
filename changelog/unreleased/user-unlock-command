@@ -1,0 +1,8 @@
+Enhancement: Add occ user:unlock to lift an account lockout
+
+Accounts which are temporarily locked after repeated failed logins can now be
+unlocked before the lockout expires with `occ user:unlock <login>`. The command
+takes a username or an email address and also resets the counter of failed
+attempts.
+
+https://doc.owncloud.com/server/next/admin_manual/configuration/server/occ_command.html

@@ -247,6 +247,43 @@ class AccountLockout {
 	}
 
 	/**
+	 * Lift a lockout before it expires - for an administrator, see `occ user:unlock`.
+	 *
+	 * Takes any login name, as locked out names need not belong to an account.
+	 * When it resolves to one - by user id, or by an email address of exactly
+	 * one account - the user id and the email address of that account are
+	 * released too, as both are separate login names of the same account.
+	 *
+	 * Works whether the lockout is enabled or not, so that disabling it is no
+	 * prerequisite and enabling it again does not bring an old lockout back.
+	 *
+	 * @param string $login
+	 * @return int number of login names which had failures counted
+	 */
+	public function unlock($login) {
+		$keys = [$this->keyFor($login)];
+
+		$user = $this->userManager->get($login);
+		if ($user === null) {
+			$users = $this->userManager->getByEmail($login);
+			$user = \count($users) === 1 ? $users[0] : null;
+		}
+		if ($user !== null) {
+			$keys[] = $this->keyFor($user->getUID());
+			$email = $user->getEMailAddress();
+			if ($email !== null && $email !== '') {
+				$keys[] = $this->keyFor($email);
+			}
+		}
+
+		$removed = 0;
+		foreach (\array_unique($keys) as $key) {
+			$removed += $this->mapper->delete($key);
+		}
+		return $removed;
+	}
+
+	/**
 	 * Housekeeping: forget counters which can no longer lock anybody out.
 	 *
 	 * @return int number of rows removed

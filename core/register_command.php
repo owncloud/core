@@ -179,6 +179,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->addCommand(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->addCommand(new OC\Core\Command\User\Modify(\OC::$server->getUserManager(), \OC::$server->getMailer()));
 	$application->addCommand(new OC\Core\Command\User\MoveHome(\OC::$server->getUserManager()));
+	$application->addCommand(new OC\Core\Command\User\Unlock(\OC::$server->query(\OC\Authentication\AccountLockout\AccountLockout::class)));
 	$application->addCommand(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
 
 	$application->addCommand(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));
