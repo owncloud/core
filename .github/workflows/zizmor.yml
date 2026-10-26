@@ -1,0 +1,28 @@
+name: Zizmor
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  schedule:
+    # Weekly: online audits (known-vulnerable actions, impostor commits) can
+    # start failing without a code change.
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zizmor:
+    name: Zizmor
+    uses: owncloud/reusable-workflows/.github/workflows/zizmor.yml@main
