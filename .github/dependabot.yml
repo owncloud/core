@@ -47,6 +47,10 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      # bowser >= 2.12 has no "version" in its package.json, so yarn cannot
+      # install it from git and every update job fails on it.
+      - dependency-name: "@bower_components/bowser"
     groups:
       minor-and-patch:
         update-types:
@@ -70,6 +74,8 @@ updates:
       - dependency-name: "*"
         update-types:
           - version-update:semver-major
+      # See the master entry above; the semver-major rule does not catch it.
+      - dependency-name: "@bower_components/bowser"
     groups:
       minor-and-patch:
         update-types:
