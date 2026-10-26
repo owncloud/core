@@ -167,7 +167,7 @@ class AccountLockoutTest extends TestCase {
 
 		// the correct password is refused as well, that is the point
 		$this->assertSame(
-			AccountLockout::DEFAULT_DURATION,
+			600,
 			$this->newRequest()->getRemainingLockTime('alice')
 		);
 	}
@@ -176,7 +176,7 @@ class AccountLockoutTest extends TestCase {
 		$this->badPassword('alice', 5);
 		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('alice'));
 
-		$this->now += AccountLockout::DEFAULT_DURATION;
+		$this->now += 600;
 
 		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('alice'));
 	}
@@ -184,7 +184,7 @@ class AccountLockoutTest extends TestCase {
 	public function testCounterDecaysAfterTheAttemptWindow() {
 		$this->badPassword('alice', 4);
 
-		$this->now += AccountLockout::DEFAULT_ATTEMPT_WINDOW + 1;
+		$this->now += 900 + 1;
 
 		// the 5th failure overall, but the first one within the window
 		$this->badPassword('alice');
@@ -194,7 +194,7 @@ class AccountLockoutTest extends TestCase {
 	}
 
 	public function testDisabledDoesNotEvenWrite() {
-		$this->systemValues[AccountLockout::CONFIG_ENABLED] = false;
+		$this->systemValues['account_lockout.enabled'] = false;
 
 		$this->badPassword('alice', 10);
 
@@ -203,8 +203,8 @@ class AccountLockoutTest extends TestCase {
 	}
 
 	public function testConfiguredThresholdAndDurationAreUsed() {
-		$this->systemValues[AccountLockout::CONFIG_MAX_ATTEMPTS] = 2;
-		$this->systemValues[AccountLockout::CONFIG_DURATION] = 60;
+		$this->systemValues['account_lockout.max_attempts'] = 2;
+		$this->systemValues['account_lockout.duration'] = 60;
 
 		$this->badPassword('alice');
 		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('alice'));
@@ -340,7 +340,7 @@ class AccountLockoutTest extends TestCase {
 		$row = $this->mapper->find('alice');
 		$this->assertSame(7, $row['fail_count'], 'no count may be lost');
 		$this->assertSame(
-			$this->now + AccountLockout::DEFAULT_DURATION,
+			$this->now + 600,
 			$row['locked_until'],
 			'the lockout starts once and is not extended by the failures which followed'
 		);
@@ -349,12 +349,12 @@ class AccountLockoutTest extends TestCase {
 	public function testExpireStaleKeepsRunningLockouts() {
 		// a lockout outliving the attempt window is the only way its row can be
 		// both stale and still in effect
-		$this->systemValues[AccountLockout::CONFIG_DURATION] = 3600;
+		$this->systemValues['account_lockout.duration'] = 3600;
 
 		$this->badPassword('alice', 5);
 		$this->badPassword('nosuchuser', 1);
 
-		$this->now += AccountLockout::DEFAULT_ATTEMPT_WINDOW + 1;
+		$this->now += 900 + 1;
 		$this->newRequest()->expireStale();
 
 		// alice is still locked, so her row has to survive

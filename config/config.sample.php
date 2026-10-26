@@ -305,6 +305,9 @@ $CONFIG = [
 
 /**
  * How long an account stays locked, in seconds.
+ *
+ * There is no command to unlock an account early - a locked out user has to
+ * wait for the lockout to expire. Keep this short, at most 1800 (30 minutes).
  */
 'account_lockout.duration' => 600,
 

@@ -170,12 +170,13 @@ class LockoutMapper {
 	 * Forget all failures of a key.
 	 *
 	 * @param string $uid the normalised lockout key
+	 * @return int number of rows removed, 0 if there was nothing to forget
 	 */
 	public function delete($uid) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete(self::TABLE)
 			->where($qb->expr()->eq('uid', $qb->createNamedParameter($uid)));
-		$this->executeStatement($qb);
+		return $this->executeStatement($qb);
 	}
 
 	/**

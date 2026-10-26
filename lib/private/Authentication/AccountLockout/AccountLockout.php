@@ -42,14 +42,14 @@ use OCP\IUserManager;
  * response would tell an attacker which user names exist.
  */
 class AccountLockout {
-	public const CONFIG_ENABLED = 'account_lockout.enabled';
-	public const CONFIG_MAX_ATTEMPTS = 'account_lockout.max_attempts';
-	public const CONFIG_DURATION = 'account_lockout.duration';
-	public const CONFIG_ATTEMPT_WINDOW = 'account_lockout.attempt_window';
+	private const CONFIG_ENABLED = 'account_lockout.enabled';
+	private const CONFIG_MAX_ATTEMPTS = 'account_lockout.max_attempts';
+	private const CONFIG_DURATION = 'account_lockout.duration';
+	private const CONFIG_ATTEMPT_WINDOW = 'account_lockout.attempt_window';
 
-	public const DEFAULT_MAX_ATTEMPTS = 5;
-	public const DEFAULT_DURATION = 600;
-	public const DEFAULT_ATTEMPT_WINDOW = 900;
+	private const DEFAULT_MAX_ATTEMPTS = 5;
+	private const DEFAULT_DURATION = 600;
+	private const DEFAULT_ATTEMPT_WINDOW = 900;
 
 	/**
 	 * The name reported by the built in user backend, lib/private/User/Database.php.
