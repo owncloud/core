@@ -120,6 +120,9 @@
             "bin-links": false
         },
         "cleaner-ignore": {
+            "google/auth": [
+                "VERSION"
+            ],
             "phpunit/phpunit": true
         },
         "google/apiclient-services": [
