@@ -7,6 +7,8 @@ updates:
       day: sunday
       time: '22:00'
       timezone: Etc/UTC
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
@@ -26,6 +28,8 @@ updates:
       day: sunday
       time: '22:00'
       timezone: Etc/UTC
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
@@ -40,6 +44,8 @@ updates:
       day: sunday
       time: '22:00'
       timezone: Etc/UTC
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
@@ -57,6 +63,8 @@ updates:
       day: sunday
       time: '22:00'
       timezone: Etc/UTC
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     ignore:
       - dependency-name: "*"
