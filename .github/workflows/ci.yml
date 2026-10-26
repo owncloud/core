@@ -24,11 +24,11 @@ jobs:
 
   js-unit:
     name: JavaScript Unit
-    uses: ./.github/workflows/js-unit.yml
+    uses: $/.github/workflows/js-unit.yml
 
   php-unit:
     name: PHP Unit
-    uses: ./.github/workflows/php-unit.yml
+    uses: $/.github/workflows/php-unit.yml
     with:
       php-versions: '["8.3"]'
 
@@ -36,7 +36,7 @@ jobs:
     # Same display name as php-unit so both appear in one group of checks. It
     # stays a separate job because the acceptance jobs must not need Oracle.
     name: PHP Unit
-    uses: ./.github/workflows/php-unit.yml
+    uses: $/.github/workflows/php-unit.yml
     with:
       php-versions: '["8.3"]'
       databases: '["oracle:23"]'
@@ -47,6 +47,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Validate changelog entries
         uses: actionhippie/calens@2008d3a7a90cf05a2a001a3d47cac06cb1b74617 # v1.14.2
@@ -55,7 +57,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
     name: API Smoke Tests
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       server-folder: 'server'
@@ -74,7 +76,7 @@ jobs:
     # There is no full-ci variant on S3, so this runs on every PR.
     name: API Smoke Tests on S3
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       server-folder: 'server'
@@ -94,7 +96,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: API Tests
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       server-folder: 'server'
@@ -127,7 +129,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: API Tests Notifications
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       server-folder: 'server'
@@ -138,7 +140,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: API Tests Previews
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       additional-packages: 'imagemagick'
@@ -149,7 +151,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: API Tests Federation
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-api-tests: true
       server-folder: 'server'
@@ -160,7 +162,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, 'full-ci') }}
     name: CLI Smoke Tests
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
       use-email-server: true
@@ -171,7 +173,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: CLI Tests
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
       server-folder: 'server'
@@ -181,7 +183,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'full-ci')
     name: CLI Tests with Email
     needs: [semantic-git-messages, php-unit, calens]
-    uses: ./.github/workflows/acceptance.yml
+    uses: $/.github/workflows/acceptance.yml
     with:
       do-cli-tests: true
       use-email-server: true

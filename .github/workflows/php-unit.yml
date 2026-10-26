@@ -26,7 +26,7 @@ jobs:
 
     services:
       mysql:
-        image: >-
+        image: >- # zizmor: ignore[unpinned-images] the tag comes from the caller's databases input
           ${{ case(startsWith(matrix.database,'mysql:') || startsWith(matrix.database,'mariadb:'), matrix.database, '') }}
         env:
           MYSQL_ROOT_PASSWORD: password
@@ -41,7 +41,7 @@ jobs:
         ports:
           - 3306:3306
       postgres:
-        image: ${{ case(startsWith(matrix.database,'postgres:'), matrix.database, '') }}
+        image: ${{ case(startsWith(matrix.database,'postgres:'), matrix.database, '') }} # zizmor: ignore[unpinned-images] the tag comes from the caller's databases input
         env:
           POSTGRES_DB: owncloud
           POSTGRES_USER: owncloud
@@ -52,7 +52,7 @@ jobs:
         # Oracle Database Free 23ai. The APP_USER schema is created inside the
         # FREEPDB1 pluggable database, so a connect string using SERVICE_NAME is
         # required - a plain host plus database name would target the CDB root.
-        image: >-
+        image: >- # zizmor: ignore[unpinned-images] tag-pinned; a digest would also freeze Oracle's security patches
           ${{ case(startsWith(matrix.database,'oracle:'), 'gvenzl/oracle-free:23-slim-faststart', '') }}
         env:
           ORACLE_PASSWORD: owncloud
@@ -71,9 +71,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: owncloud/core
+          persist-credentials: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2.40.0
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, gd, json, xml, zip, imagick${{ case(startsWith(matrix.database,'oracle:'), ', oci8', '') }}

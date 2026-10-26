@@ -1,0 +1,30 @@
+name: Zizmor
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  schedule:
+    # Weekly: online audits (known-vulnerable actions, impostor commits) can
+    # start failing without a code change.
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Only pull request runs cancel each other: a push to the default branch and
+# the weekly run share a ref, and neither should cancel the other.
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  zizmor:
+    name: Zizmor
+    uses: owncloud/reusable-workflows/.github/workflows/zizmor.yml@main

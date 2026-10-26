@@ -16,7 +16,7 @@ concurrency:
 jobs:
   php-unit-oracle:
     name: PHP Unit Oracle
-    uses: ./.github/workflows/php-unit.yml
+    uses: $/.github/workflows/php-unit.yml
     with:
       php-versions: '["8.3"]'
       databases: '["oracle:23"]'
