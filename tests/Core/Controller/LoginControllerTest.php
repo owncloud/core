@@ -22,6 +22,7 @@
 
 namespace Tests\Core\Controller;
 
+use OC\Authentication\AccountLockout\AccountLockedException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Core\Controller\LoginController;
 use OC\User\Session;
@@ -584,6 +585,31 @@ class LoginControllerTest extends TestCase {
 
 		$expected = new RedirectResponse($loginPageUrl);
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, '/foo'));
+	}
+
+	public function testLoginWithLockedOutAccount() {
+		$user = 'unknown';
+		$loginPageUrl = 'some url';
+		$message = 'Zu viele fehlgeschlagene Anmeldeversuche.';
+
+		$this->userSession->expects($this->once())
+			->method('login')
+			->will($this->throwException(new AccountLockedException('Too many failed login attempts.', $message)));
+		// the lockout must be explained, in the language of the user, instead of
+		// being reported as a wrong password
+		$this->session->expects($this->once())
+			->method('set')
+			->with('loginMessages', [[], [$message]]);
+		// no retry by email address - the account is locked, not misspelled
+		$this->userManager->expects($this->never())
+			->method('getByEmail');
+		$this->urlGenerator->expects($this->once())
+			->method('linkToRoute')
+			->with('core.login.showLoginForm', ['user' => $user])
+			->will($this->returnValue($loginPageUrl));
+
+		$expected = new RedirectResponse($loginPageUrl);
+		$this->assertEquals($expected, $this->loginController->tryLogin($user, 'secret', null));
 	}
 
 	public function testLoginWithValidCredentials() {
