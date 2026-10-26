@@ -4,20 +4,37 @@ The following have been updated:
 
  * composer/semver (3.5.0 to 3.5.2)
 
+ * doctrine/lexer (3.0.2 to 3.0.3)
+
  * firebase/php-jwt (v7.2.0 to v7.2.1)
 
  * google/apiclient (v2.20.0 to v2.20.1)
 
- * google/apiclient-services (v0.460.0 to v0.461.0)
+ * google/apiclient-services (v0.460.0 to v0.465.0)
 
- * google/auth (v1.55.0 to v1.55.1)
+ * google/auth (v1.55.0 to v1.55.2)
+
+ * guzzlehttp/guzzle (7.15.5 to 7.16.1)
+
+ * guzzlehttp/promises (2.5.3 to 2.6.0)
+
+ * guzzlehttp/psr7 (2.13.1 to 2.13.2)
 
  * monolog/monolog (3.12.0 to 3.12.1)
 
  * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+
+ * symfony/console (v7.4.19 to v7.4.21)
+
+ * symfony/process (v7.4.19 to v7.4.21)
+
+ * symfony/routing (v7.4.18 to v7.4.21)
+
+ * symfony/string (v7.4.19 to v7.4.21)
 
  * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
 
 https://github.com/owncloud/core/pull/41875
 https://github.com/owncloud/core/pull/41898
 https://github.com/owncloud/core/pull/41921
+https://github.com/owncloud/core/pull/41926
