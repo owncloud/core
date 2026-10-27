@@ -1,0 +1,10 @@
+Bugfix: Regenerate certificate bundles on upgrade
+
+Outgoing HTTPS requests use a cached certificate bundle in the data
+directory, which was only rebuilt when the bundled CA certificates had a
+newer modification time. Deployments that preserve or normalise file
+timestamps kept trusting root certificates that an update had removed. The
+system certificate bundle and the user certificate bundles found in the data
+directory are now regenerated during occ upgrade and occ maintenance:repair.
+
+https://github.com/owncloud/core/pull/41910
