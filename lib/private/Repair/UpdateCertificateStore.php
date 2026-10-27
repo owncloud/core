@@ -84,7 +84,7 @@ class UpdateCertificateStore implements IRepairStep {
 		// Regenerate the system certificate bundle first, the user bundles include it
 		$systemCertificateManager = $this->server->getCertificateManager(null);
 		'@phan-var \OC\Security\CertificateManager $systemCertificateManager';
-		$systemCertificateManager->createCertificateBundle();
+		$this->createCertificateBundle($rootView, $systemCertificateManager, $pathToRootCerts);
 
 		foreach ($rootView->getDirectoryContent('', 'httpd/unix-directory') as $fileInfo) {
 			$uid = \trim($fileInfo->getPath(), '/');
@@ -103,12 +103,28 @@ class UpdateCertificateStore implements IRepairStep {
 					// But CertificateManager has createCertificateBundle
 					// ToDo: sort that out
 					'@phan-var \OC\Security\CertificateManager $certificateManager';
-					$certificateManager->createCertificateBundle();
+					$this->createCertificateBundle($rootView, $certificateManager, $uid . $pathToRootCerts);
 				}
 			} catch (\Throwable $e) {
 				// one broken user store must not keep the others stale
 				$this->warn($out, "Could not update the certificate store of $uid", $e);
 			}
+		}
+	}
+
+	/**
+	 * A bundle is written in place, so a failed write leaves a truncated bundle whose
+	 * fresh mtime keeps it from ever being rebuilt. Remove it instead, a missing
+	 * bundle is regenerated on its next use.
+	 */
+	private function createCertificateBundle(View $view, \OC\Security\CertificateManager $certificateManager, $bundle) {
+		try {
+			$certificateManager->createCertificateBundle();
+		} catch (\Throwable $e) {
+			if ($view->file_exists($bundle)) {
+				$view->unlink($bundle);
+			}
+			throw $e;
 		}
 	}
 }

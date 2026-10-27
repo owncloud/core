@@ -94,4 +94,23 @@ class UpdateCertificateStoreTest extends TestCase {
 			$bundle
 		);
 	}
+
+	public function testRunRemovesPartialSystemBundle() {
+		$this->view->mkdir(\dirname($this->systemBundle));
+		$certificateManager = $this->createMock(\OC\Security\CertificateManager::class);
+		$certificateManager->method('createCertificateBundle')->willReturnCallback(function () {
+			$this->view->file_put_contents($this->systemBundle, 'partial');
+			throw new \Exception('disk full');
+		});
+		$server = $this->createMock(\OC\Server::class);
+		$server->method('getCertificateManager')->willReturnCallback(function ($uid) use ($certificateManager) {
+			return $uid === null ? $certificateManager : $this->createMock(\OC\Security\CertificateManager::class);
+		});
+		$server->method('getLogger')->willReturn($this->createMock(\OCP\ILogger::class));
+
+		$repair = new UpdateCertificateStore($server, \OC::$server->getConfig());
+		$repair->run($this->createMock(IOutput::class));
+
+		$this->assertFalse($this->view->file_exists($this->systemBundle));
+	}
 }
