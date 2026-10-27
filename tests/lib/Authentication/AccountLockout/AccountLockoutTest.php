@@ -105,6 +105,11 @@ class AccountLockoutTest extends TestCase {
 				$user->method('getEMailAddress')->willReturn($this->emails[$key] ?? null);
 				return $user;
 			});
+		$this->userManager->method('getByEmail')
+			->willReturnCallback(function ($email) {
+				$uids = \array_keys($this->emails, \strtolower($email), true);
+				return \array_map([$this->userManager, 'get'], $uids);
+			});
 
 		$this->clearRows();
 	}
@@ -344,6 +349,72 @@ class AccountLockoutTest extends TestCase {
 			$row['locked_until'],
 			'the lockout starts once and is not extended by the failures which followed'
 		);
+	}
+
+	public function testUnlockReleasesTheUserIdAndTheEmailAddress() {
+		$this->badPassword('alice', 5);
+		$this->badPassword('alice@example.com', 5);
+
+		$this->assertSame(2, $this->newRequest()->unlock('Alice'));
+
+		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('alice'));
+		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('alice@example.com'));
+		$this->assertNull($this->mapper->find('alice'));
+		$this->assertNull($this->mapper->find('alice@example.com'));
+	}
+
+	public function testUnlockByEmailAddressReleasesTheAccount() {
+		$this->badPassword('alice', 5);
+
+		$this->assertSame(1, $this->newRequest()->unlock('alice@example.com'));
+
+		$this->assertNull($this->mapper->find('alice'));
+	}
+
+	public function testUnlockReleasesALoginNameWithoutAccount() {
+		// e.g. an LDAP login name which is not the user id of its account
+		$this->badPassword('nosuchuser', 5);
+
+		$this->assertSame(1, $this->newRequest()->unlock('nosuchuser'));
+
+		$this->assertSame(0, $this->newRequest()->getRemainingLockTime('nosuchuser'));
+	}
+
+	public function testUnlockKeepsTheLockoutOfAnotherAccount() {
+		// mallory's email address is bob's user id
+		$this->badPassword('bob@corp.com', 5);
+
+		$this->assertSame(0, $this->newRequest()->unlock('mallory'));
+
+		$this->assertGreaterThan(0, $this->newRequest()->getRemainingLockTime('bob@corp.com'));
+	}
+
+	public function testUnlockIgnoresSurroundingWhitespace() {
+		$this->badPassword('alice', 5);
+
+		$this->assertSame(1, $this->newRequest()->unlock(' alice@example.com '));
+
+		$this->assertNull($this->mapper->find('alice'));
+	}
+
+	public function testUnlockOfAnEmptyLoginNameRemovesNothing() {
+		$this->userManager->expects($this->never())->method('getByEmail');
+
+		$this->assertSame(0, $this->newRequest()->unlock(' '));
+	}
+
+	public function testUnlockWithoutLockoutRemovesNothing() {
+		$this->assertSame(0, $this->newRequest()->unlock('alice'));
+	}
+
+	public function testUnlockWorksWhileTheLockoutIsDisabled() {
+		$this->badPassword('alice', 5);
+		// otherwise the account would be locked again once the lockout is enabled
+		$this->systemValues['account_lockout.enabled'] = false;
+
+		$this->assertSame(1, $this->newRequest()->unlock('alice'));
+
+		$this->assertNull($this->mapper->find('alice'));
 	}
 
 	public function testExpireStaleKeepsRunningLockouts() {

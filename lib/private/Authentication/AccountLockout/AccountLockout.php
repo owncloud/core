@@ -30,8 +30,9 @@ use OCP\IUserManager;
 /**
  * Temporary lockout of local accounts after too many failed password attempts.
  *
- * The lockout always expires on its own - there is no administrative unlock and
- * no permanent disabling of an account.
+ * The lockout always expires on its own - no administrative action is needed,
+ * though an administrator can lift it early with `occ user:unlock`, and an
+ * account is never disabled permanently.
  *
  * Accounts served by an external backend (LDAP/AD, OIDC, ...) are not tracked:
  * the identity provider enforces its own policy and counting the same attempt
@@ -244,6 +245,52 @@ class AccountLockout {
 		foreach (\array_unique($keys) as $key) {
 			$this->mapper->delete($key);
 		}
+	}
+
+	/**
+	 * Lift a lockout before it expires - for an administrator, see `occ user:unlock`.
+	 *
+	 * Takes any login name, as locked out names need not belong to an account.
+	 * When it resolves to one - by user id, or by an email address of exactly
+	 * one account - the user id and the email address of that account are
+	 * released too, as both are separate login names of the same account. The
+	 * email address is not when it is also the user id of another account:
+	 * that one has to be unlocked by its own user id.
+	 *
+	 * Works whether the lockout is enabled or not, so that disabling it is no
+	 * prerequisite and enabling it again does not bring an old lockout back.
+	 *
+	 * @param string $login
+	 * @return int number of login names which had failures counted
+	 */
+	public function unlock($login) {
+		$login = \trim((string)$login);
+		if ($login === '') {
+			return 0;
+		}
+		$keys = [$this->keyFor($login)];
+
+		$user = $this->userManager->get($login);
+		if ($user === null) {
+			$users = $this->userManager->getByEmail($login);
+			$user = \count($users) === 1 ? $users[0] : null;
+		}
+		if ($user !== null) {
+			$keys[] = $this->keyFor($user->getUID());
+			$email = (string)$user->getEMailAddress();
+			// not if the email address is also the user id of another account,
+			// see clearFailures()
+			$owner = $email === '' ? null : $this->userManager->get($this->keyFor($email));
+			if ($email !== '' && ($owner === null || $owner->getUID() === $user->getUID())) {
+				$keys[] = $this->keyFor($email);
+			}
+		}
+
+		$removed = 0;
+		foreach (\array_unique($keys) as $key) {
+			$removed += $this->mapper->delete($key);
+		}
+		return $removed;
 	}
 
 	/**
