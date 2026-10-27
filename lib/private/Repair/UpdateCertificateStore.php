@@ -113,9 +113,10 @@ class UpdateCertificateStore implements IRepairStep {
 	}
 
 	/**
-	 * A bundle is written in place, so a failed write leaves a truncated bundle whose
-	 * fresh mtime keeps it from ever being rebuilt. Remove it instead, a missing
-	 * bundle is regenerated on its next use.
+	 * A bundle is written in place, so a regeneration that throws part-way leaves a
+	 * truncated bundle whose fresh mtime keeps it from ever being rebuilt. Remove it
+	 * instead, a missing bundle is regenerated on its next use. A write that fails
+	 * without throwing, such as \fwrite() on a full disk, is not caught here.
 	 */
 	private function createCertificateBundle(View $view, \OC\Security\CertificateManager $certificateManager, $bundle) {
 		try {
