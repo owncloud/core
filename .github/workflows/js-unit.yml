@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  js-unit:
+    name: JavaScript Unit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone owncloud/core
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: build/yarn.lock
+
+      - name: Enable yarn
+        run: corepack enable
+
+      - name: Install Firefox
+        run: |
+          sudo add-apt-repository ppa:mozillateam/ppa -y
+          printf 'Package: *\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 1001\n' \
+            | sudo tee /etc/apt/preferences.d/mozilla-firefox
+          sudo apt-get update -qq
+          sudo apt-get install -y firefox
+
+      - name: Run JavaScript tests
+        run: make test-js
