@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Целевата папка вече не съществува",
     "The file {file} is currently locked, please try again later" : "Файлът {file} в момента е заключен, моля, опитайте отново по-късно",
     "Not enough free space" : "Няма достатъчно свободно пространство",
+    "Failed to upload the file \"{fileName}\": {error}" : "Качването на файла \"{fileName}\" е неуспешно: {error}",
     "Uploading..." : "Качване...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} от {totalSize} ({bitrate})",

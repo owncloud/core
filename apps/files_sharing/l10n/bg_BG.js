@@ -4,6 +4,7 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Споделянето между сървърите не е разрешено на този сървър",
     "The mountpoint name contains invalid characters." : "Името на точката за монтиране съдържа невалидни символи.",
     "Not allowed to create a federated share with the same user server" : "Не е разрешено създаването на федеративно споделяне със същия потребителски сървър",
+    "Remote is unreachable" : "Отдалеченият ресурс е недостъпен",
     "Could not authenticate to federated share, password might be wrong" : "Невъзможно удостоверяване за федеративно споделяне, паролата може да е грешна",
     "Storage not valid" : "Невалидно хранилище",
     "Couldn't add federated share" : "Невъзможно е да се добави федеративно споделяне",
@@ -151,6 +152,7 @@ OC.L10N.register(
     "Nothing to configure." : "Няма нищо за конфигуриране.",
     "Group Sharing Blacklist" : "Черен списък на групи за споделяне",
     "Exclude groups from receiving shares" : "Групи изключени от получаването на споделяния",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Тези групи няма да бъдат налични за споделяне. Членовете на групата не са ограничени в инициирането на споделяния, или получаването на лични споделяния/покани. Въпреки това, те могат както обикновено да получават споделяния, адресирани до други групи, в които членуват.",
     "Only certain groups are allowed to create public links" : "Само на определени групи е разрешено да създават публични връзки"
 },
 "nplurals=2; plural=(n != 1);");
