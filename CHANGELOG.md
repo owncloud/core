@@ -45,10 +45,12 @@ ownCloud admins and users.
 
 * Security - Temporarily lock out local accounts after repeated failed logins: [#41805](https://github.com/owncloud/core/pull/41805)
 * Bugfix - Rebuild user certificate bundles when the system bundle changes: [#41909](https://github.com/owncloud/core/pull/41909)
+* Bugfix - Regenerate certificate bundles on upgrade: [#41910](https://github.com/owncloud/core/pull/41910)
 * Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
 * Bugfix - Remove log errors for unset Google Drive time fields: [#41917](https://github.com/owncloud/core/issues/41917)
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
+* Enhancement - Add occ user:unlock to lift an account lockout: [#41936](https://github.com/owncloud/core/pull/41936)
 
 ## Details
 
@@ -76,6 +78,17 @@ ownCloud admins and users.
    uploaded their own certificates kept using the old bundle.
 
    https://github.com/owncloud/core/pull/41909
+
+* Bugfix - Regenerate certificate bundles on upgrade: [#41910](https://github.com/owncloud/core/pull/41910)
+
+   Outgoing HTTPS requests use a cached certificate bundle in the data directory,
+   which was only rebuilt when the bundled CA certificates had a newer modification
+   time. Deployments that preserve or normalise file timestamps kept trusting root
+   certificates that an update had removed. The system certificate bundle and the
+   user certificate bundles found in the data directory are now regenerated during
+   occ upgrade and occ maintenance:repair.
+
+   https://github.com/owncloud/core/pull/41910
 
 * Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
 
@@ -154,6 +167,16 @@ ownCloud admins and users.
    `occ security:certificates:import`.
 
    https://github.com/owncloud/core/pull/41908
+
+* Enhancement - Add occ user:unlock to lift an account lockout: [#41936](https://github.com/owncloud/core/pull/41936)
+
+   Accounts which are temporarily locked after repeated failed logins can now be
+   unlocked before the lockout expires with `occ user:unlock <login>`. The command
+   takes a username or an email address and also resets the counter of failed
+   attempts.
+
+   https://github.com/owncloud/core/pull/41936
+   https://doc.owncloud.com/server/next/admin_manual/configuration/server/occ_command.html
 
 # Changelog for ownCloud Core [10.16.6] (2026-10-06)
 
