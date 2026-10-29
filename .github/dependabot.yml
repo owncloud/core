@@ -57,8 +57,10 @@ updates:
           - minor
           - patch
 
-  # npm for the 10.16 release branch. Major updates are ignored: 10.16 is a
-  # maintenance branch, and its CI runs no JS unit tests to catch a breaking bump.
+  # npm for the 10.16 release branch. Version updates are paused: 10.16 stays on
+  # its current versions and only takes patches that fix a CVE, applied by hand.
+  # Dependabot cannot do that for a target-branch, because security updates
+  # always go to the default branch.
   - package-ecosystem: npm
     directory: "/build"
     target-branch: "10.16"
@@ -69,7 +71,7 @@ updates:
       timezone: Etc/UTC
     cooldown:
       default-days: 7
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 0
     ignore:
       - dependency-name: "*"
         update-types:
