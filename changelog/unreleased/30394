@@ -1,0 +1,11 @@
+Bugfix: Show original file owner in the reshare panel
+
+The share panel's reshare banner showed only the direct sharer of a
+reshare, not the original file owner, even though the OCS reshare response
+already carried the file-owner fields. We've surfaced those fields so the
+panel now shows "Shared with you by {sharer} (on behalf of {fileOwner})"
+(and the group-share equivalent) when the file owner differs from the direct
+sharer. When they match or the owner is absent, the previous wording is kept.
+
+https://github.com/owncloud/core/issues/30394
+https://github.com/owncloud/core/pull/41640

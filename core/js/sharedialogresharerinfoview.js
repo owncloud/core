@@ -72,22 +72,52 @@
 
 			var reshareTemplate = this.template();
 			var ownerDisplayName = this.model.getReshareOwnerDisplayname();
+			var fileOwner = this.model.getReshareFileOwner();
+			var fileOwnerDisplayName = this.model.getReshareFileOwnerDisplayname();
+			// Only mention the original file owner when it is known and
+			// differs from the direct sharer. Otherwise keep the previous
+			// single-owner wording to avoid a regression.
+			var hasDistinctFileOwner = !_.isUndefined(fileOwner)
+				&& fileOwner !== this.model.getReshareOwner();
 			var sharedByText = '';
 			if (this.model.getReshareType() === OC.Share.SHARE_TYPE_GROUP) {
-				sharedByText = t(
-					'core',
-					'Shared with you and the group {group} by {owner}',
-					{
-						group: this.model.getReshareWithDisplayName(),
-						owner: ownerDisplayName
-					}
-				);
+				if (hasDistinctFileOwner) {
+					sharedByText = t(
+						'core',
+						'Shared with you and the group {group} by {owner} (on behalf of {fileOwner})',
+						{
+							group: this.model.getReshareWithDisplayName(),
+							owner: ownerDisplayName,
+							fileOwner: fileOwnerDisplayName
+						}
+					);
+				} else {
+					sharedByText = t(
+						'core',
+						'Shared with you and the group {group} by {owner}',
+						{
+							group: this.model.getReshareWithDisplayName(),
+							owner: ownerDisplayName
+						}
+					);
+				}
 			}  else {
-				sharedByText = t(
-					'core',
-					'Shared with you by {owner}',
-					{ owner: ownerDisplayName }
-				);
+				if (hasDistinctFileOwner) {
+					sharedByText = t(
+						'core',
+						'Shared with you by {owner} (on behalf of {fileOwner})',
+						{
+							owner: ownerDisplayName,
+							fileOwner: fileOwnerDisplayName
+						}
+					);
+				} else {
+					sharedByText = t(
+						'core',
+						'Shared with you by {owner}',
+						{ owner: ownerDisplayName }
+					);
+				}
 			}
 
 			this.$el.html(reshareTemplate({
