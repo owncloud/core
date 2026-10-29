@@ -2,6 +2,32 @@ Change: Update PHP dependencies
 
 The following have been updated:
 
- * composer/semver (3.5.0 to 3.5.1)
+ * composer/semver (3.5.0 to 3.6.0)
+
+ * doctrine/deprecations (1.1.5 to 1.1.6)
+
+ * guzzlehttp/guzzle (7.15.5 to 7.16.1)
+
+ * guzzlehttp/promises (2.5.3 to 2.6.0)
+
+ * guzzlehttp/psr7 (2.13.1 to 2.13.2)
+
+ * league/mime-type-detection (1.16.0 to 1.17.0)
+
+ * phpunit/phpunit (9.6.35 to 9.6.38)
+
+ * rhukster/dom-sanitizer (1.0.19 to 1.0.20)
+
+ * sebastian/exporter (4.0.8 to 4.0.9)
+
+ * sebastian/recursion-context (4.0.6 to 4.0.7)
+
+ * symfony/console (v5.4.47 to v5.4.55)
+
+ * symfony/process (v5.4.51 to v5.4.54)
+
+ * symfony/routing (v5.4.53 to v5.4.55)
+
 
  https://github.com/owncloud/core/pull/41902
+ https://github.com/owncloud/core/pull/41951
