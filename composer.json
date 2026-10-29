@@ -9,7 +9,8 @@
     "config" : {
         "audit": {
             "ignore": {
-                "PKSA-w9tt-7782-78jx": "low-severity filename control-character check bypass in league/flysystem; ownCloud Classic already rejects filenames with control-characters."
+                "PKSA-w9tt-7782-78jx": "low-severity filename control-character check bypass in league/flysystem; ownCloud Classic already rejects filenames with control-characters.",
+                "PKSA-y2cr-5h3j-g3ys": "firebase/php-jwt can allow short key lengths that result in weak encryption. The patched version requires PHP 8, so is not available for ownCloud Classic 10"
             }
         },
         "vendor-dir": "lib/composer",
