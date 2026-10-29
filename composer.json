@@ -7,6 +7,12 @@
         { "type": "vcs", "url": "https://github.com/DeepDiver1975/SMB" }
     ],
     "config" : {
+        "audit": {
+            "ignore": {
+                "PKSA-w9tt-7782-78jx": "low-severity filename control-character check bypass in league/flysystem; ownCloud Classic already rejects filenames with control-characters.",
+                "PKSA-y2cr-5h3j-g3ys": "firebase/php-jwt can allow short key lengths that result in weak encryption. The patched version requires PHP 8, so is not available for ownCloud Classic 10"
+            }
+        },
         "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
         "classmap-authoritative": false,
@@ -44,8 +50,7 @@
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest"
+        "phpunit/phpunit": "^9.6"
     },
     "require": {
         "php": ">=7.4",
