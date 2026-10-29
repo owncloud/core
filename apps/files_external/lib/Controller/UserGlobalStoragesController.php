@@ -179,6 +179,24 @@ class UserGlobalStoragesController extends StoragesController {
 				],
 				Http::STATUS_NOT_FOUND
 			);
+		} catch (\InvalidArgumentException $e) {
+			// The auth mechanism rejected the submitted credentials (e.g. an
+			// empty username or password): a client error, not a server error.
+			return new DataResponse(
+				[
+					'message' => (string)$this->l10n->t('Invalid credentials: %s', [$e->getMessage()])
+				],
+				Http::STATUS_BAD_REQUEST
+			);
+		} catch (InsufficientDataForMeaningfulAnswerException $e) {
+			// Nothing usable was saved for this user, so the storage cannot be
+			// prepared: report it instead of failing with a server error.
+			return new DataResponse(
+				[
+					'message' => (string)$this->l10n->t('Insufficient data: %s', [$e->getMessage()])
+				],
+				Http::STATUS_BAD_REQUEST
+			);
 		}
 
 		$this->updateStorageStatus($storage, $testOnly);
