@@ -9,4 +9,4 @@ usable data (InsufficientDataForMeaningfulAnswerException), the request ended in
 storage settings could not show the user what was wrong. Both cases now return
 HTTP 400 with the reason.
 
-https://github.com/owncloud/core/pull/TBD
+https://github.com/owncloud/core/pull/41949
