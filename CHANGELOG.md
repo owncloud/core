@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Bugfix - Regenerate certificate bundles on upgrade: [#41910](https://github.com/owncloud/core/pull/41910)
 * Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
 * Bugfix - Remove log errors for unset Google Drive time fields: [#41917](https://github.com/owncloud/core/issues/41917)
+* Bugfix - Do not append the system certificate bundle to itself: [#41956](https://github.com/owncloud/core/pull/41956)
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 * Enhancement - Add occ user:unlock to lift an account lockout: [#41936](https://github.com/owncloud/core/pull/41936)
@@ -110,6 +111,16 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41917
    https://github.com/owncloud/core/pull/41919
+
+* Bugfix - Do not append the system certificate bundle to itself: [#41956](https://github.com/owncloud/core/pull/41956)
+
+   Regenerating the system certificate bundle appended the bundle file that was
+   being rewritten. On local storage the bundled CA certificates ended up in it
+   twice. On object storage the previous bundle was read back, so root certificates
+   that an update had removed were still trusted, and the bundle grew with every
+   regeneration.
+
+   https://github.com/owncloud/core/pull/41956
 
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 
