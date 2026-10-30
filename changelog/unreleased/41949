@@ -1,0 +1,12 @@
+Bugfix: Return 400 instead of 500 when user-provided storage credentials are rejected
+
+The files_external endpoint that saves a user's own credentials for an admin-defined
+mount (PUT /apps/files_external/userglobalstorages/{id}) only handled "storage not
+found". When the authentication mechanism rejected the submitted values (for example
+an empty username or password, raised as InvalidArgumentException) or was left without
+usable data (InsufficientDataForMeaningfulAnswerException), the request ended in a
+500 server error without a message, so the Files credentials dialog and the personal
+storage settings could not show the user what was wrong. Both cases now return
+HTTP 400 with the reason.
+
+https://github.com/owncloud/core/pull/41949
