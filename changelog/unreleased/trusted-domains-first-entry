@@ -1,0 +1,10 @@
+Bugfix: Fall back to the first trusted domain whatever its array key
+
+When a request arrived with an untrusted Host header, ownCloud fell back to
+`$trusted_domains[0]`. After entries were removed from config.php the list can
+look like `[2 => 'cloud.example.com']`; index 0 then did not exist, the server
+host became null (with an "Undefined array key 0" warning) and the request
+failed further down. The first configured entry is now used regardless of its
+key.
+
+https://github.com/owncloud/core/pull/41894
