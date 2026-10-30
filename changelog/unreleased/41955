@@ -1,0 +1,10 @@
+Bugfix: Always verify the signature of installed app packages
+
+We've changed the installer to verify the signature of every app package it
+installs or updates, also when the package ships no signature. Where code
+signing is enforced, an unsigned app is now only installed when it is listed
+in `integrity.ignore.missing.app.signature`. An app archive must contain
+exactly one app folder, named after the app id in its info.xml, and the app id
+must be a valid one.
+
+https://github.com/owncloud/core/pull/41955
