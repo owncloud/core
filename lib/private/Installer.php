@@ -39,6 +39,7 @@
 namespace OC;
 
 use Doctrine\DBAL\Exception\TableExistsException;
+use OC\App\InfoParser;
 use OC\DB\MigrationService;
 use OC_App;
 use OC_Helper;
@@ -86,11 +87,15 @@ class Installer {
 
 		list($extractDir, $path) = self::downloadApp($data);
 
-		$info = self::checkAppsIntegrity($data, $extractDir, $path);
+		list($info, $appDir, $integrityResult) = self::verifyAppPackage($data, $extractDir, $path);
 		$appId = OC_App::cleanAppId($info['id']);
 		$appsFolder = OC_App::getInstallPath();
 
 		if ($appsFolder === null || !\is_writable($appsFolder)) {
+			OC_Helper::rmdirr($extractDir);
+			if ($data['source']=='http') {
+				\unlink($path);
+			}
 			throw new \Exception('Apps folder is not writable');
 		}
 		$basedir = "$appsFolder/$appId";
@@ -104,6 +109,10 @@ class Installer {
 		}
 
 		if (!empty($data['pretend'])) {
+			OC_Helper::rmdirr($extractDir);
+			if ($data['source']=='http') {
+				\unlink($path);
+			}
 			return false;
 		}
 
@@ -116,12 +125,9 @@ class Installer {
 			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", [$basedir]));
 		}
 
-		$extractDir .= '/' . $info['id'];
-		if (!\file_exists($extractDir)) {
-			OC_Helper::rmdirr($basedir);
-			throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
-		}
-		OC_Helper::copyr($extractDir, $basedir);
+		// copy exactly the folder that was verified
+		OC_Helper::copyr($appDir, $basedir);
+		self::storeVerificationResult($info['id'], $appDir, $integrityResult);
 
 		//remove temporary files
 		OC_Helper::rmdirr($extractDir);
@@ -214,11 +220,16 @@ class Installer {
 	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
 	public static function updateApp($info= [], $isShipped=false) {
-		list($extractDir, $path) = self::downloadApp($info);
-		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
+		$data = $info;
+		list($extractDir, $path) = self::downloadApp($data);
+		list($info, $appDir, $integrityResult) = self::verifyAppPackage($data, $extractDir, $path, $isShipped);
 
 		$currentDir = OC_App::getAppPath($info['id']);
 		if ($currentDir !== false && \is_dir("$currentDir/.git")) {
+			OC_Helper::rmdirr($extractDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
 			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
 		}
 
@@ -234,13 +245,9 @@ class Installer {
 			OC_Helper::rmdirr($basedir);
 		}
 
-		$appInExtractDir = $extractDir;
-		if (\substr($extractDir, -1) !== '/') {
-			$appInExtractDir .= '/';
-		}
-
-		$appInExtractDir .= $info['id'];
-		OC_Helper::copyr($appInExtractDir, $basedir);
+		// copy exactly the folder that was verified
+		OC_Helper::copyr($appDir, $basedir);
+		self::storeVerificationResult($info['id'], $appDir, $integrityResult);
 		OC_Helper::rmdirr($extractDir);
 
 		return OC_App::updateApp($info['id']);
@@ -311,8 +318,27 @@ class Installer {
 	 * @throws \Exception
 	 */
 	public static function checkAppsIntegrity($data, $extractDir, $path, $isShipped = false) {
+		list($info) = self::verifyAppPackage($data, $extractDir, $path, $isShipped);
+		return $info;
+	}
+
+	/**
+	 * Verify an extracted app package. The integrity result is not stored, so
+	 * a rejected package cannot change the stored state of an installed app
+	 * with the same id; the caller stores it once the app is in place.
+	 *
+	 * @param array $data
+	 * @param string $extractDir
+	 * @param string $path
+	 * @param bool $isShipped
+	 * @return array [info.xml data, path of the verified app folder, integrity result]
+	 * @throws \Exception
+	 */
+	private static function verifyAppPackage($data, $extractDir, $path, $isShipped = false) {
 		$l = \OC::$server->getL10N('lib');
 		//load the info.xml file of the app
+		$archiveDir = $extractDir;
+		$appFolder = null;
 		if (!\is_file($extractDir.'/appinfo/info.xml')) {
 			//try to find it in a subdir
 			$dh=\opendir($extractDir);
@@ -320,10 +346,22 @@ class Installer {
 				while (($folder = \readdir($dh)) !== false) {
 					if ($folder[0]!='.' and \is_dir($extractDir.'/'.$folder)) {
 						if (\is_file($extractDir.'/'.$folder.'/appinfo/info.xml')) {
-							$extractDir.='/'.$folder;
+							if ($appFolder !== null) {
+								\closedir($dh);
+								OC_Helper::rmdirr($archiveDir);
+								if ($data['source'] === 'http') {
+									\unlink($path);
+								}
+								throw new \Exception($l->t('Archive contains more than one app'));
+							}
+							$appFolder = $folder;
 						}
 					}
 				}
+				\closedir($dh);
+			}
+			if ($appFolder !== null) {
+				$extractDir.='/'.$appFolder;
 			}
 		}
 		if (!\is_file($extractDir.'/appinfo/info.xml')) {
@@ -334,45 +372,62 @@ class Installer {
 			throw new \Exception($l->t("App does not provide an info.xml file"));
 		}
 
-		$info = OC_App::getAppInfo($extractDir.'/appinfo/info.xml', true);
+		// Parse without the app info cache, which would hand the package's
+		// info.xml to every request asking for the app id it declares.
+		try {
+			$info = OC_App::parseAppInfo((new InfoParser())->parse($extractDir.'/appinfo/info.xml'));
+		} catch (\InvalidArgumentException $e) {
+			$info = null;
+		}
 		if (!\is_array($info)) {
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
 			throw new \Exception($l->t('App cannot be installed because appinfo file cannot be read.'));
 		}
-
-		// We can't trust the parsed info.xml file as it may have been tampered
-		// with by an attacker and thus we need to use the local data to check
-		// whether the application needs to be signed.
-		if (\file_exists("$extractDir/appinfo/signature.json")) {
-			\OC::$server->getConfig()->setAppValue($info['id'], 'signed', 'true');
-			$integrityResult = \OC::$server->getIntegrityCodeChecker()
-				->verifyAppSignature(
-					$info['id'],
-					$extractDir
-				);
-			// A valid but expired, pre-sunset legacy (G1) app verifies with the
-			// single 'LEGACY_ACCEPTED_WARN' marker (spec §8 "warn + allow"). That is
-			// a pass-with-warning, not a failure, so it must not block the install.
-			$isLegacyWarnOnly = \array_key_exists('LEGACY_ACCEPTED_WARN', $integrityResult)
-				&& \count($integrityResult) === 1;
-			if ($integrityResult !== [] && !$isLegacyWarnOnly) {
-				$e = new \Exception(
-					$l->t(
-						'Signature could not get checked. Please contact the app developer and check your admin screen.'
-					)
-				);
-				throw $e;
+		if (empty($info['id'])) {
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
 			}
+			throw new \Exception($l->t("App does not provide an id in its info.xml file"));
+		}
+		// The id names both the install folder and the app's config rows, so it
+		// must be canonical and left alone by cleanAppId().
+		if (!OC_App::isCanonicalAppId($info['id']) || OC_App::cleanAppId($info['id']) !== $info['id']) {
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
+			throw new \Exception($l->t("App does not provide a valid id in its info.xml file"));
+		}
+		// The caller installs the folder named after the app id, so that must be
+		// the folder whose signature gets verified below. This also rejects an
+		// info.xml at the archive root.
+		if ($appFolder !== $info['id']) {
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
+			throw new \Exception($l->t("Archive does not contain a directory named %s", [$info['id']]));
 		}
 
 		// check if the app is compatible with this version of ownCloud
 		if (!OC_App::isAppCompatible(\OCP\Util::getVersion(), $info)) {
-			OC_Helper::rmdirr($extractDir);
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
 			throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud"));
 		}
 
 		// check if shipped tag is set which is only allowed for apps that are shipped with ownCloud
 		if (!$isShipped && isset($info['shipped']) && ($info['shipped']=='true')) {
-			OC_Helper::rmdirr($extractDir);
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
 			throw new \Exception($l->t("App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps"));
 		}
 
@@ -380,11 +435,60 @@ class Installer {
 		$version = \trim($info['version']);
 
 		if (isset($data['appdata']['version']) && $version<>\trim($data['appdata']['version'])) {
-			OC_Helper::rmdirr($extractDir);
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
 			throw new \Exception($l->t("App can't be installed because the version in info.xml is not the same as the version reported from the app store"));
 		}
 
-		return $info;
+		// Verify every package: a missing signature.json must not skip the check.
+		// Unsigned apps are only accepted if listed in
+		// 'integrity.ignore.missing.app.signature'.
+		$integrityResult = \OC::$server->getIntegrityCodeChecker()
+			->verifyAppSignature(
+				$info['id'],
+				$extractDir,
+				false,
+				false
+			);
+		// A valid but expired, pre-sunset legacy (G1) app verifies with the
+		// single 'LEGACY_ACCEPTED_WARN' marker (spec §8 "warn + allow"). That is
+		// a pass-with-warning, not a failure, so it must not block the install.
+		$isLegacyWarnOnly = \array_key_exists('LEGACY_ACCEPTED_WARN', $integrityResult)
+			&& \count($integrityResult) === 1;
+		if ($integrityResult !== [] && !$isLegacyWarnOnly) {
+			OC_Helper::rmdirr($archiveDir);
+			if ($data['source'] === 'http') {
+				\unlink($path);
+			}
+			throw new \Exception(
+				$l->t(
+					'Signature could not get checked. Please contact the app developer and check your admin screen.'
+				)
+			);
+		}
+
+		return [$info, $extractDir, $integrityResult];
+	}
+
+	/**
+	 * Store what verifyAppPackage() found, once the verified app is in place.
+	 *
+	 * @param string $appId
+	 * @param string $appDir the verified app folder
+	 * @param array $integrityResult
+	 */
+	private static function storeVerificationResult($appId, $appDir, array $integrityResult) {
+		// We can't trust the parsed info.xml file as it may have been tampered
+		// with by an attacker and thus we need to use the local data to check
+		// whether the application needs to be signed.
+		if (\file_exists("$appDir/appinfo/signature.json")) {
+			\OC::$server->getConfig()->setAppValue($appId, 'signed', 'true');
+		} else {
+			\OC::$server->getConfig()->deleteAppValue($appId, 'signed');
+		}
+		\OC::$server->getIntegrityCodeChecker()->storeAppResult($appId, $integrityResult);
 	}
 
 	/**

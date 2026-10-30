@@ -150,8 +150,14 @@ interface IAppManager {
 	 * Read and validate info.xml from a local app package
 	 * Returns the app information from "appinfo/info.xml".
 	 *
+	 * The package is validated like an install: it must contain exactly one
+	 * app folder named after the app id, and its signature must verify (an
+	 * unsigned app is only accepted if it is listed in
+	 * 'integrity.ignore.missing.app.signature').
+	 *
 	 * @param string $path package location
 	 * @return string[] app info
+	 * @throws \Exception if the package fails validation
 	 * @since 10.0
 	 */
 	public function readAppPackage($path);
