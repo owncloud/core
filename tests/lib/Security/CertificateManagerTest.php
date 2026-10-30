@@ -159,4 +159,37 @@ class CertificateManagerTest extends \Test\TestCase {
 
 		$this->assertSame($expected, self::invokePrivate($this->certificateManager, 'needsRebundling'));
 	}
+
+	public function testCreateSystemBundleDoesNotIncludeItself() {
+		$view = new \OC\Files\View();
+		$systemManager = new CertificateManager(null, $view, $this->config);
+		$systemBundle = $systemManager->getCertificateBundle();
+		$this->originalSystemBundle = $view->file_exists($systemBundle)
+			? $view->file_get_contents($systemBundle)
+			: false;
+		$view->mkdir(\dirname($systemBundle));
+		$view->file_put_contents($systemBundle, 'stale');
+
+		$systemManager->createCertificateBundle();
+
+		$bundle = $view->file_get_contents($systemBundle);
+		$defaultCertificates = \file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+		$this->assertStringNotContainsString('stale', $bundle);
+		$this->assertSame(1, \substr_count($bundle, $defaultCertificates));
+	}
+
+	public function testCreateUserBundleIncludesSystemBundle() {
+		$view = new \OC\Files\View();
+		$systemManager = new CertificateManager(null, $view, $this->config);
+		$systemBundle = $systemManager->getCertificateBundle();
+		$this->originalSystemBundle = $view->file_exists($systemBundle)
+			? $view->file_get_contents($systemBundle)
+			: false;
+		$view->mkdir(\dirname($systemBundle));
+		$view->file_put_contents($systemBundle, 'system');
+
+		$this->certificateManager->createCertificateBundle();
+
+		$this->assertStringEndsWith('system', $view->file_get_contents($this->certificateManager->getCertificateBundle()));
+	}
 }

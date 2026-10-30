@@ -1,0 +1,9 @@
+Bugfix: Do not append the system certificate bundle to itself
+
+Regenerating the system certificate bundle appended the bundle file that was
+being rewritten. On local storage the bundled CA certificates ended up in it
+twice. On object storage the previous bundle was read back, so root
+certificates that an update had removed were still trusted, and the bundle
+grew with every regeneration.
+
+https://github.com/owncloud/core/pull/41956
