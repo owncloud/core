@@ -135,15 +135,21 @@ ownCloud admins and users.
 
    * monolog/monolog (3.12.0 to 3.12.1)
 
-   * rhukster/dom-sanitizer (1.0.17 to 1.0.19)
+   * rhukster/dom-sanitizer (1.0.17 to 1.0.20)
 
-   * symfony/console (v7.4.19 to v7.4.21)
+   * symfony/console (v7.4.19 to v7.4.22)
 
-   * symfony/process (v7.4.19 to v7.4.21)
+   * symfony/mailer (v7.4.19 to v7.4.22)
 
-   * symfony/routing (v7.4.18 to v7.4.21)
+   * symfony/mime (v7.4.19 to v7.4.22)
 
-   * symfony/string (v7.4.19 to v7.4.21)
+   * symfony/process (v7.4.19 to v7.4.22)
+
+   * symfony/routing (v7.4.18 to v7.4.22)
+
+   * symfony/string (v7.4.19 to v7.4.22)
+
+   * symfony/translation (v7.4.17 to v7.4.22)
 
    * symfony/polyfill-php80 (v1.37.0 to v1.43.0)
 
@@ -151,6 +157,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41898
    https://github.com/owncloud/core/pull/41921
    https://github.com/owncloud/core/pull/41926
+   https://github.com/owncloud/core/pull/41950
 
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
 
