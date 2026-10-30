@@ -119,9 +119,9 @@ class CertificateManager implements ICertificateManager {
 		$defaultCertificates = \file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
 		\fwrite($fhCerts, $defaultCertificates);
 
-		// Append the system certificate bundle
+		// Append the system certificate bundle, unless this is the system bundle itself
 		$systemBundle = $this->getCertificateBundle(null);
-		if ($this->view->file_exists($systemBundle)) {
+		if ($this->uid !== null && $this->view->file_exists($systemBundle)) {
 			$systemCertificates = $this->view->file_get_contents($systemBundle);
 			\fwrite($fhCerts, $systemCertificates);
 		}
