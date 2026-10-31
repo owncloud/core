@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Bugfix - Regenerate certificate bundles on upgrade: [#41910](https://github.com/owncloud/core/pull/41910)
 * Bugfix - Keep the VERSION file of google/auth: [#41917](https://github.com/owncloud/core/issues/41917)
 * Bugfix - Remove log errors for unset Google Drive time fields: [#41917](https://github.com/owncloud/core/issues/41917)
+* Bugfix - Always verify the signature of installed app packages: [#41955](https://github.com/owncloud/core/pull/41955)
 * Bugfix - Do not append the system certificate bundle to itself: [#41956](https://github.com/owncloud/core/pull/41956)
 * Change - Update PHP dependencies: [#41875](https://github.com/owncloud/core/pull/41875)
 * Change - Update the CA bundle: [#41908](https://github.com/owncloud/core/pull/41908)
@@ -111,6 +112,17 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/issues/41917
    https://github.com/owncloud/core/pull/41919
+
+* Bugfix - Always verify the signature of installed app packages: [#41955](https://github.com/owncloud/core/pull/41955)
+
+   We've changed the installer to verify the signature of every app package it
+   installs or updates, also when the package ships no signature. Where code
+   signing is enforced, an unsigned app is now only installed when it is listed in
+   `integrity.ignore.missing.app.signature`. An app archive must contain exactly
+   one app folder, named after the app id in its info.xml, and the app id must be a
+   valid one.
+
+   https://github.com/owncloud/core/pull/41955
 
 * Bugfix - Do not append the system certificate bundle to itself: [#41956](https://github.com/owncloud/core/pull/41956)
 
