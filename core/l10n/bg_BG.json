@@ -14,7 +14,7 @@
     "Could not reset password because the token is invalid" : "Невъзможно е да се възстанови паролата, защото токенът не е валиден",
     "Could not reset password because the token expired" : "Невъзможно е да се възстанови паролата, защото токенът е изтекъл",
     "Could not reset password because the token does not match" : "Невъзможно е да се възстанови паролата, защото токенът не съвпада",
-    "%s password changed successfully" : "%s паролата е сменена успешно",
+    "%s password changed successfully" : "%s паролата е променена успешно",
     "%s password reset" : "Възстановяване на паролата на %s",
     "Couldn't send reset email. Please contact your administrator." : "Неуспешно изпращане на имейл за възстановяване. Моля, свържете се с администратор.",
     "Download / View" : "Изтегляне / Преглед",
@@ -359,9 +359,9 @@
     "An error occurred while verifying the token" : "Възникна грешка при проверката на токена",
     "You are accessing the server through an untrusted domain." : "Осъществявате достъп до сървъра чрез незащитен домейн.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Моля свържете се с вашия администратор. Ако вие сте администратор на тази система, конфигурирайте настройката \"trusted_domains\" в config/config.php.",
-    "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Примерната конфигурация е предоставена в config/config.sample.php или в <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
+    "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Примерната конфигурация е предоставена в config/config.sample.php, или в <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "App update required" : "Актуализацията на приложението е задължително",
-    "%s will be updated to version %s" : "%s ще бъде актуализирано до версия %s",
+    "%s will be updated to version %s" : "%s ще бъде актуализирана до версия %s",
     "These apps will be updated:" : "Следните приложения ще бъдат актуализирани:",
     "The theme %s has been disabled." : "Темата %s е деактивирана.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Моля уверете се, че базата данни, конфигурационната папка и папката с данни са архивирани преди да продължите.",
@@ -371,8 +371,8 @@
     "Upgrade needed" : "Необходимо е надграждане",
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line upgrade command (occ upgrade)." : "Изглежда, че вашето копие може да хоства много файлове и/или потребители. За да осигурите плавен процес на надстройка, моля използвайте командата (occ upgrade) за надстройка от командния ред.",
     "Automatic upgrading is not enabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Автоматичното надграждане не е активирано в config.php. За да надстроите вашето копие, моля използвайте командата (occ upgrade) за актуализация от командния ред.",
-    "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помощ, вижте <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
+    "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помощ, вижте в <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Тази %s инстанция в момента е в режим на поддръжка, което може да отнеме известно време.",
-    "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни, когато %s инстанцията е отново достъпна."
+    "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни, когато %s инстанцията е достъпна отново."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
