@@ -7,4 +7,5 @@ in `integrity.ignore.missing.app.signature`. An app archive must contain
 exactly one app folder, named after the app id in its info.xml, and the app id
 must be a valid one.
 
+https://github.com/owncloud/core/pull/41959
 https://github.com/owncloud/core/pull/41955

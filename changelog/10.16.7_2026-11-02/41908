@@ -12,4 +12,5 @@ emSign ECC Root CA - C3. Outgoing HTTPS connections to servers whose
 certificates chain only to a removed root now fail verification. To keep
 trusting such a root, import it with `occ security:certificates:import`.
 
+https://github.com/owncloud/core/pull/41948
 https://github.com/owncloud/core/pull/41908

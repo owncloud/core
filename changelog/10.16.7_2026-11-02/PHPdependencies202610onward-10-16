@@ -14,13 +14,7 @@ The following have been updated:
 
  * league/mime-type-detection (1.16.0 to 1.17.0)
 
- * phpunit/phpunit (9.6.35 to 9.6.38)
-
  * rhukster/dom-sanitizer (1.0.19 to 1.0.20)
-
- * sebastian/exporter (4.0.8 to 4.0.9)
-
- * sebastian/recursion-context (4.0.6 to 4.0.7)
 
  * symfony/console (v5.4.47 to v5.4.55)
 
@@ -30,4 +24,5 @@ The following have been updated:
 
 
  https://github.com/owncloud/core/pull/41902
+ https://github.com/owncloud/core/pull/41923
  https://github.com/owncloud/core/pull/41952
