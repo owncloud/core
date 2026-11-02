@@ -199,9 +199,9 @@ ownCloud admins and users.
 
    The update removes 35 roots in line with the Mozilla store and adds 7. The
    removed roots include DigiCert Global Root CA, DigiCert Assured ID Root CA,
-   DigiCert High Assurance EV Root CA, the Entrust root CAs, COMODO Certification
-   Authority, QuoVadis Root CA 2 and 3, emSign Root CA - C1 and emSign ECC Root CA
-   - C3. Outgoing HTTPS connections to servers whose certificates chain only to a
+   DigiCert High Assurance EV Root CA, the Entrust root CAs, emSign Root CA - C1,
+   emSign ECC Root CA - C3, COMODO Certification Authority and QuoVadis Root CA 2
+   and 3. Outgoing HTTPS connections to servers whose certificates chain only to a
    removed root now fail verification. To keep trusting such a root, import it with
    `occ security:certificates:import`.
 
