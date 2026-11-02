@@ -611,9 +611,10 @@ class Checker {
 	 * @param string $appId
 	 * @param string $path Optional path. If none is given it will be guessed.
 	 * @param boolean $force force check even if disabled
+	 * @param boolean $store store the result for $appId
 	 * @return array
 	 */
-	public function verifyAppSignature($appId, $path = '', $force = false) {
+	public function verifyAppSignature($appId, $path = '', $force = false, $store = true) {
 		try {
 			if ($path === '') {
 				$path = $this->appLocator->getAppPath($appId);
@@ -644,9 +645,22 @@ class Checker {
 					],
 			];
 		}
-		$this->storeResults($appId, $result);
+		if ($store) {
+			$this->storeResults($appId, $result);
+		}
 
 		return $result;
+	}
+
+	/**
+	 * Store a result of verifyAppSignature() that was not stored right away,
+	 * e.g. because the verified app still had to be put in place.
+	 *
+	 * @param string $appId
+	 * @param array $result
+	 */
+	public function storeAppResult($appId, array $result) {
+		$this->storeResults($appId, $result);
 	}
 
 	/**

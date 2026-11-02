@@ -191,6 +191,32 @@ class CheckerTest extends TestCase {
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
 	}
 
+	public function testVerifyAppSignatureDoesNotStoreTheResultWhenAskedNotTo() {
+		$this->environmentHelper->method('getChannel')->willReturn('stable');
+		$this->config
+			->method('getSystemValue')
+			->willReturnMap([
+				['integrity.check.disabled', false, false],
+				['integrity.ignore.missing.app.signature', [], []]
+			]);
+		$this->config->expects($this->never())->method('setAppValue');
+
+		$result = $this->checker->verifyAppSignature('SomeApp', '', false, false);
+		$this->assertSame('OC\IntegrityCheck\Exceptions\MissingSignatureException', $result['EXCEPTION']['class']);
+	}
+
+	public function testStoreAppResultReplacesTheStoredResultOfThatApp() {
+		$this->config
+			->method('getAppValue')
+			->willReturn(\json_encode(['SomeApp' => ['EXCEPTION' => ['class' => 'X']], 'OtherApp' => ['EXCEPTION' => ['class' => 'Y']]]));
+		$this->config
+			->expects($this->once())
+			->method('setAppValue')
+			->with('core', 'oc.integritycheck.checker', \json_encode(['OtherApp' => ['EXCEPTION' => ['class' => 'Y']]]));
+
+		$this->checker->storeAppResult('SomeApp', []);
+	}
+
 	public function testVerifyAppSignatureWithValidSignatureData() {
 		$map = [
 			['integrity.check.disabled', false, false],
