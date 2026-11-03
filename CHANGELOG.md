@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for 11.1.0](#changelog-for-owncloud-core-1110-2026-11-02)
+* [Changelog for 10.16.7](#changelog-for-owncloud-core-10167-2026-11-02)
 * [Changelog for 10.16.6](#changelog-for-owncloud-core-10166-2026-10-06)
 * [Changelog for 11.0.1](#changelog-for-owncloud-core-1101-2026-09-25)
 * [Changelog for 10.16.5](#changelog-for-owncloud-core-10165-2026-09-25)
@@ -215,6 +216,92 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41936
    https://doc.owncloud.com/server/next/admin_manual/configuration/server/occ_command.html
+
+# Changelog for ownCloud Core [10.16.7] (2026-11-02)
+
+The following sections list the changes in ownCloud core 10.16.7 relevant to
+ownCloud admins and users.
+
+[10.16.7]: https://github.com/owncloud/core/compare/v10.16.6...v10.16.7
+
+## Summary
+
+* Bugfix - Always verify the signature of installed app packages: [#41959](https://github.com/owncloud/core/pull/41959)
+* Change - Update PHP dependencies: [#41902](https://github.com/owncloud/core/pull/41902)
+* Change - Update JavaScript dependencies: [#41941](https://github.com/owncloud/core/pull/41941)
+* Change - Update the CA bundle: [#41948](https://github.com/owncloud/core/pull/41948)
+
+## Details
+
+* Bugfix - Always verify the signature of installed app packages: [#41959](https://github.com/owncloud/core/pull/41959)
+
+   The installer now verifies the signature of every app package it installs or
+   updates. Where code signing is enforced, an app without a signature is only
+   installed when it is listed in `integrity.ignore.missing.app.signature`. An app
+   archive must contain exactly one app folder, named after the app id in its
+   info.xml.
+
+   https://github.com/owncloud/core/pull/41959
+   https://github.com/owncloud/core/pull/41955
+
+* Change - Update PHP dependencies: [#41902](https://github.com/owncloud/core/pull/41902)
+
+   The following have been updated:
+
+   * composer/semver (3.5.0 to 3.6.0)
+
+   * doctrine/deprecations (1.1.5 to 1.1.6)
+
+   * guzzlehttp/guzzle (7.15.5 to 7.16.1)
+
+   * guzzlehttp/promises (2.5.3 to 2.6.0)
+
+   * guzzlehttp/psr7 (2.13.1 to 2.13.2)
+
+   * league/mime-type-detection (1.16.0 to 1.17.0)
+
+   * rhukster/dom-sanitizer (1.0.19 to 1.0.20)
+
+   * symfony/console (v5.4.47 to v5.4.55)
+
+   * symfony/process (v5.4.51 to v5.4.54)
+
+   * symfony/routing (v5.4.53 to v5.4.55)
+
+   https://github.com/owncloud/core/pull/41902
+   https://github.com/owncloud/core/pull/41923
+   https://github.com/owncloud/core/pull/41952
+
+* Change - Update JavaScript dependencies: [#41941](https://github.com/owncloud/core/pull/41941)
+
+   The following have been updated:
+
+   * handlebars (4.7.8 to 4.7.10)
+
+   * moment (2.30.1 to 2.31.0)
+
+   * underscore (1.13.7 to 1.13.8)
+
+   https://github.com/owncloud/core/pull/41941
+   https://github.com/owncloud/core/pull/41932
+   https://github.com/owncloud/core/pull/41933
+
+* Change - Update the CA bundle: [#41948](https://github.com/owncloud/core/pull/41948)
+
+   The bundled CA certificates were replaced with curl's 2026-10-20 extract of the
+   Mozilla root store. This removes emSign ECC Root CA - G3, which anchors eMudhra
+   intermediate CAs whose private keys were compromised.
+
+   The update removes 35 roots in line with the Mozilla store and adds 7. The
+   removed roots include DigiCert Global Root CA, DigiCert Assured ID Root CA,
+   DigiCert High Assurance EV Root CA, the Entrust root CAs, emSign Root CA - C1,
+   emSign ECC Root CA - C3, COMODO Certification Authority and QuoVadis Root CA 2
+   and 3. Outgoing HTTPS connections to servers whose certificates chain only to a
+   removed root now fail verification. To keep trusting such a root, import it with
+   `occ security:certificates:import`.
+
+   https://github.com/owncloud/core/pull/41948
+   https://github.com/owncloud/core/pull/41908
 
 # Changelog for ownCloud Core [10.16.6] (2026-10-06)
 

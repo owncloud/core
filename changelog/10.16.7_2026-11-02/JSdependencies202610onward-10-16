@@ -1,0 +1,13 @@
+Change: Update JavaScript dependencies
+
+The following have been updated:
+
+ * handlebars (4.7.8 to 4.7.10)
+
+ * moment (2.30.1 to 2.31.0)
+
+ * underscore (1.13.7 to 1.13.8)
+
+https://github.com/owncloud/core/pull/41941
+https://github.com/owncloud/core/pull/41932
+https://github.com/owncloud/core/pull/41933
