@@ -5,11 +5,11 @@ Feature: Maintenance command
   I want to be able to maintain and repair my ownCloud installation
   So that I can run ownCloud smoothly
 
-  @skipOnOcV10.12 @skipOnOcV10.13.0 @skipOnOcV10.13.1
+  @skipOnOcV10 @skipOnOcV11.0
   Scenario: Repair steps should be listed correctly
     When the administrator list the repair steps using the occ command
     Then the command should have been successful
-    And the command output should contain the text "Found 16 repair steps"
+    And the command output should contain the text "Found 17 repair steps"
     And the command output table should contain the following text:
       | table_column                          |
       | OC\Repair\RepairMimeTypes             |
@@ -26,6 +26,7 @@ Feature: Maintenance command
       | OC\Repair\RemoveRootShares            |
       | OC\Repair\RepairUnmergedShares        |
       | OC\Repair\DisableExtraThemes          |
+      | OC\Repair\UpdateCertificateStore      |
       | OC\Repair\OldGroupMembershipShares    |
       | OCA\DAV\Repair\RemoveInvalidShares    |
 
