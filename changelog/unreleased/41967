@@ -7,7 +7,9 @@ the OpenID Connect app enabled this meant two requests to the identity provider
 for each such request, an introspection call that could only fail and a
 discovery fetch, because the OpenID Connect app cannot know that the token
 belongs to the OAuth2 app. The session now remembers which auth module
-established it, and that module alone verifies the request as long as it
-confirms the session user. In every other case all modules are asked as before.
+established it. As long as that module confirms the session user, the other
+apps' auth modules are no longer asked, while the built-in app password and
+basic auth checks still have to agree. In every other case all modules are
+asked as before.
 
 https://github.com/owncloud/core/pull/41967
