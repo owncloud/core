@@ -2055,6 +2055,149 @@ class SessionTest extends TestCase {
 		$this->assertEquals($expectedReturn, $session->verifyAuthHeaders($request));
 	}
 
+	/**
+	 * Modules are told apart by their class, and createMock() reuses one generated class
+	 * for every mock of the same interface.
+	 *
+	 * @return IAuthModule | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private function createAuthModuleMock() {
+		return $this->getMockBuilder(IAuthModule::class)
+			->setMockClassName('AuthModule_' . \bin2hex(\random_bytes(8)))
+			->getMock();
+	}
+
+	/**
+	 * @param IAuthModule[] $modules
+	 * @param string|null $sessionAuthModule the module class recorded in the session
+	 * @param IUser $loggedInUser
+	 * @return Session | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private function createSessionForAuthModules(array $modules, $sessionAuthModule, IUser $loggedInUser) {
+		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
+		$session = $this->createMock(ISession::class);
+		$session->method('get')->willReturnMap([['auth_module', $sessionAuthModule]]);
+
+		/** @var Session | \PHPUnit\Framework\MockObject\MockObject $userSession */
+		$userSession = $this->getMockBuilder(Session::class)
+			->setConstructorArgs([
+				$this->createMock(IUserManager::class), $session, $this->createMock(ITimeFactory::class),
+				$this->createMock(IProvider::class), $this->config, $this->logger, $this->serviceLoader,
+				$this->userSyncService, $this->eventDispatcher, $this->accountLockout
+			])
+			->setMethods(['getAuthModules', 'logout', 'isLoggedIn', 'getUser'])
+			->getMock();
+		$userSession->method('getAuthModules')->willReturnCallback(static function () use ($modules) {
+			yield from $modules;
+		});
+		$userSession->method('isLoggedIn')->willReturn(true);
+		$userSession->method('getUser')->willReturn($loggedInUser);
+		return $userSession;
+	}
+
+	public function testVerifyAuthHeadersOnlyAsksTheSessionAuthModule() {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$sessionModule = $this->createAuthModuleMock();
+		$sessionModule->expects($this->once())->method('auth')->willReturn($user1);
+		// e.g. a module that asks a remote identity provider about a token it does not know
+		$otherModule = $this->createAuthModuleMock();
+		$otherModule->expects($this->never())->method('auth');
+
+		$userSession = $this->createSessionForAuthModules([$otherModule, $sessionModule], \get_class($sessionModule), $user1);
+		$userSession->expects($this->never())->method('logout');
+
+		$this->assertTrue($userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
+	}
+
+	public function providesUnconfirmedSessionAuthModule() {
+		$user2 = $this->createMock(IUser::class);
+		$user2->method('getUID')->willReturn('user2');
+		return [
+			'session module returns another user' => [$user2, false],
+			'session module returns null' => [null, true],
+		];
+	}
+
+	/**
+	 * When the module that established the session does not confirm the session user, every
+	 * module is asked, exactly as without a recorded module.
+	 *
+	 * @dataProvider providesUnconfirmedSessionAuthModule
+	 * @param IUser|null $sessionModuleUser
+	 * @param bool $expectedReturn
+	 */
+	public function testVerifyAuthHeadersFallsBackToAllModules($sessionModuleUser, $expectedReturn) {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$sessionModule = $this->createAuthModuleMock();
+		$sessionModule->method('auth')->willReturn($sessionModuleUser);
+		$otherModule = $this->createAuthModuleMock();
+		$otherModule->expects($this->once())->method('auth')->willReturn(null);
+
+		$userSession = $this->createSessionForAuthModules([$otherModule, $sessionModule], \get_class($sessionModule), $user1);
+		$userSession->expects($expectedReturn ? $this->never() : $this->once())->method('logout');
+
+		$this->assertSame($expectedReturn, $userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
+	}
+
+	public function testVerifyAuthHeadersWithoutSessionAuthModuleAsksAllModules() {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$user1Module = $this->createAuthModuleMock();
+		$user1Module->expects($this->once())->method('auth')->willReturn($user1);
+		$otherModule = $this->createAuthModuleMock();
+		$otherModule->expects($this->once())->method('auth')->willReturn(null);
+
+		$userSession = $this->createSessionForAuthModules([$user1Module, $otherModule], null, $user1);
+
+		$this->assertTrue($userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
+	}
+
+	public function testVerifyAuthHeadersLogsOutWhenTheSessionAuthModuleThrows() {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$sessionModule = $this->createAuthModuleMock();
+		$sessionModule->method('auth')->willThrowException(new \Exception('Invalid token'));
+
+		$userSession = $this->createSessionForAuthModules([$sessionModule], \get_class($sessionModule), $user1);
+		$userSession->expects($this->once())->method('logout');
+
+		$this->assertFalse($userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
+	}
+
+	public function testTryAuthModuleLoginRecordsTheAuthModule() {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('isEnabled')->willReturn(true);
+		$user1->method('getUID')->willReturn('user1');
+		$nullModule = $this->createAuthModuleMock();
+		$nullModule->method('auth')->willReturn(null);
+		$user1Module = $this->createAuthModuleMock();
+		$user1Module->method('auth')->willReturn($user1);
+
+		$stored = [];
+		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
+		$session = $this->createMock(ISession::class);
+		$session->method('set')->willReturnCallback(static function ($key, $value) use (&$stored) {
+			$stored[$key] = $value;
+		});
+
+		/** @var Session | \PHPUnit\Framework\MockObject\MockObject $userSession */
+		$userSession = $this->getMockBuilder(Session::class)
+			->setConstructorArgs([
+				$this->createMock(IUserManager::class), $session, $this->createMock(ITimeFactory::class),
+				$this->createMock(IProvider::class), $this->config, $this->logger, $this->serviceLoader,
+				$this->userSyncService, $this->eventDispatcher, $this->accountLockout
+			])
+			->setMethods(['getAuthModules', 'createSessionToken', 'loginUser'])
+			->getMock();
+		$userSession->method('getAuthModules')->willReturn([$nullModule, $user1Module]);
+		$userSession->method('loginUser')->willReturn(true);
+
+		$this->assertTrue($userSession->tryAuthModuleLogin($this->createMock(IRequest::class)));
+		$this->assertSame(\get_class($user1Module), $stored['auth_module'] ?? null);
+	}
+
 	public function providesModulesForLogin() {
 		$nullModule = $this->createMock(IAuthModule::class);
 		$nullModule->expects($this->any())->method('auth')->willReturn(null);

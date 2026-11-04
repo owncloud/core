@@ -940,6 +940,7 @@ class Session implements IUserSession, Emitter {
 				if ($loginOk) {
 					$this->createSessionToken($request, $uid, $uid, $password);
 					$this->session->set(Auth::DAV_AUTHENTICATED, $uid);
+					$this->session->set('auth_module', \get_class($authModule));
 				}
 				return $loginOk;
 			}
@@ -1217,6 +1218,9 @@ class Session implements IUserSession, Emitter {
 	public function verifyAuthHeaders($request) {
 		$shallLogout = false;
 		try {
+			if ($this->isConfirmedBySessionAuthModule($request)) {
+				return true;
+			}
 			$lastUser = null;
 			foreach ($this->getAuthModules(true) as $module) {
 				$user = $module->auth($request);
@@ -1241,6 +1245,32 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Whether the auth module that established this session, see tryAuthModuleLogin(),
+	 * still authenticates the request as the session user.
+	 *
+	 * If it does, the other modules are not asked: they would only be handed a credential
+	 * that is not theirs, and some of them check an unknown token remotely, e.g. against
+	 * an identity provider, on every single request.
+	 *
+	 * @param IRequest $request
+	 * @return bool
+	 * @throws Exception
+	 */
+	private function isConfirmedBySessionAuthModule($request) {
+		$moduleClass = $this->session->get('auth_module');
+		if (!\is_string($moduleClass) || $moduleClass === '' || !$this->isLoggedIn()) {
+			return false;
+		}
+		foreach ($this->getAuthModules(false) as $module) {
+			if (\get_class($module) === $moduleClass) {
+				$user = $module->auth($request);
+				return $user !== null && $user->getUID() === $this->getUser()->getUID();
+			}
+		}
+		return false;
 	}
 
 	/**
