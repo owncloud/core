@@ -1042,6 +1042,8 @@ class Session implements IUserSession, Emitter {
 		$this->logger->info("login {$user->getUID()} using \"$loginType\" login type", ['app' => __METHOD__]);
 
 		if ($user->isEnabled()) {
+			// the session may be re-established by another path, tryAuthModuleLogin() sets it again
+			$this->session->remove('auth_module');
 			$this->setUser($user);
 			$this->setLoginName($login);
 			$firstTimeLogin = $user->getLastLogin() === 0;
@@ -1218,11 +1220,14 @@ class Session implements IUserSession, Emitter {
 	public function verifyAuthHeaders($request) {
 		$shallLogout = false;
 		try {
-			if ($this->isConfirmedBySessionAuthModule($request)) {
-				return true;
-			}
+			$sessionModuleClass = $this->isLoggedIn() ? $this->session->get('auth_module') : null;
+			$confirmedBySessionModule = false;
 			$lastUser = null;
-			foreach ($this->getAuthModules(true) as $module) {
+			foreach ($this->getAuthModulesForSession($sessionModuleClass) as $module) {
+				if ($confirmedBySessionModule && !$this->isBuiltInAuthModule($module)) {
+					// see getAuthModulesForSession()
+					continue;
+				}
 				$user = $module->auth($request);
 				if ($user !== null) {
 					if ($this->isLoggedIn() && $this->getUser()->getUID() !== $user->getUID()) {
@@ -1234,6 +1239,7 @@ class Session implements IUserSession, Emitter {
 						break;
 					}
 					$lastUser = $user;
+					$confirmedBySessionModule = $confirmedBySessionModule || \get_class($module) === $sessionModuleClass;
 				}
 			}
 		} catch (Exception $ex) {
@@ -1248,29 +1254,35 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * Whether the auth module that established this session, see tryAuthModuleLogin(),
-	 * still authenticates the request as the session user.
+	 * All auth modules, the one that established the session first, see tryAuthModuleLogin().
 	 *
-	 * If it does, the other modules are not asked: they would only be handed a credential
-	 * that is not theirs, and some of them check an unknown token remotely, e.g. against
-	 * an identity provider, on every single request.
+	 * Once that module has confirmed the session user, verifyAuthHeaders() skips the other
+	 * app modules: they would only be handed a credential that is not theirs, and some of
+	 * them check an unknown token remotely, e.g. against an identity provider, on every
+	 * single request. The built-in modules are local and still have to agree.
 	 *
-	 * @param IRequest $request
-	 * @return bool
+	 * @param mixed $sessionModuleClass
+	 * @return IAuthModule[]
 	 * @throws Exception
 	 */
-	private function isConfirmedBySessionAuthModule($request) {
-		$moduleClass = $this->session->get('auth_module');
-		if (!\is_string($moduleClass) || $moduleClass === '' || !$this->isLoggedIn()) {
-			return false;
-		}
-		foreach ($this->getAuthModules(false) as $module) {
-			if (\get_class($module) === $moduleClass) {
-				$user = $module->auth($request);
-				return $user !== null && $user->getUID() === $this->getUser()->getUID();
+	private function getAuthModulesForSession($sessionModuleClass) {
+		$modules = \iterator_to_array($this->getAuthModules(true), false);
+		foreach ($modules as $i => $module) {
+			if (\get_class($module) === $sessionModuleClass) {
+				unset($modules[$i]);
+				\array_unshift($modules, $module);
+				break;
 			}
 		}
-		return false;
+		return $modules;
+	}
+
+	/**
+	 * @param IAuthModule $module
+	 * @return bool
+	 */
+	private function isBuiltInAuthModule($module) {
+		return $module instanceof TokenAuthModule || $module instanceof BasicAuthModule;
 	}
 
 	/**

@@ -21,6 +21,7 @@ use OC\Authentication\Token\IToken;
 use OC\Security\CSRF\CsrfTokenManager;
 use OC\Session\Memory;
 
+use OC\User\BasicAuthModule;
 use OC\User\Manager;
 use OC\User\Session;
 use OCP\App\IServiceLoader;
@@ -2110,30 +2111,48 @@ class SessionTest extends TestCase {
 		$this->assertTrue($userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
 	}
 
+	public function testVerifyAuthHeadersStillAsksTheBuiltInModules() {
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->createMock(IUser::class);
+		$user2->method('getUID')->willReturn('user2');
+		$sessionModule = $this->createAuthModuleMock();
+		$sessionModule->method('auth')->willReturn($user1);
+		$basicAuthModule = $this->createMock(BasicAuthModule::class);
+		$basicAuthModule->expects($this->once())->method('auth')->willReturn($user2);
+
+		$userSession = $this->createSessionForAuthModules([$sessionModule, $basicAuthModule], \get_class($sessionModule), $user1);
+		$userSession->expects($this->once())->method('logout');
+
+		$this->assertFalse($userSession->verifyAuthHeaders($this->createMock(IRequest::class)));
+	}
+
 	public function providesUnconfirmedSessionAuthModule() {
 		$user2 = $this->createMock(IUser::class);
 		$user2->method('getUID')->willReturn('user2');
 		return [
-			'session module returns another user' => [$user2, false],
-			'session module returns null' => [null, true],
+			'session module returns another user' => [$user2, false, 0],
+			'session module returns null' => [null, true, 1],
 		];
 	}
 
 	/**
-	 * When the module that established the session does not confirm the session user, every
-	 * module is asked, exactly as without a recorded module.
+	 * When the module that established the session does not confirm the session user, the
+	 * other modules are asked, exactly as without a recorded module - but the session
+	 * module itself only once.
 	 *
 	 * @dataProvider providesUnconfirmedSessionAuthModule
 	 * @param IUser|null $sessionModuleUser
 	 * @param bool $expectedReturn
+	 * @param int $otherModuleCalls
 	 */
-	public function testVerifyAuthHeadersFallsBackToAllModules($sessionModuleUser, $expectedReturn) {
+	public function testVerifyAuthHeadersFallsBackToAllModules($sessionModuleUser, $expectedReturn, $otherModuleCalls) {
 		$user1 = $this->createMock(IUser::class);
 		$user1->method('getUID')->willReturn('user1');
 		$sessionModule = $this->createAuthModuleMock();
-		$sessionModule->method('auth')->willReturn($sessionModuleUser);
+		$sessionModule->expects($this->once())->method('auth')->willReturn($sessionModuleUser);
 		$otherModule = $this->createAuthModuleMock();
-		$otherModule->expects($this->once())->method('auth')->willReturn(null);
+		$otherModule->expects($this->exactly($otherModuleCalls))->method('auth')->willReturn(null);
 
 		$userSession = $this->createSessionForAuthModules([$otherModule, $sessionModule], \get_class($sessionModule), $user1);
 		$userSession->expects($expectedReturn ? $this->never() : $this->once())->method('logout');
@@ -2320,6 +2339,35 @@ class SessionTest extends TestCase {
 
 		$result = self::invokePrivate($userSession, 'loginUser', [$iUser, 'foo', 'authModuleClassname']);
 		$this->assertTrue($result);
+	}
+
+	public function testLoginForgetsTheSessionAuthModule() {
+		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $userManager */
+		$userManager = $this->createMock(Manager::class);
+		$removed = [];
+		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
+		$session = $this->createMock(ISession::class);
+		$session->method('remove')->willReturnCallback(static function ($key) use (&$removed) {
+			$removed[] = $key;
+		});
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$this->createMock(ITimeFactory::class),
+			$this->createMock(IProvider::class),
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher,
+			$this->accountLockout
+		);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->method('isEnabled')->willReturn(true);
+
+		$this->assertTrue(self::invokePrivate($userSession, 'loginUser', [$iUser, 'foo']));
+		$this->assertContains('auth_module', $removed);
 	}
 
 	/**
