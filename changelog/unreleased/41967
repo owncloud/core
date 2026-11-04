@@ -1,0 +1,15 @@
+Bugfix: Stop asking every auth module on each request of an existing session
+
+A client that keeps its session cookie and sends a bearer token on every
+request, such as the desktop and mobile clients with an OAuth2 token, had that
+token checked by every installed auth module on each OCS and web request. With
+the OpenID Connect app enabled this meant two requests to the identity provider
+for each such request, an introspection call that could only fail and a
+discovery fetch, because the OpenID Connect app cannot know that the token
+belongs to the OAuth2 app. The session now remembers which auth module
+established it. As long as that module confirms the session user, the other
+apps' auth modules are no longer asked, while the built-in app password and
+basic auth checks still have to agree. In every other case all modules are
+asked as before.
+
+https://github.com/owncloud/core/pull/41967
