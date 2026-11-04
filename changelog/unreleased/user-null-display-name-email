@@ -1,0 +1,6 @@
+Bugfix: Accept null in User::setEMailAddress() and setDisplayName()
+
+Avoid deprecation messages from the trim() function when removing a user's
+email address or display name.
+
+https://github.com/owncloud/core/pull/41897
