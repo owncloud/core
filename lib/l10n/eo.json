@@ -7,6 +7,7 @@
     "The command line tool %s could not be found" : "La komandolinia ilo %s ne troviĝis",
     "The library %s is not available." : "La biblioteko %s ne haveblas.",
     "ownCloud %s or higher is required." : "ownCloud %s aŭ pli alta necesas.",
+    "_%n minute_::_%n minutes_" : ["%n minuto","%n minutoj"],
     "Unknown filetype" : "Ne konatas dosiertipo",
     "Invalid image" : "Ne validas bildo",
     "today" : "hodiaŭ",
