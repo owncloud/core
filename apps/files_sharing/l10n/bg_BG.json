@@ -10,7 +10,7 @@
     "Shared with others" : "Споделено с други",
     "Shared by link" : "Споделено с връзка",
     "Anonymous upload" : "Анонимно качване",
-    "Click to select files or use drag & drop to upload" : "Натиснете за избор на файлове, или използвайте плъзгане и пускане за качване",
+    "Click to select files or use drag & drop to upload" : "Натиснете за избор на файлове или използвайте плъзгане и пускане за качване",
     "Uploaded files" : "Качени файлове",
     "Uploading..." : "Качване...",
     "Nothing shared with you yet" : "Все още няма нищо споделено с вас",
@@ -131,7 +131,7 @@
     "This share is password-protected" : "Това споделяне е защитено с парола",
     "Password" : "Парола",
     "The password is wrong. Try again." : "Грешна парола. Опитайте отново.",
-    "Proceed" : "Продължете",
+    "Proceed" : "Продължаване",
     "No entries found in this folder" : "В тази папка няма намерени записи",
     "Name" : "Име",
     "State" : "Състояние",
@@ -150,7 +150,7 @@
     "Nothing to configure." : "Няма нищо за конфигуриране.",
     "Group Sharing Blacklist" : "Черен списък на групи за споделяне",
     "Exclude groups from receiving shares" : "Групи изключени от получаването на споделяния",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Тези групи няма да бъдат налични за споделяне. Членовете на групата не са ограничени в инициирането на споделяния, или получаването на лични споделяния/покани. Въпреки това, те могат както обикновено да получават споделяния, адресирани до други групи, в които членуват.",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Тези групи няма да бъдат налични за споделяне. Членовете на групата не са ограничени в инициирането на споделяния или получаването на лични споделяния/покани. Въпреки това, те могат както обикновено да получават споделяния, адресирани до други групи, в които членуват.",
     "Only certain groups are allowed to create public links" : "Само на определени групи е разрешено да създават публични връзки"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

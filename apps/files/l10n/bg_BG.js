@@ -87,7 +87,7 @@ OC.L10N.register(
     "Your storage is full, files can not be updated or synced anymore!" : "Хранилището ви е пълно, файловете вече не могат да се актуализират или синхронизират!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Хранилището на {owner} е почти пълно ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Вашето хранилище е почти пълно ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["съответстват на '{filter}'","съответства на '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["съответства на '{filter}'","съответстват на '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} заключи този ресурс чрез {path}",
     "Unlock" : "Отключване",
     "Could not unlock, please contact the lock owner {owner}" : "Неуспех при отключването, моля свържете се със собственика на ключа {owner}",

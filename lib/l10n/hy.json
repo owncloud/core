@@ -1,5 +1,6 @@
 { "translations": {
     "See %s" : "Տեսնել %s",
+    "_%n minute_::_%n minutes_" : ["%n րոպե","%n րոպե"],
     "Unknown filetype" : "Անհայտ ֆայլի տիպ",
     "Invalid image" : "Անվավեր նկար",
     "today" : "այսօր",

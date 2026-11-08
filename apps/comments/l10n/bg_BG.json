@@ -15,7 +15,7 @@
     "Error occurred while posting comment" : "Възникна грешка при публикуването на коментар",
     "{count} unread comments" : "{count} непрочетени коментари",
     "Comment" : "Коментар",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Коментари</strong> за файловете <em>(винаги изброени в потока)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Коментари</strong> за файловете <em>(винаги включени в потока)</em>",
     "You commented" : "Вие коментирахте",
     "%1$s commented" : "%1$s коментира",
     "You commented on %2$s" : "Вие коментирахте %2$s",
