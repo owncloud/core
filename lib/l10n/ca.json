@@ -6,6 +6,7 @@
     "Sample configuration detected" : "Configuració d'exemple detectada",
     "It has been detected that the sample configuration has been copied. This can break your installation and is unsupported. Please read the documentation before performing changes on config.php" : "S'ha detectat que la configuració d'exemple ha estat copiada. Això no està suportat, i podria corrompre la vostra instalació. Siusplau, llegiu la documentació abans de realitzar canvis a config.php",
     "PHP %s or higher is required." : "Es requereix PHP %s o superior.",
+    "_%n minute_::_%n minutes_" : ["%n minut","%n minutos"],
     "Unknown filetype" : "Tipus de fitxer desconegut",
     "Invalid image" : "Imatge no vàlida",
     "today" : "avui",
