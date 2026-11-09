@@ -1,0 +1,7 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+ * composer/semver (3.5.2 to 3.6.0)
+
+https://github.com/owncloud/core/pull/41968
