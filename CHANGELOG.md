@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 11.1.0](#changelog-for-owncloud-core-1110-2026-11-02)
 * [Changelog for 10.16.7](#changelog-for-owncloud-core-10167-2026-11-02)
 * [Changelog for 10.16.6](#changelog-for-owncloud-core-10166-2026-10-06)
@@ -35,6 +36,49 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v11.1.0...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41968](https://github.com/owncloud/core/pull/41968)
+
+## Details
+
+* Change - Update PHP dependencies: [#41968](https://github.com/owncloud/core/pull/41968)
+
+   The following have been updated:
+
+   * composer/semver (3.5.2 to 3.6.0)
+
+   * google/apiclient-services (v0.465.0 to v0.465.1)
+
+   * google/auth (v1.55.2 to v1.55.3)
+
+   * paragonie/constant_time_encoding (v3.1.3 to v3.1.4)
+
+   * phpseclib/phpseclib (3.0.57 to 3.0.58)
+
+   * symfony/console (v7.4.22 to v7.4.23)
+
+   * symfony/deprecation-contracts (v3.7.1 to v3.8.1)
+
+   * symfony/event-dispatcher-contracts (v3.7.1 to v3.8.1)
+
+   * symfony/routing (v7.4.22 to v7.4.23)
+
+   * symfony/service-contracts (v3.7.3 to v3.8.1)
+
+   * symfony/translation (v7.4.22 to v7.4.23)
+
+   * symfony/translation-contracts (v3.7.1 to v3.8.1)
+
+   https://github.com/owncloud/core/pull/41968
+
 # Changelog for ownCloud Core [11.1.0] (2026-11-02)
 
 The following sections list the changes in ownCloud core 11.1.0 relevant to
