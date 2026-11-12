@@ -41,7 +41,7 @@ if (!\OC::$CLI) {
 }
 
 echo 'Please use ./occ system:cron' . PHP_EOL;
-$return = \system('./occ system:cron');
+$return = \system(\escapeshellarg(PHP_BINARY) . ' ' . \escapeshellarg(__DIR__ . '/occ') . ' system:cron');
 // in case of an error while cron execution we exit with error code as well
 if ($return === false) {
 	exit(1);
