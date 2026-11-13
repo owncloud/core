@@ -55,9 +55,21 @@ ownCloud admins and users.
 
    * composer/semver (3.5.2 to 3.6.0)
 
-   * google/apiclient-services (v0.465.0 to v0.465.1)
+   * doctrine/dbal (3.10.6 to 3.10.7)
+
+   * doctrine/deprecations (1.1.6 to 1.2.0)
+
+   * google/apiclient-services (v0.465.0 to v0.466.0)
 
    * google/auth (v1.55.2 to v1.55.3)
+
+   * guzzlehttp/psr7 (2.13.2 to 2.13.3)
+
+   * laminas/laminas-inputfilter (2.35.0 to 2.36.0)
+
+   * laminas/laminas-stdlib (3.21.0 to 3.22.0)
+
+   * laravel/serializable-closure (v2.1.0 to v2.2.0)
 
    * paragonie/constant_time_encoding (v3.1.3 to v3.1.4)
 
@@ -78,6 +90,7 @@ ownCloud admins and users.
    * symfony/translation-contracts (v3.7.1 to v3.8.1)
 
    https://github.com/owncloud/core/pull/41968
+   https://github.com/owncloud/core/pull/41972
 
 # Changelog for ownCloud Core [11.1.0] (2026-11-02)
 
