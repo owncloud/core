@@ -1,0 +1,13 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+ * doctrine/deprecations (1.1.6 to 1.2.0)
+
+ * guzzlehttp/psr7 (2.13.2 to 2.13.3)
+
+ * phpseclib/phpseclib (3.0.57 to 3.0.58)
+
+ * symfony/routing (v5.4.55 to v5.4.56)
+
+https://github.com/owncloud/core/pull/41974
