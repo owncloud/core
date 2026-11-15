@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0b4d52661e39961af9597aaa9ac20fc",
+    "content-hash": "c03e2bfcb882d03a332b9a9eb1dd418c",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2210,16 +2210,16 @@
         },
         {
             "name": "owncloud/tarstreamer",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/owncloud/TarStreamer.git",
-                "reference": "163052d7a076fd3dd54d4f50e1ff2705b72604db"
+                "reference": "a0aabcf3538d188275a4b00221bede68ff7c5c0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/163052d7a076fd3dd54d4f50e1ff2705b72604db",
-                "reference": "163052d7a076fd3dd54d4f50e1ff2705b72604db",
+                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/a0aabcf3538d188275a4b00221bede68ff7c5c0b",
+                "reference": "a0aabcf3538d188275a4b00221bede68ff7c5c0b",
                 "shasum": ""
             },
             "require": {
@@ -2228,7 +2228,7 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.5",
                 "pear/archive_tar": "~1.4",
-                "pear/pear-core-minimal": "v1.10.13",
+                "pear/pear-core-minimal": "v1.10.16",
                 "phpunit/phpunit": "^7.5|^8.5|^9.6"
             },
             "type": "library",
@@ -2256,9 +2256,9 @@
             ],
             "support": {
                 "issues": "https://github.com/owncloud/TarStreamer/issues",
-                "source": "https://github.com/owncloud/TarStreamer/tree/v2.1.0"
+                "source": "https://github.com/owncloud/TarStreamer/tree/v2.1.1"
             },
-            "time": "2023-06-16T08:01:55+00:00"
+            "time": "2026-11-03T11:15:13+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
