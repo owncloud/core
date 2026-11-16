@@ -1,0 +1,23 @@
+# Snyk (https://snyk.io) policy file
+#
+# exclude.code applies to Snyk Code (static analysis) only. It takes test code out
+# of the analysis. None of these directories is part of a release: the dist target
+# of the Makefile does not copy tests/ and deletes every other tests directory.
+# Their findings are fixture values such as test passwords, and hash calls that
+# compute expected values.
+#
+# Product code is not excluded on purpose. Findings there are reviewed one by one
+# and ignored through the Snyk ignore approval workflow.
+# Snyk Open Source is not affected by this block.
+version: v1.25.0
+ignore: {}
+patch: {}
+exclude:
+  code:
+    # PHP unit tests, acceptance tests, test helpers and CI test configuration
+    - tests/**
+    # Unit tests and JavaScript specs of the bundled apps
+    - apps/*/tests/**
+    # JavaScript specs of core and of the settings pages
+    - core/js/tests/**
+    - settings/tests/**
