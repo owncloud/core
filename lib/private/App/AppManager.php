@@ -98,6 +98,16 @@ class AppManager implements IAppManager {
 	];
 
 	/**
+	 * Apps that must not run on this version: they are reported as not
+	 * installed/enabled regardless of their stored state, and can not be enabled.
+	 * @var string[]
+	 */
+	private $forciblyDisabledApps = [
+		'templateeditor',
+		'web',
+	];
+
+	/**
 	 * @param IUserSession $userSession
 	 * @param IAppConfig $appConfig
 	 * @param IGroupManager $groupManager
@@ -145,6 +155,9 @@ class AppManager implements IAppManager {
 			$this->installedAppsCache = \array_filter($values, function ($value) {
 				return $value !== 'no';
 			});
+			foreach ($this->forciblyDisabledApps as $forciblyDisabledApp) {
+				unset($this->installedAppsCache[$forciblyDisabledApp]);
+			}
 			\ksort($this->installedAppsCache);
 		}
 		return $this->installedAppsCache;
@@ -814,6 +827,11 @@ class AppManager implements IAppManager {
 			$hint = $this->outdated_apps[$appId];
 			throw new \Exception(
 				"App $appId can't be enabled. $hint"
+			);
+		}
+		if (\in_array($appId, $this->forciblyDisabledApps, true)) {
+			throw new \Exception(
+				"App $appId can't be enabled."
 			);
 		}
 	}
