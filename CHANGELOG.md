@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.16.8](#changelog-for-owncloud-core-10168-2026-11-20)
 * [Changelog for 10.16.7](#changelog-for-owncloud-core-10167-2026-11-02)
 * [Changelog for 10.16.6](#changelog-for-owncloud-core-10166-2026-10-06)
 * [Changelog for 10.16.5](#changelog-for-owncloud-core-10165-2026-09-25)
@@ -32,6 +33,43 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.16.8] (2026-11-20)
+
+The following sections list the changes in ownCloud core 10.16.8 relevant to
+ownCloud admins and users.
+
+[10.16.8]: https://github.com/owncloud/core/compare/v10.16.7...v10.16.8
+
+## Summary
+
+* Change - Update PHP dependencies: [#41974](https://github.com/owncloud/core/pull/41974)
+* Change - Disable the web and templateeditor apps: [#41984](https://github.com/owncloud/core/pull/41984)
+
+## Details
+
+* Change - Update PHP dependencies: [#41974](https://github.com/owncloud/core/pull/41974)
+
+   The following have been updated:
+
+   * doctrine/deprecations (1.1.6 to 1.2.0)
+
+   * guzzlehttp/psr7 (2.13.2 to 2.13.3)
+
+   * phpseclib/phpseclib (3.0.57 to 3.0.58)
+
+   * symfony/routing (v5.4.55 to v5.4.56)
+
+   https://github.com/owncloud/core/pull/41974
+
+* Change - Disable the web and templateeditor apps: [#41984](https://github.com/owncloud/core/pull/41984)
+
+   The web and templateeditor apps are now disabled and can no longer be enabled on
+   this ownCloud version. Any that were still enabled are disabled on upgrade, and
+   attempts to enable them through occ, the web UI or the provisioning API are
+   rejected.
+
+   https://github.com/owncloud/core/pull/41984
+
 # Changelog for ownCloud Core [10.16.7] (2026-11-02)
 
 The following sections list the changes in ownCloud core 10.16.7 relevant to
