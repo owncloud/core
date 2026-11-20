@@ -197,6 +197,14 @@ class ManagerTest extends TestCase {
 		$this->assertEquals('no', $this->appConfig->getValue('files_trashbin', 'enabled', 'no'));
 	}
 
+	public function testDisableOutdatedApps() {
+		$this->expectClearCache();
+		$this->appConfig->setValue('web', 'enabled', 'yes');
+		$disabled = $this->manager->disableOutdatedApps();
+		$this->assertContains('web', $disabled);
+		$this->assertEquals('no', $this->appConfig->getValue('web', 'enabled', 'yes'));
+	}
+
 	/**
 	 */
 	public function testNotEnableIfNotInstalled() {
@@ -208,6 +216,32 @@ class ManagerTest extends TestCase {
 			'enabled',
 			'no'
 		));
+	}
+
+	public function testOutdatedAppIsForceDisabled() {
+		// A stored "enabled" state for a forcibly-disabled app is ignored.
+		$this->appConfig->setValue('web', 'enabled', 'yes');
+		$this->assertNotContains('web', $this->manager->getInstalledApps());
+		$this->assertFalse($this->manager->isEnabledForUser('web'));
+	}
+
+	/**
+	 */
+	public function testCannotEnableOutdatedApp() {
+		$this->expectException(\Exception::class);
+
+		$manager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['getAppPath'])
+			->setConstructorArgs([$this->userSession, $this->appConfig,
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
+				$this->config])
+			->getMock();
+		$manager->expects($this->any())
+			->method('getAppPath')
+			->with('web')
+			->willReturn('path');
+
+		$manager->enableApp('web');
 	}
 
 	public function testEnableAppForGroups() {

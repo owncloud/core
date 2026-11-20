@@ -92,9 +92,16 @@ class AppManager implements IAppManager {
 	 */
 	private $appDirs = [];
 
+	/**
+	 * Apps that must not run: enabling them is rejected (see canEnable()), they are
+	 * stripped from the installed/enabled app list, and the upgrade repair step
+	 * disables any that are still stored as enabled. $appId => reason hint.
+	 * @var string[]
+	 */
 	private $outdated_apps = [
 		'enterprise_key' => 'It is not used from core 10.5.0 onwards.',
 		'templateeditor' => 'Discontinued - please use a theme to change mail templates.',
+		'web' => 'No longer available on this ownCloud version.',
 	];
 
 	/**
@@ -145,6 +152,10 @@ class AppManager implements IAppManager {
 			$this->installedAppsCache = \array_filter($values, function ($value) {
 				return $value !== 'no';
 			});
+			// Outdated apps are never reported as installed/enabled.
+			foreach (\array_keys($this->outdated_apps) as $outdatedApp) {
+				unset($this->installedAppsCache[$outdatedApp]);
+			}
 			\ksort($this->installedAppsCache);
 		}
 		return $this->installedAppsCache;
@@ -802,6 +813,23 @@ class AppManager implements IAppManager {
 		$infoFile = "{$path}/appinfo/info.xml";
 		$appData = $this->getAppInfoByPath($infoFile);
 		return isset($appData['version']) ? $appData['version'] : '';
+	}
+
+	/**
+	 * Disable every outdated app that is still stored as enabled, so the stored
+	 * state matches the force-disable. Used by the upgrade repair step.
+	 *
+	 * @return string[] ids of the apps that were disabled
+	 */
+	public function disableOutdatedApps(): array {
+		$disabled = [];
+		foreach (\array_keys($this->outdated_apps) as $appId) {
+			if ($this->appConfig->getValue($appId, 'enabled', 'no') !== 'no') {
+				$this->disableApp($appId);
+				$disabled[] = $appId;
+			}
+		}
+		return $disabled;
 	}
 
 	/**
