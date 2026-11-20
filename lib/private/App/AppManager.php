@@ -816,11 +816,6 @@ class AppManager implements IAppManager {
 	}
 
 	/**
-	 * @param string $appId
-	 * @return void
-	 * @throws \Exception
-	 */
-	/**
 	 * Disable every outdated app that is still stored as enabled, so the stored
 	 * state matches the force-disable. Used by the upgrade repair step.
 	 *
@@ -837,6 +832,11 @@ class AppManager implements IAppManager {
 		return $disabled;
 	}
 
+	/**
+	 * @param string $appId
+	 * @return void
+	 * @throws \Exception
+	 */
 	private function canEnable(string $appId): void {
 		if (isset($this->outdated_apps[$appId])) {
 			$hint = $this->outdated_apps[$appId];

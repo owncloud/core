@@ -32,6 +32,7 @@ namespace OC;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DisableExtraThemes;
+use OC\Repair\DisableOutdatedApps;
 use OC\Repair\DropOldJobs;
 use OC\Repair\MoveAvatarIntoSubFolder;
 use OC\Repair\OldGroupMembershipShares;
