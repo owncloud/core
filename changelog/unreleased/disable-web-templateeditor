@@ -4,4 +4,4 @@ The web and templateeditor apps are now disabled and can no longer be enabled on
 this ownCloud version. Any stored enabled state for them is ignored, and attempts
 to enable them through occ, the web UI or the provisioning API are rejected.
 
-https://github.com/owncloud/core/pull/PRNUMBER
+https://github.com/owncloud/core/pull/41984
