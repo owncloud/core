@@ -93,9 +93,9 @@ class AppManager implements IAppManager {
 	private $appDirs = [];
 
 	/**
-	 * Apps that must not run: they can not be enabled, and if they are already
-	 * enabled they are reported as not installed/enabled regardless of the stored
-	 * state (i.e. they are force-disabled). $appId => reason hint.
+	 * Apps that must not run: enabling them is rejected (see canEnable()), they are
+	 * stripped from the installed/enabled app list, and the upgrade repair step
+	 * disables any that are still stored as enabled. $appId => reason hint.
 	 * @var string[]
 	 */
 	private $outdated_apps = [
@@ -820,6 +820,23 @@ class AppManager implements IAppManager {
 	 * @return void
 	 * @throws \Exception
 	 */
+	/**
+	 * Disable every outdated app that is still stored as enabled, so the stored
+	 * state matches the force-disable. Used by the upgrade repair step.
+	 *
+	 * @return string[] ids of the apps that were disabled
+	 */
+	public function disableOutdatedApps(): array {
+		$disabled = [];
+		foreach (\array_keys($this->outdated_apps) as $appId) {
+			if ($this->appConfig->getValue($appId, 'enabled', 'no') !== 'no') {
+				$this->disableApp($appId);
+				$disabled[] = $appId;
+			}
+		}
+		return $disabled;
+	}
+
 	private function canEnable(string $appId): void {
 		if (isset($this->outdated_apps[$appId])) {
 			$hint = $this->outdated_apps[$appId];

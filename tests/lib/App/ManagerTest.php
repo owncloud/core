@@ -197,6 +197,14 @@ class ManagerTest extends TestCase {
 		$this->assertEquals('no', $this->appConfig->getValue('files_trashbin', 'enabled', 'no'));
 	}
 
+	public function testDisableOutdatedApps() {
+		$this->expectClearCache();
+		$this->appConfig->setValue('web', 'enabled', 'yes');
+		$disabled = $this->manager->disableOutdatedApps();
+		$this->assertContains('web', $disabled);
+		$this->assertEquals('no', $this->appConfig->getValue('web', 'enabled', 'yes'));
+	}
+
 	/**
 	 */
 	public function testNotEnableIfNotInstalled() {

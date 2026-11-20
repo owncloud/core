@@ -172,6 +172,7 @@ class Repair implements IOutput {
 				\OC::$server->getConfig(),
 				\OC::$server->getAppConfig()
 			),
+			new DisableOutdatedApps(\OC::$server->getAppManager()),
 		];
 	}
 
