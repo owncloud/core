@@ -210,7 +210,7 @@ class ManagerTest extends TestCase {
 		));
 	}
 
-	public function testForciblyDisabledAppIsNotInstalled() {
+	public function testOutdatedAppIsForceDisabled() {
 		// A stored "enabled" state for a forcibly-disabled app is ignored.
 		$this->appConfig->setValue('web', 'enabled', 'yes');
 		$this->assertNotContains('web', $this->manager->getInstalledApps());
@@ -219,7 +219,7 @@ class ManagerTest extends TestCase {
 
 	/**
 	 */
-	public function testCannotEnableForciblyDisabledApp() {
+	public function testCannotEnableOutdatedApp() {
 		$this->expectException(\Exception::class);
 
 		$manager = $this->getMockBuilder(AppManager::class)

@@ -92,19 +92,16 @@ class AppManager implements IAppManager {
 	 */
 	private $appDirs = [];
 
+	/**
+	 * Apps that must not run: they can not be enabled, and if they are already
+	 * enabled they are reported as not installed/enabled regardless of the stored
+	 * state (i.e. they are force-disabled). $appId => reason hint.
+	 * @var string[]
+	 */
 	private $outdated_apps = [
 		'enterprise_key' => 'It is not used from core 10.5.0 onwards.',
 		'templateeditor' => 'Discontinued - please use a theme to change mail templates.',
-	];
-
-	/**
-	 * Apps that must not run on this version: they are reported as not
-	 * installed/enabled regardless of their stored state, and can not be enabled.
-	 * @var string[]
-	 */
-	private $forciblyDisabledApps = [
-		'templateeditor',
-		'web',
+		'web' => 'No longer available on this ownCloud version.',
 	];
 
 	/**
@@ -155,8 +152,9 @@ class AppManager implements IAppManager {
 			$this->installedAppsCache = \array_filter($values, function ($value) {
 				return $value !== 'no';
 			});
-			foreach ($this->forciblyDisabledApps as $forciblyDisabledApp) {
-				unset($this->installedAppsCache[$forciblyDisabledApp]);
+			// Outdated apps are never reported as installed/enabled.
+			foreach (\array_keys($this->outdated_apps) as $outdatedApp) {
+				unset($this->installedAppsCache[$outdatedApp]);
 			}
 			\ksort($this->installedAppsCache);
 		}
@@ -827,11 +825,6 @@ class AppManager implements IAppManager {
 			$hint = $this->outdated_apps[$appId];
 			throw new \Exception(
 				"App $appId can't be enabled. $hint"
-			);
-		}
-		if (\in_array($appId, $this->forciblyDisabledApps, true)) {
-			throw new \Exception(
-				"App $appId can't be enabled."
 			);
 		}
 	}
