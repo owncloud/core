@@ -52,7 +52,7 @@ OC.L10N.register(
     "Invalid storage backend \"%s\"" : "Невалиден фонов сервиз на хранилището \"%s\"",
     "Not permitted to use backend \"%s\"" : "Не е позволено използването на фоновият сервиз \"%s\"",
     "Not permitted to use authentication mechanism \"%s\"" : "Не е позволено да се използва механизъм за удостоверяване \"%s\"",
-    "Unsatisfied backend parameters" : "Неудовлетворени параметри на фонов сервиз",
+    "Unsatisfied backend parameters" : "Невалидни параметри на бекенда",
     "Unsatisfied authentication mechanism parameters" : "Неудовлетворени параметри на механизма за удостоверяване",
     "Insufficient data: %s" : "Недостатъчни данни: %s",
     "%s" : "%s",
