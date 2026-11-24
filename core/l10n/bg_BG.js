@@ -321,7 +321,7 @@ OC.L10N.register(
     "Please specify the port number along with the host name (e.g., localhost:5432)." : "Моля, посочете номера на порта заедно с името на хоста (например, localhost:5432).",
     "Performance warning" : "Предупреждение за ефективността",
     "SQLite will be used as database." : "За база данни ще се използва SQLite.",
-    "For larger installations we recommend to choose a different database backend." : "За по-големи инсталации препоръчваме да изберете друг сървър за база данни.",
+    "For larger installations we recommend to choose a different database backend." : "За по-големи инсталации препоръчваме да изберете друга система за бази данни.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особено при използване на настолен клиент за синхронизиране на файлове, употребата на SQLite не се препоръчва.",
     "Finish setup" : "Завършване на настройката",
     "Need help?" : "Имате нужда от помощ?",
