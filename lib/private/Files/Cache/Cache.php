@@ -437,8 +437,8 @@ class Cache implements ICache {
 					$params[] = \md5((string)$value);
 					$queryParts[] = '`path_hash`';
 				} elseif ($name === 'mimetype') {
-					# an unknown mimetyp will be stored as -1
-					if ($value === false) {
+					# an unknown or empty mimetype will be stored as -1
+					if ($value === false || $value === null || $value === '') {
 						$value = -1;
 					} else {
 						$params[] = $this->mimetypeLoader->getId(\substr($value, 0, \strpos($value, '/')));
