@@ -34,6 +34,9 @@ interface IUserProvided {
 	 * @param IUser $user the user for which to save the user provided options
 	 * @param int $mountId the mount id to save the options for
 	 * @param array $options the user provided options
+	 * @throws \InvalidArgumentException if the options are not acceptable (for example an
+	 *                                   empty username or password); the request is then
+	 *                                   answered with HTTP 400 and the exception message
 	 * @since 10.0
 	 */
 	public function saveBackendOptions(IUser $user, $mountId, array $options);
