@@ -1,0 +1,11 @@
+Bugfix: Run occ from the server root when cron.php is called from the CLI
+
+When cron.php was run from the command line it executed `./occ system:cron`
+relative to the caller's working directory. A crontab line such as
+`php -f /var/www/owncloud/cron.php` runs with the user's home as working
+directory, so the shell could not find `./occ` and no background job ever ran,
+without any error in the ownCloud log.
+
+cron.php now invokes occ by its absolute path, with the same PHP binary.
+
+https://github.com/owncloud/core/pull/41895
