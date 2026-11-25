@@ -940,6 +940,7 @@ class Session implements IUserSession, Emitter {
 				if ($loginOk) {
 					$this->createSessionToken($request, $uid, $uid, $password);
 					$this->session->set(Auth::DAV_AUTHENTICATED, $uid);
+					$this->session->set('auth_module', ['class' => \get_class($authModule), 'uid' => $uid]);
 				}
 				return $loginOk;
 			}
@@ -1041,6 +1042,8 @@ class Session implements IUserSession, Emitter {
 		$this->logger->info("login {$user->getUID()} using \"$loginType\" login type", ['app' => __METHOD__]);
 
 		if ($user->isEnabled()) {
+			// the session may be re-established by another path, tryAuthModuleLogin() sets it again
+			$this->session->remove('auth_module');
 			$this->setUser($user);
 			$this->setLoginName($login);
 			$firstTimeLogin = $user->getLastLogin() === 0;
@@ -1217,8 +1220,14 @@ class Session implements IUserSession, Emitter {
 	public function verifyAuthHeaders($request) {
 		$shallLogout = false;
 		try {
+			$sessionModuleClass = $this->getSessionAuthModuleClass();
+			$confirmedBySessionModule = false;
 			$lastUser = null;
-			foreach ($this->getAuthModules(true) as $module) {
+			foreach ($this->getAuthModulesForSession($sessionModuleClass) as $module) {
+				if ($confirmedBySessionModule && !$this->isBuiltInAuthModule($module)) {
+					// see getAuthModulesForSession()
+					continue;
+				}
 				$user = $module->auth($request);
 				if ($user !== null) {
 					if ($this->isLoggedIn() && $this->getUser()->getUID() !== $user->getUID()) {
@@ -1230,6 +1239,7 @@ class Session implements IUserSession, Emitter {
 						break;
 					}
 					$lastUser = $user;
+					$confirmedBySessionModule = $confirmedBySessionModule || \get_class($module) === $sessionModuleClass;
 				}
 			}
 		} catch (Exception $ex) {
@@ -1241,6 +1251,62 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * The class of the auth module that established the session of the current user, see
+	 * tryAuthModuleLogin(). The user is recorded too, because some paths switch the session
+	 * user with setUser() alone.
+	 *
+	 * @return string|null
+	 */
+	private function getSessionAuthModuleClass() {
+		if (!$this->isLoggedIn()) {
+			return null;
+		}
+		$sessionModule = $this->session->get('auth_module');
+		if (!\is_array($sessionModule) || ($sessionModule['uid'] ?? null) !== $this->getUser()->getUID()) {
+			return null;
+		}
+		return $sessionModule['class'] ?? null;
+	}
+
+	/**
+	 * All auth modules, the one that established the session as the first app module, see
+	 * tryAuthModuleLogin().
+	 *
+	 * Once that module has confirmed the session user, verifyAuthHeaders() skips the other
+	 * app modules: they would only be handed a credential that is not theirs, and some of
+	 * them check an unknown token remotely, e.g. against an identity provider, on every
+	 * single request. The built-in modules are local and still have to agree.
+	 *
+	 * @param string|null $sessionModuleClass
+	 * @return IAuthModule[]
+	 * @throws Exception
+	 */
+	private function getAuthModulesForSession($sessionModuleClass) {
+		$modules = \iterator_to_array($this->getAuthModules(true), false);
+		foreach ($modules as $i => $module) {
+			if (\get_class($module) === $sessionModuleClass) {
+				\array_splice($modules, $i, 1);
+				// behind the leading built-in TokenAuthModule, which runs first as before
+				$position = 0;
+				while (isset($modules[$position]) && $modules[$position] instanceof TokenAuthModule) {
+					$position++;
+				}
+				\array_splice($modules, $position, 0, [$module]);
+				break;
+			}
+		}
+		return $modules;
+	}
+
+	/**
+	 * @param IAuthModule $module
+	 * @return bool
+	 */
+	private function isBuiltInAuthModule($module) {
+		return $module instanceof TokenAuthModule || $module instanceof BasicAuthModule;
 	}
 
 	/**
