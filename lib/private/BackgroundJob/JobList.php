@@ -281,12 +281,21 @@ class JobList implements IJobList {
 				/** @var IJob $job */
 				$job = \OC::$server->query($row['class']);
 			} catch (QueryException $e) {
-				$this->logger->logException($e, ['app' => 'core']);
 				if (\class_exists($row['class'])) {
+					// The class exists but could not be resolved as a service:
+					// this is a genuine, actionable DI failure -> log at ERROR.
+					$this->logger->logException($e, ['app' => 'core']);
 					$class = $row['class'];
 					$job = new $class();
 				} else {
-					// job from disabled app or old version of an app, no need to do anything
+					// The class does not exist anymore (stale job row from a
+					// disabled/removed app or an old version). This is a benign,
+					// expected condition, so only log it at DEBUG instead of
+					// spamming an ERROR-level stack trace on every cron run.
+					$this->logger->debug(
+						'Background job class ' . $row['class'] . ' does not exist (stale job row), skipping',
+						['app' => 'core']
+					);
 					return null;
 				}
 			}
