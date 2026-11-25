@@ -55,6 +55,14 @@ use OCP\ILogger;
  */
 class Checker implements OnDiskHasher {
 	public const CACHE_KEY = 'oc.integritycheck.checker';
+
+	/**
+	 * The results describe the files on disk of this instance, so cached entries
+	 * have to expire for a node that never runs a check itself to notice a
+	 * repaired or replaced installation.
+	 */
+	public const CACHE_TTL = 24 * 3600;
+
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
 	/** @var AppLocator */
@@ -104,7 +112,9 @@ class Checker implements OnDiskHasher {
 		$this->fileAccessHelper = $fileAccessHelper;
 		$this->appLocator = $appLocator;
 		$this->config = $config;
-		$this->cache = $cacheFactory ? $cacheFactory->create(self::CACHE_KEY) : new \OC\Memcache\NullCache();
+		$this->cache = $cacheFactory
+			? \OC\Memcache\LocalCacheFactory::create($cacheFactory, self::CACHE_KEY)
+			: new \OC\Memcache\NullCache();
 		$this->appManager = $appManager;
 		$this->tempManager = $tempManager;
 		$this->verifier = $verifier;
@@ -400,17 +410,21 @@ class Checker implements OnDiskHasher {
 
 		$this->setAppValue(self::CACHE_KEY, \json_encode($resultArray));
 		//Set cache for each app
-		$this->cache->set($scope, \json_encode($resultArray));
-		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray));
+		$this->cache->set($scope, \json_encode($resultArray), self::CACHE_TTL);
+		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray), self::CACHE_TTL);
 	}
 
 	/**
+	 * Clean previous results for a proper rescanning. Otherwise a stale verdict
+	 * would be served instead of the one the rescan is about to produce.
 	 *
-	 * Clean previous results for a proper rescanning. Otherwise
+	 * storeResults() writes one entry per scope in addition to CACHE_KEY, so the
+	 * whole prefix is cleared - removing CACHE_KEY alone left every per app entry
+	 * behind.
 	 */
 	private function cleanResults() {
 		$this->deleteAppValue(self::CACHE_KEY);
-		$this->cache->remove(self::CACHE_KEY);
+		$this->cache->clear();
 	}
 
 	/**
